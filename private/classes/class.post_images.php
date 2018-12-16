@@ -10,7 +10,7 @@ class PostImage extends FileUpload {
     public static $db_fields = ["id","uploader_id","filename","upload_time","caption","support","oppose"];
 
     public static  $post_image_table        = "post_table";
-    public static  $normal_post_image_table = "normal_post_table";
+    public static  $normalize_post_table = "normal_post_table";
     public static  $post_text_unique_string = "b2FlS0puNzl1RzZxbHNjbQSPreJATipxwCarcRsZMelYussifMuniru";
 
     public static $support  = "support";
@@ -165,7 +165,7 @@ public static function normal_post($post_id = 0,$filenames = ""){
      }
      
    $string = substr_replace($string,'',-1, 1);
-$query    = " INSERT INTO ".self::$normal_post_image_table." (post_id,post) {$string}    ";
+$query    = " INSERT INTO ".self::$normalize_post_table." (post_id,post) {$string}    ";
 
   
    if(!$db->query($query)){
@@ -240,7 +240,7 @@ $filenames = FileUpload::upload_file($file_destination, $files,$count);
      
 
      
-     $query_parameters = j([$uploader_id,$upload_time,$title,$caption,$label,$location,0]);
+     $query_parameters = j([$uploader_id,$upload_time,$title,$caption,$label,$log,$lat]);
 
     $query = "CALL post_image('".$query_parameters."')";
 
@@ -282,7 +282,25 @@ catch(Exception $e){
 }
 
    
-self::normal_post($post_id,$filenames);
+if(self::normal_post($post_id,$filenames))
+{
+    // cast the post id into an integer
+    $post_id = (int)$post;
+    // fetch the recently uploaded post information
+    $post_table_result = Fectch::get_uploaded_ppost($post_id);
+  
+    // get all the files that where uploaded
+   $normal_post_table_result = find_all($post_id);
+    $normal_post_table_info = [];
+    while($row = $normal_post_table_result->fetch_array(MYSQLI_ASSOC))
+    {
+      $normal_post_table_info[] = $row ;
+    }
+    
+    // send back a full post containing all the information of the post(label,caption,etc,)
+    // and all the images
+  FetchPost::get_full_post($post_table_result,$normal_post_table_info);  
+}
      return false;
 
      return true;
@@ -305,7 +323,7 @@ self::normal_post($post_id,$filenames);
             print_r($post);
             return false;
         // check the presence of the location
-        }elseif(!isset($post["location"]) || empty(trim($post["location"]))){
+        }elseif((!isset($post["loc_log"]) || empty(trim($post["loc_log"]))) || (!isset($post["loc_lat"]) || empty($post["loc_lat"])) ){
 
             print j(["false" => "location"]);
             return false;
