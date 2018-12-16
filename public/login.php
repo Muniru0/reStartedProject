@@ -21,7 +21,7 @@ $password = "";
  // unset the found_user to prevent the 
  // persistence of the displayed message 
 $_SESSION["found_user"] = null;
- 
+  $cover_image = "assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg";
      
   // if the request is a post and at the same time
   // from us
@@ -77,8 +77,9 @@ throttle::record_failed_logins($email);
 
 
 <!DOCTYPE html>
-<html lang="en-US" class="no-js fontawesome-i2svg-active fontawesome-i2svg-complete">
-    <head>
+
+
+<html lang="en-US" class="no-js fontawesome-i2svg-active fontawesome-i2svg-complete"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <style type="text/css">svg:not(:root).svg-inline--fa{overflow:visible}.svg-inline--fa{display:inline-block;font-size:inherit;height:1em;overflow:visible;vertical-align:-.125em}.svg-inline--fa.fa-lg{vertical-align:-.225em}.svg-inline--fa.fa-w-1{width:.0625em}.svg-inline--fa.fa-w-2{width:.125em}.svg-inline--fa.fa-w-3{width:.1875em}.svg-inline--fa.fa-w-4{width:.25em}.svg-inline--fa.fa-w-5{width:.3125em}.svg-inline--fa.fa-w-6{width:.375em}.svg-inline--fa.fa-w-7{width:.4375em}.svg-inline--fa.fa-w-8{width:.5em}.svg-inline--fa.fa-w-9{width:.5625em}.svg-inline--fa.fa-w-10{width:.625em}.svg-inline--fa.fa-w-11{width:.6875em}.svg-inline--fa.fa-w-12{width:.75em}.svg-inline--fa.fa-w-13{width:.8125em}.svg-inline--fa.fa-w-14{width:.875em}.svg-inline--fa.fa-w-15{width:.9375em}.svg-inline--fa.fa-w-16{width:1em}.svg-inline--fa.fa-w-17{width:1.0625em}.svg-inline--fa.fa-w-18{width:1.125em}.svg-inline--fa.fa-w-19{width:1.1875em}.svg-inline--fa.fa-w-20{width:1.25em}.svg-inline--fa.fa-pull-left{margin-right:.3em;width:auto}.svg-inline--fa.fa-pull-right{margin-left:.3em;width:auto}.svg-inline--fa.fa-border{height:1.5em}.svg-inline--fa.fa-li{width:2em}.svg-inline--fa.fa-fw{width:1.25em}.fa-layers svg.svg-inline--fa{bottom:0;left:0;margin:auto;position:absolute;right:0;top:0}.fa-layers{display:inline-block;height:1em;position:relative;text-align:center;vertical-align:-.125em;width:1em}.fa-layers svg.svg-inline--fa{-webkit-transform-origin:center center;transform-origin:center center}.fa-layers-counter,.fa-layers-text{display:inline-block;position:absolute;text-align:center}.fa-layers-text{left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);-webkit-transform-origin:center center;transform-origin:center center}.fa-layers-counter{background-color:#ff253a;border-radius:1em;-webkit-box-sizing:border-box;box-sizing:border-box;color:#fff;height:1.5em;line-height:1;max-width:5em;min-width:1.5em;overflow:hidden;padding:.25em;right:0;text-overflow:ellipsis;top:0;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:top right;transform-origin:top right}.fa-layers-bottom-right{bottom:0;right:0;top:auto;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:bottom right;transform-origin:bottom right}.fa-layers-bottom-left{bottom:0;left:0;right:auto;top:auto;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:bottom left;transform-origin:bottom left}.fa-layers-top-right{right:0;top:0;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:top right;transform-origin:top right}.fa-layers-top-left{left:0;right:auto;top:0;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:top left;transform-origin:top left}.fa-lg{font-size:1.33333em;line-height:.75em;vertical-align:-.0667em}.fa-xs{font-size:.75em}.fa-sm{font-size:.875em}.fa-1x{font-size:1em}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-6x{font-size:6em}.fa-7x{font-size:7em}.fa-8x{font-size:8em}.fa-9x{font-size:9em}.fa-10x{font-size:10em}.fa-fw{text-align:center;width:1.25em}.fa-ul{list-style-type:none;margin-left:2.5em;padding-left:0}.fa-ul>li{position:relative}.fa-li{left:-2em;position:absolute;text-align:center;width:2em;line-height:inherit}.fa-border{border:solid .08em #eee;border-radius:.1em;padding:.2em .25em .15em}.fa-pull-left{float:left}.fa-pull-right{float:right}.fa.fa-pull-left,.fab.fa-pull-left,.fal.fa-pull-left,.far.fa-pull-left,.fas.fa-pull-left{margin-right:.3em}.fa.fa-pull-right,.fab.fa-pull-right,.fal.fa-pull-right,.far.fa-pull-right,.fas.fa-pull-right{margin-left:.3em}.fa-spin{-webkit-animation:fa-spin 2s infinite linear;animation:fa-spin 2s infinite linear}.fa-pulse{-webkit-animation:fa-spin 1s infinite steps(8);animation:fa-spin 1s infinite steps(8)}@-webkit-keyframes fa-spin{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes fa-spin{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}.fa-rotate-90{-webkit-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{-webkit-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{-webkit-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{-webkit-transform:scale(-1,1);transform:scale(-1,1)}.fa-flip-vertical{-webkit-transform:scale(1,-1);transform:scale(1,-1)}.fa-flip-horizontal.fa-flip-vertical{-webkit-transform:scale(-1,-1);transform:scale(-1,-1)}:root .fa-flip-horizontal,:root .fa-flip-vertical,:root .fa-rotate-180,:root .fa-rotate-270,:root .fa-rotate-90{-webkit-filter:none;filter:none}.fa-stack{display:inline-block;height:2em;position:relative;width:2em}.fa-stack-1x,.fa-stack-2x{bottom:0;left:0;margin:auto;position:absolute;right:0;top:0}.svg-inline--fa.fa-stack-1x{height:1em;width:1em}.svg-inline--fa.fa-stack-2x{height:2em;width:2em}.fa-inverse{color:#fff}.sr-only{border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.sr-only-focusable:active,.sr-only-focusable:focus{clip:auto;height:auto;margin:0;overflow:visible;position:static;width:auto}</style><link rel="profile" href="http://gmpg.org/xfn/11">
@@ -93,7 +94,7 @@ throttle::record_failed_logins($email);
 		<script type="text/javascript">
 			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/svg\/","svgExt":".svg","source":{"concatemoji":"assets1\/js\/wp-emoji-release.min.js"}};
 			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56692,8205,9792,65039],[55357,56692,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
-      </script>
+      </script><script src="assets1/js/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
 <!--    <script src="https://demo.peepso.com/wp-includes/js/wp-emoji-release.min.js?ver=4.9.6" type="text/javascript" defer=""></script>-->
 		<!-- managing ads with Advanced Ads --><script>
 					advanced_ads_ready=function(){var fns=[],listener,doc=typeof document==="object"&&document,hack=doc&&doc.documentElement.doScroll,domContentLoaded="DOMContentLoaded",loaded=doc&&(hack?/^loaded|^c/:/^loaded|^i|^c/).test(doc.readyState);if(!loaded&&doc){listener=function(){doc.removeEventListener(domContentLoaded,listener);window.removeEventListener("load",listener);loaded=1;while(listener=fns.shift())listener()};doc.addEventListener(domContentLoaded,listener);window.addEventListener("load",listener)}return function(fn){loaded?setTimeout(fn,0):fns.push(fn)}}();
@@ -112,11 +113,11 @@ img.emoji {
 }
 </style>
 <!--
-<link rel="stylesheet" id="peepso-css" href="https://demo.peepso.com/wp-content/plugins/peepso-core/templates/css/template-rounded.css?ver=1.10.3" type="text/css" media="all">
+<link rel="stylesheet" id="peepso-css" href="https://demo.peepso.com/wp-content/plugins/peepso-core/templates/css/speakup_major.css?ver=1.10.3" type="text/css" media="all">
 <link rel="stylesheet" id="widgetopts-styles-css" href="https://demo.peepso.com/wp-content/plugins/widget-options/assets1/css/widget-options.css" type="text/css" media="all">
 <link rel="stylesheet" id="peepso-theme-css-css" href="https://demo.peepso.com/wp-content/themes/new/style.css?ver=4.9.6" type="text/css" media="all">
 <link rel="stylesheet" id="peepso-site-font-css" href="https://fonts.googleapis.com/css?family=Roboto+Condensed%3A300%2C400%2C700&amp;ver=4.9.6" type="text/css" media="all">
-<link rel="stylesheet" id="peepso-site-css-04-06-css" href="https://demo.peepso.com/wp-content/themes/new/assets1/css/peepso-site-06-06.css?ver=1.0" type="text/css" media="all">
+<link rel="stylesheet" id="peepso-site-css-04-06-css" href="https://demo.peepso.com/wp-content/themes/new/assets1/css/speakup_minor.css?ver=1.0" type="text/css" media="all">
 <link rel="stylesheet" id="peepso-moods-css" href="https://demo.peepso.com/wp-content/plugins/peepso-core/assets1/css/moods.css?ver=1.10.3" type="text/css" media="all">
 <link rel="stylesheet" id="peepso-giphy-css" href="https://demo.peepso.com/wp-content/plugins/peepso-extras-giphy-integration/assets1/css/giphy.css?ver=1.10.3" type="text/css" media="all">
 <link rel="stylesheet" id="peepsoreactions-dynamic-css" href="https://demo.peepso.com/wp-content/peepso/plugins/reactions/reactions-1530194434.css?ver=1.10.3" type="text/css" media="all">
@@ -126,15 +127,15 @@ img.emoji {
    
 --> 
 <!--Personal Styles -->
-<link rel="stylesheet" href="assets/css/bootstrap.min.css" />      
-<link rel="stylesheet" href="assets/css/peepso-site-06-06.css" />
-<link rel="stylesheet" href="assets/css/template-rounded.css" />
-<link rel="stylesheet" href="assets/fonts/fontawesome/all.css" />
+<link rel="stylesheet" href="assets/css/bootstrap.min.css">      
+<link rel="stylesheet" href="assets/css/speakup_minor.css">
+<link rel="stylesheet" href="assets/css/speakup_major.css">
+<link rel="stylesheet" href="assets/fonts/fontawesome/all.css">
           
-<link rel="stylesheet" href="assets/tmp_folder_for_login_page/bootstrap.min.css" />      
-<link rel="stylesheet" href="assets/tmp_folder_for_login_page/peepso-site-06-06.css" />
-<link rel="stylesheet" href="assets/tmp_folder_for_login_page/template-rounded.css" />
-<link rel="stylesheet" href="assets/fonts/fontawesome/all.css" />
+<link rel="stylesheet" href="assets/tmp_folder_for_login_page/bootstrap.min.css">      
+<link rel="stylesheet" href="assets/tmp_folder_for_login_page/speakup_minor.css">
+<link rel="stylesheet" href="assets/tmp_folder_for_login_page/speakup_major.css">
+<link rel="stylesheet" href="assets/fonts/fontawesome/all.css">
 
 <!--<link rel="stylesheet" href="assets1/css/style.css" />-->
   
@@ -146,9 +147,9 @@ img.emoji {
 <!--<script type="text/javascript" src="assets1/js/bootstrap.bundle.min.js"></script>  -->
         
 
-<script type="text/javascript" src="assets/js/fontawesome-all.min.js" defer></script>
+<script type="text/javascript" src="assets/js/fontawesome-all.min.js" defer=""></script>
 <!--  DO NOT DEFER jquery or else the script will not find it ---->        
-<script type="text/javascript" src="assets/js/jquery.js" ></script>
+<script type="text/javascript" src="assets/js/jquery.js"></script>
 <!--        
 <script type="text/javascript">
 /* <![CDATA[ */
@@ -229,11 +230,13 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
       <div class="page__content">
 
 <div class="page__section page__section--community">
-  <div class="community__wrapper">
-    <div class="community__side community__side--left">
-              <div class="widget community__widget">
-</div>         </div>
-    <div class="community__main">
+  <div class="community__wrapper" style="
+    padding-left: em;
+">
+    
+    <div class="community__main" style="
+    margin-left: 15em;
+">
             <div id="peepso-wrap" class="container-fluid"><div class="peepso ps-page--activity-post">
     <section id="mainbody" class="ps-wrapper ps-clearfix">
         <section id="component" role="article" class="ps-clearfix">
@@ -249,7 +252,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
                             	<div class="ps-landing">
 		<div class="ps-landing-cover">
-		<div class="ps-landing-image" style="background:url('assets/images/login_page.jpg');background-size:cover"></div>
+		<div class="ps-landing-image" style="background:url('assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg');background-size:cover"></div>
 
 			<div class="ps-landing-content">
 				<div class="ps-landing-text">
@@ -264,9 +267,9 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <!--font-family: 'Roboto Condensed', sans-serif !important;-->
                                     
 <div id="registration" class="ps-landing-action">
-<div class="alert alert-danger" id ="login_err" role="alert" style="display:none;">
+<div class="alert alert-danger" id="login_err" role="alert" style="display:none;">
  <button type="button" class="close" data-dismiss="alert" id="close" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
+    <span aria-hidden="true">×</span>
   </button>
 </div>
 <script>
@@ -277,11 +280,10 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
             
   <div class="login-area">
 <form class="ps-form ps-js-form-login" method="post" name="login" id="form">
-   <?php echo csrf_token_tag(); ?>
-      <div class="ps-landing-form">
+   <input id="csrf" type="hidden" name="csrf_token" value="49f9b8e050862c58020ea439837c7436">      <div class="ps-landing-form">
         <div class="ps-form-input ps-form-input-icon">
           <span class="ps-icon"><i class="ps-icon-user"></i></span>
-          <input class="ps-input" type="text" id="email"  name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+          <input class="ps-input" type="text" id="email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true">
         </div>
         <div class="ps-form-input ps-form-input-icon">
           <span class="ps-icon"><i class="ps-icon-lock"></i></span>
@@ -308,8 +310,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
 
 	</div>
-     </body>
+     
 
-<script type="text/javascript" src="assets/js/login.js" defer></script>
-        </html>
- 
+<script type="text/javascript" src="assets/js/login.js" defer=""></script>
+        
+ </section></section></div></div></div></div></div></div></div></body></html>
