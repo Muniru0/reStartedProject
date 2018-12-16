@@ -6,8 +6,8 @@
   $(".checkboxradio").checkboxradio();
 
     var clickables = ["#ps-upload-containter", ".post-status"];
-    var fileuploadUrl = "../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/post_event.php";
-    var commentUrl = "../s2CxARWoyfS608LFDZxNvOC8OoZR9Qg/neutral_ajax.php";
+    var fileuploadUrl = "../private/post_event.php";
+    var commentUrl = "../public/neutral_ajax.php";
    // fileuploadUrl     = "../s2CxARWoyfS608LFDZxNvOC8OoZR9Qg/testupload.php";
 
     // required fields
@@ -35,7 +35,8 @@
     var post_mood          = [];
     // var post_location      = post_location ? post_location : "Accra";
     //var post_location      = $("#location-tab") ? $("#location-tab") :  "";
-    var post_location      =  "Accra";
+    var post_log     =  0987654321;
+    var post_lat      =  1234567890;
   //  var post_links       = post_links ? post_links : ["Yussif","Muniru","Kareem","Ganiu"];
     var post_caption       = $("#post_caption") ? $("#post_caption"): false;
     var post_selectedLabel = post_selectedLabel ? post_selectedLabel : "";
@@ -119,8 +120,9 @@
                       return;
                      }
                  }
+                console.log("post_log: " + post_longitude + " post_lat:" + post_latitude );
 
-                 if($("#location-tab") != null && $.trim(post_location) == ""){
+                 if($("#location-tab") != null){
                    locationError();
                   return;
                 }
@@ -130,7 +132,8 @@
                 console.log($(post_title).first().val());
                 //console.log(post_links);
                 console.log(post_selectedLabel);
-                console.log(post_location);
+                console.log(post_longitude);
+                console.log(post_latitude);
                // refresh the label selection
                 try{
                     dz.processQueue();
@@ -193,7 +196,8 @@
         formData.append("label", post_selectedLabel);
        // formData.append("mood", post_mood["span"]);
         formData.append("caption",$(post_caption).val());
-        formData.append("location",post_location);
+        formData.append("loc_log",post_log);
+        formData.append("loc_lat",post_lat);
         //formData.append("media", post_links);
         formData.append("title",post_title.val());
         formData.append("csrf_token", $.trim($("#csrf").prop("value")));
