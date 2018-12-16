@@ -1,6 +1,6 @@
 <?php
 
-require_once("../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/initialize.php");
+require_once("../private/initialize.php");
 
 
     // FetchPost::get_post_full_header_and_body();
@@ -39,14 +39,11 @@ try {// check to see if the request is an ajax one
                            if (PostImage::post(
                               $_FILES["file"],$_POST["title"],
                               $_POST["caption"], $_POST["label"], 
-                              $_POST["location"])) {
-                               //Mail:notify_Admin("DB_ERROR","Failure in writing to database: ".print_r($_FILES));
-                            print j(["true" => "Please Your post is currently under going verification.It will appear in the stream very soon.<br /><b>(this may take up to 5 minutes)."]);
+                              $_POST["log"],$_POST["lat"])) {
+                     
                            
-                       } else{
-                        // error with posting the files
                        }
-                 }
+                
        }else{
             print j(["ERROR" => "Please include files in your post"]);
            }
@@ -59,7 +56,9 @@ print j(["ERROR"=> "Please try again(csrf token failure)"]);
   }else {
 print j(["ERROR" => "Please try again(AJAX REQUEST FAILED)"]);
     }
-} catch (Exception $e) {
+} 
+}
+catch (Exception $e) {
 
 // send me a mail
 print j($e);
