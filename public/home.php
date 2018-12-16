@@ -72,13 +72,13 @@ img.emoji {
 
 
 </style>
-<link rel="stylesheet" id="peepso-css" href="../public/assets/css/template-rounded.css" type="text/css" media="all" async>
+<link rel="stylesheet" id="peepso-css" href="assets/css/speakup_major.css" type="text/css" media="all" async>
 
 <!-- <link rel="stylesheet" id="peepso-fileupload-css" href="assets/css/jquery.fileupload.min.css?ver=1.10.4" type="text/css" media="all">
 <link rel="stylesheet" id="widgetopts-styles-css" href="assets/css/widget-options.css" type="text/css" media="all"> -->
 <!--<link rel="stylesheet" id="peepso-theme-css-css" href=" ://demo.peepso.com/wp-content/themes/new/style.css?ver=4.9.7" type="text/css" media="all">-->
 <!--<link rel="stylesheet" id="peepso-site-font-css" href=" ://fonts.googleapis.com/css?family=Roboto+Condensed%3A300%2C400%2C700&amp;ver=4.9.7" type="text/css" media="all">-->
-<link rel="stylesheet" id="peepso-site-css-04-06-css" href="../public/assets/css/peepso-site-06-06.css" type="text/css" media="all" async>
+<link rel="stylesheet" id="peepso-site-css-04-06-css" href="assets/css/speakup_minor.css" type="text/css" media="all" async>
 <!-- <link rel="stylesheet" id="peepso-moods-css" href="assets/css/moods.css" type="text/css" media="all">
 <link rel="stylesheet" id="peepso-giphy-css" href="assets/css/giphy.css" type="text/css" media="all">
 <link rel="stylesheet" id="peepsoreactions-dynamic-css" href="assets/css/reactions.css" type="text/css" media="all">
@@ -93,9 +93,9 @@ img.emoji {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 -->
 <!-- Bootstrap styles -->
-<link rel="stylesheet" href="../public/assets/jquery.fileupload.plugin/css/bootstrap.min.css" async>
+<link rel="stylesheet" href="assets/jquery.fileupload.plugin/css/bootstrap.min.css" async>
 <!-- Generic page styles -->
-<link rel="stylesheet" href="../public/assets/css/style.css" async>
+<link rel="stylesheet" href="assets/css/style.css" async>
 <!--
  blueimp Gallery styles
 <link rel="stylesheet" href=" ://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
@@ -155,8 +155,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 <!--        <script type="text/javascript" src="assets/js/script.js" defer></script>-->
 
-<link rel="stylesheet" href="../public/assets/dropzone/dist/dropzone.css">
-<link rel="stylesheet" href="../public/assets/css/jquery-ui.css">
+<link rel="stylesheet" href="assets/css/dropzone.min.css">
+<link rel="stylesheet" href="assets/css/jquery-ui.css">
 <style>
         .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon{
           border-style:none;
@@ -3804,17 +3804,17 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
       <textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; padding: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; transition: none; height: 0px !important; min-height: 0px !important; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; word-spacing: 0px; text-indent: 0px; line-height: 18px; width: 720.391px;" class="autosizejs" id="autosizejs"></textarea>
       <div class="ad_unit ad-unit text-ad text_ad pub_300x250" style="width: 1px !important; height: 1px !important; position: absolute !important; left: 0px !important; top: 0px !important; overflow: hidden !important;">&nbsp;</div>
-
-<script src="../public/assets/js/jquery.js"></script>
-    <script  src="../public/assets/js/bootstrap.bundle.min.js">  </script>
-    <script  src="../public/assets/js/dropzone.js">  </script>
+     <img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" />
+    <script  type="text/javascript"  src="assets/js/jquery.js"></script>
+    <script  type="text/javascript"  src="assets/js/bootstrap.bundle.min.js">  </script>
+    <script  type="text/javascript"  src="assets/js/dropzone.js">  </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrhBOort1omiPN4Vbqzm53abzTZSswtio&callback=initMap"
             async defer></script>
- <script  src="../public/assets/js/jquery-ui.js">  </script>
- <script  src="../public/assets/js/su_post.js">  </script>
+    <script   type="text/javascript"  src="assets/js/jquery-ui.min.js">  </script>
+    <script   type="text/javascript"  src="assets/js/su_post.js">  </script>
 
- <script type="text/javascript" src="../public/assets/js/script.js"></script>
+    <script   type="text/javascript"  src="assets/js/script.js"></script>
     <!-- showing location in textarea -->
 <!--    <span class="ps-postbox-addons">— <b><i class="ps-icon-map-marker"></i>Ghana Highway Authority Accommodation For Employees</b></span>-->
 <!--    location template-->
