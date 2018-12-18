@@ -4,11 +4,12 @@
 
 
   $(".checkboxradio").checkboxradio();
-
+ 
     var clickables = ["#ps-upload-containter", ".post-status"];
     var fileuploadUrl = "../private/post_event.php";
+ 
     var commentUrl = "../public/neutral_ajax.php";
-   // fileuploadUrl     = "../s2CxARWoyfS608LFDZxNvOC8OoZR9Qg/testupload.php";
+  //fileuploadUrl     = "../private/testupload.php";
 
     // required fields
     var requiredLabel;
@@ -28,14 +29,14 @@
     var postbox = $("#post_caption") ? $("#post_caption") : "";
     var postbox_mood = $("#postbox-mood") ? $("#postbox-mood") : "";
     var poststatus = $("#poststatus") ? $("#poststatus") : "";
-    var sizeSent = $(".ps-postbox-loading:eq(2)");
+    var sizeSent = $("#uploadSize");
 
     // post parameters variables
     // var label         = label ? label : "transport";
     var post_mood          = [];
     // var post_location      = post_location ? post_location : "Accra";
     //var post_location      = $("#location-tab") ? $("#location-tab") :  "";
-    var post_log     =  0987654321;
+    var post_lon     =  9876504321;
     var post_lat      =  1234567890;
   //  var post_links       = post_links ? post_links : ["Yussif","Muniru","Kareem","Ganiu"];
     var post_caption       = $("#post_caption") ? $("#post_caption"): false;
@@ -120,9 +121,9 @@
                       return;
                      }
                  }
-                console.log("post_log: " + post_longitude + " post_lat:" + post_latitude );
+                console.log("post_lon: " + post_lon + " post_lat:" + post_lat );
 
-                 if($("#location-tab") != null){
+                 if($("#location-tab") == null || $(post_lon) == null || $(post_lat) == null ){
                    locationError();
                   return;
                 }
@@ -132,8 +133,8 @@
                 console.log($(post_title).first().val());
                 //console.log(post_links);
                 console.log(post_selectedLabel);
-                console.log(post_longitude);
-                console.log(post_latitude);
+                console.log(post_lon);
+                console.log(post_lat);
                // refresh the label selection
                 try{
                     dz.processQueue();
@@ -196,8 +197,8 @@
         formData.append("label", post_selectedLabel);
        // formData.append("mood", post_mood["span"]);
         formData.append("caption",$(post_caption).val());
-        formData.append("loc_log",post_log);
-        formData.append("loc_lat",post_lat);
+        formData.append("log",post_lon);
+        formData.append("lat",post_lat);
         //formData.append("media", post_links);
         formData.append("title",post_title.val());
         formData.append("csrf_token", $.trim($("#csrf").prop("value")));
@@ -260,6 +261,11 @@
     // tracks the progress of the file
     myDropzone.on("uploadprogress", function (file, percentage, bytes) {
         var progressBar = $("#uploadprogress").find("span");
+		
+		if($(sizeSent).hasClass("hidden"))
+		{
+			$(sizeSent).removeClass("hidden");
+		}
         var size = convertFileSize(bytes);
         if ($(progressBar)) {
             $(progressBar).css("width", Math.ceil(percentage) + "%");
@@ -277,8 +283,7 @@
         //    // show the upload progress bar with the percentage and byte rate sent.
         var progressBar = $("#uploadprogress").find("span");
         $("#uploadprogress").find("span").css("width", "0%");
-        if (sizeSent != null &&
-            uploadprogress != null && (
+        if (sizeSent != null && uploadprogress != null && (
                 !$(sizeSent).hasClass("hidden") ||
                 !$(uploadprogress).hasClass("hidden"))) {
             $(sizeSent).addClass("hidden");
