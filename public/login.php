@@ -17,6 +17,7 @@ $password = "";
 //    die("it is dry");
 //}
  
+
  $_SESSION["found_user"] ?? $_SESSION["found_user"] = "";
  // unset the found_user to prevent the 
  // persistence of the displayed message 
@@ -31,7 +32,8 @@ if(is_request_post() && request_is_same_domain()) {
   if(!csrf_token_is_valid() || !csrf_token_is_recent()) {
 
    
-  	$message = "Sorry, request was not valid.";
+  	print j(["false" => "Sorry, request was not valid."]);
+      return;
 
   } else {
     // CSRF tests passed--form was created by us recently.
@@ -55,6 +57,7 @@ if(validate_presence_on(["password","email"]) && is_email($email)){
 throttle::record_failed_logins($email);
 		      // if the person is throttled or not give
 			  // the same information out
+      
        $_POST = null;
         return ;
 		    }
@@ -280,7 +283,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
             
   <div class="login-area">
 <form class="ps-form ps-js-form-login" method="post" name="login" id="form">
-   <input id="csrf" type="hidden" name="csrf_token" value="49f9b8e050862c58020ea439837c7436">      <div class="ps-landing-form">
+   <?php echo csrf_token_tag(); ?><div class="ps-landing-form">
         <div class="ps-form-input ps-form-input-icon">
           <span class="ps-icon"><i class="ps-icon-user"></i></span>
           <input class="ps-input" type="text" id="email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true">
@@ -314,4 +317,9 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 <script type="text/javascript" src="assets/js/login.js" defer=""></script>
         
- </section></section></div></div></div></div></div></div></div></body></html>
+ </section></section></div></div></div></div></div></div></div>
+    <?php 
+      print_r($_SESSION);
+      
+      ?>
+    </body></html>
