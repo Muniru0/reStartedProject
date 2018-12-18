@@ -1,5 +1,5 @@
 <?php
-require_once(PRIVATE_DIR."initialize.php");
+require_once("../private/initialize.php");
 
 
  class FileUpload extends DatabaseObject {
@@ -13,7 +13,7 @@ private static $max_file_size = 502042880; // 5 MB expressed in bytes
 //   website profile photo => public
 // Of course, when outside the public path, you need PHP code that can
 // access those files. The browser can't access them directly.
-private static $upload_path = PRIVATE_PATH."/".PRIVATE_MEDIA;
+private static $upload_path = PRIVATE_DIR."/".UPLOADS_DIR;
 private static $final_width_of_the_image = 500;
 
 // Allowed mime types and extensions for audio files
@@ -63,20 +63,20 @@ private static function sanitize_file_name($location = "") {
 //   break;
 
       case "post_images":
-   return uniqid(POST_IMAGES."/",true);
+   return uniqid(IMAGES_DIR."/",true);
    break;
 
        case "post_videos":
-   return uniqid(POST_VIDEOS."/",true);
+   return uniqid(VIDEOS_DIR."/",true);
    break;
 
-       case "post_audios":
-   return uniqid(POST_IMAGE_AUDIOS."/",true);
-   break;
+       // case "post_audios":
+   // return uniqid(POST_IMAGE_AUDIOS."/",true);
+   // break;
 
-        case "post_combined_files":
-        return uniqid(POST_COMBINED_FILES."/",true);
-            break;
+        // case "post_combined_files":
+        // return uniqid(POST_COMBINED_FILES."/",true);
+            // break;
     default:
     return false;
     break;
@@ -179,15 +179,15 @@ public static  function createThumbnail($filename) {
 
         imagecopyresized($nm, $im, 0,0,0,0,$nx,$ny,$ox,$oy);
 
-        if(!file_exists(PATH_TO_THUMBS)) {
-            if(!mkdir(PATH_TO_THUMBS)) {
+        if(!file_exists(IMG_THUMBS_DIR)) {
+            if(!mkdir(IMG_THUMBS_DIR)) {
                 die("There was a problem. Please try again!");
             }
         }
 
 
-    if(imagejpeg($nm, PRIVATE_MEDIA."/".PATH_TO_THUMBS.$filename)){
-      $tn = '<img src="' .PRIVATE_MEDIA."/".PATH_TO_THUMBS.$filename . '" alt="image" />';
+    if(imagejpeg($nm, UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename)){
+      $tn = '<img src="'.UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename . '" alt="image" />';
         $tn .= '<br />Congratulations. Your file has been successfully uploaded, and a thumbnail has been created.';
         echo $tn;
     }
@@ -298,7 +298,7 @@ public static function upload_file($location = "",$name = "",$count) {
                         || in_array($file_extension, self::$allowed_extensions_videos))
                     ){
 
-                        self::createThumbnail(PRIVATE_MEDIA."/".$sanitized_filename);
+                        self::createThumbnail(UPLOADS_DIR."/".$sanitized_filename);
                     }
 
                     //echo "File moved to: {$destination}<br />";
