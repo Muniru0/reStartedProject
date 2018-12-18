@@ -150,7 +150,7 @@ class PostImage extends FileUpload {
   
 public static function normal_post($post_id = 0,$filenames = ""){
 
-        global $sql;
+        
         global $db;
      
        
@@ -163,13 +163,16 @@ public static function normal_post($post_id = 0,$filenames = ""){
      foreach($filenames as $filename){
           $string .= " ({$post_id},'{$db->real_escape_string($filename)}'),";
      }
+	 
+	
      
    $string = substr_replace($string,'',-1, 1);
-$query    = " INSERT INTO ".self::$normalize_post_table." (post_id,post) {$string}    ";
+   print j($string);
+$query    = " INSERT INTO ".self::$normalize_post_table." (post_id,filename) {$string}    ";
 
   
    if(!$db->query($query)){
-//       echo $db->errno. " ".$db->error; 
+  print j($db->errno. " ".$db->error); 
        return false;
    }
      return true;
@@ -214,7 +217,7 @@ $query    = " INSERT INTO ".self::$normalize_post_table." (post_id,post) {$strin
 //    }
 
 // post a maximum of 3 images
-public static function post($files = "",$title = "",$caption = "",$label = "",$location = ""){
+public static function post($files = "",$title = "",$caption = " ",$label = "",$location = "",$log = 0,$lat = 0){
 
         global $db;
 
@@ -238,9 +241,7 @@ $filenames = FileUpload::upload_file($file_destination, $files,$count);
     $uploader_id = $_SESSION["id"];
     $upload_time = time();
      
-
-     
-     $query_parameters = j([$uploader_id,$upload_time,$title,$caption,$label,$log,$lat]);
+$query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$lat]);
 
     $query = "CALL post_image('".$query_parameters."')";
 
@@ -281,13 +282,13 @@ catch(Exception $e){
     print j($e);
 }
 
-   
+    print j($filenames);
 if(self::normal_post($post_id,$filenames))
 {
     // cast the post id into an integer
-    $post_id = (int)$post;
+    $post_id = (int)$post_id;
     // fetch the recently uploaded post information
-    $post_table_result = Fectch::get_uploaded_ppost($post_id);
+    $post_table_result = FetchPost::get_uploaded_post($post_id);
   
     // get all the files that where uploaded
    $normal_post_table_result = find_all($post_id);
@@ -300,7 +301,9 @@ if(self::normal_post($post_id,$filenames))
     // send back a full post containing all the information of the post(label,caption,etc,)
     // and all the images
   FetchPost::get_full_post($post_table_result,$normal_post_table_info);  
-}
+}else{
+		print j("the normal post_table refused to insert");
+	}
      return false;
 
      return true;
@@ -319,12 +322,11 @@ if(self::normal_post($post_id,$filenames))
         //  // check the presence of the label
         if(!isset($post["label"]) || empty(trim($post["label"])) ||
          (!in_array(trim($post["label"]),self::$acceptable_labels,true))){
-         //  print j(["false" => "label"]);
-            print_r($post);
-            return false;
+          print j(["false" => "label"]);
+        return false;
         // check the presence of the location
-        }elseif((!isset($post["loc_log"]) || empty(trim($post["loc_log"]))) || (!isset($post["loc_lat"]) || empty($post["loc_lat"])) ){
-
+        }elseif((!isset($post["log"]) || empty(trim($post["log"]))) || (!isset($post["lat"]) || empty($post["lat"])) ){
+     print j($post["log"]." ".$post["lat"]);
             print j(["false" => "location"]);
             return false;
         // check the presence of the media
