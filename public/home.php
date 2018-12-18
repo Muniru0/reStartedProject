@@ -1489,8 +1489,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </a>
 </div><div id="pslocation" class="hidden ps-postbox-dropdown ps-js-postbox-location">
 <div class="ps-postbox-location ps-postbox-location-compact">
-<div class="ps-postbox-loading" style="display: none;">
-<img src="assets/images/ajax-loader.gif" alt="">
+<div  class="ps-postbox-loading" >
+ 
 <div> </div>
 </div>
 <div class="ps-postbox-locmap">
@@ -1610,7 +1610,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			<button type="button" class="ps-btn ps-btn--postbox ps-button-action postbox-submit" style="display: none;">Post</button>
      <?php echo csrf_token_tag(); ?>
 		</div>
-		<div class="ps-postbox-loading hidden" >
+		<div   id = "uploadSize" class="ps-postbox-loading"  style="margin-right: 10em;">
 		</div>
         <div class="ps-progress-bar ps-completeness-bar hidden" id="uploadprogress">
 					<span  style="width:0%"></span>
