@@ -955,6 +955,25 @@ return json_encode($views);
 </div>
         </div>";
     }
+    
+    // get the recently uploaded post
+    public static function get_uploaded_post($post_id)
+    {
+        global $db;
+        
+        $query = " SELECT firstname,lastname,".PostImage::$table_name.".*,(SELECT COUNT(*) FROM post_table WHERE id={$post_id}) AS count FROM ".PostImage::$table_name."  JOIN ".Users::$table_name." ON ".PostImage::$table_name.".id = ".Users::$table_name.".id WHERE ".PostImage::$table_name.".id = {$post_id} LIMIT 1";
+        
+        $result = $db->query($query);
+        $result_array;
+        if($row = $result->fetch_array(MYSQLI_ASSOC))
+        {
+            $result_array = $row;
+        }
+        
+        return $result_array;
+    
+    }// get_uploaded_post();
+    
 
     public static function get_label_template($label){
 
@@ -1107,36 +1126,39 @@ return json_encode($views);
 
 // GET THE FULL HEADER
 // brings back the header of the post
-    public static function get_post_full_header_and_body(){
+    public static function get_full_post($posts_info = null,$images = null){
 
         $headers = [];
-
+   if(empty($post_info) || empty($images)){
+       print j([]);
+    return;   
+   }
         // fetch the do be displayed post from the database
-        $posts = self::top_trends("");
+        //$posts = self::top_trends("");
 
         // for every single post,...
-        foreach ($posts as $post => $single_post ) {
-            $images = jd(jd($single_post["post"]));
-            $count  = count($images);
-            foreach($images as $image){
-                $image = explode("/",$image);
-                $images[] = $image[(count($image) - 1)];
-            }
+        foreach ($posts_info as $post_info) {
+//            $images = jd(jd($post_info["post"]));
+//            $count  = count($images);
+//            foreach($images as $image){
+//                $image = explode("/",$image);
+//                $images[] = $image[(count($image) - 1)];
+//            }
             $full_header = "";
-            $full_body   = self::get_post_body_wrapper($images,$single_post["caption"],$count,$single_post["id"],$single_post["support"],$single_post["oppose"]);
+            $full_body   = self::get_post_body_wrapper($images,$post_info["caption"],$post_info["count"],$post_info["id"],$post_info["support"],$post_info["oppose"]);
             // brings back the begining of the post wrapper too
-            $full_header  = self::get_label_template($single_post["label"]);
+            $full_header  = self::get_label_template($post_info["label"]);
             // gets the full name
-            $full_header .= self::get_fullname($single_post["firstname"],$single_post["lastname"]);
+            $full_header .= self::get_fullname($post_info["firstname"],$post_info["lastname"]);
             // gets the number of files uploaded and label of the issue
-            $full_header .= self::get_post_title($count,$single_post["label"]);
+            $full_header .= self::get_post_title($count,$post_info["label"]);
             // gets the mood of the post
-            $full_header .= self::get_mood_template($single_post["mood"]);
+            $full_header .= self::get_mood_template($post_info["mood"]);
             // gets the location of the post
-            $full_header .= self::get_location_template($single_post["location"]);
+            $full_header .= self::get_location_template($post_info["location"]);
             // gets the time the post was uploaded
-            $full_header .= self::get_time_template($single_post["upload_time"]);
-            $headers[$single_post["id"]] = $full_header.$full_body;
+            $full_header .= self::get_time_template($post_info["upload_time"]);
+            $headers[$post_info["id"]] = $full_header.$full_body;
         }
         print j($headers);
         return;
@@ -1430,14 +1452,14 @@ return json_encode($views);
     public static function get_single_bottom_extra_small_image_template_last($file = "",$count = 0){
 
         if(empty(trim($file) && is_int($count) && $count > 0 &&
-            !file_exists("../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/".PRIVATE_MEDIA."/".$file))){
+            !file_exists("../".UPLOAD_DIR."/".$file))){
             return null;
         }
         $count = $count - 4;
         return "<a href=\" ://demo.peepso.com/activity/?status/2-2-1528720781/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(197, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
 	<div class=\"ps-media-grid-padding\">
 		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/".PRIVATE_MEDIA."/".$file."\" class=\"ps-js-fitted\" style=\"width: 100%; height: auto;\">
+			<img src=\"../".UPLOADS_DIR."/{$file} class=\"ps-js-fitted\" style=\"width: 100%; height: auto;\">
 									<div class=\"ps-media-photo-counter\" style=\"top:0; left:0; right:0; bottom:0;\">
 				<span>{$count}</span>
 			</div>
@@ -1468,7 +1490,7 @@ return json_encode($views);
         return "<a href=\"https://demo.peepso.com/activity/?status/2-2-1538497582/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(207, 'photo');\" style=\"width: 100%; padding-top: 66.6%;\">
 	<div class=\"ps-media-grid-padding\">
 		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/".PRIVATE_MEDIA."/".$image."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
+			<img src=\"../".UPLOAD_DIR."/".$image."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
 								</div>
 	</div>
 </a>";
@@ -1483,7 +1505,7 @@ return json_encode($views);
         return "<a href=\"https://demo.peepso.com/activity/?status/2-2-1538497582/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(207, 'photo');\" style=\"width: 100%; padding-top: 66.6%;\">
 	<div class=\"ps-media-grid-padding\">
 		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/".PRIVATE_MEDIA."/".$image."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
+			<img src=\"../".UPLOAD_DIR."/".$image."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
 								</div>
 	</div>
 </a>";
@@ -1499,7 +1521,7 @@ return json_encode($views);
         return "<a href=\"https://demo.peepso.com/activity/?status/2-2-1538497253/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(204, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
 	<div class=\"ps-media-grid-padding\">
 		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/".PRIVATE_MEDIA."/".$file."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
+			<img src=\"../".UPLOAD_DIR."/".$file."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
 								</div>
 	</div>
 </a>";
@@ -1543,7 +1565,7 @@ return json_encode($views);
         }
         // this template for the fourth one then hide the rest to the ui
         if($x == 4){
-            echo "it entered the count 4";
+           
             $body_string .= self::get_single_bottom_extra_small_image_template_last($images[$x],$x);
         }
 
@@ -1551,9 +1573,9 @@ return json_encode($views);
         return $body_string;
     }
 
-    public static function get_full_post_body_display($image = ""){
+    public static function get_full_image_post_body_display($image = ""){
 
-        if(!isset($image) || empty(trim($image)) || !file_exists("../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/".PRIVATE_MEDIA."/".$image)){
+        if(!isset($image) || empty(trim($image)) || !file_exists("../".UPLOAD_DIR."/".$image)){
             return null;
         }
 
@@ -1561,7 +1583,7 @@ return json_encode($views);
 <a href=\"https://demo.peepso.com/activity/?status/2-2-1538497582/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(208, 'photo');\" style=\"float: left; width: 50%; padding-top: 33.3%;\">
 	<div class=\"ps-media-grid-padding\">
 		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/".PRIVATE_MEDIA."/".$image."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
+			<img src=\"../".UPLOAD_DIR."/".$image."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
 								</div>
 	</div>
 </a>
