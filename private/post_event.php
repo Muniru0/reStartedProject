@@ -13,55 +13,41 @@ function is_ajax(){
 }
 
 
-try {// check to see if the request is an ajax one
-    if (is_ajax()) {
-       if(is_request_post() && csrf_token_is_valid()) {
-
-   
-          if(csrf_token_is_recent()){
-                if($_FILES["file"]["name"][0]){
-                 // check the length of the caption string        
-                if(isset($_POST["caption"]) && !empty(trim($_POST["caption"])) && strlen($_POST["caption"]) > 4000){
-                   print  j(["false" => "Please the maximum number of characters for the caption is <b>(4000)</b>"]);
+try {
+	// check to see if the request is an ajax one
+    if (is_ajax() && is_request_post()) {
+		
+	 // check if there are files to be uploaded	
+	  if(count($_FILES["file"]["name"]) > 0)
+	  {
+		if(csrf_token_is_recent() && csrf_token_is_valid()){
+              // check the length of the caption string        
+        if(isset($_POST["caption"]) && !empty(trim($_POST["caption"])) && strlen($_POST["caption"]) > 4000){
+         print  j(["false" => "Please the maximum number of characters for the caption is <b>(4000)</b>"]);
            return;
         }
-                    // check the length of the title string
-                         if(isset($_POST["title"]) && !empty(trim($_POST["title"])) && strlen($_POST["title"]) > 50){
-                    print  j(["false" => "Please the maximum number of characters for the title is <b>(50)</b>"]);
+        // check the length of the title string
+     if(!has_length("title",["max" => 50])){
+        print  j(["false" => "Please the maximum number of characters for the title is <b>(50)</b>"]);
            return;
         }
-                   
-               // if all the required fields have being populated
-           
-                if(PostImage::validate_post($_POST, $_FILES)) {
-                  echo "(".$_POST["caption"].") this is before the post method is called";
-     
-                           if (PostImage::post(
-                              $_FILES["file"],$_POST["title"],
-                              $_POST["caption"], $_POST["label"], 
-                              $_POST["log"],$_POST["lat"])) {
-                     
-                           
-                       }
+        // if all the required fields have being populated
+        if(PostImage::validate_post($_POST, $_FILES)) {
+           if (PostImage::post($_FILES["file"],$_POST["title"],$_POST["caption"], $_POST["label"], $_POST["log"],$_POST["lat"])){}
                 
-       }else{
-            print j(["ERROR" => "Please include files in your post"]);
-           }
-     }else{
-print j(["ERROR" => "csrf token failure!!!(Please reload the page and try again.)"]);
        }
-     }else{
-print j(["ERROR"=> "Please try again(csrf token failure)"]);
+   }else{
+print j(["false"=> "Please try again(csrf token failure)"]);
        }
-  }else {
-print j(["ERROR" => "Please try again(AJAX REQUEST FAILED)"]);
+	  }else{
+	print j(["false" => "Please include files in your post"]);
+           } 
+}  else {
+print j(["false" => "Please try again(INVALID REQUEST"]);
     }
-} 
-}
-catch (Exception $e) {
-
+}catch (Exception $e) {
 // send me a mail
-print j($e);
+print j(["ERROR" => "An unexpected error occured! Please try again."]);
 }
 
 ?>
