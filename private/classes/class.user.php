@@ -378,7 +378,7 @@ die($db->error ." ". $query);
   return $verification;
   }else{
 	
-   print j(["false"=>"Username and password mismatch"]);
+   print j(["false" => "Username and password mismatch"]);
     return $verification;
   }      
         
