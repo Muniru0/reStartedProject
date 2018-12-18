@@ -1,5 +1,9 @@
+<?php 
+//require_once("../private/initialize.php");
+?>
 <!DOCTYPE html>
   <html>
+      
     <head>
         <title>CTF</title>
         <script src = "ajax_practice/jquery.js" ></script>
@@ -144,11 +148,19 @@ echo time();
     <!-- <img src='../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/FnjP4kkPmLiF3lAq1nHx7AnbiBTogWwfhvTI/thumbs/5bb36ff9ce13f4.26156297.png' alt="images-1" title="image-1" /> -->
 <!--<form class="dropzone" action="../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/post_issue.php" Method="POST"></form>-->
 <!--        <script  src="../includes/assets/dropzone/dropzone.js">  </script>-->
-
+<!-- <img src="C:/wamp64/www/sample_app/public/assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" alt="image test" />-->
 
 <?php
-
-die();
+//      $db = DatabaseObject::db_connect();
+//     $result_array;
+//     $result = $db->query("SELECT * FROM users");
+//     
+//     if($row = $result->fetch_array(MYSQLI_ASSOC))
+//     {
+//         $result_array = $row;
+//     }
+//    echo $result_array["firstName"];
+    die();
 echo "<form class=\"dropzone\" action=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/post_issue.php\" Method=\"POST\">
 <button type='submit' name='submit' value='submit'></button>
 </form>";
