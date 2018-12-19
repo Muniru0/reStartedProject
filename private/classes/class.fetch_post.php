@@ -4,8 +4,8 @@ require_once("../private/initialize.php");
 
 class FetchPost extends DatabaseObject{
 
-
-    public static $post_table = "post_table";
+    public static $class_name = "FetchPost";
+    public static $table_name = "normal_post_table";
     public static $posts = "";
     public static $JOYFUL      = "joyful";
     public static $MEH         =  "meh";
@@ -92,7 +92,7 @@ public static function top_trends($where_clause = ""){
 
 	global $db;
 //
-//$query = " SELECT ".self::$post_table.".*,firstname,lastname,profile_image,reaction,reactions.user_id AS user_id,trybe.user_id AS trybe_user_id,trybe.uploader_id AS member_id,time_trybed,follow.user_id AS follow_user_id,follow.post_id AS follow_post_id,time_followed   FROM ".self::$post_table." LEFT JOIN ".user::$S_table_name." ON ".user::$S_table_name.".id = ".self::$post_table.".uploader_id LEFT JOIN ".Reaction::$table_name." ON ".Reaction::$table_name.".post_id = ".self::$post_table.".id LEFT JOIN trybe ON trybe.post_id = post_table.id OR trybe.user_id = users.id LEFT JOIN follow ON follow.post_id = post_table.id  {$where_clause} GROUP BY post_table.id ORDER BY (support+oppose) DESC LIMIT 10 ";
+//$query = " SELECT ".self::$post_table.".*,firstname,lastname,profile_image,reaction,reactions.user_id AS user_id,trybe.user_id AS trybe_user_id,trybe.uploader_id AS member_id,time_trybed,follow.user_id AS follow_user_id,follow.post_id AS follow_post_id,time_followed   FROM ".self::$post_table." LEFT JOIN ".users$S_table_name." ON ".users$S_table_name.".id = ".self::$post_table.".uploader_id LEFT JOIN ".Reaction::$table_name." ON ".Reaction::$table_name.".post_id = ".self::$post_table.".id LEFT JOIN trybe ON trybe.post_id = post_table.id OR trybe.user_id = users.id LEFT JOIN follow ON follow.post_id = post_table.id  {$where_clause} GROUP BY post_table.id ORDER BY (support+oppose) DESC LIMIT 10 ";
 //
 ////
 //  //$query = "SELECT * FROM test";
@@ -960,20 +960,66 @@ return json_encode($views);
     public static function get_uploaded_post($post_id)
     {
         global $db;
-        
-        $query = " SELECT firstname,lastname,".PostImage::$table_name.".*,(SELECT COUNT(*) FROM post_table WHERE id={$post_id}) AS count FROM ".PostImage::$table_name."  JOIN ".Users::$table_name." ON ".PostImage::$table_name.".id = ".Users::$table_name.".id WHERE ".PostImage::$table_name.".id = {$post_id} LIMIT 1";
-        
-        $result = $db->query($query);
-        $result_array;
-        if($row = $result->fetch_array(MYSQLI_ASSOC))
-        {
+		
+	
+                $query = " 
+				SELECT firstname,lastname,".PostImage::$table_name.".* ,
+				(SELECT COUNT(*) FROM ".FetchPost::$table_name." WHERE post_id ={$post_id}) AS count 
+				FROM ".PostImage::$table_name."  JOIN ".user::$table_name." ON 
+				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id WHERE 
+				".PostImage::$table_name.".id = {$post_id} LIMIT 1";
+    $result_array = [];
+      
+	if($result = $db->query($query)){
+       
+       if($row = $result->fetch_assoc()){
+		  
             $result_array = $row;
         }
-        
+	}
+	
         return $result_array;
     
     }// get_uploaded_post();
     
+	
+	public static function fetch_images($post_ids = [])
+	{
+		global $db;
+		$query = "SELECT * FROM ".self::$table_name." WHERE post_id = ? ";
+		
+		$stmt = $db->prepare($query);
+		
+		if(!$stmt)
+		{
+			log_action(__CLASS__,"Statement preparation failed on line ".__LINE__." in ".__FILE__);
+			
+		}
+		
+	   if(!$stmt->bind_param("i",$post_ids)){
+		   log_action(__CLASS__,"Statement binding failed on line ".__LINE__." in ".__FILE__);
+	   }	
+	   
+	   if(!$stmt->execute()){
+		   log_action(__CLASS__,"Statement execution failed on line ".__LINE__." in ".__FILE__);
+	   }
+	   
+	   if(is_array($post_ids)){
+		   foreach($post_ids as $post_id)
+		   {
+			   if(!$stmt->execute())
+			   {
+				   log_action(__CLASS__,"Statement execution of post_id {$post_id} failed on line ".__LINE__." in ".__FILE__);
+			   }
+		   }
+		   
+	   }
+	   
+	   return $stmt->get_result();
+	}// fetch_images();
+	
+	
+	
 
     public static function get_label_template($label){
 
@@ -1126,16 +1172,18 @@ return json_encode($views);
 
 // GET THE FULL HEADER
 // brings back the header of the post
-    public static function get_full_post($posts_info = null,$images = null){
+    public static function get_full_post($posts_info = "",$images = "",$flag = ""){
 
         $headers = [];
-   if(empty($post_info) || empty($images)){
-       print j([]);
+	
+   if(empty($posts_info) || empty($images)){
+      log_action(__CLASS__," {$flag}");
     return;   
    }
         // fetch the do be displayed post from the database
         //$posts = self::top_trends("");
-
+    print_r($posts_info);
+	return;
         // for every single post,...
         foreach ($posts_info as $post_info) {
 //            $images = jd(jd($post_info["post"]));
@@ -1144,9 +1192,11 @@ return json_encode($views);
 //                $image = explode("/",$image);
 //                $images[] = $image[(count($image) - 1)];
 //            }
+    
             $full_header = "";
-            $full_body   = self::get_post_body_wrapper($images,$post_info["caption"],$post_info["count"],$post_info["id"],$post_info["support"],$post_info["oppose"]);
-            // brings back the begining of the post wrapper too
+           // $full_body   = self::get_post_body_wrapper($images,$post_info["caption"],$post_info["count"],$post_info["id"],$post_info["support"],$post_info["oppose"]);
+              $full_body = "";
+			// brings back the begining of the post wrapper too
             $full_header  = self::get_label_template($post_info["label"]);
             // gets the full name
             $full_header .= self::get_fullname($post_info["firstname"],$post_info["lastname"]);
