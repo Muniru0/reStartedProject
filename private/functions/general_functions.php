@@ -28,24 +28,19 @@ function jd($string){
 
 function log_action($action="",$message=""){
 
-$file = PRIVATE_DIR.DS."logs".DS."log.txt";
+$file = PRIVATE_DIR.SHARED_DIR."log.txt";
 
-   if (file_exists($file)){
-		     
-	 if(!is_writable($file)){
-
-	 file_put_contents($file, "Please this file is not writtable");
-	 }else{  
-
-	   $time = strftime("%m/%d/%Y %H:%m:%S",filemtime($file));
-		  $content = $time." : ".$action." | ".$message."\n\n\n";
-     
+   if (!file_exists($file) || !is_writable($file)){
+	file_put_contents($file, "Please this file is not writtable");
+   } else{  
+     $time = strftime("%e/%b/%Y %I:%M:%S %p",filemtime($file));
+	 $content = "[".$time."] : [".$action."] | ".$message."\n";
      file_put_contents($file, $content,FILE_APPEND | LOCK_EX);
 	 }
 	   }
 
 		   
-      }
+      
 
 
 // Core validation functions
