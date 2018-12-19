@@ -48,6 +48,9 @@
 //define ('PRIVATE_DIR','C:'.DS.'wamp64'.DS.'www'.DS.'sample_app'.DS.'lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk');
 
 
+//logic CONSTANTS
+!defined("RECENT") ? define("RECENT","recent") : null;
+!defined("STREAM") ? define("STREAM","stream") : null;
 
 !defined("APP_ROOT")     ? define("APP_ROOT", dirname(dirname(__FILE__)))   : null;
 
