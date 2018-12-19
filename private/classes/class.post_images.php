@@ -8,11 +8,11 @@ class PostImage extends FileUpload {
 
 
     public static $db_fields = ["id","uploader_id","filename","upload_time","caption","support","oppose"];
-
+   
     public static  $post_image_table        = "post_table";
     public static  $normalize_post_table = "normal_post_table";
     public static  $post_text_unique_string = "b2FlS0puNzl1RzZxbHNjbQSPreJATipxwCarcRsZMelYussifMuniru";
-
+    public static   $table_name = "post_table";
     public static $support  = "support";
     public static $oppose   = "oppose";
     public static $acceptable_labels = ['transport','health','sol','security','sanitation','other','work','corruption'];
@@ -36,51 +36,13 @@ class PostImage extends FileUpload {
             // prepare the statement
             $stmt = $db->prepare($query);
             if(!$stmt){
-                log_action("DATBASE CLASS ERR: ","Couldn't prepare the statement in the query function");
+                log_action(__CLASS__,"Couldn't prepare the statement in the query function");
                 return null;
             }
         }
         return $stmt;
     }//query();
 
-    public static function bind_param($stmt = NULL , $count = 0,$array = []){
-
-
-        switch ($count) {
-            case  1:
-                if (!$stmt->bind_param("isi",$array[0],$array[1],$array[2])) {
-                    die("First binding failed");
-                }else{
-
-                    return true;
-                }
-                break;
-
-            case  2:
-                if (!$stmt->bind_param("isiisi",$array[0],$array[1],$array[2],$array[3],$array[4],$array[5])) {
-                    die("Second binding failed".$stmt->error." counted array is :".count($array));
-                }else{
-
-                    return true;
-                }
-                break;
-
-            case  3:
-                if (!$stmt->bind_param("isiisiisi",$array[0],$array[1],$array[2],$array[3],$array[4],$array[5],$array[6],$array[7],$array[8])) {
-                    die("Third binding failed".$stmt->error." ".print_r($array));
-                }else{
-
-                    return true;
-                }
-                break;
-
-
-
-            default:
-                die("Default statement in switch".$stmt->error);
-                break;
-        }
-    }// help_bind_params
 
 // validate the destination of the file
 // {whether in an image,video or image/video table and directory}
@@ -282,25 +244,25 @@ catch(Exception $e){
     print j($e);
 }
 
-    print j($filenames);
 if(self::normal_post($post_id,$filenames))
 {
     // cast the post id into an integer
     $post_id = (int)$post_id;
     // fetch the recently uploaded post information
     $post_table_result = FetchPost::get_uploaded_post($post_id);
-  
+ 
     // get all the files that where uploaded
-   $normal_post_table_result = find_all($post_id);
-    $normal_post_table_info = [];
+   $normal_post_table_result = FetchPost::fetch_images($post_id);
+
+   $normal_post_table_info = [];
     while($row = $normal_post_table_result->fetch_array(MYSQLI_ASSOC))
     {
       $normal_post_table_info[] = $row ;
     }
-    
+	 
     // send back a full post containing all the information of the post(label,caption,etc,)
     // and all the images
-  FetchPost::get_full_post($post_table_result,$normal_post_table_info);  
+  FetchPost::get_full_post($post_table_result,$normal_post_table_info,RECENT);  
 }else{
 		print j("the normal post_table refused to insert");
 	}
