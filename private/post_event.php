@@ -20,7 +20,7 @@ try {
 	 // check if there are files to be uploaded	
 	  if(count($_FILES["file"]["name"]) > 0)
 	  {
-		if(csrf_token_is_recent() && csrf_token_is_valid()){
+		// if(csrf_token_is_recent() && csrf_token_is_valid()){
               // check the length of the caption string        
         if(isset($_POST["caption"]) && !empty(trim($_POST["caption"])) && strlen($_POST["caption"]) > 4000){
          print  j(["false" => "Please the maximum number of characters for the caption is <b>(4000)</b>"]);
@@ -36,9 +36,9 @@ try {
            if (PostImage::post($_FILES["file"],$_POST["title"],$_POST["caption"], $_POST["label"], $_POST["log"],$_POST["lat"])){}
                 
        }
-   }else{
-print j(["false"=> "Please try again(csrf token failure)"]);
-       }
+   // }else{
+// print j(["false"=> "Please try again(csrf token failure)"]);
+       // }
 	  }else{
 	print j(["false" => "Please include files in your post"]);
            } 
