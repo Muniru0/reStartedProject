@@ -1,5 +1,5 @@
 <?php 
-//require_once("../private/initialize.php");
+require_once("../private/initialize.php");
 ?>
 <!DOCTYPE html>
   <html>
@@ -65,6 +65,8 @@
 ?>
     <?php
 
+	
+	log_action("Delete","this message is just a test message");
 //function myfunction(){
 //$var = "mynameis<?";
 //$position = strpos($var,'<?');
