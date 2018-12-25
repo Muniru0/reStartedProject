@@ -11,14 +11,14 @@ function csrf_token() {
 // Requires session to have been started already.
 function create_csrf_token() {
 	$token = csrf_token();
-  $_SESSION['csrf_token'] = $token;
+    $_SESSION['csrf_token'] = $token;
  	$_SESSION['csrf_token_time'] = time();
 	return $token;
 }
 
 // Destroys a token by removing it from the session.
 function destroy_csrf_token() {
-  $_SESSION['csrf_token'] = null;
+    $_SESSION['csrf_token'] = null;
  	$_SESSION['csrf_token_time'] = null;
 	return true;
 }
