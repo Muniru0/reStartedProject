@@ -92,10 +92,7 @@ function has_presence($value) {
 // has_length($first_name, ['exact' => 20])
 // has_length($first_name, ['min' => 5, 'max' => 100])
 function has_length($value, $options=[]) {
-	if($options["max"] )
-	{
-		print j("integer found");
-	}
+	
 	if(isset($options['max']) && (strlen($_POST[$value]) > (int)$options['max'])) {
 	   print j(ucfirst($value)." must be atleast 8 characters.");
 		return false;
