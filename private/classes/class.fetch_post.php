@@ -914,11 +914,11 @@ return json_encode($views);
         return "<span class=\"ps-stream-action-title\"> uploaded {$photos_string} about a  <a href=\"https://demo.peepso.com/profile/demo/photos/album/37\">".h($label)."  issue</a></span>";
     }
 
-    public static function get_location_template($location){
-
+    public static function get_location_template($longitude = 0,$latitude = 0){
+          $locations = ["Wa","Tamale","Kumasi","Accra","Koforidua","Cape Coast","Tema","Bolgatanga","Winneba","Saudi Arabia"];
         return trim("<span class=\"ps-js-activity-extras\">         <span>
                 <a href=\"#\" title=\"Siem Reap Province\" onclick=\"pslocation.show_map(13.6915377, 104.10013260000005, 'Siem Reap Province'); return false;\">
-                    <span class=\"at-location ps-js-autotime\">@</span> <i class=\"ps-icon-map-marker\"></i>".$location."</a>
+                    <span class=\"at-location ps-js-autotime\">@</span> <i class=\"ps-icon-map-marker\"></i>".$locations[array_rand($locations)]."</a>
             </span>
             </span></div>");
     }
@@ -957,35 +957,61 @@ return json_encode($views);
     }
     
     // get the recently uploaded post
-    public static function get_uploaded_post($post_id)
+    public static function get_uploaded_post($post_ids = [])
     {
         global $db;
 		
 	
                 $query = " 
 				SELECT firstname,lastname,".PostImage::$table_name.".* ,
-				(SELECT COUNT(*) FROM ".FetchPost::$table_name." WHERE post_id ={$post_id}) AS count 
-				FROM ".PostImage::$table_name."  JOIN ".user::$table_name." ON 
+				(SELECT COUNT(*) FROM ".FetchPost::$table_name." WHERE post_id = ?) AS count 
+				 FROM ".PostImage::$table_name."  JOIN ".user::$table_name." ON 
 				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id WHERE 
-				".PostImage::$table_name.".id = {$post_id} LIMIT 1";
-    $result_array = [];
-      
-	if($result = $db->query($query)){
-       
-       if($row = $result->fetch_assoc()){
-		  
-            $result_array = $row;
-        }
-	}
+				".PostImage::$table_name.".id = ? LIMIT 1";
+		
+     if(!($stmt = $db->prepare($query)))
+	 {
+		 log_action(__CLASS__," Statement preparation failed: ".$db->error." (".$db->errno.") on line: ".__LINE__);
+	 }		
+	 $post_id = array_shift($post_ids);
+	 if(!$stmt->bind_param("ii",$post_id,$post_id))
+	 {
+         log_action(__CLASS__," Parameter binding failed: ".$db->error." (".$db->errno.") on line: ".__LINE__);
+	 }
+	 
+	 if(!$stmt->execute())
+	 {
+		  log_action(__CLASS__," Statement Execution failed: ".$db->error." (".$db->errno.") on line: ".__LINE__);
+	 }
+	$result_array = [];
 	
-        return $result_array;
-    
-    }// get_uploaded_post();
+  if(!empty($post_ids))
+	{
+		foreach($post_ids as $post_id)
+		{
+			if(!$stmt->execute())
+			 {
+				log_action(__CLASS__," Statement Execution failed: with post_id {$post_id} on line:".__LINE__);
+			}
+		}
+	}
+  
+    if($result = $stmt->get_result()){
+		    if($row = $result->fetch_assoc())
+			{
+				 $result_array[] = $row;
+			}
+	}
+ 
+return $result_array;
+		
+	}// get_uploaded_post();
     
 	
 	public static function fetch_images($post_ids = [])
 	{
 		global $db;
+		
 		$query = "SELECT * FROM ".self::$table_name." WHERE post_id = ? ";
 		
 		$stmt = $db->prepare($query);
@@ -1172,18 +1198,18 @@ return json_encode($views);
 
 // GET THE FULL HEADER
 // brings back the header of the post
-    public static function get_full_post($posts_info = "",$images = "",$flag = ""){
+    public static function get_full_post($posts_info = [],$images = [],$flag = ""){
 
         $headers = [];
 	
    if(empty($posts_info) || empty($images)){
-      log_action(__CLASS__," {$flag}");
+      log_action(__CLASS__," {$flag} image(s) or post info is/are empty ");
     return;   
    }
+
         // fetch the do be displayed post from the database
         //$posts = self::top_trends("");
-    print_r($posts_info);
-	return;
+   
         // for every single post,...
         foreach ($posts_info as $post_info) {
 //            $images = jd(jd($post_info["post"]));
@@ -1201,11 +1227,11 @@ return json_encode($views);
             // gets the full name
             $full_header .= self::get_fullname($post_info["firstname"],$post_info["lastname"]);
             // gets the number of files uploaded and label of the issue
-            $full_header .= self::get_post_title($count,$post_info["label"]);
+            $full_header .= self::get_post_title($post_info["count"],$post_info["label"]);
             // gets the mood of the post
-            $full_header .= self::get_mood_template($post_info["mood"]);
+           // $full_header .= self::get_mood_template($post_info["mood"]);
             // gets the location of the post
-            $full_header .= self::get_location_template($post_info["location"]);
+            $full_header .= self::get_location_template($post_info["longitude"],$post_info["latitude"]);
             // gets the time the post was uploaded
             $full_header .= self::get_time_template($post_info["upload_time"]);
             $headers[$post_info["id"]] = $full_header.$full_body;
