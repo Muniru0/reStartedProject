@@ -110,7 +110,7 @@ class PostImage extends FileUpload {
     }//validate_destination();
 
   
-public static function normal_post($post_id = 0,$filenames = ""){
+public static function normalize_post($post_id = 0,$filenames = ""){
 
         
         global $db;
@@ -129,7 +129,7 @@ public static function normal_post($post_id = 0,$filenames = ""){
 	
      
    $string = substr_replace($string,'',-1, 1);
-   print j($string);
+   
 $query    = " INSERT INTO ".self::$normalize_post_table." (post_id,filename) {$string}    ";
 
   
@@ -179,11 +179,11 @@ $query    = " INSERT INTO ".self::$normalize_post_table." (post_id,filename) {$s
 //    }
 
 // post a maximum of 3 images
-public static function post($files = "",$title = "",$caption = " ",$label = "",$location = "",$log = 0,$lat = 0){
+public static function post($files = "",$title = "",$caption = " ",$label = "",$log = 0,$lat = 0,$count = 0){
 
         global $db;
 
-   $count = count($files["name"]);
+   
    $media = ["Yussif","Muniru","Kareem","Ganiu"];
 // find and return the files destination
  $file_destination = self::validate_destination($files,$count);
@@ -244,13 +244,15 @@ catch(Exception $e){
     print j($e);
 }
 
-if(self::normal_post($post_id,$filenames))
-{
-    // cast the post id into an integer
+if(self::normalize_post($post_id,$filenames))
+{  
+    
+	  
+	   // cast the post id into an integer
     $post_id = (int)$post_id;
     // fetch the recently uploaded post information
-    $post_table_result = FetchPost::get_uploaded_post($post_id);
- 
+    $post_table_result = FetchPost::get_uploaded_post([$post_id]);
+     
     // get all the files that where uploaded
    $normal_post_table_result = FetchPost::fetch_images($post_id);
 
@@ -262,7 +264,9 @@ if(self::normal_post($post_id,$filenames))
 	 
     // send back a full post containing all the information of the post(label,caption,etc,)
     // and all the images
-  FetchPost::get_full_post($post_table_result,$normal_post_table_info,RECENT);  
+  FetchPost::get_full_post($post_table_result,$normal_post_table_info,RECENT); 
+     
+	
 }else{
 		print j("the normal post_table refused to insert");
 	}
@@ -275,7 +279,8 @@ if(self::normal_post($post_id,$filenames))
 
 
 
-    // validate the method to see if it has all the required fields populated
+    // validate the method to see if it has all the required fields populate
+
     public static function validate_post($post = "",$files = ""){
              
          if(!isset($post) || empty($post) || !isset($files) || empty($files)){
