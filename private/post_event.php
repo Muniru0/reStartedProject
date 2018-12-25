@@ -17,8 +17,10 @@ try {
 	// check to see if the request is an ajax one
     if (is_ajax() && is_request_post()) {
 		
+		
 	 // check if there are files to be uploaded	
-	  if(count($_FILES["file"]["name"]) > 0)
+	 $count = count($_FILES["file"]["name"]);
+	  if( $count > 0)
 	  {
 		// if(csrf_token_is_recent() && csrf_token_is_valid()){
               // check the length of the caption string        
@@ -33,7 +35,7 @@ try {
         }
         // if all the required fields have being populated
         if(PostImage::validate_post($_POST, $_FILES)) {
-           if (PostImage::post($_FILES["file"],$_POST["title"],$_POST["caption"], $_POST["label"], $_POST["log"],$_POST["lat"])){}
+           if (PostImage::post($_FILES["file"],$_POST["title"],$_POST["caption"], $_POST["label"], $_POST["log"],$_POST["lat"],$count)){}
                 
        }
    // }else{
