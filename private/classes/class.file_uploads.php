@@ -22,7 +22,7 @@ public static $allowed_extensions_audios = ['mp3','mp4'];
 
 // Allowed mime types and extensions for image files
 public static $allowed_mime_types_images =['image/png', 'image/gif', 'image/jpg', 'image/jpeg','image/gif'];
-public static $allowed_extensions_images = ["png", 'gif', 'jpg', 'jpeg','jpe'];
+public static $allowed_extensions_images = ['png', 'gif', 'jpg', 'jpeg','jpe'];
 
 // Allowed mime types and extensions for video files     
 public static $allowed_mime_types_videos = ['video/x-ms-wmv','video/mp4','video/3gpp'];
@@ -96,15 +96,15 @@ private static function file_permissions($file) {
 private static function file_extension($filename = "",$file_type = "") {
 	$path_parts = pathinfo($filename);
 
-	if(in_array($path_parts["extension"],self::$allowed_extensions_videos) && in_array($file_type, self::$allowed_mime_types_videos)){
+	if(in_array(strtolower($path_parts["extension"]),self::$allowed_extensions_videos) && in_array(strtolower($file_type), self::$allowed_mime_types_videos)){
      
-      return $path_parts["extension"];
-	}elseif(in_array($path_parts["extension"],self::$allowed_extensions_images) && in_array($file_type, self::$allowed_mime_types_images)){
-     
-      return $path_parts["extension"];
-	}elseif(in_array($path_parts["extension"],self::$allowed_extensions_audios) && in_array($file_type, self::$allowed_mime_types_audios)){
-
-	return $path_parts['extension'];
+      return strtolower($path_parts["extension"]);
+	}elseif(in_array(strtolower($path_parts["extension"]),self::$allowed_extensions_images) && in_array(strtolower($file_type), self::$allowed_mime_types_images)){
+       
+      return strtolower($path_parts["extension"]);
+	}elseif(in_array(strtolower($path_parts["extension"]),self::$allowed_extensions_audios) && in_array(strtolower($file_type), self::$allowed_mime_types_audios)){
+   
+	return strtolower($path_parts['extension']);
 }else{
 	    return false;
     }
@@ -152,7 +152,31 @@ $array[$x][$key] = $files[$key][$x];
 }
 return $array;
 }
-}
+}// multiple_uploads();
+
+
+public static function cleanup_partial_upload($filenames = [])
+{
+
+if(empty($filenames) || !isset($filenames))
+  {
+	return null;
+    }	
+
+	foreach($filenames as $filename)
+	{
+		if(unlink(UPLOADS_DIR."/".IMAGES_DIR.$filename))
+		{
+			 log_action(__CLASS__," The image file {filename} couldn't be clean in a partial upload cleanup on line ".__LINE__. "  in file ".__FILE__);
+		}
+         if(unlink(UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename))
+		{
+			 log_action(__CLASS__," The image file {filename} couldn't be clean in a partial upload cleanup on line ".__LINE__. "  in file ".__FILE__);
+		}
+	}
+
+
+}//cleanup_partial_upload();
 
 public static  function createThumbnail($filename) {
 
@@ -239,39 +263,49 @@ public static function upload_file($location = "",$name = "",$count) {
 
             if ($error > 0) {
                 // Display errors caught by PHP
-                print j(  "Error: " . self::file_upload_error($error));
+                print j(["false" => "Error: " . self::file_upload_error($error)]);
+				 self::cleanup_partial_upload($sanitized_filenames);
                 return false;
                 // return false;
             } elseif (!is_uploaded_file($tmp_location)) {
-              print j("Error: Does not reference a recently uploaded file.");
-                return false;
+              print j(["false" => "Error: Does not reference a recently uploaded file."]);
+                 self::cleanup_partial_upload($sanitized_filenames);               
+			   return false;
                 // return false;
             } elseif ($file_size > self::$max_file_size) {
                 // PHP already first checks php.ini upload_max_filesize, and
                 // then form MAX_FILE_SIZE if sent.
                 // But MAX_FILE_SIZE can be spoofed; check it again yourself.
                
-                print j("Error: File size is too big ( \" {$file_size} \" )");
+                print j(["false" => "Error: File size is too big ( \" {$file_size} \" )"]);
+				 self::cleanup_partial_upload($sanitized_filenames);
                return false;
-            } elseif (!in_array($file_type, self::$allowed_mime_types_images) && (!in_array($file_type, self::$allowed_mime_types_videos)) &&
-                (!in_array($file_extension, self::$allowed_mime_types_audios))) {
+            } elseif (!in_array(strtolower($file_type), self::$allowed_mime_types_images) && (!in_array(strtolower($file_type), self::$allowed_mime_types_videos)) &&
+                (!in_array(strtolower($file_extension), self::$allowed_mime_types_audios))) {
 
-                print j("Error: The file '" .$original_filename ."'  does not have an allowed mime type {'". $file_type ."'} ");
+                print j(["false" => "Error: The file '" .$original_filename ."'  does not have an allowed mime type {'". $file_type ."'} "]);
+				 self::cleanup_partial_upload($sanitized_filenames);
                return false;
-            } elseif ((!in_array($file_extension, self::$allowed_extensions_images)) && (!in_array($file_extension, self::$allowed_extensions_videos))
-                && (!in_array($file_extension, self::$allowed_extensions_audios))) {
+            } elseif (
+			       !in_array(strtolower($file_extension), self::$allowed_extensions_images)
+				   && !in_array(strtolower($file_extension), self::$allowed_extensions_videos)
+                   && !in_array(strtolower($file_extension), self::$allowed_extensions_audios)
+     			) {
                 // Checking file extension prevents files like 'evil.jpg.php'
-               print j("Error: The file '".$original_filename."'  does not have an allowed extension {'".$file_type."'} ");
+               print j(["false" => "Error: The file '".$original_filename."'  does not have an allowed extension {'".$file_extension."'} "]);
+			    self::cleanup_partial_upload($sanitized_filenames);
                  return false;
             } elseif ((getimagesize($tmp_location) === false) && (!in_array($file_extension, self::$allowed_extensions_videos))) {
                 // getimagesize() returns image size details, but more importantly,
                 // returns false if the file is not actually an image file.
                 // You obviously would only run this check if expecting an image.
                print j(["Error:" => " Not a valid image file '{$original_filename}'.<br />"]);
+			    self::cleanup_partial_upload($sanitized_filenames);
                  return false;
             } elseif(self::file_contains_php($tmp_location)) {
                 // A valid image can still contain embedded PHP.
                 print j(["Error:" => " File contains PHP code.<br />"]);
+				 self::cleanup_partial_upload($sanitized_filenames);
                  return false;
             } else {
 
@@ -306,10 +340,12 @@ public static function upload_file($location = "",$name = "",$count) {
                         //move_uploaded_file has is_uploaded_file() built-in
                     } else {
                         for ($x = 0; $x < 3; $x++) {
-                            log_action("Couldn't remove the execute permissions from: " . $file_destination . " @ " . time());
-                            Mail::sendMail("Security", "Couldn't remove file permissions " . $file_destination);
-                            // delete the associated file
-                            unlink($file_destination);
+                            log_action(__CLASS__," Couldn't remove the execute permissions from: " . $file_destination . " @ " .__LINE__."  in file ".__FILE__);
+							 self::cleanup_partial_upload($sanitized_filenames);
+							 
+                            // Mail::sendMail("Security", "Couldn't remove file permissions " . $file_destination);
+                            // // delete the associated file
+                            // unlink($file_destination);
                           print  j(["Error" => "Please try again!!!"]);
                           return;
 
