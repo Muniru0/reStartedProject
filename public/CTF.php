@@ -64,7 +64,29 @@ require_once("../private/initialize.php");
 
 ?>
     <?php
-
+	     
+	$query = "SELECT * FROM comments WHERE ";
+	$post_ids = [1,2,3,4,5,6,78,];
+	foreach($post_ids as $post_id)
+	{
+		$query .= " post_id = {$post_id} OR";
+		
+	}
+	echo $query."<br />";
+	echo substr_replace($query,'',-2, 2)."<br />";
+   echo $query."<br />";
+	 if(isset($_FILES))
+	 {
+		 echo "<pre>";
+		 print_r($_FILES);
+		 
+		$info = pathinfo($_FILES["file"]["name"]);
+		if(in_array(strtolower($info["extension"]),FileUpload::$allowed_extensions_images))
+		{
+			echo "yes";
+		}
+		 echo "</pre>";
+	 }
 	
 	log_action("Delete","this message is just a test message");
 //function myfunction(){
@@ -101,6 +123,11 @@ require_once("../private/initialize.php");
   // }
      
     // echo phpinfo();
+	
+	// echo "
+	  // <form action = '' method = '' enctype = 'multipart/form-data'>
+	// <input type='file' name='file' />
+	// </form>";
  echo "the directory separator is ".DIRECTORY_SEPARATOR."<br />";
 echo password_hash("yussifpassword",PASSWORD_ARGON2I,['memory_cost' =>30,'time_cost' => 50, 'threads' => 3])."<br />";
 echo time();

@@ -212,10 +212,10 @@ and watch it with your favorite video player!
 }
 
  echo "</div>";
-if(is_null($row["trybe_user_id"])){
+// if(is_null($row["trybe_user_id"])){
 
-  echo "yes it is null";
-}
+  // echo "yes it is null";
+// }
  
  echo $row["follow_user_id"];
 // check if the the person who uploaded the file it's
@@ -1008,7 +1008,7 @@ return $result_array;
 	}// get_uploaded_post();
     
 	
-	public static function get_bi_images($images =[] ,$count = 0)
+	public static function get_bi_images($images =[] ,$count = 0,$caption = "")
 	{
 		if(empty($images) && ($count < 2 || $count > 2))
 		{
@@ -1016,7 +1016,7 @@ return $result_array;
 		}
 		
 	return "	<div class='ps-stream-body'>
-		<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown'></div></div>
+		<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown'><p>{$caption}</p></div></div>
 		<div class='ps-js-activity-edit ps-js-activity-edit--498' style='display:none'></div>
 		<div class='ps-stream-attachments cstream-attachments'><div class='cstream-attachment photo-attachment'>
 	<div class='ps-media-photos ps-media-grid ps-media-grid--single ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
@@ -1047,15 +1047,20 @@ return $result_array;
 	}
 	
 	// get all comments from the database for a specific post 
-	public static function get_comments($post_id = 0)
+	public static function get_comments($post_id = [])
 	{
 		if(!isset($post_id) && $post_id <= 0 )
 		{
 			return "";
 			
 		}
+		$query = "SELECT * FROM ";
 		
+		
+
 		// return "<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--482" data-act-id="482\">
+
+
 			// <div id="comment-item-931" class="ps-comment-item cstream-comment stream-comment" data-comment-id="931">
 	
 
@@ -1244,9 +1249,7 @@ return $result_array;
 		
 	}//get_comments();
 	
-	
-	
-	
+
 	// get reaction and comment box
 	public static function get_reaction_and_commentbox($support = 0,$oppose = 0 ,$post_id = 0)
 	{
@@ -1311,7 +1314,7 @@ return $result_array;
 	}
 	
 	//get the images5 and above from the uploaded post
-	public static function get_images_more_than_five($images = [],$count)
+	public static function get_images_more_than_five($images = [],$count,$caption = "")
 	{
 	
 	
@@ -1324,7 +1327,7 @@ return $result_array;
 	   $images_string = "";
 	  
 
-$images_string .= "<div class='ps-stream-attachments cstream-attachments'><div class='cstream-attachment photo-attachment'>
+$images_string .= "<div class ='ps-stream-body'><div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--482'><div class=\"peepso-markdown\"><p>{$caption}</p></div><div class='cstream-attachment photo-attachment'>
 	<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden; margin-left: 1em;'>
 		<a href='://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, 'photo');' style='float: left; width: 50%; padding-top: 50%;'>
 	<div class='ps-media-grid-padding'>
@@ -1367,13 +1370,12 @@ $images_string .= "<div class='ps-stream-attachments cstream-attachments'><div c
 
 	</div>
 </div>
-</div>";
+</div></div>";
 	
 return $images_string;
 	}//get_images()
 	
-	
-	// get images 
+     // get_images_more_than_five(); 
 	public static function get_images($images = [],$count)
 	{
 		if(empty($images) || $count == 0)
@@ -1384,7 +1386,7 @@ return $images_string;
 		if($count == 2)
 		{
 			return self::get_bi_images($images,$count);
-		}elseif($count > 5)
+		}elseif($count > 4)
 		{
 			return self::get_images_more_than_five($images,$count);
 			
@@ -1392,7 +1394,7 @@ return $images_string;
 	}
 	
 	
-	
+	// fetch filenames based on the post_ids
 	public static function fetch_images($post_ids = [])
 	{
 		global $db;
@@ -1429,7 +1431,16 @@ return $images_string;
 	   return $stmt->get_result();
 	}// fetch_images();
 	
-	
+	public static function get_caption_template($caption = "")
+	{
+		if(!isset($caption) || empty($caption) || $caption == "")
+		{
+			return "";
+		}
+		
+		return "";
+		
+	}// get_caption_template();
 	
 
     public static function get_post_confirmation($confirmation = 0){
@@ -1623,12 +1634,14 @@ return $images_string;
            // $full_header .= self::get_mood_template($post_info["mood"]);
             // gets the location of the post
             $full_header .= self::get_location_template($post_info["longitude"],$post_info["latitude"]);
+			// gets the caption of post
+            $full_header .= self::get_caption_template($post_info["caption"]);			
             // gets the time the post was uploaded
             $full_header .= self::get_time_template($post_info["upload_time"]);
 			// get the images and their arrangements
 			 $full_body = self::get_images($images,count($images));
 			 // get the reaction and comment box
-			  $full_body .= self::get_reaction_and_commentbox($post_info["support"],$post_info["oppose"],$post_info["id"]);
+			 $full_body .= self::get_reaction_and_commentbox($post_info["support"],$post_info["oppose"],$post_info["id"]);
             $headers[$post_info["id"]] = $full_header.$full_body;
         }
         print j($headers);

@@ -59,13 +59,13 @@ class PostImage extends FileUpload {
 
             $path_parts = pathinfo($file["name"][$x]);
             $file_type = $file["type"][$x];
-            if (in_array($path_parts["extension"], FileUpload::$allowed_extensions_videos) && in_array($file_type, FileUpload::$allowed_mime_types_videos)) {
+            if (in_array(strtolower($path_parts["extension"]), FileUpload::$allowed_extensions_videos) && in_array(strtolower($file_type), FileUpload::$allowed_mime_types_videos)) {
 
                 $diff_file_types[$x] = "videos";
-            } elseif (in_array($path_parts["extension"], FileUpload::$allowed_extensions_images) && in_array($file_type, FileUpload::$allowed_mime_types_images)) {
+            } elseif (in_array(strtolower($path_parts["extension"]), FileUpload::$allowed_extensions_images) && in_array(strtolower($file_type), FileUpload::$allowed_mime_types_images)) {
 
                 $diff_file_types[$x] = "images";
-            } elseif (in_array($path_parts["extension"], FileUpload::$allowed_extensions_audios) && in_array($file_type, FileUpload::$allowed_mime_types_audios)) {
+            } elseif (in_array(strtolower($path_parts["extension"]), FileUpload::$allowed_extensions_audios) && in_array(strtolower($file_type), FileUpload::$allowed_mime_types_audios)) {
 
                 $diff_file_types[$x] = "audios";
 
@@ -195,7 +195,7 @@ public static function post($files = "",$title = "",$caption = " ",$label = "",$
 
 $filenames = FileUpload::upload_file($file_destination, $files,$count);
   
-     if($filenames === false){
+     if($filenames == false){
      return false;
      }
 
@@ -294,7 +294,7 @@ if(self::normalize_post($post_id,$filenames))
          }
         //  // check the presence of the label
         if(!isset($post["label"]) || empty(trim($post["label"])) ||
-         (!in_array(trim($post["label"]),self::$acceptable_labels,true))){
+         (!in_array(strtolower(trim($post["label"])),self::$acceptable_labels,true))){
           print j(["false" => "label"]);
         return false;
         // check the presence of the location
