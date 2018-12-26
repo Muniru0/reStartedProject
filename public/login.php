@@ -318,8 +318,5 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <script type="text/javascript" src="assets/js/login.js" defer=""></script>
         
  </section></section></div></div></div></div></div></div></div>
-    <?php 
-      print_r($_SESSION);
-      
-      ?>
+    
     </body></html>

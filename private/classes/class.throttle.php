@@ -55,7 +55,7 @@ if($stmt->fetch()){
   return [$failed_logins,$failure_time];
 }else{
 
-  log_action("failed_logins(): ", "Couldn't fetch the result: ( ".$db->errno." ) ".$db->error);
+  log_action("failed_logins(): ", "Couldn't fetch the result: ( ".$db->errno." ) ".$stmt->error);
 // return -1 to differentiate between having no rows {which will return 0} and
 //  having an error in fetch the result
    return -1;

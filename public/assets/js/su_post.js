@@ -4,18 +4,17 @@
 
 
   $(".checkboxradio").checkboxradio();
- 
+
     var clickables = ["#ps-upload-containter", ".post-status"];
     var fileuploadUrl = "../private/post_event.php";
- 
     var commentUrl = "../public/neutral_ajax.php";
-  //fileuploadUrl     = "../private/testupload.php";
+   // fileuploadUrl     = "../s2CxARWoyfS608LFDZxNvOC8OoZR9Qg/testupload.php";
 
     // required fields
     var requiredLabel;
     var requiredLocation;
     var title;
-
+    var returnedPost;
 
 
 
@@ -29,15 +28,15 @@
     var postbox = $("#post_caption") ? $("#post_caption") : "";
     var postbox_mood = $("#postbox-mood") ? $("#postbox-mood") : "";
     var poststatus = $("#poststatus") ? $("#poststatus") : "";
-    var sizeSent = $("#uploadSize");
+    var sizeSent = $(".ps-postbox-loading:eq(2)");
 
     // post parameters variables
     // var label         = label ? label : "transport";
     var post_mood          = [];
     // var post_location      = post_location ? post_location : "Accra";
     //var post_location      = $("#location-tab") ? $("#location-tab") :  "";
-    var post_lon     =  9876504321;
-    var post_lat      =  1234567890;
+    var post_log     =  10234456583;
+	var post_lat     = 38493083838;
   //  var post_links       = post_links ? post_links : ["Yussif","Muniru","Kareem","Ganiu"];
     var post_caption       = $("#post_caption") ? $("#post_caption"): false;
     var post_selectedLabel = post_selectedLabel ? post_selectedLabel : "";
@@ -121,9 +120,8 @@
                       return;
                      }
                  }
-                console.log("post_lon: " + post_lon + " post_lat:" + post_lat );
 
-                 if($("#location-tab") == null || $(post_lon) == null || $(post_lat) == null ){
+                 if($("#location-tab") != null && $.trim(post_log) == "" && $.trim(post_lat) == ""){
                    locationError();
                   return;
                 }
@@ -133,8 +131,8 @@
                 console.log($(post_title).first().val());
                 //console.log(post_links);
                 console.log(post_selectedLabel);
-                console.log(post_lon);
                 console.log(post_lat);
+				console.log(post_log);
                // refresh the label selection
                 try{
                     dz.processQueue();
@@ -197,8 +195,8 @@
         formData.append("label", post_selectedLabel);
        // formData.append("mood", post_mood["span"]);
         formData.append("caption",$(post_caption).val());
-        formData.append("log",post_lon);
-        formData.append("lat",post_lat);
+        formData.append("log",post_log);
+		formData.append("lat",post_lat);
         //formData.append("media", post_links);
         formData.append("title",post_title.val());
         formData.append("csrf_token", $.trim($("#csrf").prop("value")));
@@ -206,11 +204,26 @@
 
     });
 
+	myDropzone.on("queuecomplete",function(file){
+		
+		 $("#ps-activitystream-recent").prepend(returnedPost);
+		 $("#ps-activitystream-recent").show();
+		
+		  reset_postbox();
+	});
 
     // if the file sending completed without errors
     myDropzone.on("success", function (file, response) {
-         console.log(response);
-        reset_postbox();
+           
+		 response = JSON.parse(response);
+		 
+		 $.each(response,function(index,value){
+			 
+			 returnedPost = value;
+		 });
+		 
+		
+       
       
         return;
          //hide the upload progress bar
@@ -261,11 +274,6 @@
     // tracks the progress of the file
     myDropzone.on("uploadprogress", function (file, percentage, bytes) {
         var progressBar = $("#uploadprogress").find("span");
-		
-		if($(sizeSent).hasClass("hidden"))
-		{
-			$(sizeSent).removeClass("hidden");
-		}
         var size = convertFileSize(bytes);
         if ($(progressBar)) {
             $(progressBar).css("width", Math.ceil(percentage) + "%");
@@ -283,7 +291,8 @@
         //    // show the upload progress bar with the percentage and byte rate sent.
         var progressBar = $("#uploadprogress").find("span");
         $("#uploadprogress").find("span").css("width", "0%");
-        if (sizeSent != null && uploadprogress != null && (
+        if (sizeSent != null &&
+            uploadprogress != null && (
                 !$(sizeSent).hasClass("hidden") ||
                 !$(uploadprogress).hasClass("hidden"))) {
             $(sizeSent).addClass("hidden");
@@ -637,7 +646,7 @@ return false;
     // the iconClass and the mood(as plain text)
     function selectedMoodTemplate(iconClass, mood) {
 
-        return "<span class='ps-postbox-addons' style='display: inline;'>â€” <i class='ps-emoticon " + iconClass + "'></i> <b> feeling " + post_mood + "</b></span>";
+        return "<span class='ps-postbox-addons' style='display: inline;'>— <i class='ps-emoticon " + iconClass + "'></i> <b> feeling " + post_mood + "</b></span>";
 
     } // selectedMoodTemplate()
 
@@ -664,10 +673,8 @@ return false;
 
     // reset the entire postbox
     function reset_postbox(key) {
-      
-      // if(myDropzone != null){
-      //   myDropzone.removeAllFiles(true);
-      // }
+       
+	   myDropzone.on("reset",function(){});
       refreshLabel();
       toggleCancelButton("hide");
       post_selectedLabel = "";

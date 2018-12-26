@@ -186,10 +186,8 @@ public static  function createThumbnail($filename) {
         }
 
 
-    if(imagejpeg($nm, UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename)){
-      $tn = '<img src="'.UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename . '" alt="image" />';
-        $tn .= '<br />Congratulations. Your file has been successfully uploaded, and a thumbnail has been created.';
-        echo $tn;
+    if(!imagejpeg($nm, UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename)){
+       log_action(__CLASS__," Failure to create thumbnail for image:".UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename);
     }
        
     }
@@ -197,6 +195,7 @@ public static  function createThumbnail($filename) {
 // Runs file being uploaded through a series of validations.
 // If file passes, it is moved to a permanent upload directory
 // and its execute permissions are removed.
+
 public static function upload_file($location = "",$name = "",$count) {
 
     if (isset($name) && !empty($name)) {
