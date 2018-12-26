@@ -49,15 +49,22 @@
 
 
 //logic CONSTANTS
-!defined("RECENT") ? define("RECENT","recent") : null;
-!defined("STREAM") ? define("STREAM","stream") : null;
+!defined("RECENT")  ? define("RECENT","recent")              : null;
+!defined("STREAM")  ? define("STREAM","stream")              : null;
+!defined("POST")    ? define("POST","post")                  : null;
+!defined("SUPPORT") ? define("SUPPORT","support")            : null;
+!defined("OPPOSE")  ? define("OPPOSE","oppose")              : null;
+!defined("COMMENT")    ? define("COMMENT","comment")         : null;
 
 !defined("APP_ROOT")     ? define("APP_ROOT", dirname(dirname(__FILE__)))   : null;
 
 !defined("PRIVATE_DIR")  ? define("PRIVATE_DIR", APP_ROOT . "/private/")    : null;
 !defined("PUBLIC_DIR")   ? define("PUBLIC_DIR", APP_ROOT . "/public/")      : null;
+!defined("PRIVATE")  ? define("PRIVATE", "private/")    : null;
+!defined("PUBLIC")   ? define("PUBLIC", "public/")      : null;
 
-!defined("UPLOADS_DIR")      ?  define("UPLOADS_DIR","uploads_dir")             : null;
+
+!defined("UPLOADS_DIR")      ?  define("UPLOADS_DIR","uploads_dir/")             : null;
 !defined("IMAGES_DIR")       ?  define("IMAGES_DIR","images/")                  : null;
 !defined("IMG_THUMBS_DIR")   ?  define("IMG_THUMBS_DIR","img_thumbs/")          : null;
 !defined("VIDEOS_DIR")       ?  define("VIDEOS_DIR","videos/")                  : null;

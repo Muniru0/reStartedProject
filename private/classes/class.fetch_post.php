@@ -1008,6 +1008,29 @@ return $result_array;
 	}// get_uploaded_post();
     
 	
+	
+	//get the images from the uploaded post
+	public static function get_images($images = [])
+	{
+	
+	
+	if(empty($images))
+	{
+		return "";
+		
+	}
+	
+	   $images_string = "";
+	  foreach($images as $image)
+	  {
+	  $images_string .= "<img src='../private/".UPLOADS_DIR."{$image["filename"]}' id =image_{$image["id"]} />";
+	  }
+		
+		return $images_string;
+	}//get_images()
+	
+	
+	
 	public static function fetch_images($post_ids = [])
 	{
 		global $db;
@@ -1222,6 +1245,7 @@ return $result_array;
             $full_header = "";
            // $full_body   = self::get_post_body_wrapper($images,$post_info["caption"],$post_info["count"],$post_info["id"],$post_info["support"],$post_info["oppose"]);
               $full_body = "";
+			  $full_body .= self::get_images($images);
 			// brings back the begining of the post wrapper too
             $full_header  = self::get_label_template($post_info["label"]);
             // gets the full name

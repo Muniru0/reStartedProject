@@ -264,7 +264,13 @@ if(self::normalize_post($post_id,$filenames))
 	 
     // send back a full post containing all the information of the post(label,caption,etc,)
     // and all the images
-  FetchPost::get_full_post($post_table_result,$normal_post_table_info,RECENT); 
+ if(FetchPost::get_full_post($post_table_result,$normal_post_table_info,RECENT))
+ {
+	if(Notifications::trigger_notifcation($post_id,$uploader_id,POST,$upload_time))
+	{
+		
+	}
+ } 
      
 	
 }else{

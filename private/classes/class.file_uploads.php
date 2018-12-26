@@ -63,11 +63,11 @@ private static function sanitize_file_name($location = "") {
 //   break;
 
       case "post_images":
-   return uniqid(IMAGES_DIR."/",true);
+   return uniqid(IMAGES_DIR,true);
    break;
 
        case "post_videos":
-   return uniqid(VIDEOS_DIR."/",true);
+   return uniqid(VIDEOS_DIR,true);
    break;
 
        // case "post_audios":
