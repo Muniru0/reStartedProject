@@ -205,7 +205,8 @@
     });
 
 	myDropzone.on("queuecomplete",function(file){
-		
+           		
+
 		 $("#ps-activitystream-recent").prepend(returnedPost);
 		 $("#ps-activitystream-recent").show();
 		
@@ -214,7 +215,7 @@
 
     // if the file sending completed without errors
     myDropzone.on("success", function (file, response) {
-           
+            
 		 response = JSON.parse(response);
 		 
 		 
