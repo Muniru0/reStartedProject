@@ -53,42 +53,43 @@ require_once("../private/initialize.php");
     </head>
  <body>
 <!---->
-<!--    //<img src="../includes/assets/images/loader.gif" />-->
+<!--    //<img src="../includes/assets/images/loader.gif" />
  <form action="#" METHOD="POST" enctype="multipart/form-data">
-  <input type="file" id="file" name="file" />
-  <input type="submit" name="submit" />
-  </form>
-
+ <input type="file" id="file" name="file" />
+<input type="submit" name="submit" />
+ </form>
+-->
 <?
 
 
 ?>
     <?php
-	     
-	$query = "SELECT * FROM comments WHERE ";
-	$post_ids = [1,2,3,4,5,6,78,];
-	foreach($post_ids as $post_id)
-	{
-		$query .= " post_id = {$post_id} OR";
-		
-	}
-	echo $query."<br />";
-	echo substr_replace($query,'',-2, 2)."<br />";
-   echo $query."<br />";
-	 if(isset($_FILES))
-	 {
-		 echo "<pre>";
-		 print_r($_FILES);
-		 
-		$info = pathinfo($_FILES["file"]["name"]);
-		if(in_array(strtolower($info["extension"]),FileUpload::$allowed_extensions_images))
-		{
-			echo "yes";
-		}
-		 echo "</pre>";
-	 }
 	
-	log_action("Delete","this message is just a test message");
+	 echo   strtolower(strftime("%B, %e   &nbsp; &nbsp; %G  %i:%M:%S %P",1545903135));
+	// $query = "SELECT * FROM comments WHERE ";
+	// $post_ids = [1,2,3,4,5,6,78,];
+	// foreach($post_ids as $post_id)
+	// {
+		// $query .= " post_id = {$post_id} OR";
+		
+	// }
+	// echo $query."<br />";
+	// echo substr_replace($query,'',-2, 2)."<br />";
+   // echo $query."<br />";
+	 // if(isset($_FILES))
+	 // {
+		 // echo "<pre>";
+		 // print_r($_FILES);
+		 
+		// $info = pathinfo($_FILES["file"]["name"]);
+		// if(in_array(strtolower($info["extension"]),FileUpload::$allowed_extensions_images))
+		// {
+			// echo "yes";
+		// }
+		 // echo "</pre>";
+	 // }
+	
+	
 //function myfunction(){
 //$var = "mynameis<?";
 //$position = strpos($var,'<?');
@@ -128,17 +129,17 @@ require_once("../private/initialize.php");
 	  // <form action = '' method = '' enctype = 'multipart/form-data'>
 	// <input type='file' name='file' />
 	// </form>";
- echo "the directory separator is ".DIRECTORY_SEPARATOR."<br />";
-echo password_hash("yussifpassword",PASSWORD_ARGON2I,['memory_cost' =>30,'time_cost' => 50, 'threads' => 3])."<br />";
-echo time();
- $array = [4 => "testing value",5 => "dd","fsjfksa" => "fkdjsa", "kdjal"=> "kdsjlas"];
-     $post_id = 8;
-    $string = "VALUES ";
-     foreach($array as $element){
-          $string .= "(8,{$element}),";
-     }
+ // echo "the directory separator is ".DIRECTORY_SEPARATOR."<br />";
+// echo password_hash("yussifpassword",PASSWORD_ARGON2I,['memory_cost' =>30,'time_cost' => 50, 'threads' => 3])."<br />";
+// echo time();
+ // $array = [4 => "testing value",5 => "dd","fsjfksa" => "fkdjsa", "kdjal"=> "kdsjlas"];
+     // $post_id = 8;
+    // $string = "VALUES ";
+     // foreach($array as $element){
+          // $string .= "(8,{$element}),";
+     // }
       
-   echo substr_replace($string,'',-1, 1);
+   // echo substr_replace($string,'',-1, 1);
      
 
 //     $test = true;
@@ -172,8 +173,7 @@ echo time();
     // imagejpeg($im);
     // imagedestroy($im);
     ?>
-     <button id="button">Click me</button>
-     <div id="div1"></div>
+   
     <!-- <img src='../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/FnjP4kkPmLiF3lAq1nHx7AnbiBTogWwfhvTI/thumbs/5bb36ff9ce13f4.26156297.png' alt="images-1" title="image-1" /> -->
 <!--<form class="dropzone" action="../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/post_issue.php" Method="POST"></form>-->
 <!--        <script  src="../includes/assets/dropzone/dropzone.js">  </script>-->

@@ -1951,7 +1951,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 		<div class="ps-comment-media cstream-attachments"><div class="cstream-attachment giphy-attachment">
 	<div class="ps-media--giphy ps-clearfix ps-js-giphy">
-		<img src=" ://media3.giphy.com/media/l0MYDGA3Du1hBR4xG/giphy.gif">
+		<img src="<?php echo $profile_image; ?>">
 		<!-- <div class="ps-media-loading ps-js-loading">
 			<div class="ps-spinner">
 				<div class="ps-spinner-bounce1"></div>
@@ -2003,7 +2003,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 		<div class="ps-comment-media cstream-attachments"><div class="cstream-attachment giphy-attachment">
 	<div class="ps-media--giphy ps-clearfix ps-js-giphy">
-		<img src=" ://media2.giphy.com/media/fme31yVIUYP7y/giphy.gif">
+		<img src="<?php echo $profile_image; ?>">
 		<!-- <div class="ps-media-loading ps-js-loading">
 			<div class="ps-spinner">
 				<div class="ps-spinner-bounce1"></div>

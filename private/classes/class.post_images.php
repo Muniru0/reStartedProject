@@ -249,24 +249,14 @@ if(self::normalize_post($post_id,$filenames))
     
 	  
 	   // cast the post id into an integer
-    $post_id = (int)$post_id;
-    // fetch the recently uploaded post information
-    $post_table_result = FetchPost::get_uploaded_post([$post_id]);
-     
-    // get all the files that where uploaded
-   $normal_post_table_result = FetchPost::fetch_images($post_id);
-
-   $normal_post_table_info = [];
-    while($row = $normal_post_table_result->fetch_array(MYSQLI_ASSOC))
-    {
-      $normal_post_table_info[] = $row ;
-    }
-	 
+    $post_id = [(int)$post_id];
+   
     // send back a full post containing all the information of the post(label,caption,etc,)
     // and all the images
- if(FetchPost::get_full_post($post_table_result,$normal_post_table_info,RECENT))
+ if(!FetchPost::get_full_post($post_id,RECENT))
  {
-	if(Notifications::trigger_notifcation($post_id,$uploader_id,POST,$upload_time))
+	 log_action(__CLASS__," get full post execution failed: on line ".__LINE__." in file ".__FILE__);
+	if(Notifications::send_notification($post_id[0],$uploader_id,POST,$upload_time))
 	{
 		
 	}
