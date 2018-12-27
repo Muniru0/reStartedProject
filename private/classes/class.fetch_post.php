@@ -1008,9 +1008,310 @@ return $result_array;
 	}// get_uploaded_post();
     
 	
+	public static function get_bi_images($images =[] ,$count = 0)
+	{
+		if(empty($images) && ($count < 2 || $count > 2))
+		{
+			return "";
+		}
+		
+	return "	<div class='ps-stream-body'>
+		<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown'></div></div>
+		<div class='ps-js-activity-edit ps-js-activity-edit--498' style='display:none'></div>
+		<div class='ps-stream-attachments cstream-attachments'><div class='cstream-attachment photo-attachment'>
+	<div class='ps-media-photos ps-media-grid ps-media-grid--single ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
+		<a href=' ://demo.peepso.com/activity/?status/4-4-1530440913/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(202, 'photo');' style=''>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[0]['filename']}' id =image_{$images[0]['id']} />
+								</div>
+	</div>
+</a>
+
+	</div>
+	<div class='ps-media-photos ps-media-grid ps-media-grid--single ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
+		<a href=' ://demo.peepso.com/activity/?status/4-4-1530440913/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(202, 'photo');' style=''>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[1]['filename']}' id =image_{$images[1]['id']} />
+								</div>
+	</div>
+</a>
+
+	</div>
 	
-	//get the images from the uploaded post
-	public static function get_images($images = [])
+</div>
+</div>
+	</div>";
+		
+	}
+	
+	// get all comments from the database for a specific post 
+	public static function get_comments($post_id = 0)
+	{
+		if(!isset($post_id) && $post_id <= 0 )
+		{
+			return "";
+			
+		}
+		
+		return "<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--482" data-act-id="482">
+			<div id="comment-item-931" class="ps-comment-item cstream-comment stream-comment" data-comment-id="931">
+	
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/william/">William Torres</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p>Fantastic! </p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"><div class="cstream-attachment giphy-attachment">
+	<div class="ps-media--giphy ps-clearfix ps-js-giphy">
+		<img src=" ://media3.giphy.com/media/l0MYDGA3Du1hBR4xG/giphy.gif">
+		<!-- <div class="ps-media-loading ps-js-loading">
+			<div class="ps-spinner">
+				<div class="ps-spinner-bounce1"></div>
+				<div class="ps-spinner-bounce2"></div>
+				<div class="ps-spinner-bounce3"></div>
+			</div>
+		</div> -->
+	</div>
+</div>
+</div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1529076577"><span class="ps-js-autotime" data-timestamp="1529076577" title="June 15, 2018 3:29 pm">2 weeks ago</span></small>
+
+						<div id="act-like-493" class="ps-comment-links cstream-likes ps-js-act-like--493" data-count="2">
+				<a onclick="return activity.show_likes(493);" href="#showLikes">2 people like this.</a>			</div>
+
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="931" onclick="activity.comment_action_like(this, 493); return false;" href="#like" class="actaction-like liked ps-icon-thumbs-up"><span><span title="2 people like this">Like</span></span></a>
+<a data-stream-id="931" onclick="activity.comment_action_report(493); return false;" href="#report" class="actaction-report ps-icon-warning-sign"><span>Report</span></a>
+<a data-stream-id="931" onclick="activity.comment_action_reply(493, 931, this, { id: 6, name: 'William Torres' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="931" onclick="activity.comment_action_edit(931, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="931" onclick="activity.comment_action_delete(931); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="wall-cmt-493" class="ps-comment ps-comment-nested ps-js-comment-reply--493">
+	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--493" data-act-id="493">
+		<div id="comment-item-934" class="ps-comment-item cstream-comment stream-comment" data-comment-id="934">
+	<div class="ps-avatar-comment">
+		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/andrew/">
+			<img data-author="8" src=" ://demo.peepso.com/wp-content/peepso/users/8/avatar-full.jpg" alt="Andrew Simmons avatar">
+		</a>
+	</div>
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/andrew/">Andrew Simmons</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p><a href=" ://demo.peepso.com/profile/william/" title="William Torres">William</a>  that's right!</p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"><div class="cstream-attachment giphy-attachment">
+	<div class="ps-media--giphy ps-clearfix ps-js-giphy">
+		<img src=" ://media2.giphy.com/media/fme31yVIUYP7y/giphy.gif">
+		<!-- <div class="ps-media-loading ps-js-loading">
+			<div class="ps-spinner">
+				<div class="ps-spinner-bounce1"></div>
+				<div class="ps-spinner-bounce2"></div>
+				<div class="ps-spinner-bounce3"></div>
+			</div>
+		</div> -->
+	</div>
+</div>
+</div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1529076809"><span class="ps-js-autotime" data-timestamp="1529076809" title="June 15, 2018 3:33 pm">2 weeks ago</span></small>
+
+						<div id="act-like-496" class="ps-comment-links cstream-likes ps-js-act-like--496" data-count="1">
+				<a onclick="return activity.show_likes(496);" href="#showLikes">1 person likes this</a>			</div>
+
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="934" onclick="activity.comment_action_like(this, 496); return false;" href="#like" class="actaction-like liked ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
+<a data-stream-id="934" onclick="activity.comment_action_report(496); return false;" href="#report" class="actaction-report ps-icon-warning-sign"><span>Report</span></a>
+<a data-stream-id="934" onclick="activity.comment_action_reply(496, 934, this, { id: 8, name: 'Andrew Simmons' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="934" onclick="activity.comment_action_edit(934, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="934" onclick="activity.comment_action_delete(934); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="comment-item-935" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935">
+	<div class="ps-avatar-comment">
+		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
+			<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="Patricia Currie avatar">
+		</a>
+	</div>
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/demo/"><img src=" ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge" data-id="2"> Patricia Currie</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p><a href=" ://demo.peepso.com/profile/andrew/" title="Andrew Simmons">Andrew</a> yes! That's the first one we saw. But trust me, it's not nearly as empty as the gif shows. There's a lot of tourists. </p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"></div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1529076871"><span class="ps-js-autotime" data-timestamp="1529076871" title="June 15, 2018 3:34 pm">2 weeks ago</span></small>
+
+						<div id="act-like-497" class="ps-comment-links cstream-likes ps-js-act-like--497" data-count="1">
+				<a onclick="return activity.show_likes(497);" href="#showLikes">1 person likes this</a>			</div>
+
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="935" onclick="activity.comment_action_like(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
+<a data-stream-id="935" onclick="activity.comment_action_reply(497, 935, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="935" onclick="activity.comment_action_edit(935, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="935" onclick="activity.comment_action_delete(935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+	</div>
+
+	<div id="act-new-comment-493" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display:none;">
+		<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
+			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
+		</a>
+		<div class="ps-textarea-wrapper cstream-form-input">
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+				<div class="ps-commentbox__addons ps-js-addons">
+<div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
+	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
+	<img class="ps-js-img" alt="photo" src="">
+	<div class="ps-commentbox__addon-remove ps-js-remove">
+		<i class="ps-icon-remove"></i>
+	</div>
+</div>
+<div class="ps-commentbox__addon ps-js-addon-photo" style="display:none">
+	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
+
+	<img class="ps-js-img" alt="photo" src="" data-id="">
+
+	<div class="ps-loading ps-js-loading">
+		<img src="assets/images/ajax-loader.gif" alt="loading">
+	</div>
+
+	<div class="ps-commentbox__addon-remove ps-js-remove">
+		<input type="hidden" id="_wpnonce_remove_temp_comment_photos" name="_wpnonce_remove_temp_comment_photos" value="3ca8a9ab47"><input type="hidden" name="_wp_http_referer" value="/peepsoajax/activity.show_posts_per_page">		<i class="ps-icon-remove"></i>
+	</div>
+</div>
+</div>
+<div class="ps-commentbox-actions">
+<a onclick="peepso.photos.comment_attach_photo(this); return false;" title="Upload photos" href="#" class="ps-postbox__menu-item ps-icon-camera"><span></span></a>
+<a onclick="return false;" title="Send gif" href="#" class="ps-list-item ps-js-comment-giphy ps-icon-giphy"></a>
+</div>
+		</div>
+		<div class="ps-comment-send cstream-form-submit" style="display:none;">
+			<div class="ps-comment-loading" style="display:none;">
+				<img src="assets/images/ajax-loader.gif" alt="">
+				<div> </div>
+			</div>
+			<div class="ps-comment-actions" style="display:none;">
+				<button onclick="return activity.comment_cancel(493);" class="ps-btn ps-button-cancel">Clear</button>
+				<button onclick="return activity.comment_save(493, this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
+			</div>
+		</div>
+	</div>
+
+</div>
+		</div>";
+		
+		
+	}//get_comments();
+	
+	
+	
+	
+	// get reaction and comment box
+	public static function get_reaction_and_commentbox($support = 0,$oppose = 0 ,$post_id = 0)
+	{
+		if((!isset($support) || !isset($oppose)) && (!isset($post_id) && $post_id < 0 ))
+		{
+			return "";
+		}
+		
+		return "<div class='ps-stream-actions stream-actions' data-type='stream-action'><nav class='ps-stream-status-action ps-stream-status-action'>
+<a data-stream-id='498' onclick='return reactions.action_reactions(this, 498);' href='javascript:' class='ps-reaction-toggle--498 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>
+<a data-stream-id='498' onclick='return activity.action_report(498);' href='#report' class='actaction-report ps-icon-warning-sign'><span>Report</span></a>
+</nav>
+</div>
+  <div class=\"ps-comment cstream-respond wall-cocs\" id=\"wall-cmt-498\">
+		<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--498\" data-act-id=\"498\">
+					</div>
+
+						<div id=\"act-new-comment-498\" class=\"ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498\" data-id=\"498\" data-type=\"stream-newcomment\" data-formblock=\"true\">
+			<a class=\"ps-avatar cstream-avatar cstream-author\" href=\" ://demo.peepso.com/profile/demo/\">
+				<img data-author=\"4\" src=\" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg\" alt=\"\">
+			</a>
+			<div class=\"ps-textarea-wrapper cstream-form-input\">
+				<div class=\"ps-tagging-wrapper\"><div class=\"ps-tagging-beautifier\"></div><textarea data-act-id=\"498\" class=\"ps-textarea cstream-form-text ps-tagging-textarea\" name=\"comment\" oninput=\"return activity.on_commentbox_change(this);\" placeholder=\"Write a comment...\" style=\"height: 35px;\"></textarea><input type=\"hidden\" class=\"ps-tagging-hidden\"><div class=\"ps-tagging-dropdown\"></div></div>
+				<div class=\"ps-commentbox__addons ps-js-addons\">
+<div class=\"ps-commentbox__addon ps-js-addon-giphy\" style=\"display:none\">
+	<div class=\"ps-popover__arrow ps-popover__arrow--up\"></div>
+	<img class=\"ps-js-img\" alt=\"photo\" src=\"\">
+	<div class=\"ps-commentbox__addon-remove ps-js-remove\">
+		<i class=\"ps-icon-remove\"></i>
+	</div>
+</div>
+<div class=\"ps-commentbox__addon ps-js-addon-photo\" style=\"display:none\">
+	<div class=\"ps-popover__arrow ps-popover__arrow--up\"></div>
+
+	<img class=\"ps-js-img\" alt=\"photo\" src=\"\" data-id=\"\">
+
+	<div class=\"ps-loading ps-js-loading\">
+		<img src=\"assets/images/ajax-loader.gif\" alt=\"loading\">
+	</div>
+
+	<div class=\"ps-commentbox__addon-remove ps-js-remove\">
+		<input type=\"hidden\" id=\"_wpnonce_remove_temp_comment_photos\" name=\"_wpnonce_remove_temp_comment_photos\" value=\"3ca8a9ab47\"><input type=\"hidden\" name=\"_wp_http_referer\" value=\"/peepsoajax/activity.show_posts_per_page\">		<i class=\"ps-icon-remove\"></i>
+	</div>
+</div>
+</div>
+
+			</div>
+			<div class=\"ps-comment-send cstream-form-submit\" style=\"display:none;\">
+				<div class=\"ps-comment-loading\" style=\"display:block;\">
+					<img src=\"assets/images/ajax-loader.gif\" alt=\"\">
+					<div> </div>
+				</div>
+				<div class=\"ps-comment-actions\" style=\"display:block;\">
+					<button onclick=\"return activity.comment_cancel(498);\" class=\"ps-btn ps-button-cancel\">Clear</button>
+					<button onclick=\"return activity.comment_save(498, this);\" class=\"ps-btn ps-btn-primary ps-button-action\" disabled=\"\">Post</button>
+				</div>
+			</div>
+		</div>
+			</div>
+
+";
+	}
+	
+	//get the images5 and above from the uploaded post
+	public static function get_images_more_than_five($images = [],$count)
 	{
 	
 	
@@ -1019,15 +1320,76 @@ return $result_array;
 		return "";
 		
 	}
-	
+	   $count = $count - 5;
 	   $images_string = "";
-	  foreach($images as $image)
-	  {
-	  $images_string .= "<img src='../private/".UPLOADS_DIR."{$image["filename"]}' id =image_{$image["id"]} />";
-	  }
-		
-		return $images_string;
+	  
+
+$images_string .= "<div class='ps-stream-attachments cstream-attachments'><div class='cstream-attachment photo-attachment'>
+	<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden; margin-left: 1em;'>
+		<a href='://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, 'photo');' style='float: left; width: 50%; padding-top: 50%;'>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[0]['filename']}' id =image_{$images[0]['id']} class='ps-js-fitted' style='width: auto; height: 100%;'>
+								</div>
+	</div>
+</a>
+<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(201, 'photo');' style='float: left; width: 50%; padding-top: 50%;'>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[1]['filename']}' id =image_{$images[1]['id']} class='ps-js-fitted' style='width: auto; height: 100%;'>
+								</div>
+	</div>
+</a>
+<a href='://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(195, 'photo');' style='float: left; width: 33.3%; padding-top: 33.3%;'>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[2]['filename']}' id =image_{$images[2]['id']} class='ps-js-fitted' style='width: auto; height: 100%;'>
+								</div>
+	</div>
+</a>
+<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item'' onclick='return ps_comments.open(196, 'photo');' style='float: left; width: 33.3%; padding-top: 33.3%;'>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[3]['filename']}' id =image_{$images[3]['id']} class='ps-js-fitted' style='width: auto; height: 100%;'>
+								</div>
+	</div>
+</a>
+<a href='://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item ='' onclick='return ps_comments.open(197, 'photo');' style='float: left; width: 33.3%; padding-top: 33.3%;'>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[4]['filename']}' id =image_{$images[4]['id']} class='ps-js-fitted' style='width: 100%; height: auto;'>
+									<div class='ps-media-photo-counter' style='top:0; left:0; right:0; bottom:0;'>
+				<span>+$count</span>
+			</div>
+					</div>
+	</div>
+</a>
+
+	</div>
+</div>
+</div>";
+	
+return $images_string;
 	}//get_images()
+	
+	
+	// get images 
+	public static function get_images($images = [],$count)
+	{
+		if(empty($images) || $count == 0)
+		{
+			return "";
+		}
+		
+		if($count == 2)
+		{
+			return self::get_bi_images($images,$count);
+		}elseif($count > 5)
+		{
+			return self::get_images_more_than_five($images,$count);
+			
+		}
+	}
 	
 	
 	
@@ -1070,11 +1432,17 @@ return $result_array;
 	
 	
 
-    public static function get_label_template($label){
-
+    public static function get_post_confirmation($confirmation = 0){
+   
+         $switch = "<span style=\"background-color: rgb(210, 73, 66);\">Not Confirmed</span>";
+	   if($confirmation == 1)
+	   {
+		   $switch = "<span style=\"background-color: rgb(60, 189, 172);\">Confirmed</span>";
+	   }
+	   
         return "<div class=\"ps-stream ps-js-activity ps-stream__post--pinned ps-js-activity-pinned ps-js-activity--482\">
      <div class=\"ps-stream__post-pin\" style=\"display:block\">
-        <span style=\"background-color: rgb(210, 73, 66);\">".$label."</span>
+	      {$switch}
             </div>";
     }
 
@@ -1203,6 +1571,7 @@ return $result_array;
 
 
 
+	
     public static  function sub_time_converter($dividend = 0,$divisor = 0,$fallback = 0,$fallback_name = ""){
 
         if(isset($divisor) && !empty($divisor)
@@ -1244,10 +1613,8 @@ return $result_array;
     
             $full_header = "";
            // $full_body   = self::get_post_body_wrapper($images,$post_info["caption"],$post_info["count"],$post_info["id"],$post_info["support"],$post_info["oppose"]);
-              $full_body = "";
-			  $full_body .= self::get_images($images);
-			// brings back the begining of the post wrapper too
-            $full_header  = self::get_label_template($post_info["label"]);
+            // brings back the begining of the post wrapper too
+            $full_header  = self::get_post_confirmation($post_info["confirmation"]);
             // gets the full name
             $full_header .= self::get_fullname($post_info["firstname"],$post_info["lastname"]);
             // gets the number of files uploaded and label of the issue
@@ -1258,6 +1625,10 @@ return $result_array;
             $full_header .= self::get_location_template($post_info["longitude"],$post_info["latitude"]);
             // gets the time the post was uploaded
             $full_header .= self::get_time_template($post_info["upload_time"]);
+			// get the images and their arrangements
+			 $full_body = self::get_images($images,count($images));
+			 // get the reaction and comment box
+			  $full_body .= self::get_reaction_and_commentbox($post_info["support"],$post_info["oppose"],$post_info["id"]);
             $headers[$post_info["id"]] = $full_header.$full_body;
         }
         print j($headers);
