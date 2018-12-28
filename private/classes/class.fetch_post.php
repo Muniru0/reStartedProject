@@ -1016,7 +1016,7 @@ return $result_array;
 		}
 		
 	return "	<div class='ps-stream-body'>
-		<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown'><p>{$caption}</p></div></div>
+		<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class=\"peepso-markdown\" style=\"margin-left: 1em;\"><p>Captions provided meta data for posts</p></div><p>{$caption}</p></div></div>
 		<div class='ps-js-activity-edit ps-js-activity-edit--498' style='display:none'></div>
 		<div class='ps-stream-attachments cstream-attachments'><div class='cstream-attachment photo-attachment'>
 	<div class='ps-media-photos ps-media-grid ps-media-grid--single ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
@@ -1066,10 +1066,7 @@ return $result_array;
 
 		
 
-
-		// return "<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--482" data-act-id="482\">
-// <div id="comment-item-931" class="ps-comment-item cstream-comment stream-comment" data-comment-id="931">
-	<div class=\"ps-comment-time ps-shar-meta-date\">
+		<div class=\"ps-comment-time ps-shar-meta-date\">
 			<small class=\"activity-post-age\" data-timestamp=\"1529076577\"><span class=\"ps-js-autotime\" data-timestamp=\"1529076577\" title=\"June 15, 2018 3:29 pm\">".self::time_converter($comment_time)."</span></small>
 
 						<div id=\"act-like-493\" class=\"ps-comment-links cstream-likes ps-js-act-like--493\" data-count=\"2\">
@@ -1505,7 +1502,7 @@ return $images_string;
 			// get the images and their arrangements
 			 $full_body     = self::get_images_with_templates($images,$post_info["caption"]);
 			 // get the reaction and comment box
-			$full_body    .= Views::get_views_and_viewsbox_with_template($post_ids);
+			$full_body     .= Views::get_views_and_viewsbox_with_template($post_ids);
 			
             $headers[$post_info["id"]] = $full_header.$full_body;
         }
