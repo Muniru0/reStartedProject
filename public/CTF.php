@@ -64,8 +64,9 @@ require_once("../private/initialize.php");
 
 ?>
     <?php
-	
-	 echo   strtolower(strftime("%B, %e   &nbsp; &nbsp; %G  %i:%M:%S %P",1545903135));
+	$var = 0;
+	 echo $var === 0 ?  "they are equal" : "not equal";
+	// echo   strtolower(strftime("%B, %e   &nbsp; &nbsp; %G  %i:%M:%S %P",1545903135));
 	// $query = "SELECT * FROM comments WHERE ";
 	// $post_ids = [1,2,3,4,5,6,78,];
 	// foreach($post_ids as $post_id)

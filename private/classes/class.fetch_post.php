@@ -1161,19 +1161,21 @@ return $result_array;
 	}
 	
 	//get the images5 and above from the uploaded post
-	public static function get_images_more_than_five($images = [],$count,$caption = "")
+	public static function get_images_more_than_five($images = [],$caption = "")
 	{
-	
+	  
 	
 	if(empty($images))
 	{
 		return "";
 		
 	}
-	   $count = $count - 5;
+	   $count = count($images) - 5;
 	   $images_string = "";
-	  
-
+	   $images_overlay_div = $count === 0 ?  "<div class='ps-media-photo-counter' style='top:0; left:0; right:0; bottom:0;'>
+				<span>+$count</span>
+			</div>" : "";
+         
 $images_string .= "<div class ='ps-stream-body'><div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--482'><div class=\"peepso-markdown\"><p>{$caption}</p></div><div class='cstream-attachment photo-attachment'>
 	<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden; margin-left: 1em;'>
 		<a href='://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, 'photo');' style='float: left; width: 50%; padding-top: 50%;'>
@@ -1207,10 +1209,7 @@ $images_string .= "<div class ='ps-stream-body'><div class='ps-stream-attachment
 <a href='://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item ='' onclick='return ps_comments.open(197, 'photo');' style='float: left; width: 33.3%; padding-top: 33.3%;'>
 	<div class='ps-media-grid-padding'>
 		<div class='ps-media-grid-fitwidth'>
-			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[4]['filename']}' id =image_{$images[4]['id']} class='ps-js-fitted' style='width: 100%; height: auto;'>
-									<div class='ps-media-photo-counter' style='top:0; left:0; right:0; bottom:0;'>
-				<span>+$count</span>
-			</div>
+			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[4]['filename']}' id =image_{$images[4]['id']} class='ps-js-fitted' style='width: 100%; height: auto;'>{$images_overlay_div}
 					</div>
 	</div>
 </a>
@@ -1223,19 +1222,20 @@ return $images_string;
 	}//get_images_more_than_five()
 	
      // get_images_more_than_five(); 
-	public static function get_images_with_templates($images = [],$count)
+	public static function get_images_with_templates($images = [],$caption = "")
 	{
-		if(empty($images) || $count == 0)
+		 $count  = count($images);
+		if(empty($images) || $count < 1)
 		{
 			return "";
 		}
 		
 		if($count == 2)
 		{
-			return self::get_bi_images($images,$count);
+			return self::get_bi_images($images,$caption);
 		}elseif($count > 4)
 		{
-			return self::get_images_more_than_five($images,$count);
+			return self::get_images_more_than_five($images,$caption);
 			
 		}
 	}//get_images();
@@ -1478,7 +1478,7 @@ return $images_string;
 		
 		//get all the images for the specific post ids
 		$images = self::fetch_images($post_ids);
-   
+     
         
 		  
         // fetch the do be displayed post from the database
@@ -1491,22 +1491,22 @@ return $images_string;
             // brings back the begining of the post wrapper too
             $full_header   = self::get_post_confirmation($post_info["confirmation"]);
             // gets the full name
-            $full_header  .= self::get_fullname($post_info["firstname"],$post_info["lastname"]);
+            $full_header   .= self::get_fullname($post_info["firstname"],$post_info["lastname"]);
             // gets the number of files uploaded and label of the issue
-            $full_header  .= self::get_post_title($post_info["count"],$post_info["label"]);
+            $full_header   .= self::get_post_title($post_info["count"],$post_info["label"]);
             // gets the mood of the post
            // $full_header .= self::get_mood_template($post_info["mood"]);
             // gets the location of the post
-            $full_header  .= self::get_location_template($post_info["longitude"],$post_info["latitude"]);
+            $full_header   .= self::get_location_template($post_info["longitude"],$post_info["latitude"]);
 			// gets the caption of post
-            $full_header  .= self::get_caption_template($post_info["caption"]);			
+            $full_header   .= self::get_caption_template($post_info["caption"]);			
             // gets the time the post was uploaded
-            $full_header  .= self::get_time_template($post_info["upload_time"]);
+            $full_header   .= self::get_time_template($post_info["upload_time"]);
 			// get the images and their arrangements
-			 $full_body = self::get_images_with_templates($images,count($images));
+			 $full_body     = self::get_images_with_templates($images,$post_info["caption"]);
 			 // get the reaction and comment box
-			 $full_body  .= self::get_reaction_and_commentbox($post_info["support"],$post_info["oppose"],$post_info["id"]);
-			 $full_body  .= self::get_comments_with_template($post_ids);
+			$full_body    .= Views::get_views_and_viewsbox_with_template($post_ids);
+			
             $headers[$post_info["id"]] = $full_header.$full_body;
         }
         print j($headers);

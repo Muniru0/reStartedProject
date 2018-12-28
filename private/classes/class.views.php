@@ -15,10 +15,16 @@ class Views extends DatabaseObject{
    
 
    // get all the views for some specific post_ids
-   public static function get_views($post_ids = []) {
+   public static function get_views_and_viewsbox_with_template($post_ids = []) {
+	   
+	   if(empty($post_ids) || !is_array($post_ids) || in_array(0,$post_ids)){
+		   return "";
+	   }
+	   
 	   global $db;
 	   
-	   $query = "SELECT ".self::$table_name.".*,firstname,lastname FROM ".self::$table_name." JOIN ".Users::$table_name." ON ".Users::$table_name.".id = ".self::$table_name.".commentor_id WHERE ";
+	   $query = "SELECT ".self::$table_name.".*,firstname,lastname FROM ".self::$table_name." JOIN ".user::$table_name." ON ".user::$table_name.".id = ".self::$table_name.".commentor_id WHERE ";
+	   
 	   foreach($post_ids as $post_id)
 	{
 		$query .= " post_id = {$post_id} ||";
@@ -35,10 +41,10 @@ class Views extends DatabaseObject{
 		 log_ation(__CLASS__," Query failed with db error '{$db->error}' on line  ".__LINE__." on file ".__FILE__);
 	 } 	  
 	   
-	    $comments_template_string = "<div class='ps-comment cstream-respond wall-cocs' id='wall-cmt-482'";
+	    $views_and_viewsbox_template_string = "<div class='ps-comment cstream-respond wall-cocs' id='wall-cmt-482' />";
 	   while($row = $result->fetch_array(MYSQLI_ASSOC)){
 		   
-		 $comments_template_string .= "<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--482\" data-act-id=\"482\">
+		 $views_and_viewsbox_template_string .= "<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--482\" data-act-id=\"482\">
 			<div id=\"comment-item-931\" class=\"ps-comment-item cstream-comment stream-comment\" data-comment-id=\"931\">
 	<div class=\"ps-comment-body cstream-content\">
 		<div class=\"ps-comment-message stream-comment-content\">
@@ -75,7 +81,7 @@ class Views extends DatabaseObject{
 		</div>";
 	   }
 	   
-	   $comments_template_string .= "<div class='ps-stream-actions stream-actions' data-type='stream-action'><nav class='ps-stream-status-action ps-stream-status-action'>
+	   $views_and_viewsbox_template_string .= "<div class='ps-stream-actions stream-actions' data-type='stream-action'><nav class='ps-stream-status-action ps-stream-status-action'>
 <a data-stream-id='498' onclick='return reactions.action_reactions(this, 498);' href='javascript:' class='ps-reaction-toggle--498 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>
 <a data-stream-id='498' onclick='return activity.action_report(498);' href='#report' class='actaction-report ps-icon-warning-sign'><span>Report</span></a>
 </nav>
@@ -128,8 +134,10 @@ class Views extends DatabaseObject{
 			</div>
 
 ";
+
+ return $views_and_viewsbox_template_string;
 	   
-   }// get_views();
+   }// get_views_and_viewsbox_with_template();
    
    
    
