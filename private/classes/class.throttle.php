@@ -32,33 +32,33 @@ $query = " SELECT failed_logins, failure_time FROM ".Throttle::$table_name." WHE
     // this function prepares the statement and returns it from the Mysql class
     // Use this for simpler straight-forward queries(from the sql class)
     $stmt = $db->prepare($query);
- 
+     if(!$stmt){
+		 log_action(__CLASS__,"Statement preparation failed: ".$db->error." ( ".$db->error." )");
+		 
+	 }
 
      // bind the parameters
-    $bind = $stmt->bind_param("s",$email);
-    if(!$bind){
-    log_action("Throttle User (): ", "Binding failed : ( " .$db->errno. " ) ".$db->error);
+    if(!$stmt->bind_param("s",$email)){
+    log_action(__CLASS__, "Binding failed : ( " .$db->errno. " ) ".$db->error);
       }
 
     //execute the statemet
-    $execute = $stmt->execute();
-    if(!$execute){
-    log_action("Throttle User() : ", "Execution failed : ( " .$db->errno. " ) ".$db->error);
+    if(!$stmt->execute()){
+    log_action(__CLASS__, "Execution failed : ( " .$db->errno. " ) ".$db->error);
     }
 
     // bind the result
-
-$result = $stmt->bind_result($failed_logins,$failure_time);
-
+     $stmt->bind_result($failed_logins,$failure_time);
+    
 if($stmt->fetch()){
 
   return [$failed_logins,$failure_time];
 }else{
 
-  log_action("failed_logins(): ", "Couldn't fetch the result: ( ".$db->errno." ) ".$stmt->error);
+  log_action(__CLASS__, "Couldn't fetch the result: ( ".$db->errno." ) ".$stmt->error." db error ".$db->error." on line ".__LINE__." in file ".__FILE__ );
 // return -1 to differentiate between having no rows {which will return 0} and
 //  having an error in fetch the result
-   return -1;
+   return false;
   }
 
 }
@@ -70,7 +70,7 @@ public static function throttle_user($failed_loginss = 0){
   $throttle_time  = 60 * $throttle_delay;
 
   //
-  $throttle_info = throttle::failed_logins_info();
+  $throttle_info = throttle::failed_logins_info($_SESSION["email"]);
   
   $failed_logins      = throttle::$failed_logins     = $throttle_info[0];
   $last_attempt_time  = throttle::$last_attempt_time = $throttle_info[1];
@@ -100,7 +100,7 @@ return true;
   }
    
    
-	     }
+	     }// throttle_user();
   
  
 
