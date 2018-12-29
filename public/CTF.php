@@ -9,42 +9,14 @@ require_once("../private/initialize.php");
         <script src = "ajax_practice/jquery.js" ></script>
          <script src = "ajax_practice/script.js" async></script>
     <style>
-        @font-face{
-            font-family:"myfont";
-            src: url("../includes/assets/fonts/KozMinPro-Extralight.otf");
-        }
-/*.thumb {*/
-/*    height: 75px;*/
-/*    border: 1px solid #000;*/
-/*    margin: 10px 5px 0 0;*/
-/*  }*/
-/**/
-/*body{*/
-/*    font-family: "myfont","Helvetica","Times New Roman","sans-serif";*/
-/*        }*/
-/*        */
-/*img{*/
-/*  height:0px;*/
-/*    width:0px;*/
-/*  margin:0px 40px;    */
-/*  transform: translate3d(100px ,5%,1px) skew(-1deg);*/
-/**/
-/*}*/
-/**/
-/*   .no-class{*/
-/*       display:none;*/
-/*   }*/
-/**/
-/*   ui-dialog-title{*/
-/*       color:#9298a0;*/
-/*       text-align:center;*/
-/*   }*/
-/**/
-/*   ui-dialog-titlebar{*/
-/*       background-color:#9dc7ca !important;*/
-/*   }*/
-/**/
-/*</style>
+      
+
+ .noScrollbars {
+	 overflow:hidden; width:600px; height:300px;
+ }
+
+
+</style>
 <script>
 
 
@@ -59,13 +31,35 @@ require_once("../private/initialize.php");
 <input type="submit" name="submit" />
  </form>
 -->
+
+<script>
+window.addEventListener("input",function(e)
+{
+	console.log("on input event detected by this element" + e.target);
+},false);
+
+function autoGrow(oField){
+	if(oField.scrollHeight > oField.clientHeight)
+	{
+		oField.style.height = oField.scrollHeight + "px";
+	}
+}
+
+let value = querySelector("#textarea").value;
+console.log(value);
+
+</script>
+
+
+<textarea id="textarea" onkeyup="autoGrow(this);" class="" ></textarea>
+<input  type= "text" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/>
 <?
 
 
 ?>
     <?php
-	$var = 0;
-	 echo $var === 0 ?  "they are equal" : "not equal";
+	// $var = 0;
+	 // echo $var === 0 ?  "they are equal" : 	"not equal";
 	// echo   strtolower(strftime("%B, %e   &nbsp; &nbsp; %G  %i:%M:%S %P",1545903135));
 	// $query = "SELECT * FROM comments WHERE ";
 	// $post_ids = [1,2,3,4,5,6,78,];
