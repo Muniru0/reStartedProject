@@ -918,7 +918,8 @@ return json_encode($views);
           $locations = ["Wa","Tamale","Kumasi","Accra","Koforidua","Cape Coast","Tema","Bolgatanga","Winneba","Saudi Arabia"];
         return trim("<span class=\"ps-js-activity-extras\">         <span>
                 <a href=\"#\" title=\"Siem Reap Province\" onclick=\"pslocation.show_map(13.6915377, 104.10013260000005, 'Siem Reap Province'); return false;\">
-                    <span class=\"at-location ps-js-autotime\"></span> <i class=\"ps-icon-map-marker\"></i>".$locations[array_rand($locations)]."</a>
+                    <span class=\"at-location ps-js-autotime\">
+					</span> <i class=\"ps-icon-map-marker\"></i>".$locations[array_rand($locations)]."</a>
             </span>
             </span></div>");
     }
