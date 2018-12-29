@@ -49,7 +49,7 @@ if(status  === "success"){
 		 {
 		  location.href="home.php";
 		 }else
-    if(index == false){
+    if(index == "false"){
      var errors = "";
      $.each(response,function(index,value){
    errors += "<li>"+value+"</li>";

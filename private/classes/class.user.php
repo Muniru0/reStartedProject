@@ -320,18 +320,18 @@ public static function found_user(){
          // NOTE: we are getting back the password to make it generic
          // for use else where
          
-       $query = "SELECT * FROM users WHERE BINARY email = ? LIMIT 1 ";
+       $query = "SELECT * FROM ".self::$table_name." WHERE BINARY email = ? LIMIT 1 ";
 
        // prepare the statement
       $stmt = $db->prepare($query);
        if(!$stmt){
-die($db->error ." ". $query);
+           
          log_action("User class : found_user() ","Statement preparation failed ".$db->errors);
          }
 
        // assign the bind parameter
        $email    =  user::$email;
-       
+      
        // bind the parameter
         $bind_result = $stmt->bind_param("s",$email);
         
@@ -348,7 +348,7 @@ die($db->error ." ". $query);
           
           if(!$result){
      
-           die("Query execution failed: ( ".$db->errno." )".$db->error);
+           log_action(__CLASS__,"Query execution failed: ( ".$db->errno." )".$db->error);
           }
               
        $verification = false;
@@ -370,11 +370,13 @@ die($db->error ." ". $query);
 
 // prevents a second database trip
  foreach ($row as $attribute => $value){
-            
+      
           $_SESSION[trim($attribute)] = $value;  
      }
   
+   
   return $verification;
+  
   }else{
 	
    print j(["false" => "Username and password mismatch"]);

@@ -45,7 +45,7 @@ if(validate_presence_on(["password","email"]) && is_email($email)){
 // check that they are not being throttled before 
   //  
   if(throttle::throttle_user()){
-     $user = new user();
+    
   if(user::found_user()) {
     after_successful_login();
           // if they are authenticated successfully

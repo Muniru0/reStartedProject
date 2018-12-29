@@ -22,7 +22,7 @@ require_once(PRIVATE_DIR."initialize.php");
  */    
 
 
-public static function failed_logins_info($email = "" , $password = "") {
+public static function failed_logins_info($email = "" ) {
 
 
 global $db;
@@ -70,7 +70,7 @@ public static function throttle_user($failed_loginss = 0){
   $throttle_time  = 60 * $throttle_delay;
 
   //
-  $throttle_info = throttle::failed_logins_info($_SESSION["email"]);
+  $throttle_info = throttle::failed_logins_info(user::$email);
   
   $failed_logins      = throttle::$failed_logins     = $throttle_info[0];
   $last_attempt_time  = throttle::$last_attempt_time = $throttle_info[1];
@@ -180,7 +180,7 @@ public static function increase_failed_logins($failed_logins = 0){
 $query  = "UPDATE ".Throttle::$table_name." SET failed_logins = ? WHERE email = ? ";
     
 // prepare the statement
-$stmt = $db->query($query);
+$stmt = $db->prepare($query);
 
 
 // bind the parameter

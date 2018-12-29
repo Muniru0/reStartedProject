@@ -3812,8 +3812,9 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrhBOort1omiPN4Vbqzm53abzTZSswtio&callback=initMap"
             async defer></script>
     <script   type="text/javascript"  src="assets/js/jquery-ui.min.js">  </script>
-  <script   type="text/javascript"  src="assets/js/su_post.js">  </script> 
-
+    <script   type="text/javascript"  src="assets/js/su_post.js"></script> 
+	<script   type="text/javascript"  src="assets/js/comments.js">  </script> 
+  
     <script   type="text/javascript"  src="assets/js/script.js"></script>
     <!-- showing location in textarea -->
 <!--    <span class="ps-postbox-addons">— <b><i class="ps-icon-map-marker"></i>Ghana Highway Authority Accommodation For Employees</b></span>-->
