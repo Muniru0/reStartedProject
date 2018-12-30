@@ -1,6 +1,6 @@
 <?php 
 
-require_once("../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/initialize.php");
+require_once("../private/initialize.php");
 
 
 
@@ -10,20 +10,15 @@ function is_ajax(){
 }
 if(is_ajax()){
 
-// print_r($_POST);
-// print_r($_FILES);
-//die();
-
-
-    if(isset($_POST["comment"]) && !empty(trim($_POST["comment"]))){
-
-        FetchPost::get_views(0);
-    }else{
-        echo "comment ready or not";
-    }
-    return;
- // print_r($_POST);
-if(isset($_POST["reaction"]) && !empty($_POST["reaction"])){
+if(isset($_POST["comment"]) && !empty(trim($_POST["comment"]))  && $_POST["add_comment"]){
+         
+		 if(in_array($_POST["post_id"],$_SESSION["post_ids"]))
+		 {
+		     Views::add_views($_POST["post_id"],$_POST["comment"]);	 
+		 }
+       print j(["false" => "Please try again"]);
+  
+}elseif(isset($_POST["reaction"]) && !empty($_POST["reaction"])){
 
 //record reaction for a post
 print json_encode(Reaction::record_reaction($_POST["reaction"]));

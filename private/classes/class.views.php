@@ -90,7 +90,7 @@ class Views extends DatabaseObject{
 		<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--498\" data-act-id=\"498\">
 					</div>
 
-						<div id=\"act-new-comment-498\" class=\"ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498\" data-id=\"498\" data-type=\"stream-newcomment\" data-formblock=\"true\">
+						<div id=\"act-new-comment-".$row["post_id"]."\" class=\"ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498\" data-id=\"498\" data-type=\"stream-newcomment\" data-formblock=\"true\">
 			<a class=\"ps-avatar cstream-avatar cstream-author\" href=\" ://demo.peepso.com/profile/demo/\">
 				<img data-author=\"4\" src=\" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg\" alt=\"\">
 			</a>
@@ -143,7 +143,7 @@ class Views extends DatabaseObject{
    
    
  // add a new comment to the database
-  public static function add_view($post_id = 0,$commentor_id = 0,$comment = "", $comment_time = 0){
+  public static function add_view($post_id = 0,$comment = ""){
 
     global $db;
 	
@@ -152,8 +152,10 @@ class Views extends DatabaseObject{
 			return "";
 			
 		}
+		
+		
        
-	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,$commentor_id,$comment,$comment_time) ";
+	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,".$_SESSION["id"].",$comment,".time().") ";
 	
    if(!$db->query($query))
    {

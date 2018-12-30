@@ -366,13 +366,13 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 						<!-- Avatar -->
 						<div class="ps-widget--profile__cover-avatar">
 							<div class="ps-avatar ps-avatar--widget" href="#">
-								<img alt="<?php echo $_SESSION["firstName"]." ".$_SESSION["lastName"]; ?> " title="Profile Image" src="<?php echo $profile_image; ?>">
+								<img alt="<?php echo $_SESSION["firstname"]." ".$_SESSION["lastname"]; ?> " title="Profile Image" src="<?php echo $profile_image; ?>">
 							</div>
 						</div>
 
 						<!-- Name, edit profile -->
 						<div class="ps-widget--profile__cover-details">
-							<img src=" ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge" data-id="2"><?php echo $_SESSION["firstName"]." ".$_SESSION["lastName"]; ?></div>
+							<img src=" ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge" data-id="2"><?php echo $_SESSION["firstname"]." ".$_SESSION["lastname"]; ?></div>
 					</div>
 				</a>
 				<div class="ps-widget--profile__cover-notif">
@@ -2123,7 +2123,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
 		</div>
 
-						<div id="act-new-comment-482" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true">
+						<div id="act-new-comment-10" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true">
 			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 				<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 			</a>

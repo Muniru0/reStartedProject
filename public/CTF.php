@@ -45,14 +45,26 @@ function autoGrow(oField){
 	}
 }
 
-let value = querySelector("#textarea").value;
-console.log(value);
+let value = document.getElementById("#textarea");
 
+ 
+ function print_value(element)
+ {
+	console.log(element.value); 
+ }
+ 
+ let activity = class {
+	
+    static me(){
+		console.log("me");
+	}
+ }
+ activity.me();
 </script>
 
 
-<textarea id="textarea" onkeyup="autoGrow(this);" class="" ></textarea>
-<input  type= "text" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/>
+<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
+<input  type= "text" oninput="print_value(this) ;" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/>
 <?
 
 
