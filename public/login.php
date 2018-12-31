@@ -47,7 +47,7 @@ if(validate_presence_on(["password","email"]) && is_email($email)){
   if(throttle::throttle_user()){
     
   if(user::found_user()) {
-    after_successful_login();
+    Session::after_successful_login();
           // if they are authenticated successfully
 	   	 // then clear all the failed logins
         throttle::clear_failed_logins();

@@ -143,11 +143,11 @@ class Views extends DatabaseObject{
    
    
  // add a new comment to the database
-  public static function add_view($post_id = 0,$comment = ""){
+  public static function add_views($post_id = 0,$comment = ""){
 
     global $db;
 	
-	if((!isset($post_id) && $post_id < 1) || !is_array($post_ids))
+	if(!isset($post_id) || $post_id < 1 || !is_int($post_id))
 		{
 			return "";
 			
@@ -155,12 +155,12 @@ class Views extends DatabaseObject{
 		
 		
        
-	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,".$_SESSION["id"].",$comment,".time().") ";
-	
-   if(!$db->query($query))
+	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,".$_SESSION["id"].",'$comment',".time().") ";
+   $result = $db->query($query);
+	if(!$result)
    {
-	   log_action(__CLASS__," Query failed on line ".__LINE__." in file ".__FILE__);
-	   print j(["false" => "Please is us not you please try again."]);
+	   log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
+	   print j(["false" => "Please is not You but Us...Please try again. {$db->error}"]);
 	   return false;
    }
    

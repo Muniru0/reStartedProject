@@ -44,7 +44,25 @@ function autoGrow(oField){
 		oField.style.height = oField.scrollHeight + "px";
 	}
 }
+ let comment = element.value;
+    		 
+		 let commentboxParent = $(element).parents()[2];
+		    let post_id = commentboxParent.id;
+		     post_id  =  post_id.split("-");
+		     post_id = post_id[post_id.length - 1];
+			 if($.trim($(comment))){
+	  	$.ajax({
+	  		 url: "../private/neutral_ajax.php",
+			data: {comment:comment,post_id : post_id,add_comment : true},
+			type: "POST",
+	  		datatype:"html",
+			}).done(function(status){
+			commentboxParent.id = status;
+			 }).fail(function (error){
+				 alert(error);
+			 });
 
+	}
 let value = document.getElementById("#textarea");
 
  

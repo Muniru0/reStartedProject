@@ -21,8 +21,8 @@ require_once(PRIVATE_DIR."initialize.php");
  public static function end_session() {
 	// Use both for compatibility with all browsers
 	// and all versions of PHP.
-	self::session_unset();
-    self::session_destroy();
+	session_unset();
+    session_destroy();
 }
 
 // Does the request IP match the stored value?
@@ -143,7 +143,7 @@ require_once(PRIVATE_DIR."initialize.php");
 // Actions to preform before giving access to any 
 // access-restricted page.
  public static function before_every_protected_page() {
-	self::onfirm_user_logged_in();
+	self::confirm_user_logged_in();
 	self::confirm_session_is_valid();
 }
 

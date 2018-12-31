@@ -10,13 +10,19 @@ function is_ajax(){
 }
 if(is_ajax()){
 
-if(isset($_POST["comment"]) && !empty(trim($_POST["comment"]))  && $_POST["add_comment"]){
-         
-		 if(in_array($_POST["post_id"],$_SESSION["post_ids"]))
+if(isset($_POST["comment"]) && !empty(trim($_POST["comment"]))  && $_POST["add_comment"] == true){
+          $_SESSION["post_ids"] = [10];
+		 if(!in_array((int)$_POST["post_id"],$_SESSION["post_ids"],true))
 		 {
-		     Views::add_views($_POST["post_id"],$_POST["comment"]);	 
+		    print j(["false" => "Please try again"]); 
 		 }
-       print j(["false" => "Please try again"]);
+		 
+		 $view_id =  Views::add_views($_POST["post_id"],$_POST["comment"]);	   
+if($view_id == true)
+{
+	  print j(["true" => "new_comment_$view_id"]);
+}
+       return; 
   
 }elseif(isset($_POST["reaction"]) && !empty($_POST["reaction"])){
 

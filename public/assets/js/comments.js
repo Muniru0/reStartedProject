@@ -33,30 +33,51 @@
 
 	
 	 var commentUrl = "../private/neutral_ajax.php";
-    class activity{
+    class view{
 	  
-	 static on_commentbox_change(element) {
-		 let comment = element.value;
-		 let post_id = element.id;
-		    post_id  =
-		 if($.trim($(comment))){
-	  	$.ajax({
-	  		 url: "../private/neutral_ajax.php",
-			data: {comment:comment,post_id :},
-			type: "POST",
-	  		datatype:"html",
-			}).done(function(status){
-			 if(status === "success"){
-				 console.log(response);
-				 console.log("returned from the server");
-	 }else{
-		 console.log(status);
-	 }
-	});
-
-	}
-		  
-	  }
+	 static view_area_change(element) {
+		   
+		let commentBoxParent = $(element).parents()[2];
+		
+		  if (commentBoxParent.hasChildNodes()) {
+      let  children = commentBoxParent.childNodes;
+  
+         let post_actions = children[3]
+        $(post_actions).show();
+        $(post_actions.childNodes[3]).show();
+		$(post_actions.childNodes[3].childNodes).show();
+		
   }
+	  }
+	  
+	  static  autoGrow(oField){
+	if(oField.scrollHeight > oField.clientHeight)
+	{
+		oField.style.height = oField.scrollHeight + "px";
+	}
+	  }
+	  
+	  
+	static cancel_view(id,cancel_button){
+		if(id != null || id != undefined){
+		  let view_area = document.querySelector("#view_area_" +id);
+		   if(view_area != null && view_area != undefined){
+			   view_area.value = "";
+			 view_area.style.height = "35px";
+			
+			 let parent = cancel_button.parentNode;
+			   parent.parentNode.style.display = "none";
+			  $(cancel_button).hide();
+			$(cancel_button.nextSibling.nextSibling).hide();
+
+			 
+
+		   }
+		 }
+	}
+	
+	
+}
+  
 
 

@@ -1,6 +1,6 @@
 <?php
  require_once("../private/initialize.php");
-before_every_protected_page();
+Session::before_every_protected_page();
 
 
 $label   = "";
@@ -307,6 +307,14 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </style>
 	  </head>
   <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 logged-in plg-peepso" id="top">
+  <script>
+     function autoGrow(oField){
+	if(oField.scrollHeight > oField.clientHeight)
+	{
+		oField.style.height = oField.scrollHeight + "px";
+	}
+}
+  </script>
     <div class="top__button" style="display: none;">
       <a class="btn btn--red" href="#top"><svg class="svg-inline--fa fa-angle-up fa-w-10" aria-hidden="true" data-prefix="fas" data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"></path></svg><!-- <i class="fas fa-angle-up"></i> --></a>
     </div>
@@ -2075,12 +2083,12 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 	</div>
 
-	<div id="act-new-comment-493" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display:none;">
+	<div id="act-new-comment-493"  onkeyup="autoGrow(this);" onkeyup= "autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display:none;">
 		<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this); activity.on_commentbox_change(this);"  placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2123,12 +2131,10 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
 		</div>
 
-						<div id="act-new-comment-10" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true">
-			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
-				<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
-			</a>
+						<div id="act-new-comment-10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
+			
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="482" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a comment..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="view_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return autoGrow(this); " onkeyup = "view.view_area_change(this);" placeholder="Write a comment..." ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown" ></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2162,8 +2168,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 					<div> </div>
 				</div>
 				<div class="ps-comment-actions" style="display:none;">
-					<button onclick="return activity.comment_cancel(482);" class="ps-btn ps-button-cancel">Clear</button>
-					<button onclick="return activity.comment_save(482, this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
+					<button onclick="return view.cancel_view(10,this);" class="ps-btn ps-button-cancel">Clear</button>
+					<button onclick="return view.post_view(10,this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
 				</div>
 			</div>
 		</div>
@@ -2303,12 +2309,12 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--498" data-act-id="498">
 					</div>
 
-						<div id="act-new-comment-498" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498" data-id="498" data-type="stream-newcomment" data-formblock="true">
+						<div id="act-new-comment-498"  onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498" data-id="498" data-type="stream-newcomment" data-formblock="true">
 			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 				<img data-author="4" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 			</a>
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="498" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="498" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this); activity.on_commentbox_change(this);"  placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2514,12 +2520,12 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--500" data-act-id="500">
 					</div>
 
-						<div id="act-new-comment-500" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-500" data-id="500" data-type="stream-newcomment" data-formblock="true">
+						<div id="act-new-comment-500" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-500" data-id="500" data-type="stream-newcomment" data-formblock="true">
 			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 				<img data-author="4" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 			</a>
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="500" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="500" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this); activity.on_commentbox_change(this);"  placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2696,12 +2702,12 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--481" data-act-id="481">
 					</div>
 
-						<div id="act-new-comment-481" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-481" data-id="481" data-type="stream-newcomment" data-formblock="true">
+						<div id="act-new-comment-481"  onkeyup="autoGrow(this);"  class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-481" data-id="481" data-type="stream-newcomment" data-formblock="true">
 			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 				<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 			</a>
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="481" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="481" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this); activity.on_commentbox_change(this);"  placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2874,12 +2880,12 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--480" data-act-id="480">
 					</div>
 
-						<div id="act-new-comment-480" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-480" data-id="480" data-type="stream-newcomment" data-formblock="true">
+						<div id="act-new-comment-480"  onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-480" data-id="480" data-type="stream-newcomment" data-formblock="true">
 			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 				<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 			</a>
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="480" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="480" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this); activity.on_commentbox_change(this);"  placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -3119,12 +3125,12 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--478" data-act-id="478">
 					</div>
 
-						<div id="act-new-comment-478" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-478" data-id="478" data-type="stream-newcomment" data-formblock="true">
+						<div id="act-new-comment-478"  onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-478" data-id="478" data-type="stream-newcomment" data-formblock="true">
 			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 				<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 			</a>
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="478" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="478" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this); activity.on_commentbox_change(this);"  placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -3347,12 +3353,12 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--494" data-act-id="494">
 			</div>
 
-	<div id="act-new-comment-494" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-494" data-type="stream-newcomment" data-formblock="true" style="display:none;">
+	<div id="act-new-comment-494"  onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-494" data-type="stream-newcomment" data-formblock="true" style="display:none;">
 		<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="494" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="494" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this);  activity.on_commentbox_change(this);"  placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -3395,12 +3401,12 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
 		</div>
 
-						<div id="act-new-comment-471" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-471" data-id="471" data-type="stream-newcomment" data-formblock="true">
+						<div id="act-new-comment-471"  onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-471" data-id="471" data-type="stream-newcomment" data-formblock="true">
 			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 				<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 			</a>
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="471" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="471" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this); activity.on_commentbox_change(this);"  placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>

@@ -87,9 +87,10 @@ require_once(PRIVATE_DIR . "functions/csrf_request_type_functions.php");
 require_once(PRIVATE_DIR . "functions/csrf_token_functions.php");
 require_once(PRIVATE_DIR . "functions/request_forgery_functions.php");
 require_once(PRIVATE_DIR . "functions/reset_token_functions.php");
-require_once(PRIVATE_DIR . "functions/session_hijacking_functions.php");
+// require_once(PRIVATE_DIR . "functions/session_hijacking_functions.php");
 
 //require the classes
+require_once(PRIVATE_DIR . "classes/class.session.php");
 require_once(PRIVATE_DIR . "classes/class.user.php");
 require_once(PRIVATE_DIR . "classes/class.throttle.php");
 require_once(PRIVATE_DIR . "classes/class.file_uploads.php");
