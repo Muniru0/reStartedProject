@@ -8,6 +8,7 @@
 	  
 	// on a view area change  
 	static view_area_change(element){
+		
 		 // set the viewBoxParent  
 		let commentBoxParent = $(element).parents()[2];
 		  // check to see if it has child nodes
@@ -117,12 +118,22 @@
 				   response = JSON.parse(response);
 				   let view_template = $("#view_template").find("p");
 				       view_template.html(response["comment"]["comment"]);
+				   // find the views list
+				    let views_list_children = document.querySelector("#cmt-list-10").childNodes;  
+				    let views_container = views_list_children[1];
+				    setTimeout(function(){
+				    	  console.log($("#view_template"));
+				    	  console.log("this is logging !!!!!");
+				    },5000);
+				  
+				   $(views_container).append($("#view_template"));  
 			      // hide the post actions grand parent
 			 	  post_actions_gr_parent.style.display = "none";
 			 	  // re-enable the textarea
 			 	  view_area.disabled = false;  
 			 	  // hide the loading gif
 		           loadinGif.style.display = "none";
+				  
 			
 		 }).fail(function (error){
 				 alert(error);
