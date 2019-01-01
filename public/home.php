@@ -2134,7 +2134,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 						<div id="act-new-comment-10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
 			
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="view_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return autoGrow(this); " onkeyup = "view.view_area_change(this);" placeholder="Write a comment..." ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown" ></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="view_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return autoGrow(this); " onkeyup = "view.view_area_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown" ></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2165,7 +2165,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			<div class="ps-comment-send cstream-form-submit" style="display:none;">
 				<div class="ps-comment-loading" style="display:none;">
 					<img src="assets/images/ajax-loader.gif" alt="">
-					<div> </div>
+					
 				</div>
 				<div class="ps-comment-actions" style="display:none;">
 					<button onclick="return view.cancel_view(10,this);" class="ps-btn ps-button-cancel">Clear</button>

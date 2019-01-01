@@ -1,2 +1,3 @@
 [31/Dec/2018 11:40:40 AM] : [Views] |  Query failed You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's ',1546304439)' at line 1 on line 164 in file C:\wamp64\www\sample_app\private\classes\class.views.php
 [ 1/Jan/2019 01:00:39 AM] : [Views] |  Query failed You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's ',1546304543)' at line 1 on line 166 in file C:\wamp64\www\sample_app\private\classes\class.views.php
+[ 1/Jan/2019 01:06:21 AM] : [Views] |   Query failed Data too long for column 'comment' at row 1 on line __LINE in file C:\wamp64\www\sample_app\private\classes\class.views.php

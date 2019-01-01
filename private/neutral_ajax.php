@@ -21,6 +21,12 @@ if($_POST["add_comment"] == true ){
 		  return false;
 	  }   
 	  
+	  if(!isset($_POST["comment"]) || strlen($_POST["comment"])){
+		  
+		  print j(["false" => "Please the maximum number of characters for a comment is 4000"]);
+		  return false;
+	  }
+	  
 	  $post_id = (int)$_POST["post_id"];
 	  
 	 // check if the comment is empty or set	  

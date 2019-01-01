@@ -3,6 +3,7 @@
 	 // define the constructor of the class
 	  constructor (){
 		  this.commentUrl = "../private/neutral_ajax.php";
+		 
 	  }
 	  
 	// on a view area change  
@@ -48,8 +49,12 @@
 		
 		if(id != null || id != undefined){
 		  // set the textarea
-		let view_area = document.querySelector("#view_area_" +id);
-		  
+	     let view_area = document.querySelector("#view_area_" +id);
+		 
+		 // hide the loading gif if it is present
+		  let post_actions_gr_parent = $(cancel_button).parents()[1];
+		let loadinGif = post_actions_gr_parent.childNodes[1];
+		    loadinGif.style.display = "none";
 		if(view_area != null && view_area != undefined){
 			   // reset the text of the textarea 
 			   view_area.value = "";
@@ -78,19 +83,32 @@
 		
 		// set the text area
 		let view_area = document.querySelector("#view_area_" +post_id);
+		view_area.disabled = true;
 		// get the view from the text area
 		let real_view = view_area.value;
-		   
-        if($.trim($(real_view)) != ""){
+		// reset the view_area
+		view_area.value = "";  
+		$(post_button).hide();
+		$(post_button.previousSibling.previousSibling).hide();
+		 let post_actions_gr_parent = $(post_button).parents()[1];
+		let loadinGif = post_actions_gr_parent.childNodes[1];
+		    loadinGif.style.display = "block";
+
+        if($.trim(real_view) != ""){
 	  	$.ajax({
-	  		 url: view.commentUrl,
+	  		 url: "../private/neutral_ajax.php",
 			data: {comment:real_view,post_id : post_id,add_comment : true},
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){
-			//commentboxParent.id = response;
-			console.log(response);
-			 }).fail(function (error){
+			      // hide the post actions grand parent
+			 	  post_actions_gr_parent.style.display = "none";
+			 	  // re-enable the textarea
+			 	  view_area.disabled = false;  
+			 	  // hide the loading gif
+		           loadinGif.style.display = "none";
+			
+		 }).fail(function (error){
 				 alert(error);
 			 });
 

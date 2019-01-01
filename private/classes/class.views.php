@@ -147,6 +147,8 @@ class Views extends DatabaseObject{
 
     global $db;
 	
+	
+	
 	// the insert query for the new comment	
 	$query = "INSERT INTO ".self::$table_name." VALUES(?,?,?,?,?)";
 	// prepare the new comment statement
