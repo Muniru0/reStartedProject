@@ -140,7 +140,29 @@ class Views extends DatabaseObject{
    }// get_views_and_viewsbox_with_template();
    
    
-   
+  public static function get_view($post_id = 0){
+	  global $db;
+	  $db = DatabaseObject::db_connect();
+	  $post_id = (int)$post_id;
+	   if(!isset($post_id) || $post_id < 1 || !is_integer($post_id)){
+		 return false;
+	   }
+	 
+	  $query = "SELECT * FROM ".self::$table_name." WHERE post_id = ".$post_id." LIMIT 1";
+	  $result = $db->query($query);
+	  
+	  if(!$result){
+		  
+		  log_action(__CLASS__," Query failed: {$db->error} on line ".__LINE__." in file ".__FILE__);
+	  }
+	  
+	  $record ;
+	  if($row = $result->fetch_assoc()){
+		$record = $row;
+	 }
+	 
+	  return $record;
+  }
    
  // add a new comment to the database
   public static function add_views($post_id = 0,$comment = ""){
@@ -173,13 +195,16 @@ class Views extends DatabaseObject{
 	}
 	// return a new_comment_id  in case the id is to be used to delete the comment
 	if($stmt->insert_id == true){
-	  print j(["true" => "new_comment_$stmt->insert_id"]);
+		 
+		$view_info = self::get_view($post_id);
+         
+		 print j(["true" => "new_comment_$stmt->insert_id","comment" => $view_info]);
  }else{
 	 log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
 	 print j(["false" => "Sorry please re-comment..."]);
 	 return false;
  }   
-  
+    
  }// add_view();
 
 

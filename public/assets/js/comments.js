@@ -7,7 +7,7 @@
 	  }
 	  
 	// on a view area change  
-	static view_area_change(element) {
+	static view_area_change(element){
 		 // set the viewBoxParent  
 		let commentBoxParent = $(element).parents()[2];
 		  // check to see if it has child nodes
@@ -28,6 +28,17 @@
 		$(post_actions_parent.childNodes).show();
 		// enable the post button
 		post_actions_parent.childNodes[3].disabled = false;
+	
+		 if(element.value.length  > 4000){
+           	alert("Please MAX characters for a comment is 4000.");
+          // hide the post actions grand parents 	
+        $(post_actions_gr_parent).hide();
+		  // hide the parent
+        $(post_actions_parent).hide();
+		// hide the post actions themselves
+		$(post_actions_parent.childNodes).hide();
+           	
+           }
 		
   }
 	  }// view_area_change();
@@ -88,6 +99,8 @@
 		let real_view = view_area.value;
 		// reset the view_area
 		view_area.value = "";  
+		// reset the height of the textarea
+		view_area.style.height = "35px";
 		$(post_button).hide();
 		$(post_button.previousSibling.previousSibling).hide();
 		 let post_actions_gr_parent = $(post_button).parents()[1];
@@ -101,6 +114,9 @@
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){
+				   response = JSON.parse(response);
+				   let view_template = $("#view_template").find("p");
+				       view_template.html(response["comment"]["comment"]);
 			      // hide the post actions grand parent
 			 	  post_actions_gr_parent.style.display = "none";
 			 	  // re-enable the textarea

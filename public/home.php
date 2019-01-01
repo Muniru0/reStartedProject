@@ -1992,8 +1992,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	</div>
 </div>
 
-<div id="wall-cmt-493" class="ps-comment ps-comment-nested ps-js-comment-reply--493">
-	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--493" data-act-id="493">
+<div id="cmt-list-10" class="ps-comment ps-comment-nested ps-js-comment-reply--10">
+	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--10" data-act-id="10">
 		<div id="comment-item-934" class="ps-comment-item cstream-comment stream-comment" data-comment-id="934">
 	<div class="ps-avatar-comment">
 		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/andrew/">
@@ -2134,7 +2134,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 						<div id="act-new-comment-10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
 			
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="view_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return autoGrow(this); " onkeyup = "view.view_area_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown" ></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="view_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return view.autoGrow(this); " onkeyup = "view.view_area_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." style="overflow:hidden;"></textarea></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2158,8 +2158,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
 </div>
 <div class="ps-commentbox-actions">
-<a onclick="peepso.photos.comment_attach_photo(this); return false;" title="Upload photos" href="#" class="ps-postbox__menu-item ps-icon-camera"><span></span></a>
-<a onclick="return false;" title="Send gif" href="#" class="ps-list-item ps-js-comment-giphy ps-icon-giphy"></a>
+<a onclick="peepso.photos.comment_attach_photo(this); return false;" title="Upload photos" href="#" class="ps-postbox__menu-item "><span style=" position: absolute; right: .2em; bottom: .1em; background-color: #E3E5E7; padding: 0.1em; font-size: .7em !important; border-radius: 5px; color: black;">4000</span></a>
+<a onclick="return false;" title="Send gif" href="#" class="ps-list-item ps-js-comment-giphy"></a>
 </div>
 			</div>
 			<div class="ps-comment-send cstream-form-submit" style="display:none;">
@@ -3806,6 +3806,48 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
   </div>
 </div>
 
+<!--beginning of view template-->
+
+<div id="view_template" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935">
+	<div class="ps-avatar-comment">
+		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
+			<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="Patricia Currie avatar">
+		</a>
+	</div>
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/demo/"><img src=" ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge" data-id="2"> Patricia Currie</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p><a href=" ://demo.peepso.com/profile/andrew/" title="Andrew Simmons">Andrew</a> yes! That's the first one we saw. But trust me, it's not nearly as empty as the gif shows. There's a lot of tourists. </p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"></div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1529076871"><span class="ps-js-autotime" data-timestamp="1529076871" title="June 15, 2018 3:34 pm">2 weeks ago</span></small>
+
+						<div id="act-like-497" class="ps-comment-links cstream-likes ps-js-act-like--497" data-count="1">
+				<a onclick="return activity.show_likes(497);" href="#showLikes">1 person likes this</a>			</div>
+
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="935" onclick="activity.comment_action_like(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
+<a data-stream-id="935" onclick="activity.comment_action_reply(497, 935, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="935" onclick="activity.comment_action_edit(935, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="935" onclick="activity.comment_action_delete(935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!--end of view template-->
 <!--- End Of Jquery Javascript file -->
 </div>
       <textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; padding: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; transition: none; height: 0px !important; min-height: 0px !important; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; word-spacing: 0px; text-indent: 0px; line-height: 18px; width: 720.391px;" class="autosizejs" id="autosizejs"></textarea>

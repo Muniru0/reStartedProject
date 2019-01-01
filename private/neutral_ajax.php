@@ -21,7 +21,7 @@ if($_POST["add_comment"] == true ){
 		  return false;
 	  }   
 	  
-	  if(!isset($_POST["comment"]) || strlen($_POST["comment"])){
+	  if(!isset($_POST["comment"]) || (strlen($_POST["comment"]) > 4000)){
 		  
 		  print j(["false" => "Please the maximum number of characters for a comment is 4000"]);
 		  return false;
