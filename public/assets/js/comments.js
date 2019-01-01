@@ -83,7 +83,7 @@
 		   
         if($.trim($(real_view)) != ""){
 	  	$.ajax({
-	  		 url: "../private/neutral_ajax.php",
+	  		 url: view.commentUrl,
 			data: {comment:real_view,post_id : post_id,add_comment : true},
 			type: "POST",
 	  		datatype:"html",

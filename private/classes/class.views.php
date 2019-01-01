@@ -147,31 +147,38 @@ class Views extends DatabaseObject{
 
     global $db;
 	
-	if(!isset($post_id) || $post_id < 1 || !is_int($post_id))
-		{
-			
-			return "";
-			
-			 
+	// the insert query for the new comment	
+	$query = "INSERT INTO ".self::$table_name." VALUES(?,?,?,?,?)";
+	// prepare the new comment statement
+	if(!($stmt= $db->prepare($query))){
+		log_action(__CLASS__, " Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
+		return false;
+	} 
+	
+	// assign the parameters
+	$id = NULL;
+	$time = time();
+	
+	// bind the parameters
+	if(!$stmt->bind_param("iiisi",$id,$post_id,$_SESSION["id"],$comment,$time)){
+		log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
+         return false;
 		}
-		
-		
-       
-	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,".$_SESSION["id"].",'$comment',".time().") ";
-	
-	
-   $result = $db->query($query);
-	if(!$db->query($query))
-   {
-	   log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
-	   print j(["false" => "Please is not You but Us...Please try again. {$db->error}"]);
-	   return false;
-   }
+	// execute the statement
+	if(!$stmt->execute()){
+		log_action(__CLASS__,"  Query failed {$db->error} on line ".__LINE." in file ".__FILE__);
+		return false;
+	}
+	// return a new_comment_id  in case the id is to be used to delete the comment
+	if($stmt->insert_id == true){
+	  print j(["true" => "new_comment_$stmt->insert_id"]);
+ }else{
+	 log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
+	 print j(["false" => "Sorry please re-comment..."]);
+	 return false;
+ }   
   
-   return $db->insert_id;
- 
-
-}
+ }// add_view();
 
 
 

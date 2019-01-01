@@ -17,11 +17,13 @@ try {
 	// check to see if the request is an ajax one
     if (is_ajax() && is_request_post()) {
 		
+		global $db;
 		
 	 // check if there are files to be uploaded	
 	 $count = count($_FILES["file"]["name"]);
 	  if( $count > 0)
 	  {
+		  $_POST["caption"] = $db->real_escape_string(nl2br($_POST["caption"]));
 		// if(csrf_token_is_recent() && csrf_token_is_valid()){
               // check the length of the caption string        
         if(isset($_POST["caption"]) && !empty(trim($_POST["caption"])) && strlen($_POST["caption"]) > 4000){

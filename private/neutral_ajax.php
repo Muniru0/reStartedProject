@@ -10,21 +10,34 @@ function is_ajax(){
 }
 if(is_ajax()){
 
-if(isset($_POST["comment"]) && !empty(trim($_POST["comment"]))  && $_POST["add_comment"] == true){
+if($_POST["add_comment"] == true ){
+	    
+		global $db;
+		$_POST["comment"] = $db->real_escape_string(nl2br($_POST["comment"]));
+      // check if the comment is empty or set	  
+	  if(!isset($_POST["comment"]) || empty(trim($_POST["comment"]))){
+		  print j(["false" => "Please comment can't be empty"]);
+		  print j($_POST["comment"]);
+		  return false;
+	  }   
 	  
+	  $post_id = (int)$_POST["post_id"];
+	  
+	 // check if the comment is empty or set	  
+	  if(!isset($post_id) || $post_id < 1 || !is_int($post_id)){
+		  print j(["false" => "Please try again..."]);
+		  return false;
+	  }   
+	 
           $_SESSION["post_ids"] = [10];
-		  $post_id = (int)$_POST["post_id"];
+		  
 		 if(!in_array($post_id,$_SESSION["post_ids"],true))
 		 {
 		    print j(["false" => "Please try again"]); 
 		 }
 		 
-		 $view_id =  Views::add_views($post_id,$_POST["comment"]);	
-  		 
-if($view_id == true)
-{
-	  print j(["true" => "new_comment_$view_id"]);
-}   
+		  Views::add_views($post_id,$_POST["comment"]);	
+
   
 }elseif(isset($_POST["reaction"]) && !empty($_POST["reaction"])){
 
