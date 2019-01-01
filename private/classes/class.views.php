@@ -149,21 +149,25 @@ class Views extends DatabaseObject{
 	
 	if(!isset($post_id) || $post_id < 1 || !is_int($post_id))
 		{
+			
 			return "";
 			
+			 
 		}
 		
 		
        
 	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,".$_SESSION["id"].",'$comment',".time().") ";
+	
+	
    $result = $db->query($query);
-	if(!$result)
+	if(!$db->query($query))
    {
 	   log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
 	   print j(["false" => "Please is not You but Us...Please try again. {$db->error}"]);
 	   return false;
    }
-   
+  
    return $db->insert_id;
  
 

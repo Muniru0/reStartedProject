@@ -1,6 +1,2 @@
-  [30/Dec/2018 09:45:25 PM] : [Views] |  Query failed Unknown column 'sddeeh' in 'field list' on line 162 in file C:\wamp64\www\sample_app\private\classes\class.views.php
-[30/Dec/2018 09:48:55 PM] : [Views] |  Query failed Unknown column 'sddeehd' in 'field list' on line 162 in file C:\wamp64\www\sample_app\private\classes\class.views.php
-[30/Dec/2018 09:50:06 PM] : [Views] |  Query failed Unknown column 'sddeehdd' in 'field list' on line 162 in file C:\wamp64\www\sample_app\private\classes\class.views.php
-[30/Dec/2018 09:50:10 PM] : [Views] |  Query failed Unknown column 'sddeehddde' in 'field list' on line 162 in file C:\wamp64\www\sample_app\private\classes\class.views.php
-[30/Dec/2018 09:57:42 PM] : [Views] |  Query failed Unknown column 'sddeehdddeg' in 'field list' on line 162 in file C:\wamp64\www\sample_app\private\classes\class.views.php
-[30/Dec/2018 10:02:18 PM] : [Views] |  Query failed You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'accessible,1,'ddd',1546208008)' at line 5 on line 162 in file C:\wamp64\www\sample_app\private\classes\class.views.php
+[31/Dec/2018 11:40:40 AM] : [Views] |  Query failed You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's ',1546304439)' at line 1 on line 164 in file C:\wamp64\www\sample_app\private\classes\class.views.php
+[ 1/Jan/2019 01:00:39 AM] : [Views] |  Query failed You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's ',1546304543)' at line 1 on line 166 in file C:\wamp64\www\sample_app\private\classes\class.views.php
