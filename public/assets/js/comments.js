@@ -125,8 +125,8 @@
 				    	  console.log($("#view_template"));
 				    	  console.log("this is logging !!!!!");
 				    },5000);
-				  
-				   $(views_container).append($("#view_template"));  
+				   let temp_template = $("#view_template");
+				   $(views_container).append(temp_template);  
 			      // hide the post actions grand parent
 			 	  post_actions_gr_parent.style.display = "none";
 			 	  // re-enable the textarea
@@ -139,6 +139,8 @@
 				 alert(error);
 			 });
 
+			 
+			 
 	}
 		
 	}	
