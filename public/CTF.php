@@ -81,13 +81,39 @@ let value = document.getElementById("#textarea");
 </script>
 
 
-<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
-<input  type= "text" oninput="print_value(this) ;" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/>
+<!--<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
+<input  type= "text" oninput="print_value(this) ;" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/> -->
 <?
 
 
 ?>
     <?php
+	
+	$table_name = "test";
+	$query  = "INSERT INTO $table_name VALUES(NULL,'Muniru',23,'Coventry');";
+	$query  .= " SELECT * FROM $table_name WHERE school = 'Coventry' ";
+	$results_array = [];
+	$mysqli = $db;
+	if ($mysqli->multi_query($query)) {
+    do {
+        /* store first result set */
+        if ($result = $mysqli->store_result()) {
+            while ($row = $result->fetch_row()) {
+              print_r($row);
+            }
+            $result->free();
+        }
+        /* print divider */
+        if ($mysqli->more_results()) {
+           
+        }else{
+			break;
+		}
+    } while ($mysqli->next_result());
+}else{
+		echo $db->error;
+	}
+	
 	// $var = 0;
 	 // echo $var === 0 ?  "they are equal" : 	"not equal";
 	// echo   strtolower(strftime("%B, %e   &nbsp; &nbsp; %G  %i:%M:%S %P",1545903135));

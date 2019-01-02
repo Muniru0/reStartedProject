@@ -169,8 +169,29 @@ class Views extends DatabaseObject{
 
     global $db;
 	
+	$query  = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,".$_SESSION['id'].",$comment,".time().")";
+	$query .= "SELECT * FROM ".self::$table." WHERE ".self::$post_id."= $post_id";
+	$result = $db->multi_query($query);
+	$results_array = [];
 	
+	if($db->multi_query($query)){
+		do{
+		if($result = $db->store_result()){
+			if($row = $result->fetch_assoc()){
+				$results_array[] = $row;
+			}
+		}
+		
+	    $result->free();	  
 	
+	if($db->more_results()){
+		printf("-----------------\n");
+	}
+	
+		}while($db->next_result());	
+		
+	}
+	return;
 	// the insert query for the new comment	
 	$query = "INSERT INTO ".self::$table_name." VALUES(?,?,?,?,?)";
 	// prepare the new comment statement
