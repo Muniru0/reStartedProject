@@ -89,30 +89,33 @@ let value = document.getElementById("#textarea");
 ?>
     <?php
 	
-	// $table_name = "test";
-	// $query  = "INSERT INTO $table_name VALUES(NULL,'Muniru',23,'Coventry');";
-	// $query  .= " SELECT * FROM $table_name WHERE school = 'Coventry' ";
-	// $results_array = [];
-	// $mysqli = $db;
-	// if ($mysqli->multi_query($query)) {
-    // do {
-        // /* store first result set */
-        // if ($result = $mysqli->store_result()) {
-            // while ($row = $result->fetch_row()) {
-              // print_r($row);
-            // }
-            // $result->free();
-        // }
-        // /* print divider */
-        // if ($mysqli->more_results()) {
+	$table_name = "test";
+	 $sub_query = "');SELECT * FROM test ;";
+	 $sub_query = $db->real_escape_string($sub_query);
+	$query  = "INSERT INTO $table_name VALUES(NULL,'Muniru',23,' $sub_query";
+	//$query  .= " SELECT * FROM $table_name WHERE id = LAST_INSERT_ID()";
+	echo $query;
+	$results_array = [];
+	$mysqli = $db;
+	if ($mysqli->multi_query($query)) {
+    do {
+       // store first result set
+        if ($result = $mysqli->store_result()) {
+            while ($row = $result->fetch_row()) {
+              print_r($row);
+            }
+            $result->free();
+        }
+       // print divider
+        if ($mysqli->more_results()) {
            
-        // }else{
-			// break;
-		// }
-    // } while ($mysqli->next_result());
-// }else{
-		// echo $db->error;
-	// }
+        }else{
+			break;
+		}
+   } while ($mysqli->next_result());
+}else{
+		echo $db->error;
+	 }
 	
 	echo h("");
 	

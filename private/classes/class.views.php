@@ -169,29 +169,39 @@ class Views extends DatabaseObject{
 
     global $db;
 	
-	// $query  = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,".$_SESSION['id'].",$comment,".time().")";
-	// $query .= "SELECT * FROM ".self::$table." WHERE ".self::$post_id."= $post_id";
-	// $result = $db->multi_query($query);
-	// $results_array = [];
+	$post_id = $db->real_escape_string($post_id);
 	
-	// if($db->multi_query($query)){
-		// do{
-		// if($result = $db->store_result()){
-			// if($row = $result->fetch_assoc()){
-				// $results_array[] = $row;
-			// }
-		// }
+	
+	/* $query   = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,".$_SESSION['id'].",$comment,".time().");";
+	$query  .= "SELECT * FROM ".self::$table_name." WHERE ".self::$post_id."= $post_id && ".self::$table_name." = (SELECT LAST_INSERT_ID() FROM ".self::$table_name." LIMI 1);";
+	$query  .= "SELECT LAST_INSERT_ID() FROM ".self::$table_name;
+	
+	
+	$result = $db->multi_query($query);
+	$results_array = ;
+	
+	if($db->multi_query($query)){
+		do{
+		if($result = $db->store_result()){
+			if($row = $result->fetch_assoc()){
+				$results_array = $row;
+				 print j(["true" => "new_comment_$stmt->insert_id","comment" => $view_info]);
+			}
+		}
 		
-	    // $result->free();	  
+	    $result->free();	  
 	
-	// if($db->more_results()){
-		// printf("-----------------\n");
-	// }
-	
-		// }while($db->next_result());	
+	if($db->more_results()){
 		
-	// }
-	// return;
+	}else{
+		 break;
+	}
+	
+		}while($db->next_result());	
+		
+	}
+	return; */
+	
 	// the insert query for the new comment	
 	$query = "INSERT INTO ".self::$table_name." VALUES(?,?,?,?,?)";
 	// prepare the new comment statement
@@ -218,7 +228,7 @@ class Views extends DatabaseObject{
 	if($stmt->insert_id == true){
 		 
 		$view_info = self::get_view($post_id);
-         
+        
 		 print j(["true" => "new_comment_$stmt->insert_id","comment" => $view_info]);
  }else{
 	 log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);

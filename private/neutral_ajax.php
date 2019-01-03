@@ -13,7 +13,9 @@ if(is_ajax()){
 if($_POST["add_comment"] == true ){
 	    
 		global $db;
-		$_POST["comment"] = $db->real_escape_string(nl2br($_POST["comment"]));
+		
+		$_POST["comment"] = nl2br($_POST["comment"]);
+		
       // check if the comment is empty or set	  
 	  if(!isset($_POST["comment"]) || empty(trim($_POST["comment"]))){
 		  print j(["false" => "Please comment can't be empty"]);

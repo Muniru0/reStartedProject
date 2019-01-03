@@ -115,6 +115,7 @@
 	  		datatype:"html",
 			}).done(function(response){
 				   response = JSON.parse(response);
+				   console.log(response);
 				    let view_template = document.querySelector("#view_template");
 		                view_template = view_template.cloneNode(true);
                          view_template.id = response["true"];
