@@ -8,6 +8,7 @@
 	  
 	// on a view area change  
 	static view_area_change(element){
+		
 		 // set the viewBoxParent  
 		let commentBoxParent = $(element).parents()[2];
 		  // check to see if it has child nodes
@@ -119,7 +120,12 @@
 				    let view_template = document.querySelector("#view_template");
 		                view_template = view_template.cloneNode(true);
                          view_template.id = response["true"];
-		                
+		                let user = $(view_template).find(".ps-comment-user")[0];
+		                $(user).html(response["fullname"]);
+		               let time  =  $(view_template).find(".ps-js-autotime")[0];
+		               $(time).attr("title",response["comment"]["post_date"]);
+		              
+		                $(time).html(response["comment"]["comment_time"]);
 		               
 				    let view = $(view_template).find("p");
 				        view.html(response["comment"]["comment"]);

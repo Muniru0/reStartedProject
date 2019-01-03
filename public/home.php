@@ -3809,15 +3809,11 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <!--beginning of view template-->
 
 <div id="view_template" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935">
-	<div class="ps-avatar-comment">
-		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
-			<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="Patricia Currie avatar">
-		</a>
-	</div>
+	
 
 	<div class="ps-comment-body cstream-content">
 		<div class="ps-comment-message stream-comment-content">
-			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/demo/"><img src=" ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge" data-id="2"> Patricia Currie</a>
+			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/demo/">Patricia Currie</a>
 			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p><a href=" ://demo.peepso.com/profile/andrew/" title="Andrew Simmons">Andrew</a> yes! That's the first one we saw. But trust me, it's not nearly as empty as the gif shows. There's a lot of tourists. </p></div></span>
 		</div>
 
