@@ -123,7 +123,7 @@
 		                let user = $(view_template).find(".ps-comment-user")[0];
 		                $(user).html(response["fullname"]);
 		               let time  =  $(view_template).find(".ps-js-autotime")[0];
-		               $(time).attr("title",response["comment"]["post_date"]);
+		               $(time).attr("title",response["comment_date"]);
 		              
 		                $(time).html(response["comment"]["comment_time"]);
 		               

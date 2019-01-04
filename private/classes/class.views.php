@@ -228,9 +228,11 @@ class Views extends DatabaseObject{
 	if($stmt->insert_id == true){
 		 
 		$view_info = self::get_view($post_id);
-		$post_date  = strftime("%B, %e   &nbsp; &nbsp; %G  %i:%M:%S %P",$view_info["comment_time"]);
-          $view_info["comment_time"] = FetchPost::time_converter($view_info["comment_time"]);
-		 print j(["true" => "new_comment_$stmt->insert_id","comment" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"post_date" => $post_date]);
+	
+		$post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info["comment_time"]);
+    
+    $view_info["comment_time"] = FetchPost::time_converter($view_info["comment_time"]);
+		 print j(["true" => "new_comment_$stmt->insert_id","comment" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
  }else{
 	 log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
 	 print j(["false" => "Sorry please re-comment..."]);
