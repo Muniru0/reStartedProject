@@ -114,9 +114,9 @@
 			data: {comment:real_view,post_id : post_id,add_comment : true},
 			type: "POST",
 	  		datatype:"html",
-			}).done(function(response){
+			}).done(function(response){  console.log(response);
 				   response = JSON.parse(response);
-				   console.log(response);
+				 
 				    let view_template = document.querySelector("#view_template");
 		                view_template = view_template.cloneNode(true);
                          view_template.id = response["true"];
@@ -124,11 +124,11 @@
 		                $(user).html(response["fullname"]);
 		               let time  =  $(view_template).find(".ps-js-autotime")[0];
 		               $(time).attr("title",response["comment_date"]);
-		              
-		                $(time).html(response["comment"]["comment_time"]);
+		                
+		                $(time).html(response["comment_info"][4]);
 		               
 				    let view = $(view_template).find("p");
-				        view.html(response["comment"]["comment"]);
+				        view.html(response["comment_info"][3]);
 				   // find the views list
 				    let views_list_children = document.querySelector("#cmt-list-10").childNodes;  
 				    let views_container = views_list_children[1];

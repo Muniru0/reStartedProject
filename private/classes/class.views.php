@@ -142,7 +142,7 @@ class Views extends DatabaseObject{
    
   public static function get_view($post_id = 0){
 	  global $db;
-	  $db = DatabaseObject::db_connect();
+	 
 	  $post_id = (int)$post_id;
 	   if(!isset($post_id) || $post_id < 1 || !is_integer($post_id)){
 		 return false;
@@ -156,12 +156,17 @@ class Views extends DatabaseObject{
 		  log_action(__CLASS__," Query failed: {$db->error} on line ".__LINE__." in file ".__FILE__);
 	  }
 	  
-	  $record ;
-	  if($row = $result->fetch_assoc()){
-		$record = $row;
-	 }
+	  
+	   $record = [];
+	  if($row = $result->fetch_array()){
+		  for($x = 0;$x < 5 ; $x ++){
+			   $record[$x] = $row[$x];
+		  }
+		 
+return $record;
+	}
 	 
-	  return $record;
+	 
   }
    
  // add a new comment to the database
@@ -228,11 +233,11 @@ class Views extends DatabaseObject{
 	if($stmt->insert_id == true){
 		 
 		$view_info = self::get_view($post_id);
-	
-		$post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info["comment_time"]);
+	   
+		$post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info[4]);
     
-    $view_info["comment_time"] = FetchPost::time_converter($view_info["comment_time"]);
-		 print j(["true" => "new_comment_$stmt->insert_id","comment" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
+    $view_info[4] = FetchPost::time_converter($view_info[4]);
+		 print j(["true" => "new_comment_$stmt->insert_id","comment_info" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
  }else{
 	 log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
 	 print j(["false" => "Sorry please re-comment..."]);
