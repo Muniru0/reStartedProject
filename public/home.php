@@ -158,6 +158,9 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 <link rel="stylesheet" href="assets/css/dropzone.min.css">
 <link rel="stylesheet" href="assets/css/jquery-ui.css">
+ <script  type="text/javascript"  src="assets/js/jquery.js"></script>
+<script   type="text/javascript"  src="assets/js/comments.js">  </script> 
+	
 <style>
         .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon{
           border-style:none;
@@ -319,6 +322,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		oField.style.height = oField.scrollHeight + "px";
 	}
 }
+
+
   </script>
     <div class="top__button" style="display: none;">
       <a class="btn btn--red" href="#top"><svg class="svg-inline--fa fa-angle-up fa-w-10" aria-hidden="true" data-prefix="fas" data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"></path></svg><!-- <i class="fas fa-angle-up"></i> --></a>
@@ -2094,7 +2099,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_reply_field_change(this);" ="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_reply_field_change(935,this);" placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 		<!--		<div class="ps-commentbox__addons ps-js-addons">
 		
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
@@ -2131,7 +2136,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			</div>
 			<div class="ps-comment-actions" style="display:none;">
 				<button onclick="return comment.cancel_reply(493,this);" class="ps-btn ps-button-cancel">Clear</button>
-				<button onclick="return comment.reply_comment(493, this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
+				<button onclick="return comment.reply_comment(493, this);" class="ps-btn ps-btn-primary ps-button-action" >Post</button>
 			</div>
 		</div>
 	</div>
@@ -3366,7 +3371,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="494" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this);  activity.on_commentbox_change(this);"  placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="494" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this);  activity.on_commentbox_change(935,this);"  placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -3857,7 +3862,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
       <textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; padding: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; transition: none; height: 0px !important; min-height: 0px !important; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; word-spacing: 0px; text-indent: 0px; line-height: 18px; width: 720.391px;" class="autosizejs" id="autosizejs"></textarea>
       <div class="ad_unit ad-unit text-ad text_ad pub_300x250" style="width: 1px !important; height: 1px !important; position: absolute !important; left: 0px !important; top: 0px !important; overflow: hidden !important;">&nbsp;</div>
      <img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" />
-    <script  type="text/javascript"  src="assets/js/jquery.js"></script>
+   
     <script  type="text/javascript"  src="assets/js/bootstrap.bundle.min.js">  </script>
     <script  type="text/javascript"  src="assets/js/dropzone.js">  </script>
 
@@ -3865,7 +3870,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
             async defer></script>
     <script   type="text/javascript"  src="assets/js/jquery-ui.min.js">  </script>
     <script   type="text/javascript"  src="assets/js/su_post.js"></script> 
-	<script   type="text/javascript"  src="assets/js/comments.js">  </script> 
+	
   
     <script   type="text/javascript"  src="assets/js/script.js"></script>
     <!-- showing location in textarea -->

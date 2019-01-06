@@ -10,10 +10,10 @@
 
 	  static nodes_and_indeces(element){
 
-	  	 for(int index = 0; index < element.length ; index++){
-		    	console.log(i);
+	  	for(var index = 0; index < element.length ; index++){
+		    	console.log(index);
 		    	console.log(element[index]);
-		    } 
+		    }  
 	  }
 
 	  
@@ -310,18 +310,34 @@
 	// Comment replys section
 	
 	// if the reply field has a change
-	static on_reply_field_change(element){
-		let root_parent =$(element).parents()[2];
+	static on_reply_field_change(comment_Id,element){
+		   if(element.value.length > 4000){
+		  	 	alert("Please MAX characters for a comment is 4000.");
+		  	 return ;
+		  }
+
+		let root_parent = $(element).parents()[2];
+		    console.log(root_parent);
 		    let children = root_parent.childNodes;
-		    comment.nodes_and_indeces(children);
-		   
-	}
+		   // comment.nodes_and_indeces(children);
+		   let post_actions_parent = children[5]; 
+		   $(post_actions_parent).show();
+		   let post_actions = post_actions_parent.childNodes;
+// 		       comment.nodes_and_indeces(post_actions);
+		    // show the parent the post actions 
+		   $(post_actions[3]).show();
+
+         }
+		 
+	
 	
 	// reply to a comment
 	static reply_comment(){}
 	
 	// cancel reply 
-	static cancel_reply(){}
+	static cancel_reply(element){
+		$()
+	}
 	
 	// delete the comment reply
 	static delete_reply(){}
