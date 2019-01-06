@@ -10,7 +10,7 @@ function is_ajax(){
 }
 if(is_ajax()){
 
-if($_POST["add_comment"] == true ){
+if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
 	    
 		global $db;
 		
@@ -23,12 +23,14 @@ if($_POST["add_comment"] == true ){
 		  return false;
 	  }   
 	  
+	 // check the length of the comment
 	  if(!isset($_POST["comment"]) || (strlen($_POST["comment"]) > 4000)){
 		  
 		  print j(["false" => "Please the maximum number of characters for a comment is 4000"]);
 		  return false;
 	  }
 	  
+	  // cast/convert the post_id into an integer
 	  $post_id = (int)$_POST["post_id"];
 	  
 	 // check if the comment is empty or set	  
@@ -37,8 +39,10 @@ if($_POST["add_comment"] == true ){
 		  return false;
 	  }   
 	 
+	      // just for debugging purposes
           $_SESSION["post_ids"] = [10];
 		  
+		  // check to see if the post_id is in the post_ids array
 		 if(!in_array($post_id,$_SESSION["post_ids"],true))
 		 {
 		    print j(["false" => "Please try again"]); 
@@ -47,6 +51,85 @@ if($_POST["add_comment"] == true ){
 		  Views::add_views($post_id,$_POST["comment"]);	
 
   
+}elseif(isset($_POST["delete_comment"]) ){
+	 
+	   if($_POST["delete_comment"] != "true"){
+		   
+		   print j(["false" => "Invalid request"]);
+		   return false;
+	   }
+
+	 $post_id    = (int) $_POST["post_id"];
+	 $comment_id = (int) $_POST["comment_id"];
+	 
+	 // check if the comment is empty or set	  
+	  if(!isset($post_id) || $post_id < 1 || !is_int($post_id)  &&
+		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
+		  print j(["false" => "Operation failed, Please try again..."]);
+		  return false;
+	  }   
+	 
+		 
+// check to see if the post id is in the post ids array	  
+		 if(!in_array($post_id,$_SESSION["posts_ids"],true) ||
+   		    !in_array($comment_id,$_SESSION["comments_ids"],true))
+		 {
+		    print j(["false" => "Operation failed, Please try again..."]); 
+		 }
+		 
+	// delete the view from the database			
+	 Views::delete_view($post_id,$_POST["comment_id"]);
+	
+	
+	
+}elseif(isset($_POST["edit_comment"])){
+	
+	
+	
+	  if($_POST["edit_comment"] != "true"){
+		   
+		   print j(["false" => "Invalid request"]);
+		   return false;
+	   }
+	   
+	   	$_POST["comment"] = nl2br($_POST["comment"]);
+		
+      // check if the comment is empty or set	  
+	  if(!isset($_POST["comment"]) || empty(trim($_POST["comment"]))){
+		  print j(["false" => "Please comment can't be empty"]);
+		  print j($_POST["comment"]);
+		  return false;
+	  }   
+	  
+	 // check the length of the comment
+	  if(!isset($_POST["comment"]) || (strlen($_POST["comment"]) > 4000)){
+		  
+		  print j(["false" => "Please the maximum number of characters for a comment is 4000"]);
+		  return false;
+	  }
+
+	 $post_id    = (int) $_POST["post_id"];
+	 $comment_id = (int) $_POST["comment_id"];
+	 
+	 // check if the comment is empty or set	  
+	  if(!isset($post_id) || $post_id < 1 || !is_int($post_id)  &&
+		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
+		  print j(["false" => "Operation failed, Please try again..."]);
+		  return false;
+	  }   
+   
+// check to see if the post id is in the post ids array	  
+		 if(!in_array($post_id,$_SESSION["posts_ids"],true) ||
+   		    !in_array($comment_id,$_SESSION["comments_ids"],true))
+		 {
+		    print j(["false" => "Operation failed, Please try again..."]); 
+		 }
+		 
+	// delete the view from the database			
+	 Views::edit_view($post_id,$_POST["comment_id"]);
+
+
+	
 }elseif(isset($_POST["reaction"]) && !empty($_POST["reaction"])){
 
 //record reaction for a post

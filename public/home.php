@@ -1,13 +1,14 @@
 <?php
  require_once("../private/initialize.php");
 Session::before_every_protected_page();
+//Session::after_successful_logout();
 
 
 $label   = "";
 $message = "";
 
 
-$user = new user();
+//$user = new user();
 
 
 //echo user::$firstName;
@@ -210,6 +211,10 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
     .ui-dialog > .ui-widget-header{
         border: 0px;
     }
+	
+	.center-delete-text {
+		padding : 1.5em 1em;
+	}
     /*.ui-dialog-buttonset > .ui-button:hover, .ui-button:focus {*/
         /*border: 1px solid #cccccc;*/
         /*background-color: #cccccc;*/
@@ -992,7 +997,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
      <label for="other">Other</label>
    </div>
       <div id="success-dialog" title="Upload Success" style="display:none;">Please Your post is currently under going verification.It will appear in the stream very soon.<br /><b>(this may take up to 5 minutes).</b></div>
-<div id="error-dialog" title="UPLOAD ERROR!!!" style="display:none;">PLEASE TRY AGAIN.!!!</div>
+<div id="error-dialog" title="Error" style="display:none;">Please try again</div>
        </fieldset>
 
     <div id="ps-postbox-status" class="ps-postbox-content">
@@ -2070,10 +2075,10 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			<div class="ps-comment-links stream-actions" data-type="stream-action">
 				<span class="ps-stream-status-action ps-stream-status-action">
 					<nav class="ps-stream-status-action ps-stream-status-action">
-<a data-stream-id="935" onclick="activity.comment_action_like(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
-<a data-stream-id="935" onclick="activity.comment_action_reply(497, 935, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
-<a data-stream-id="935" onclick="activity.comment_action_edit(935, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
-<a data-stream-id="935" onclick="activity.comment_action_delete(935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+<a data-stream-id="935" onclick="comment.like_comment(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
+<a data-stream-id="935" onclick="comment.reply_comment(10, 935, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="935" onclick="comment.edit_comment(10,935,this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="935" onclick="comment.delete_comment(10,935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
 </nav>
 				</span>
 			</div>
@@ -2082,14 +2087,16 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
 
 	</div>
-
-	<div id="act-new-comment-493"  onkeyup="autoGrow(this);" onkeyup= "autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display:none;">
+<div id="delete-dialog" title="Delete Comment" style="display:none;">Are you sure you want to delete this comment</div>
+	
+	<div id="act-new-comment-493"  onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display:block;">
 		<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this); activity.on_commentbox_change(this);"  placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
-				<div class="ps-commentbox__addons ps-js-addons">
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_reply_field_change(this);" ="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+		<!--		<div class="ps-commentbox__addons ps-js-addons">
+		
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
 	<img class="ps-js-img" alt="photo" src="">
@@ -2107,14 +2114,15 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	</div>
 
 	<div class="ps-commentbox__addon-remove ps-js-remove">
-		<input type="hidden" id="_wpnonce_remove_temp_comment_photos" name="_wpnonce_remove_temp_comment_photos" value="3ca8a9ab47"><input type="hidden" name="_wp_http_referer" value="/peepsoajax/activity.show_posts_per_page">		<i class="ps-icon-remove"></i>
+				<i class="ps-icon-remove"></i>
 	</div>
 </div>
 </div>
 <div class="ps-commentbox-actions">
 <a onclick="peepso.photos.comment_attach_photo(this); return false;" title="Upload photos" href="#" class="ps-postbox__menu-item ps-icon-camera"><span></span></a>
 <a onclick="return false;" title="Send gif" href="#" class="ps-list-item ps-js-comment-giphy ps-icon-giphy"></a>
-</div>
+</div> -->
+		
 		</div>
 		<div class="ps-comment-send cstream-form-submit" style="display:none;">
 			<div class="ps-comment-loading" style="display:none;">
@@ -2122,8 +2130,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				<div> </div>
 			</div>
 			<div class="ps-comment-actions" style="display:none;">
-				<button onclick="return activity.comment_cancel(493);" class="ps-btn ps-button-cancel">Clear</button>
-				<button onclick="return activity.comment_save(493, this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
+				<button onclick="return comment.cancel_reply(493,this);" class="ps-btn ps-button-cancel">Clear</button>
+				<button onclick="return comment.reply_comment(493, this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
 			</div>
 		</div>
 	</div>
@@ -2134,7 +2142,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 						<div id="act-new-comment-10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
 			
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="view_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return view.autoGrow(this); " onkeyup = "view.view_area_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." style="overflow:hidden;"></textarea></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="comment_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return comment.autoGrow(this); " onkeypress = "comment.comment_field_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." style="overflow:hidden;"></textarea></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2168,8 +2176,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 					
 				</div>
 				<div class="ps-comment-actions" style="display:none;">
-					<button onclick="return view.cancel_view(10,this);" class="ps-btn ps-button-cancel">Clear</button>
-					<button onclick="return view.post_view(10,this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
+					<button onclick="return comment.cancel_comment(10,this);" class="ps-btn ps-button-cancel">Clear</button>
+					<button onclick="return comment.post_comment(10,this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
 				</div>
 			</div>
 		</div>
@@ -3808,7 +3816,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 <!--beginning of view template-->
 
-<div id="view_template" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935">
+<div id="comment_template" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935">
 	
 
 	<div class="ps-comment-body cstream-content">

@@ -176,37 +176,6 @@ return $record;
 	
 	$post_id = $db->real_escape_string($post_id);
 	
-	
-	/* $query   = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,".$_SESSION['id'].",$comment,".time().");";
-	$query  .= "SELECT * FROM ".self::$table_name." WHERE ".self::$post_id."= $post_id && ".self::$table_name." = (SELECT LAST_INSERT_ID() FROM ".self::$table_name." LIMI 1);";
-	$query  .= "SELECT LAST_INSERT_ID() FROM ".self::$table_name;
-	
-	
-	$result = $db->multi_query($query);
-	$results_array = ;
-	
-	if($db->multi_query($query)){
-		do{
-		if($result = $db->store_result()){
-			if($row = $result->fetch_assoc()){
-				$results_array = $row;
-				 print j(["true" => "new_comment_$stmt->insert_id","comment" => $view_info]);
-			}
-		}
-		
-	    $result->free();	  
-	
-	if($db->more_results()){
-		
-	}else{
-		 break;
-	}
-	
-		}while($db->next_result());	
-		
-	}
-	return; */
-	
 	// the insert query for the new comment	
 	$query = "INSERT INTO ".self::$table_name." VALUES(?,?,?,?,?)";
 	// prepare the new comment statement
@@ -233,9 +202,9 @@ return $record;
 	if($stmt->insert_id == true){
 		 
 		$view_info = self::get_view($post_id);
-	   
-		$post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info[4]);
-    
+	    $post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info[4]);
+		print_r($view_info);
+        $_SESSION["comment_ids"][] = $view_info[0];
     $view_info[4] = FetchPost::time_converter($view_info[4]);
 		 print j(["true" => "new_comment_$stmt->insert_id","comment_info" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
  }else{
@@ -294,32 +263,30 @@ return $stmt->get_result();
 
 
 
-public static function edit_view($view_id = null,$post_id = null,$link_type = null,$view){
+public static function edit_view($comment_id = 0,$post_id = 0){
 
 
 	global $db;
  
- $time = time();
- $info = json_encode([$view_id,$post_id,$link_type,$view,$time]);
 
-	$query = "CALL edit_view(?)";
+	$query = "UPDATE views SET comment = $comment WHERE id = $comment_id && post_id = $post_id && commentor_id=".$_SESSION["id"];
 
 
-$stmt = self::S_query($query);
+$stmt = self::prepare($query);
 
 	if(!$stmt){
 
-  die("Preparation failed: edit_view() Views|| ".$db->error);
+  log_action(__CLASS__,"Preparation failed: edit_view() Views|| ".$db->error);
 	}
 
 	if(!$stmt->bind_param("s",$info)){
 
-  die("binding failed: edit_view() Views || ".$stmt->error);
+  log_action(__CLASS__,"binding failed: edit_view() Views || ".$stmt->error);
 	}
 
 	if(!$stmt->execute()){
 
-   die("Execution failed: edit_view() Views || ".$stmt->error);
+   log_action(__CLASS__,"Execution failed: edit_view() Views || ".$stmt->error);
 	}
 
 }
@@ -371,6 +338,22 @@ if($stmt->fetch()){
 }
 
 
+
+public static function delete_view ($post_id ,$comment_id){
+	
+	global $db;
+	
+    $post_id     = $db->real_escape_string($post_id);
+    $comment_id = $db->real_escape_string($comment_id);	
+	
+	$query = "DELETE FROM views WHERE id= $comment_id && post_id = $post_id && commentor_id = ".$_SESSION["id"];
+    if($db->query($query) && $db->affected_rows > 0){
+		
+		print j(["true"]);
+	}else{
+		print j(["false" => "Operation failed Please try again"]);
+	}
+}
 }
 
 

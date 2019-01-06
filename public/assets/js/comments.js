@@ -1,4 +1,4 @@
-  class view{
+  class comment{
 	  
 	 // define the constructor of the class
 	  constructor (){
@@ -6,10 +6,21 @@
 		 
 	  }
 	  
-	// on a view area change  
-	static view_area_change(element){
-		
-		 // set the viewBoxParent  
+	  // just for debugging
+
+	  static nodes_and_indeces(element){
+
+	  	 for(int index = 0; index < element.length ; index++){
+		    	console.log(i);
+		    	console.log(element[index]);
+		    } 
+	  }
+
+	  
+
+	// on a comment area change  
+	static comment_field_change(element){
+		// set the commentBoxParent  
 		let commentBoxParent = $(element).parents()[2];
 		  // check to see if it has child nodes
 		  if (commentBoxParent.hasChildNodes()) {
@@ -25,12 +36,13 @@
 	
 		 // show the parent
         $(post_actions_parent).show();
+        
 		// show the post actions themselves
 		$(post_actions_parent.childNodes).show();
 		// enable the post button
 		post_actions_parent.childNodes[3].disabled = false;
 	
-		 if(element.value.length  > 4000){
+		 if(element.value.length  > 3999){
            	alert("Please MAX characters for a comment is 4000.");
           // hide the post actions grand parents 	
         $(post_actions_gr_parent).hide();
@@ -42,7 +54,7 @@
            }
 		
   }
-	  }// view_area_change();
+	  }// comment_area_change();
 	  
 	// auto grow a text field
 	static  autoGrow(oField){
@@ -56,22 +68,22 @@
 	  
 	  
 	  
-	  // clear/cancel a view
-	static cancel_view(id,cancel_button){
+	  // clear/cancel a comment
+	static cancel_comment(id,cancel_button){
 		
 		if(id != null || id != undefined){
 		  // set the textarea
-	     let view_area = document.querySelector("#view_area_" +id);
+	     let comment_area = document.querySelector("#comment_area_" +id);
 		 
 		 // hide the loading gif if it is present
 		  let post_actions_gr_parent = $(cancel_button).parents()[1];
 		let loadinGif = post_actions_gr_parent.childNodes[1];
 		    loadinGif.style.display = "none";
-		if(view_area != null && view_area != undefined){
+		if(comment_area != null && comment_area != undefined){
 			   // reset the text of the textarea 
-			   view_area.value = "";
+			   comment_area.value = "";
 			   // reset the height of the textarea
-			 view_area.style.height = "35px";
+			 comment_area.style.height = "35px";
 			 // set the parent of the cancel and post buttons
 		let parent = cancel_button.parentNode;
 			 // hide the parent of both the cancel and post button
@@ -90,55 +102,58 @@
 		 }
 	}
 	
-	// post a view
-    static post_view(post_id,post_button){
+	// post a comment
+    static write_comment(post_id,post_button){
 		
 		// set the text area
-		let view_area = document.querySelector("#view_area_" +post_id);
-		view_area.disabled = true;
-		// get the view from the text area
-		let real_view = view_area.value;
-		// reset the view_area
-		view_area.value = "";  
+		let comment_area = document.querySelector("#comment_area_" +post_id);
+		comment_area.disabled = true;
+		// get the comment from the text area
+		let comment_value = comment_area.value;
+		// reset the comment_area
+		comment_area.value = "";  
 		// reset the height of the textarea
-		view_area.style.height = "35px";
+		comment_area.style.height = "35px";
 		$(post_button).hide();
 		$(post_button.previousSibling.previousSibling).hide();
 		 let post_actions_gr_parent = $(post_button).parents()[1];
 		let loadinGif = post_actions_gr_parent.childNodes[1];
 		    loadinGif.style.display = "block";
 
-        if($.trim(real_view) != ""){
+        if($.trim(comment_value) != ""){
+			
+				 
+			 //  post a new comment
 	  	$.ajax({
 	  		 url: "../private/neutral_ajax.php",
-			data: {comment:real_view,post_id : post_id,add_comment : true},
+			data: {comment:comment_value,post_id : post_id,add_comment : true},
 			type: "POST",
 	  		datatype:"html",
-			}).done(function(response){  console.log(response);
+			}).done(function(response){ 
 				   response = JSON.parse(response);
 				 
-				    let view_template = document.querySelector("#view_template");
-		                view_template = view_template.cloneNode(true);
-                         view_template.id = response["true"];
-		                let user = $(view_template).find(".ps-comment-user")[0];
+				    let comment_template = document.querySelector("#comment_template");
+		                comment_template = comment_template.cloneNode(true);
+                         comment_template.id = response["true"];
+		                let user = $(comment_template).find(".ps-comment-user")[0];
 		                $(user).html(response["fullname"]);
-		               let time  =  $(view_template).find(".ps-js-autotime")[0];
+		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
 		               $(time).attr("title",response["comment_date"]);
 		                
 		                $(time).html(response["comment_info"][4]);
 		               
-				    let view = $(view_template).find("p");
-				        view.html(response["comment_info"][3]);
-				   // find the views list
-				    let views_list_children = document.querySelector("#cmt-list-10").childNodes;  
-				    let views_container = views_list_children[1];
+				    let comment = $(comment_template).find("p");
+				        comment.html(response["comment_info"][3]);
+				   // find the comments list
+				    let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
+				    let comments_container = comments_list_children[1];
 				    
-				    // append the view to the views_container 
-				 $(views_container).append(view_template);  
+				    // append the comment to the comments_container 
+				 $(comments_container).append(comment_template);  
 			      // hide the post actions grand parent
 			 	  post_actions_gr_parent.style.display = "none";
 			 	  // re-enable the textarea
-			 	  view_area.disabled = false;  
+			 	  comment_area.disabled = false;  
 			 	  // hide the loading gif
 		           loadinGif.style.display = "none";
 				  
@@ -148,13 +163,174 @@
 			 });
 
 			 
+			
 			 
 	}
 		
 	}	
 	
+
+	static delete_comment(post_Id,comment_Id){
+
+		 $("#delete-dialog").dialog({
+                       
+					    classes :{
+							"ui-dialog" : "center-delete-text",
+							
+						},
+                        show: {effect: "scale", duration: 50},
+                        hide: {effect: "fadeOut", duration: 50},
+						title: "Delete Comment",
+                        draggable: false,
+						width: 350,
+                        height: 150,
+                        maxHeight: 100,
+                        minHeight: 100,
+                        modal: true,
+                        minWidth: 200,
+                        resizable: false,
+                        closeOnEscape: true,
+                        buttons: [
+                            {
+                                text: "Cancel",
+                                click: function () {
+                                    $(this).dialog("close");
+									console.log("canceled the deletion of the comment");
+                                }
+
+                            },
+							  {
+                                text: "Delete",
+                                click: function () {
+                                    $(this).dialog("close");
+                                    
+							//validate the comment id
+								if(comment_Id == null || 
+								comment_Id == 0 ||
+								comment_Id == undefined ||
+								comment_Id == NaN ||
+								comment_Id == false){
+								return false;	
+								}
+								// hide the comment until the response from the server is positive
+								let hidden_comment = document.querySelector("#comment-item-" + comment_Id);
+								hidden_comment.style.display = "none";
+							
+								$.ajax({
+									url      : "../private/neutral_ajax.php",
+									type     : "POST",
+									data     : {post_id : post_Id,comment_id :comment_Id,delete_comment : true},
+									datatype : "html"
+								}).done(function(response){
+									 response = JSON.parse(response);
+									
+									
+							    if(response[0] == "true"){
+
+							    	//now you can remove the comment from the dom
+							    	hidden_comment.remove();
+							    	
+							    }else{
+							    	hidden_comment.style.display = "block";
+							    	alert(response["false"]);
+							    	}
+								}).fail(function(error){
+									 alert(error);
+								});// end of ajax request
+								
+                                }// click : function();
+
+                            }// button delete
+                        ]// buttons of ui-dialog
+                    });// dialog instantiation
+
+                    $('.ui-dialog-titlebar').addClass("error-titlebar");
+                    $(".ui-dialog-title").addClass("error-title");
+                  $("#error-dialog").show();
+		
+		
+
+
+	}
 	
-}
+
+	static edit_comment(post_Id,comment_Id,element){
+		
+		         
+		//validate the comment id
+		if(comment_Id == null || 
+		comment_Id == 0 ||
+		comment_Id == undefined ||
+		comment_Id == NaN ||
+		comment_Id == false){
+			
+		return false;	
+		}
+		
+		let comment_div = document.querySelector("#comment-item-" + comment_Id);
+		 let comment_pargh = $(comment_div).find("p")[0];
+		
+		  let new_comment = $(comment_pargh).html();
+		  
+		  $("#comment_area_" + post_Id).val(new_comment);
+		 let new_event = new Event('input',{'bubbles': true, cancelable: true});
+		     document.querySelector("#comment_area_" + post_Id).dispatchEvent(new_event);
+
+		 document.querySelector("#comment_area_" + post_Id).oninput = function(){
+				   comment.comment_field_change("#comment_area_" + post_Id);
+				   
+			   }; 
+		     
+		       return;
+		     
+		$.ajax({
+		url      : "../private/neutral_ajax.php",
+		type     : "POST",
+		data     : {post_id : post_Id,comment_id :comment_Id,comment: new_comment,edit_comment : true},
+		datatype : "html"
+		}).done(function(response){
+		response = JSON.parse(response);
+		if(response["true"]){
+			 $(comment_pargh).html(new_comment);
+        // change the html of the comment
+		}else{
+		
+	alert(response["false"]);
+		}
+		  }).fail(function(error){
+		 alert(error);
+		 });
+								
+		
+		
+	}
+	
+	
+	
+	// Comment replys section
+	
+	// if the reply field has a change
+	static on_reply_field_change(element){
+		let root_parent =$(element).parents()[2];
+		    let children = root_parent.childNodes;
+		    comment.nodes_and_indeces(children);
+		   
+	}
+	
+	// reply to a comment
+	static reply_comment(){}
+	
+	// cancel reply 
+	static cancel_reply(){}
+	
+	// delete the comment reply
+	static delete_reply(){}
+	
+	// edit the comment reply
+	static edit_reply(){}
+	
+	
+	}
   
 
 

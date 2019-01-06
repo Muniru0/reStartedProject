@@ -134,7 +134,7 @@ require_once(PRIVATE_DIR."initialize.php");
  public static function after_successful_logout() {
 	if (session_status() === PHP_SESSION_ACTIVE) {
 		$_SESSION['logged_in'] = false;
-	end_session();
+self::end_session();
 	}
 
 
