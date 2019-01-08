@@ -2099,11 +2099,10 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-<<<<<<< HEAD
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_reply_field_change(935,this);" placeholder="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
-=======
+
+			
 			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_text_field_change(this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
->>>>>>> development
+
 		<!--		<div class="ps-commentbox__addons ps-js-addons">
 		
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
@@ -3852,7 +3851,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <a data-stream-id="935" onclick="activity.comment_action_like(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
 <a data-stream-id="935" onclick="activity.comment_action_reply(497, 935, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
 <a data-stream-id="935" onclick="activity.comment_action_edit(935, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
-<a data-stream-id="935" onclick="activity.comment_action_delete(935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+<a data-stream-id="935" onclick="comment.delete_comment(); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
 </nav>
 				</span>
 			</div>
