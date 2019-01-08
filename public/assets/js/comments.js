@@ -20,19 +20,7 @@
 
 
 	static on_text_field_change(element){
-
-     let root = $("#comment_template")[0];
-
-let second  =  $(root).find(".actaction-delete")[0];
-console.log(second);
-
-
-
-
-
-
-
-		return;
+	
 		// set the root parent of the element
 		let rootParent ;
 		if($(element).parents()[2]){
@@ -183,9 +171,23 @@ console.log(second);
 		                
 		                $(time).html(response["comment_info"][4]);
 		               
+		               // set the text of the comment
 				    let comment = $(comment_template).find("p");
 				        comment.html(response["comment_info"][3]);
-				   // find the comments list
+				        // set the comment template 
+		   let commentTemplate;
+		  if(commentTemplate != undefined && $("#comment_template")[0]){
+		commentTemplate = $("#comment_template")[0];
+	  }
+
+
+   // set the delete variable
+   let deleteLink;
+      if(deleteLink != undefined &&  $(root).find(".actaction-delete")[0]){
+  	deleteLink = $("#comment_template")[0];
+  	$(deleteLink).attr("onclick","comment.delete_comment("+ response["comment_info"][0] +","+ response["comment_info"][1] +"); return false;");
+  }                 
+                 // find the comments list
 				    let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
 				    let comments_container = comments_list_children[1];
 				    
