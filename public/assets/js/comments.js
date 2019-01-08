@@ -6,54 +6,70 @@
 		 
 	  }
 	  
-	  // just for debugging
+	// just for debugging
+    static nodes_and_indeces(element){
 
-	  static nodes_and_indeces(element){
-
-	  	 for(int index = 0; index < element.length ; index++){
+	  	 for(var index = 0; index < element.length ; index++){
 		    	console.log(i);
 		    	console.log(element[index]);
 		    } 
 	  }
 
-	  
-
 	// on a comment area change  
-	static comment_field_change(element){
-		// set the commentBoxParent  
-		let commentBoxParent = $(element).parents()[2];
-		  // check to see if it has child nodes
-		  if (commentBoxParent.hasChildNodes()) {
-		// set the children to a variable	  
-        let  children = commentBoxParent.childNodes;
-         // out of the children set the post actions grand parent. children includes loading gif, clear and post button
-        let post_actions_gr_parent = children[3]
-		 // show the post actions grand parent
-        $(post_actions_gr_parent).show();
+	static on_text_field_change(element){
+
+     let root = $("#comment_template")[0];
+
+let second  =  $(root).find(".actaction-delete")[0];
+console.log(second);
+
+
+
+
+
+
+
+		return;
+		// set the root parent of the element
+		let rootParent ;
+		if($(element).parents()[2]){
+			rootParent = $(element).parents()[2];
+		} 
 		
-		// set the post actions parent
-		let post_actions_parent = post_actions_gr_parent.childNodes[3];
-	
-		 // show the parent
-        $(post_actions_parent).show();
+		// set the parent of the event element
+       let parent ; 
+        if($(rootParent).find(".ps-comment-send")){
+                parent  =  $(rootParent).find(".ps-comment-send")[0];
+                // show the parent of the psot actions buttons
+                $(parent).show();
+               
+              
+             }
+
+      //  set the post actions buttons
+        let postActionWrapper ;
+        if(parent.hasChildNodes() &&  $(parent).find(".ps-comment-actions")[0]){
+        	  postActionWrapper = $(parent).find(".ps-comment-actions")[0];
+  
+        $(postActionWrapper).show();
         
-		// show the post actions themselves
-		$(post_actions_parent.childNodes).show();
-		// enable the post button
-		post_actions_parent.childNodes[3].disabled = false;
-	
-		 if(element.value.length  > 3999){
+        	 
+        	
+       }
+
+
+
+	 if(element.value.length  > 3999){
+
+	 	// hide the parent element
+	 	$(parent).hide();
+	 	// hide the post actions Wrapper
+	 	$(postActionWrapper).hide()
            	alert("Please MAX characters for a comment is 4000.");
-          // hide the post actions grand parents 	
-        $(post_actions_gr_parent).hide();
-		  // hide the parent
-        $(post_actions_parent).hide();
-		// hide the post actions themselves
-		$(post_actions_parent.childNodes).hide();
-           	
-           }
+      
+      }
 		
-  }
+ // }
 	  }// comment_area_change();
 	  
 	// auto grow a text field
@@ -66,11 +82,8 @@
 	}
 	  }// autGrow();
 	  
-	  
-	  
-	  // clear/cancel a comment
+	// clear/cancel a comment
 	static cancel_comment(id,cancel_button){
-		
 		if(id != null || id != undefined){
 		  // set the textarea
 	     let comment_area = document.querySelector("#comment_area_" +id);
@@ -84,43 +97,67 @@
 			   comment_area.value = "";
 			   // reset the height of the textarea
 			 comment_area.style.height = "35px";
-			 // set the parent of the cancel and post buttons
-		let parent = cancel_button.parentNode;
-			 // hide the parent of both the cancel and post button
-			   parent.parentNode.style.display = "none";
-			   // hide the cancel button
-			  $(cancel_button).hide();
-			  // set the post button
-		let post_button = cancel_button.nextSibling.nextSibling;
-			// hide the post button
-			$(post_button).hide();
+		    // define the temporary variable for the grandParent
+			let grandParent;
+
+        if($(cancel_button).parents()[1]){
 			
+			grandParent = $(cancel_button).parents()[1];
+			$(grandParent).hide();
+		}		   
+		// define the temporary variable for the parent 
+	     let parent;
+		if($(grandParent).find(".ps-comment-actions")){
+			let parent = $(grandParent).find(".ps-comment-actions")[0];
+			$(parent).hide();
+		}
 
 			 
 
-		   }
+		} 
 		 }
-	}
+	}//cancel_comment();
 	
 	// post a comment
-    static write_comment(post_id,post_button){
+    static post_comment(post_id,post_button){
 		
 		// set the text area
 		let comment_area = document.querySelector("#comment_area_" +post_id);
 		comment_area.disabled = true;
 		// get the comment from the text area
 		let comment_value = comment_area.value;
+   // return fast if the comment is an empty string	
+	if($.trim(comment_value) === ""){	
+     return ;
+	}
 		// reset the comment_area
 		comment_area.value = "";  
 		// reset the height of the textarea
 		comment_area.style.height = "35px";
-		$(post_button).hide();
-		$(post_button.previousSibling.previousSibling).hide();
-		 let post_actions_gr_parent = $(post_button).parents()[1];
-		let loadinGif = post_actions_gr_parent.childNodes[1];
-		    loadinGif.style.display = "block";
+		
+		// set the grandParent of the post actions
+		let grandParent;
 
-        if($.trim(comment_value) != ""){
+        if($(post_button).parents()[1]){
+			
+			grandParent = $(post_button).parents()[1];
+		// show the grandParent of the post actions
+			$(grandParent).hide();
+		}	
+		
+		// define the temporary variable for the parent 
+	     let parent;
+		if(grandParent.hasChildNodes() && $(grandParent).find(".ps-comment-actions")){
+		let parent = $(grandParent).find(".ps-comment-actions")[0];
+		// hide the post actions
+		    $(parent).hide();
+		}
+		
+		// show the loadinGif
+		let loadinGif = $(grandParent).first()
+		loadinGif.show();
+		
+        
 			
 				 
 			 //  post a new comment
@@ -134,7 +171,7 @@
 				 
 				    let comment_template = document.querySelector("#comment_template");
 		                comment_template = comment_template.cloneNode(true);
-                         comment_template.id = response["true"];
+                        comment_template.id = response["true"];
 		                let user = $(comment_template).find(".ps-comment-user")[0];
 		                $(user).html(response["fullname"]);
 		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
@@ -150,26 +187,27 @@
 				    
 				    // append the comment to the comments_container 
 				 $(comments_container).append(comment_template);  
-			      // hide the post actions grand parent
-			 	  post_actions_gr_parent.style.display = "none";
+			     // hide the post actions grand parent
+			 	 $(grandParent).hide();
+				 // hide the post actions parent
+				 $(parent).hide();
+				 // hide the post loading gif
+				 $(loadinGif).hide();
 			 	  // re-enable the textarea
-			 	  comment_area.disabled = false;  
-			 	  // hide the loading gif
-		           loadinGif.style.display = "none";
+			 	  comment_area.disabled = false; 
 				  
-			
-		 }).fail(function (error){
+			 }).fail(function (error){
 				 alert(error);
 			 });
 
 			 
 			
 			 
-	}
+	
 		
 	}	
 	
-
+    // delete a comment
 	static delete_comment(post_Id,comment_Id){
 
 		 $("#delete-dialog").dialog({
@@ -195,7 +233,7 @@
                                 text: "Cancel",
                                 click: function () {
                                     $(this).dialog("close");
-									console.log("canceled the deletion of the comment");
+									
                                 }
 
                             },
@@ -253,7 +291,7 @@
 
 	}
 	
-
+    // edit a comment
 	static edit_comment(post_Id,comment_Id,element){
 		
 		         
@@ -304,10 +342,6 @@
 		
 		
 	}
-	
-	
-	
-	// Comment replys section
 	
 	// if the reply field has a change
 	static on_reply_field_change(element){

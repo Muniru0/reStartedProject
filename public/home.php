@@ -2094,7 +2094,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_reply_field_change(this);" ="Write a reply..."></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_text_field_change(this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 		<!--		<div class="ps-commentbox__addons ps-js-addons">
 		
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
@@ -2131,7 +2131,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			</div>
 			<div class="ps-comment-actions" style="display:none;">
 				<button onclick="return comment.cancel_reply(493,this);" class="ps-btn ps-button-cancel">Clear</button>
-				<button onclick="return comment.reply_comment(493, this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
+				<button onclick="return comment.post_text(10,493,this);" class="ps-btn ps-btn-primary ps-button-action" >Post</button>
 			</div>
 		</div>
 	</div>
@@ -2142,7 +2142,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 						<div id="act-new-comment-10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
 			
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="comment_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return comment.autoGrow(this); " onkeypress = "comment.comment_field_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." style="overflow:hidden;"></textarea></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="comment_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return comment.autoGrow(this); " onkeypress = "comment.on_text_field_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." style="overflow:hidden;"></textarea></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2177,7 +2177,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				</div>
 				<div class="ps-comment-actions" style="display:none;">
 					<button onclick="return comment.cancel_comment(10,this);" class="ps-btn ps-button-cancel">Clear</button>
-					<button onclick="return comment.post_comment(10,this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
+					<button onclick="return comment.post_comment(10,this);" class="ps-btn ps-btn-primary ps-button-action" >Post</button>
 				</div>
 			</div>
 		</div>
