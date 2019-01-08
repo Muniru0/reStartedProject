@@ -169,6 +169,7 @@ return $record;
 	 
   }
    
+   
  // add a new comment to the database
   public static function add_views($post_id = 0,$comment = ""){
 
@@ -203,7 +204,7 @@ return $record;
 		 
 		$view_info = self::get_view($post_id);
 	    $post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info[4]);
-		print_r($view_info);
+		
         $_SESSION["comment_ids"][] = $view_info[0];
     $view_info[4] = FetchPost::time_converter($view_info[4]);
 		 print j(["true" => "new_comment_$stmt->insert_id","comment_info" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
@@ -344,9 +345,9 @@ public static function delete_view ($post_id ,$comment_id){
 	global $db;
 	
     $post_id     = $db->real_escape_string($post_id);
-    $comment_id = $db->real_escape_string($comment_id);	
+    $comment_id  = $db->real_escape_string($comment_id);	
 	
-	$query = "DELETE FROM views WHERE id= $comment_id && post_id = $post_id && commentor_id = ".$_SESSION["id"];
+	$query = "DELETE FROM views WHERE id = $comment_id && post_id = $post_id && commentor_id = ".$_SESSION["id"];
     if($db->query($query) && $db->affected_rows > 0){
 		
 		print j(["true"]);
@@ -354,6 +355,7 @@ public static function delete_view ($post_id ,$comment_id){
 		print j(["false" => "Operation failed Please try again"]);
 	}
 }
+
 }
 
 

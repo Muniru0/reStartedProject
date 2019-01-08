@@ -62,7 +62,7 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
 	 $post_id    = (int) $_POST["post_id"];
 	 $comment_id = (int) $_POST["comment_id"];
 	 
-	 // check if the comment is empty or set	  
+	 // check if the ids of the post and comment are integers and set	  
 	  if(!isset($post_id) || $post_id < 1 || !is_int($post_id)  &&
 		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
 		  print j(["false" => "Operation failed, Please try again..."]);
