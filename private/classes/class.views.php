@@ -140,7 +140,7 @@ class Views extends DatabaseObject{
    }// get_views_and_viewsbox_with_template();
    
    
-  public static function get_view($post_id = 0){
+  public static function get_view($comment_id,$post_id = 0){
 	  global $db;
 	 
 	  $post_id = (int)$post_id;
@@ -148,7 +148,7 @@ class Views extends DatabaseObject{
 		 return false;
 	   }
 	 
-	  $query = "SELECT * FROM ".self::$table_name." WHERE post_id = ".$post_id." LIMIT 1";
+	  $query = "SELECT * FROM ".self::$table_name." WHERE post_id = {$post_id} && id ={$comment_id} LIMIT 1";
 	  $result = $db->query($query);
 	  
 	  if(!$result){
@@ -200,14 +200,15 @@ return $record;
 		return false;
 	}
 	// return a new_comment_id  in case the id is to be used to delete the comment
-	if($stmt->insert_id == true){
+	$view_id = $stmt ->insert_id;
+	if($view_id == true){
 		 
-		$view_info = self::get_view($post_id);
+		$view_info = self::get_view($view_id,$post_id);
 	    $post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info[4]);
 		
         $_SESSION["comment_ids"][] = $view_info[0];
     $view_info[4] = FetchPost::time_converter($view_info[4]);
-		 print j(["true" => "new_comment_$stmt->insert_id","comment_info" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
+	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
  }else{
 	 log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
 	 print j(["false" => "Sorry please re-comment..."]);
@@ -215,8 +216,6 @@ return $record;
  }   
     
  }// add_view();
-
-
 
 
 // update the view being
@@ -291,8 +290,6 @@ $stmt = self::prepare($query);
 	}
 
 }
-
-
 
 
 public static function  add_view_reaction($info =""){

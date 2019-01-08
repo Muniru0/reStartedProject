@@ -18,18 +18,7 @@
 	// on a comment area change  
 	static on_text_field_change(element){
 
-     let root = $("#comment_template")[0];
-
-let second  =  $(root).find(".actaction-delete")[0];
-console.log(second);
-
-
-
-
-
-
-
-		return;
+    
 		// set the root parent of the element
 		let rootParent ;
 		if($(element).parents()[2]){
@@ -171,7 +160,7 @@ console.log(second);
 				 
 				    let comment_template = document.querySelector("#comment_template");
 		                comment_template = comment_template.cloneNode(true);
-                        comment_template.id = response["true"];
+                        comment_template.id = response["comment_div_id"];
 		                let user = $(comment_template).find(".ps-comment-user")[0];
 		                $(user).html(response["fullname"]);
 		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
@@ -181,6 +170,14 @@ console.log(second);
 		               
 				    let comment = $(comment_template).find("p");
 				        comment.html(response["comment_info"][3]);
+
+				        // set the delete link
+				        let deleteLink  =  $(comment_template).find(".actaction-delete")[0];
+				        // set the ids of the comment and post on the delete link
+				        $(deleteLink).attr("onclick","comment.delete_comment(" + response["comment_info"][0] + "," + response["comment_info"][1] + "); return false;")
+
+
+				        
 				   // find the comments list
 				    let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
 				    let comments_container = comments_list_children[1];
@@ -208,7 +205,7 @@ console.log(second);
 	}	
 	
     // delete a comment
-	static delete_comment(post_Id,comment_Id){
+	static delete_comment(comment_Id,post_Id){
 
 		 $("#delete-dialog").dialog({
                        
@@ -251,9 +248,15 @@ console.log(second);
 								return false;	
 								}
 								// hide the comment until the response from the server is positive
-								let hidden_comment = document.querySelector("#comment-item-" + comment_Id);
+
+								let hidden_comment;
+								
+								if(document.querySelector("#new_comment_" + comment_Id)  != null  && document.querySelector("#new_comment_" + comment_Id)){
+								hidden_comment = document.querySelector("#new_comment_" + comment_Id);
 								hidden_comment.style.display = "none";
-							
+								}
+
+								
 								$.ajax({
 									url      : "../private/neutral_ajax.php",
 									type     : "POST",
@@ -305,7 +308,7 @@ console.log(second);
 		return false;	
 		}
 		
-		let comment_div = document.querySelector("#comment-item-" + comment_Id);
+		let comment_div = document.querySelector("#new_comment_" + comment_Id);
 		 let comment_pargh = $(comment_div).find("p")[0];
 		
 		  let new_comment = $(comment_pargh).html();

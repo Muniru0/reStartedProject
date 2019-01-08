@@ -3841,7 +3841,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <a data-stream-id="935" onclick="activity.comment_action_like(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
 <a data-stream-id="935" onclick="activity.comment_action_reply(497, 935, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
 <a data-stream-id="935" onclick="activity.comment_action_edit(935, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
-<a data-stream-id="935" onclick="activity.comment_action_delete(935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+<a data-stream-id="935" onclick="comment.delete_comment(); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
 </nav>
 				</span>
 			</div>
