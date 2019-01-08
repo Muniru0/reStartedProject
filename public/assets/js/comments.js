@@ -20,40 +20,43 @@
 
 	// on a comment area change  
 	static comment_field_change(element){
-		// set the commentBoxParent  
-		let commentBoxParent = $(element).parents()[2];
-		  // check to see if it has child nodes
-		  if (commentBoxParent.hasChildNodes()) {
-		// set the children to a variable	  
-        let  children = commentBoxParent.childNodes;
-         // out of the children set the post actions grand parent. children includes loading gif, clear and post button
-        let post_actions_gr_parent = children[3]
-		 // show the post actions grand parent
-        $(post_actions_gr_parent).show();
-		
-		// set the post actions parent
-		let post_actions_parent = post_actions_gr_parent.childNodes[3];
-	
-		 // show the parent
-        $(post_actions_parent).show();
-        
-		// show the post actions themselves
-		$(post_actions_parent.childNodes).show();
-		// enable the post button
-		post_actions_parent.childNodes[3].disabled = false;
-	
-		 if(element.value.length  > 3999){
-           	alert("Please MAX characters for a comment is 4000.");
-          // hide the post actions grand parents 	
-        $(post_actions_gr_parent).hide();
-		  // hide the parent
-        $(post_actions_parent).hide();
+
+		if($(element) || $(element) == undefined){
+
+			return;
+		}
+		 
+		// set the root parent of the event element
+		let rootParent = $(element).parents()[2];
+		 if(rootParent && rootParent.hasChildNodes()){
+		 // set the parent of the post actions to be able to make them visible
+		  let parent = $(rootParent).find(".ps-comment-send")[0];
+		  if(parent && parent.hasChildNodes()){
+        // show show the parent first
+		   $(parent).show();
+		   // then show the post actions 
+		     let postActions =  $(parent).find(".ps-comment-actions")[0];
+		     if(postActions && postActions.hasChildNodes()){
+
+		     
+		 postActions = postActions.childNodes;
+		      for(var index = 0; index < postActions.length; index++){
+		       	 $(postActions[index]).show();
+                 }
+
+	 
+ 		 if(element.value.length  > 3999){
+         // hide the parent
+         $(parent).hide();
 		// hide the post actions themselves
-		$(post_actions_parent.childNodes).hide();
+ 		$(postActions).hide();
+ 		alert("Please MAX characters for a comment is 4000.");
            	
            }
-		
-  }
+           }
+           }
+		 }
+//   }
 	  }// comment_area_change();
 	  
 	// auto grow a text field
@@ -317,12 +320,14 @@
 		  }
 
 		let root_parent = $(element).parents()[2];
-		    console.log(root_parent);
+		     console.log(root_parent.getElementsByClassName("ps-comment-send"));
 		    let children = root_parent.childNodes;
 		   // comment.nodes_and_indeces(children);
 		   let post_actions_parent = children[5]; 
+		     console.log(post_actions_parent)
 		   $(post_actions_parent).show();
 		   let post_actions = post_actions_parent.childNodes;
+		  
 // 		       comment.nodes_and_indeces(post_actions);
 		    // show the parent the post actions 
 		   $(post_actions[3]).show();

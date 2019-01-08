@@ -3452,7 +3452,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 					<img src="assets/images/ajax-loader.gif" alt="">
 					<div> </div>
 				</div>
-				<div class="ps-comment-actions" style="display:none;">
+				<div class="ps-comment-actions" style="display:block;">
 					<button onclick="return activity.comment_cancel(471);" class="ps-btn ps-button-cancel">Clear</button>
 					<button onclick="return activity.comment_save(471, this);" class="ps-btn ps-btn-primary ps-button-action" disabled="">Post</button>
 				</div>
