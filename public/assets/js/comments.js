@@ -5,21 +5,116 @@
 		  this.commentUrl = "../private/neutral_ajax.php";
 		 
 	  }
+	
+
+	// auto grow a text field
+	static  autoGrow(oField){
+		// if the scroll height is > than the clientHeight  
+	if(oField.scrollHeight > oField.clientHeight)
+	{
+		// update the height of the input text field in px;
+		oField.style.height = oField.scrollHeight + "px";
+	}
+	  }// autGrow();
+	  
+
+	  
 	  
 	// just for debugging
     static nodes_and_indeces(element){
 
+
 	  	 for(var index = 0; index < element.length ; index++){
 		    	console.log(i);
+
 		    	console.log(element[index]);
-		    } 
+		    }  
 	  }
+
+    
+
+
+    // prepare the comment or reply text for the ajax request
+    static prepare_text(element_id,post_button,option,toggleElement){
+
+          let grandParent;
+          let parent;
+          let loadinGif;
+          let comment_area;
+          let textArea = "";
+	      let returnedArray = [];
+			switch($.trim(option)){
+           	   case "comment" :
+           	   if(document.querySelector("#comment_area_" + element_id)){
+           	   	textArea = document.querySelector("#comment_area_" + element_id);
+           	   }
+           	   break;
+           	  case "reply" :
+           	   if(document.querySelector("#reply_area_" + element_id)){
+           	   	textArea = document.querySelector("#reply_area_" + element_id);
+           	   }
+           	   break;
+           	   default : "";
+           }  
+               
+               if($.trim(textArea) == ""){
+               	return "";
+               }
+       textArea.disabled = true;
+	    // add the textArea element to the returned Array
+		returnedArray.push(textArea);
+		// get the comment from the text area
+
+		let comment_value = textArea.value;
+		 returnedArray.push(comment_value); 
+   // return fast if the comment is an empty string	
+	if($.trim(comment_value) === ""){	
+     return ;
+	}
+		// reset the comment_area
+		textArea.value = "";  
+		// reset the height of the textarea
+		textArea.style.height = "35px";
+		
+		// initialize the grandParent
+        if($(post_button).parents()[1]){
+			 
+			grandParent = $(post_button).parents()[1];
+			returnedArray.push(grandParent); 
+		// show the grandParent of the post actions
+			$(grandParent).hide();
+		}	
+		
+		// initialize temporary variable for the parent 
+	     
+		if(grandParent.hasChildNodes() && $(grandParent).find(".ps-comment-actions")){
+		let parent = $(grandParent).find(".ps-comment-actions")[0];
+		 returnedArray.push(parent);
+		// hide the post actions
+		    $(parent).hide();
+		}
+		
+		// show the loadinGif
+		loadinGif = $(grandParent).first();
+		 returnedArray.push(loadinGif);
+		loadinGif.show();
+		
+		
+		
+		return returnedArray;
+      
+		   
+		
+
+    }// prepare_text();
+
+
+   
 
 	// on a comment area change  
 	static on_text_field_change(element){
 
-    
-		// set the root parent of the element
+    // set the root parent of the element
 		let rootParent ;
 		if($(element).parents()[2]){
 			rootParent = $(element).parents()[2];
@@ -59,18 +154,112 @@
       }
 		
  // }
+
 	  }// comment_area_change();
 	  
-	// auto grow a text field
-	static  autoGrow(oField){
-		// if the scroll height is > than the clientHeight  
-	if(oField.scrollHeight > oField.clientHeight)
-	{
-		// update the height of the input text field in px;
-		oField.style.height = oField.scrollHeight + "px";
-	}
-	  }// autGrow();
 	  
+	
+
+	// post a comment
+    static post_comment(post_id,post_button){
+		
+		let     returnedArray =  comment.prepare_text(post_id,post_button,"comment",true);
+	    let 	comment_value = returnedArray[1];
+		
+/* 		// set the text area
+		let comment_area = document.querySelector("#comment_area_" + post_id);
+		comment_area.disabled = true;
+		// get the comment from the text area
+
+		let comment_value = comment_area.value;
+   // return fast if the comment is an empty string	
+	if($.trim(comment_value) === ""){	
+     return ;
+	}
+		// reset the comment_area
+		comment_area.value = "";  
+		// reset the height of the textarea
+		comment_area.style.height = "35px";
+		
+		// set the grandParent of the post actions
+		let grandParent;
+
+        if($(post_button).parents()[1]){
+			
+			grandParent = $(post_button).parents()[1];
+		// show the grandParent of the post actions
+			$(grandParent).hide();
+		}	
+		
+		// define the temporary variable for the parent 
+	     let parent;
+		if(grandParent.hasChildNodes() && $(grandParent).find(".ps-comment-actions")){
+		let parent = $(grandParent).find(".ps-comment-actions")[0];
+		// hide the post actions
+		    $(parent).hide();
+		}
+		
+		// show the loadinGif
+		let loadinGif = $(grandParent).first()
+		loadinGif.show();
+		 */
+        
+			
+				 
+			 //  post a new comment
+	  	$.ajax({
+	  		 url: "../private/neutral_ajax.php",
+			data: {comment:comment_value,post_id : post_id,add_comment : true},
+			type: "POST",
+	  		datatype:"html",
+			}).done(function(response){ 
+				   response = JSON.parse(response);
+				 
+				    let comment_template = document.querySelector("#comment_template");
+		                comment_template = comment_template.cloneNode(true);
+                        comment_template.id = response["comment_div_id"];
+		                let user = $(comment_template).find(".ps-comment-user")[0];
+		                $(user).html(response["fullname"]);
+		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
+		               $(time).attr("title",response["comment_date"]);
+		                
+		                $(time).html(response["comment_info"][4]);
+		               
+		               // set the text of the comment from the db
+				    let db_comment = $(comment_template).find("p");
+				        db_comment.html(response["comment_info"][3]);
+
+				   // set the delete variable
+          let deleteLink = "";
+   
+      if($(comment_template).find(".actaction-delete")[0]){
+  	deleteLink = $(comment_template).find(".actaction-delete")[0];
+	// change the onclick attribute of the link 
+  	$(deleteLink).attr("onclick","comment.delete_comment("+ response["comment_info"][0] +","+ response["comment_info"][1] +"); return false;");
+  }                 
+                 // find the comments list
+ 				let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
+				    let comments_container = comments_list_children[1];
+				    
+				    // append the comment to the comments_container 
+				 $(comments_container).append(comment_template);  
+               // hide the grandParent
+			  $(returnedArray[2]).hide();
+			  // hide the parent
+			  $(returnedArray[3]).hide();
+			  // hide the loadinGif
+			  $(returnedArray[4]).hide();
+			  returnedArray[0].disabled = false;
+			   
+				  
+			 }).fail(function (error){
+				 alert(error);
+			 });
+
+	}	
+	
+	
+	
 	// clear/cancel a comment
 	static cancel_comment(id,cancel_button){
 		if(id != null || id != undefined){
@@ -107,106 +296,13 @@
 		 }
 	}//cancel_comment();
 	
-	// post a comment
-    static post_comment(post_id,post_button){
-		
-		// set the text area
-		let comment_area = document.querySelector("#comment_area_" +post_id);
-		comment_area.disabled = true;
-		// get the comment from the text area
-		let comment_value = comment_area.value;
-   // return fast if the comment is an empty string	
-	if($.trim(comment_value) === ""){	
-     return ;
-	}
-		// reset the comment_area
-		comment_area.value = "";  
-		// reset the height of the textarea
-		comment_area.style.height = "35px";
-		
-		// set the grandParent of the post actions
-		let grandParent;
-
-        if($(post_button).parents()[1]){
-			
-			grandParent = $(post_button).parents()[1];
-		// show the grandParent of the post actions
-			$(grandParent).hide();
-		}	
-		
-		// define the temporary variable for the parent 
-	     let parent;
-		if(grandParent.hasChildNodes() && $(grandParent).find(".ps-comment-actions")){
-		let parent = $(grandParent).find(".ps-comment-actions")[0];
-		// hide the post actions
-		    $(parent).hide();
-		}
-		
-		// show the loadinGif
-		let loadinGif = $(grandParent).first()
-		loadinGif.show();
-		
-        
-			
-				 
-			 //  post a new comment
-	  	$.ajax({
-	  		 url: "../private/neutral_ajax.php",
-			data: {comment:comment_value,post_id : post_id,add_comment : true},
-			type: "POST",
-	  		datatype:"html",
-			}).done(function(response){ 
-				   response = JSON.parse(response);
-				 
-				    let comment_template = document.querySelector("#comment_template");
-		                comment_template = comment_template.cloneNode(true);
-                        comment_template.id = response["comment_div_id"];
-		                let user = $(comment_template).find(".ps-comment-user")[0];
-		                $(user).html(response["fullname"]);
-		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
-		               $(time).attr("title",response["comment_date"]);
-		                
-		                $(time).html(response["comment_info"][4]);
-		               
-				    let comment = $(comment_template).find("p");
-				        comment.html(response["comment_info"][3]);
-
-				        // set the delete link
-				        let deleteLink  =  $(comment_template).find(".actaction-delete")[0];
-				        // set the ids of the comment and post on the delete link
-				        $(deleteLink).attr("onclick","comment.delete_comment(" + response["comment_info"][0] + "," + response["comment_info"][1] + "); return false;")
-
-
-				        
-				   // find the comments list
-				    let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
-				    let comments_container = comments_list_children[1];
-				    
-				    // append the comment to the comments_container 
-				 $(comments_container).append(comment_template);  
-			     // hide the post actions grand parent
-			 	 $(grandParent).hide();
-				 // hide the post actions parent
-				 $(parent).hide();
-				 // hide the post loading gif
-				 $(loadinGif).hide();
-			 	  // re-enable the textarea
-			 	  comment_area.disabled = false; 
-				  
-			 }).fail(function (error){
-				 alert(error);
-			 });
-
-			 
-			
-			 
 	
-		
-	}	
 	
     // delete a comment
 	static delete_comment(comment_Id,post_Id){
-
+         
+			  
+		 
 		 $("#delete-dialog").dialog({
                        
 					    classes :{
@@ -276,7 +372,9 @@
 							    	alert(response["false"]);
 							    	}
 								}).fail(function(error){
+									 setTimeout(function(){
 									 alert(error);
+									  },2000);
 								});// end of ajax request
 								
                                 }// click : function();
@@ -289,12 +387,12 @@
                     $(".ui-dialog-title").addClass("error-title");
                   $("#error-dialog").show();
 		
-		
-
 
 	}
 	
-    // edit a comment
+   
+
+   // edit a comment
 	static edit_comment(post_Id,comment_Id,element){
 		
 		         
@@ -346,19 +444,159 @@
 		
 	}
 	
+	
+	
 	// if the reply field has a change
-	static on_reply_field_change(element){
-		let root_parent =$(element).parents()[2];
-		    let children = root_parent.childNodes;
-		    comment.nodes_and_indeces(children);
-		   
-	}
+	static reply_field_change(postID = 0,element = ""){
+		
+		// max length check 
+		   if(element.value.length > 4000){
+		  	 	alert("Please MAX characters for a comment is 4000.");
+		  	 return ;
+		   }
+
+
+		  // checks and validations 
+		if(postID != null && postID != undefined && 
+		postID > 0  
+		&& $.trim(element) != ""){
+		  // set the textarea
+	     let textArea;
+         let grandParent;
+		 let parent;
+		
+		
+			textArea  =  document.querySelector("#reply_area_" + postID);
+		
+		// define and initialize the grandParent of the textArea
+		if($(textArea) && $(textArea).parents()[2] ){
+           
+ 			 grandParent = $(textArea).parents()[2];
+			 grandParent = $(grandParent).find(".ps-comment-send");
+			 $(grandParent).show();
+
+		}
+	
+	    // define and initialize the parent of the textArea	
+		 if($(".ps-comment-send")[0] &&  $(grandParent).find(".ps-comment-actions")[0]){
+            parent  = $(grandParent).find(".ps-comment-actions")[0];
+            
+            $(parent).show();
+		 }
+		 
+
+	
+
+		}
+	}// reply_field_change();
+
+
 	
 	// reply to a comment
-	static reply_comment(){}
+	static reply_comment(comment_Id,post_Id,post_button){
+		
+		// return an array of all the relevant information
+		let returnedArray =  comment.prepare_comment_or_reply_text(comment_Id,post_button,"reply",true);
+		
+			 //  post a new comment
+	  	$.ajax({
+	  		 url: "../private/neutral_ajax.php",
+			data: {reply:returnedArray[1],comment_id : comment_Id,post_id : post_Id, reply_comment : true},
+			type: "POST",
+	  		datatype:"html",
+			}).done(function(response){ 
+			  console.log(response);
+				   /* response = JSON.parse(response);
+				 
+				    let comment_template = document.querySelector("#comment_template");
+		                comment_template = comment_template.cloneNode(true);
+                        comment_template.id = response["comment_div_id"];
+		                let user = $(comment_template).find(".ps-comment-user")[0];
+		                $(user).html(response["fullname"]);
+		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
+		               $(time).attr("title",response["comment_date"]);
+		                
+		                $(time).html(response["comment_info"][4]);
+		               
+		               // set the text of the comment from the db
+				    let db_comment = $(comment_template).find("p");
+				        db_comment.html(response["comment_info"][3]);
+
+				   // set the delete variable
+          let deleteLink = "";
+   
+      if($(comment_template).find(".actaction-delete")[0]){
+  	deleteLink = $(comment_template).find(".actaction-delete")[0];
+	// change the onclick attribute of the link 
+  	$(deleteLink).attr("onclick","comment.delete_comment("+ response["comment_info"][0] +","+ response["comment_info"][1] +"); return false;");
+  }                 
+                 // find the comments list
+ 				let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
+				    let comments_container = comments_list_children[1];
+				    
+				    // append the comment to the comments_container 
+				 $(comments_container).append(comment_template);  
+               // hide the grandParent
+			  $(returnedArray[2]).hide();
+			  // hide the parent
+			  $(returnedArray[3]).hide();
+			  // hide the loadinGif
+			  $(returnedArray[4]).hide();
+			  returnedArray[0].disabled = false;
+			   
+			*/  
+			 }).fail(function (error){
+				 alert(error);
+			 });
+
+			 
+			
+		
+	}
 	
 	// cancel reply 
-	static cancel_reply(){}
+	static cancel_reply(postID,element){
+		// check the validity of the postID		
+		if(postID != null && postID != undefined && 
+		postID > 0  && $.trim(element) != ""){
+		  // set the textarea
+	     let textArea;
+         let grandParent;
+		 let parent;
+		 let loadinGif;
+			textArea  =  document.querySelector("#reply_area_" + postID);
+		
+
+		  if($(textArea)){
+		  	$(textArea).css("height","35px");
+		  	$(textArea).html("");
+		  }
+
+		
+		// define and initialize the grandParent of the textArea
+		if($(textArea) && $(textArea).parents()[2] ){
+			 grandParent = $(textArea).parents()[2];
+			 $(grandParent).hide();
+
+		}
+	
+	    // define and initialize the parent of the textArea	
+		 if($(".ps-comment-send")[0] &&  $(grandParent).find(".ps-comment-actions")[0]){
+            parent  = $(grandParent).find(".ps-comment-actions")[0];
+            console.log(parent);
+            $(parent).hide();
+		 }
+		 
+
+		  // hide the loading gif if displayed
+		if($(".ps-comment-loading")[0] && $(grandParent).find(".ps-comment-loading")[0] ){
+		loadinGif = $(grandParent).find(".ps-comment-loading")[0];
+		$(loadinGif).hide();
+		}
+		
+	}
+	}// cancel_reply();
+
 	
 	// delete the comment reply
 	static delete_reply(){}

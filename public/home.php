@@ -2076,7 +2076,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				<span class="ps-stream-status-action ps-stream-status-action">
 					<nav class="ps-stream-status-action ps-stream-status-action">
 <a data-stream-id="935" onclick="comment.like_comment(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
-<a data-stream-id="935" onclick="comment.reply_comment(10, 935, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="935" onclick="show_reply_box(10) return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
 <a data-stream-id="935" onclick="comment.edit_comment(10,935,this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
 <a data-stream-id="935" onclick="comment.delete_comment(10,935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
 </nav>
@@ -2094,8 +2094,9 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_text_field_change(this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
-		<!--		<div class="ps-commentbox__addons ps-js-addons">
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.reply_field_change(10,this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+            
+		<!--<div class="ps-commentbox__addons ps-js-addons">
 		
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2130,8 +2131,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				<div> </div>
 			</div>
 			<div class="ps-comment-actions" style="display:none;">
-				<button onclick="return comment.cancel_reply(493,this);" class="ps-btn ps-button-cancel">Clear</button>
-				<button onclick="return comment.post_text(10,493,this);" class="ps-btn ps-btn-primary ps-button-action" >Post</button>
+				<button onclick="return comment.cancel_reply(10,this);" class="ps-btn ps-button-cancel">Clear</button>
+				<button onclick="return comment.reply_comment(10,493,this);" class="ps-btn ps-btn-primary ps-button-action" >Post</button>
 			</div>
 		</div>
 	</div>
@@ -2166,7 +2167,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
 </div>
 <div class="ps-commentbox-actions">
-<a onclick="peepso.photos.comment_attach_photo(this); return false;" title="Upload photos" href="#" class="ps-postbox__menu-item "><span style=" position: absolute; right: .2em; bottom: .1em; background-color: #E3E5E7; padding: 0.1em; font-size: .7em !important; border-radius: 5px; color: black;">4000</span></a>
+<a  title="Upload photos" class="ps-postbox__menu-item "><span style=" position: absolute; right: .2em; bottom: .1em; background-color: #E3E5E7; padding: 0.1em; font-size: .7em !important; border-radius: 5px; color: black;">4000</span></a>
 <a onclick="return false;" title="Send gif" href="#" class="ps-list-item ps-js-comment-giphy"></a>
 </div>
 			</div>
