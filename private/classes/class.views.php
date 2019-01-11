@@ -167,7 +167,7 @@ return $record;
 	}
 	 
 	 
-  }
+  }// get_view();
    
    
  // add a new comment to the database
@@ -206,7 +206,7 @@ return $record;
 		$view_info = self::get_view($view_id,$post_id);
 	    $post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info[4]);
 		
-        $_SESSION["comment_ids"][] = $view_info[0];
+        $_SESSION["comment_ids"][] = (int)$view_info[0];
     $view_info[4] = FetchPost::time_converter($view_info[4]);
 	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
  }else{
@@ -262,7 +262,7 @@ return $stmt->get_result();
 }//update_view();
 
 
-
+// edit the view
 public static function edit_view($comment_id = 0,$post_id = 0){
 
 
@@ -291,14 +291,14 @@ $stmt = self::prepare($query);
 
 }
 
-
+// add a reaction to the view
 public static function  add_view_reaction($info =""){
 
 	global $db;
 
 
 $info = explode("\\", $info);
-//$info = implode("/",$info);
+
 $info[0] = $_SESSION["id"];
 $info = implode("",$info);
  
@@ -336,7 +336,7 @@ if($stmt->fetch()){
 }
 
 
-
+// delete a view
 public static function delete_view ($post_id ,$comment_id){
 	
 	global $db;
@@ -352,6 +352,10 @@ public static function delete_view ($post_id ,$comment_id){
 		print j(["false" => "Operation failed Please try again"]);
 	}
 }
+
+
+
+
 
 }
 
