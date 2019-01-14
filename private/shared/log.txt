@@ -1,0 +1,6 @@
+[11/Jan/2019 07:57:02 PM] : [ReplyView] |  Query failed  on line 68 in file C:\wamp64\www\sample_app\private\classes\class.reply_views.php
+[11/Jan/2019 07:58:02 PM] : [ReplyView] |  Query failed  on line 67 in file C:\wamp64\www\sample_app\private\classes\class.reply_views.php
+[11/Jan/2019 08:17:58 PM] : [ReplyView] |  Query failed  on line 67 in file C:\wamp64\www\sample_app\private\classes\class.reply_views.php
+[11/Jan/2019 08:19:28 PM] : [ReplyView] |  Query failed  on line 67 in file C:\wamp64\www\sample_app\private\classes\class.reply_views.php
+[11/Jan/2019 08:20:49 PM] : [ReplyView] |  Query failed  on line 67 in file C:\wamp64\www\sample_app\private\classes\class.reply_views.php
+[11/Jan/2019 08:21:58 PM] : [ReplyView] |  Query failed  on line 67 in file C:\wamp64\www\sample_app\private\classes\class.reply_views.php

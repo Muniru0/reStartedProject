@@ -89,7 +89,7 @@ elseif(isset($_POST["delete_comment"]) ){
 		 if(!in_array($comment_id,$_SESSION["comment_ids"],true))
 		 {
 			 print_r($_SESSION);
-			print j(["false" => "Please try again...if problem persist please refresh the page $comment_id"]); 
+			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
 			
 		 }
 		 
@@ -97,7 +97,7 @@ elseif(isset($_POST["delete_comment"]) ){
    		   )
 		 {
 			 print_r($_SESSION);
-			print j(["false" => "Please try again...if problem persist please refresh the page $post_id"]); 
+			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
 			return;
 		 }		 
 	 
@@ -162,12 +162,19 @@ elseif(isset($_POST["edit_comment"])){
 	
 }
 
+
+// reply to a comment
 elseif(isset($_POST["reply_comment"])){
+	
+	global $db;
+	$post_id    = $db->real_escape_string($_POST["post_id"]);
+	$comment_id = $db->real_escape_string($_POST["comment_id"]);
+	 
 	  $reply_comment_post_var = (boolean) $_POST["reply_comment"];
 	  
 	  // check to see if the reply comment variable within the
 	  // global POST variable is set to true
-	  if(true === $reply_comment_post_var){
+	  if( $reply_comment_post_var != true){
 		  
 		  print j(["false" => "Please try again... if problem persist refresh the page"]);
 		  return false;
@@ -192,26 +199,28 @@ elseif(isset($_POST["reply_comment"])){
 	  
 	  // cast/convert the post_id into an integer
 	  $post_id = (int)$_POST["post_id"]; 
-	  $post_id = (int)$_POST["comment_id"];
+	  $comment_id = (int)$_POST["comment_id"];
 	  
 	 // check if the comment is empty or set	  
 	  if(!isset($post_id)    || $post_id < 1    || !is_int($post_id) ||
 		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
+			 
 		  print j(["false" => "Please try again... if the problem persist refresh the page"]); 
 		  return false;
 	  }   
 	 
 	    
-		  
+		 
 		  // check to see if the post_id is in the post_ids array
 		 if(!in_array($post_id,$_SESSION["post_ids"],true) || 
 		    !in_array($comment_id,$_SESSION["comment_ids"],true))
 		 {
-		    print j(["false" => "Please try again... if the problem persist refresh the page"]); 
+		    print j(["false" => "Please try again... if the problem persist refresh the page "]); 
 			return false;
 		 }
 		 
-		  Views::reply_view($comment_id ,$post_id,$_POST["reply"]);	
+		
+		  ReplyView::reply_views($post_id,$comment_id,$_POST["reply"]);	
 	  
 	  
 	

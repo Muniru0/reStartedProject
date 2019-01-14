@@ -1,4 +1,22 @@
-  class comment{
+
+
+  function showReplyBox(commentID = 0){
+	
+      commentID = commentID.valueOf();
+		 if(typeof commentID !== "number"  || commentID < 0 || commentID == null || commentID == undefined || $.trim(commentID) == "" ){
+			 console.log("failed");
+			 return;
+		 }
+		 
+		
+		 // show the reply_area
+		 $("#reply_div_" + commentID).show();
+		 
+		
+	}// showReplyBox();
+
+
+ class comment{
 	  
 	 // define the constructor of the class
 	  constructor (){
@@ -12,8 +30,13 @@
 		// if the scroll height is > than the clientHeight  
 	if(oField.scrollHeight > oField.clientHeight)
 	{
+		
 		// update the height of the input text field in px;
 		oField.style.height = oField.scrollHeight + "px";
+	}else if(oField.clientHeight < oField.scrollHeight){
+	    	// update the height of the input text field in px;
+			
+		oField.style.height = oField.clientHeight + "px";
 	}
 	  }// autGrow();
 	  
@@ -32,7 +55,7 @@
 	  }
 
     
-
+	
 
     // prepare the comment or reply text for the ajax request
     static prepare_text(element_id,post_button,option,toggleElement){
@@ -43,6 +66,7 @@
           let comment_area;
           let textArea = "";
 	      let returnedArray = [];
+	      
 			switch($.trim(option)){
            	   case "comment" :
            	   if(document.querySelector("#comment_area_" + element_id)){
@@ -56,6 +80,8 @@
            	   break;
            	   default : "";
            }  
+
+          console.log(textArea);
                
                if($.trim(textArea) == ""){
                	return "";
@@ -99,20 +125,16 @@
 		 returnedArray.push(loadinGif);
 		loadinGif.show();
 		
-		
-		
-		return returnedArray;
+	return returnedArray;
       
-		   
-		
-
-    }// prepare_text();
+}// prepare_text();
 
 
    
 
 	// on a comment area change  
 	static on_text_field_change(element){
+
 
     // set the root parent of the element
 		let rootParent ;
@@ -299,7 +321,7 @@
 	
 	
     // delete a comment
-	static delete_comment(comment_Id,post_Id){
+	static delete_comment(commentID,postID){
          
 			  
 		 
@@ -336,27 +358,27 @@
                                     $(this).dialog("close");
                                     
 							//validate the comment id
-								if(comment_Id == null || 
-								comment_Id == 0 ||
-								comment_Id == undefined ||
-								comment_Id == NaN ||
-								comment_Id == false){
+								if(commentID == null || 
+								commentID == 0 ||
+								commentID == undefined ||
+								commentID == NaN ||
+								commentID == false){
 								return false;	
 								}
 								// hide the comment until the response from the server is positive
 
-								let hidden_comment;
+								let hiddenComment;
 								
-								if(document.querySelector("#new_comment_" + comment_Id)  != null  && document.querySelector("#new_comment_" + comment_Id)){
-								hidden_comment = document.querySelector("#new_comment_" + comment_Id);
-								hidden_comment.style.display = "none";
+								if(document.querySelector("#new_comment_" + commentID)  != null  && document.querySelector("#new_comment_" + commentID)){
+								hiddenComment = document.querySelector("#new_comment_" + commentID);
+								hiddenComment.style.display = "none";
 								}
 
 								
 								$.ajax({
 									url      : "../private/neutral_ajax.php",
 									type     : "POST",
-									data     : {post_id : post_Id,comment_id :comment_Id,delete_comment : true},
+									data     : {post_id : postID,comment_id :commentID,delete_comment : true},
 									datatype : "html"
 								}).done(function(response){
 									 response = JSON.parse(response);
@@ -365,10 +387,11 @@
 							    if(response[0] == "true"){
 
 							    	//now you can remove the comment from the dom
-							    	hidden_comment.remove();
+							    	hiddenComment.remove();
+									$(hiddenComment).next().remove();
 							    	
 							    }else{
-							    	hidden_comment.style.display = "block";
+							    	hiddenComment.style.display = "block";
 							    	alert(response["false"]);
 							    	}
 								}).fail(function(error){
@@ -393,30 +416,30 @@
    
 
    // edit a comment
-	static edit_comment(post_Id,comment_Id,element){
+	static edit_comment(postID,commentID,element){
 		
 		         
 		//validate the comment id
-		if(comment_Id == null || 
-		comment_Id == 0 ||
-		comment_Id == undefined ||
-		comment_Id == NaN ||
-		comment_Id == false){
+		if(commentID == null || 
+		commentID == 0 ||
+		commentID == undefined ||
+		commentID == NaN ||
+		commentID == false){
 			
 		return false;	
 		}
 		
-		let comment_div = document.querySelector("#new_comment_" + comment_Id);
-		 let comment_pargh = $(comment_div).find("p")[0];
+		let commentDiv = document.querySelector("#new_comment_" + commentID);
+		 let commentPargh = $(commentDiv).find("p")[0];
 		
-		  let new_comment = $(comment_pargh).html();
+		  let newComment = $(commentPargh).html();
 		  
-		  $("#comment_area_" + post_Id).val(new_comment);
-		 let new_event = new Event('input',{'bubbles': true, cancelable: true});
-		     document.querySelector("#comment_area_" + post_Id).dispatchEvent(new_event);
+		  $("#comment_area_" + postID).val(newComment);
+		 let newEvent = new Event('input',{'bubbles': true, cancelable: true});
+		     document.querySelector("#comment_area_" + post_Id).dispatchEvent(newEvent);
 
-		 document.querySelector("#comment_area_" + post_Id).oninput = function(){
-				   comment.comment_field_change("#comment_area_" + post_Id);
+		 document.querySelector("#comment_area_" + postID).oninput = function(){
+				   comment.comment_field_change("#comment_area_" + postID);
 				   
 			   }; 
 		     
@@ -447,32 +470,38 @@
 	
 	
 	// if the reply field has a change
-	static reply_field_change(postID = 0,element = ""){
+	static reply_field_change(commentID = 0,textArea = ""){
 		
 		// max length check 
-		   if(element.value.length > 4000){
+		   if(textArea.value.length > 4000){
 		  	 	alert("Please MAX characters for a comment is 4000.");
 		  	 return ;
 		   }
 
 
 		  // checks and validations 
-		if(postID != null && postID != undefined && 
-		postID > 0  
-		&& $.trim(element) != ""){
+		if(commentID == null || commentID == undefined ||
+		commentID < 0  
+		|| $.trim(textArea) == ""){
+			
+			return;
+		}
+		
+
 		  // set the textarea
-	     let textArea;
+	    
          let grandParent;
 		 let parent;
 		
 		
-			textArea  =  document.querySelector("#reply_area_" + postID);
+			
 		
 		// define and initialize the grandParent of the textArea
 		if($(textArea) && $(textArea).parents()[2] ){
            
  			 grandParent = $(textArea).parents()[2];
-			 grandParent = $(grandParent).find(".ps-comment-send");
+			 grandParent = $(grandParent).find(".ps-comment-send")[0];
+			 
 			 $(grandParent).show();
 
 		}
@@ -480,62 +509,67 @@
 	    // define and initialize the parent of the textArea	
 		 if($(".ps-comment-send")[0] &&  $(grandParent).find(".ps-comment-actions")[0]){
             parent  = $(grandParent).find(".ps-comment-actions")[0];
-            
+             
             $(parent).show();
 		 }
-		 
 
-	
-
-		}
+		
 	}// reply_field_change();
 
 
 	
 	// reply to a comment
-	static reply_comment(comment_Id,post_Id,post_button){
+	static reply_comment(postID,commentID,post_button){
 		
 		// return an array of all the relevant information
-		let returnedArray =  comment.prepare_comment_or_reply_text(comment_Id,post_button,"reply",true);
-		
+		let returnedArray =  comment.prepare_text(commentID,post_button,"reply",true);
+		  if(returnedArray == [] || returnedArray == undefined || returnedArray == null){
+              console.log(returnedArray);
+		  	return;
+		  }
+		  console.log(returnedArray);
+		return;
 			 //  post a new comment
 	  	$.ajax({
 	  		 url: "../private/neutral_ajax.php",
-			data: {reply:returnedArray[1],comment_id : comment_Id,post_id : post_Id, reply_comment : true},
+			data: {reply:returnedArray[1],comment_id : commentID,post_id : postID, reply_comment : true},
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){ 
-			  console.log(response);
-				   /* response = JSON.parse(response);
+			 
+			   console.log( document.querySelector("#reply_wall_template"));
+			      return;
+				    response = JSON.parse(response);
 				 
-				    let comment_template = document.querySelector("#comment_template");
+				    let comment_template = document.querySelector("#reply_wall_template");
 		                comment_template = comment_template.cloneNode(true);
-                        comment_template.id = response["comment_div_id"];
+		                
+                        comment_template.id = + response["reply_div_id"];
 		                let user = $(comment_template).find(".ps-comment-user")[0];
 		                $(user).html(response["fullname"]);
 		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
-		               $(time).attr("title",response["comment_date"]);
+		               $(time).attr("title",response["reply_date"]);
 		                
-		                $(time).html(response["comment_info"][4]);
+		                $(time).html(response["reply_time"]);
 		               
 		               // set the text of the comment from the db
 				    let db_comment = $(comment_template).find("p");
-				        db_comment.html(response["comment_info"][3]);
+				        db_comment.html(response["reply"]);
 
 				   // set the delete variable
           let deleteLink = "";
    
       if($(comment_template).find(".actaction-delete")[0]){
   	deleteLink = $(comment_template).find(".actaction-delete")[0];
+	let comment_id = 
 	// change the onclick attribute of the link 
-  	$(deleteLink).attr("onclick","comment.delete_comment("+ response["comment_info"][0] +","+ response["comment_info"][1] +"); return false;");
+  	$(deleteLink).attr("onclick","comment.delete_reply("+ response["reply_id"] +","+ commentID +"); return false;");
   }                 
                  // find the comments list
- 				let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
-				    let comments_container = comments_list_children[1];
-				    
+ 				let comment_div = document.querySelector("#comment-item-" + commentID);  
+ 				 
 				    // append the comment to the comments_container 
-				 $(comments_container).append(comment_template);  
+				 $(comment_div).append(comment_template);  
                // hide the grandParent
 			  $(returnedArray[2]).hide();
 			  // hide the parent
@@ -544,7 +578,7 @@
 			  $(returnedArray[4]).hide();
 			  returnedArray[0].disabled = false;
 			   
-			*/  
+			 
 			 }).fail(function (error){
 				 alert(error);
 			 });
@@ -555,27 +589,28 @@
 	}
 	
 	// cancel reply 
-	static cancel_reply(postID,element){
+	static reply_cancel(commentID,element){
 		// check the validity of the postID		
-		if(postID != null && postID != undefined && 
-		postID > 0  && $.trim(element) != ""){
+		if(commentID != null && commentID != undefined && 
+		commentID > 0  && $.trim(element) != ""){
 		  // set the textarea
 	     let textArea;
          let grandParent;
 		 let parent;
 		 let loadinGif;
-			textArea  =  document.querySelector("#reply_area_" + postID);
+			textArea  =  document.querySelector("#reply_area_" + commentID);
 		
 
 		  if($(textArea)){
 		  	$(textArea).css("height","35px");
-		  	$(textArea).html("");
+			$(textArea).val("");
 		  }
 
 		
 		// define and initialize the grandParent of the textArea
 		if($(textArea) && $(textArea).parents()[2] ){
 			 grandParent = $(textArea).parents()[2];
+			
 			 $(grandParent).hide();
 
 		}
@@ -583,7 +618,7 @@
 	    // define and initialize the parent of the textArea	
 		 if($(".ps-comment-send")[0] &&  $(grandParent).find(".ps-comment-actions")[0]){
             parent  = $(grandParent).find(".ps-comment-actions")[0];
-            console.log(parent);
+            
             $(parent).hide();
 		 }
 		 
