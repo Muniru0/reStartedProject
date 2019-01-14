@@ -81,7 +81,7 @@
            	   default : "";
            }  
 
-          console.log(textArea);
+       
                
                if($.trim(textArea) == ""){
                	return "";
@@ -524,11 +524,10 @@
 		// return an array of all the relevant information
 		let returnedArray =  comment.prepare_text(commentID,post_button,"reply",true);
 		  if(returnedArray == [] || returnedArray == undefined || returnedArray == null){
-              console.log(returnedArray);
+             
 		  	return;
 		  }
-		  console.log(returnedArray);
-		return;
+		
 			 //  post a new comment
 	  	$.ajax({
 	  		 url: "../private/neutral_ajax.php",
@@ -596,6 +595,7 @@
 		  // set the textarea
 	     let textArea;
          let grandParent;
+          let parentWrapper;
 		 let parent;
 		 let loadinGif;
 			textArea  =  document.querySelector("#reply_area_" + commentID);
@@ -610,18 +610,26 @@
 		// define and initialize the grandParent of the textArea
 		if($(textArea) && $(textArea).parents()[2] ){
 			 grandParent = $(textArea).parents()[2];
-			
-			 $(grandParent).hide();
+			 
 
 		}
 	
+	 // define and initialize the parentWrapper of the textArea	
+		 if($(grandParent).find(".ps-comment-send")[0]){
+		 	parentWrapper = $(grandParent).find(".ps-comment-send")[0];
+		 	   $(parentWrapper).hide();
+            
+		 }
+		 
 	    // define and initialize the parent of the textArea	
-		 if($(".ps-comment-send")[0] &&  $(grandParent).find(".ps-comment-actions")[0]){
+		 if( $(grandParent).find(".ps-comment-actions")[0]){
+		 	
             parent  = $(grandParent).find(".ps-comment-actions")[0];
             
             $(parent).hide();
 		 }
 		 
+
 
 		  // hide the loading gif if displayed
 		if($(".ps-comment-loading")[0] && $(grandParent).find(".ps-comment-loading")[0] ){
