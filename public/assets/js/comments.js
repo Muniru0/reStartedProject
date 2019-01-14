@@ -108,7 +108,7 @@
 			grandParent = $(post_button).parents()[1];
 			returnedArray.push(grandParent); 
 		// show the grandParent of the post actions
-			$(grandParent).hide();
+		//	$(grandParent).hide();
 		}	
 		
 		// initialize temporary variable for the parent 
@@ -121,9 +121,10 @@
 		}
 		
 		// show the loadinGif
-		loadinGif = $(grandParent).first();
+		loadinGif = $(grandParent).find(".ps-comment-loading")[0];
 		 returnedArray.push(loadinGif);
-		loadinGif.show();
+		 $(loadinGif).show();
+		 console.log(loadinGif);
 		
 	return returnedArray;
       
@@ -535,6 +536,9 @@
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){ 
+			  setTimeout(function(){
+				  
+			
 			  response = JSON.parse(response);
 			 let comment_template = document.querySelector("#reply-items-template");
 		                comment_template = comment_template.cloneNode(true);
@@ -560,9 +564,8 @@
 	// change the onclick attribute of the link 
   	$(deleteLink).attr("onclick","comment.delete_reply("+ response["reply_id"] +","+ commentID +"); return false;");
   }                 
-  console.log(comment_template);
-               
-				    // prepend the comment to the comments_container 
+  
+               // prepend the comment to the comments_container 
 				 $("#reply_container_" + commentID).append(comment_template);  
                // hide the grandParent
 			  $(returnedArray[2]).hide();
@@ -572,7 +575,7 @@
 			  $(returnedArray[4]).hide();
 			  returnedArray[0].disabled = false;
 			   
-			 
+			   },3000);	
 			 }).fail(function (error){
 				 alert(error);
 			 });
