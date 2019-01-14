@@ -51,7 +51,7 @@ if(validate_presence_on(["password","email"]) && is_email($email)){
           // if they are authenticated successfully
 	   	 // then clear all the failed logins
         throttle::clear_failed_logins();
-		$_SESSION["comment_ids"] = [];
+		$_SESSION["comment_ids"] = [2];
 		$_SESSION["post_ids"]    = [10];
          print j([true]);
       return;

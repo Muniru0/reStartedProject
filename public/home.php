@@ -2004,7 +2004,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 <div id="cmt-list-10" class="ps-comment ps-comment-nested ps-js-comment-reply--10">
 	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--10" data-act-id="10">
-		<div id="comment-item-934" class="ps-comment-item cstream-comment stream-comment" data-comment-id="934">
+<div id="comment-item-1" class="ps-comment-item cstream-comment stream-comment" data-comment-id="934">
 	<div class="ps-avatar-comment">
 		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/andrew/">
 			<img data-author="8" src=" ://demo.peepso.com/wp-content/peepso/users/8/avatar-full.jpg" alt="Andrew Simmons avatar">
@@ -2053,63 +2053,14 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		</div>
 	</div>
 </div>
-
-<div id="comment-item-935" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935">
-	<div class="ps-avatar-comment">
-		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
-			<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="Patricia Currie avatar">
-		</a>
-	</div>
-
-	<div class="ps-comment-body cstream-content">
-		<div class="ps-comment-message stream-comment-content">
-			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/demo/"><img src=" ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge" data-id="2"> Patricia Currie</a>
-			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p><a href=" ://demo.peepso.com/profile/andrew/" title="Andrew Simmons">Andrew</a> yes! That's the first one we saw. But trust me, it's not nearly as empty as the gif shows. There's a lot of tourists. </p></div></span>
-		</div>
-
-		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
-
-		<div class="ps-comment-media cstream-attachments"></div>
-
-		<div class="ps-comment-time ps-shar-meta-date">
-			<small class="activity-post-age" data-timestamp="1529076871"><span class="ps-js-autotime" data-timestamp="1529076871" title="June 15, 2018 3:34 pm">2 weeks ago</span></small>
-
-						<div id="act-like-497" class="ps-comment-links cstream-likes ps-js-act-like--497" data-count="1">
-				<a onclick="return activity.show_likes(497);" href="#showLikes">1 person likes this</a>			</div>
-
-			<div class="ps-comment-links stream-actions" data-type="stream-action">
-				<span class="ps-stream-status-action ps-stream-status-action">
-					<nav class="ps-stream-status-action ps-stream-status-action">
-<a data-stream-id="935" onclick="comment.like_comment(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
-<a data-stream-id="935" onclick="show_reply_box(10) return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
-<a data-stream-id="935" onclick="comment.edit_comment(10,935,this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
-<a data-stream-id="935" onclick="comment.delete_comment(10,935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
-</nav>
-				</span>
-			</div>
-		</div>
-	</div>
-</div>
-
-	</div>
-<div id="delete-dialog" title="Delete Comment" style="display:none;">Are you sure you want to delete this comment</div>
-	
-	<div id="act-new-comment-493"  onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display:block;">
+<div id="reply_div_1" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display: none;">
 		<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-<<<<<<< HEAD
-
-			
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_text_field_change(this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
-
-		<!--		<div class="ps-commentbox__addons ps-js-addons">
-=======
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.reply_field_change(10,this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_1" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); " oninput="comment.reply_field_change(1,this);" ="write="" a="" reply..."="" style="overflow: hidden; height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
             
 		<!--<div class="ps-commentbox__addons ps-js-addons">
->>>>>>> development
 		
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2138,26 +2089,222 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div> -->
 		
 		</div>
+		<div class="ps-comment-send cstream-form-submit" style="">
+			<div class="ps-comment-loading" style="display:none;">
+				<img src="assets/images/ajax-loader.gif" alt="">
+				<div> </div>
+			</div>
+			<div class="ps-comment-actions" style="display: none;">
+				<button onclick="return comment.cancel_reply(1,this);" class="ps-btn ps-button-cancel">Clear</button>
+				<button onclick="return comment.reply_comment(10,1,this);" class="ps-btn ps-btn-primary ps-button-action">Post</button>
+			</div>
+		</div>
+	</div>
+
+<div id="comment-item-2" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935">
+	<div class="ps-avatar-comment">
+		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
+			<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="Patricia Currie avatar">
+		</a>
+	</div>
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/demo/"><img src=" ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge" data-id="2"> Patricia Currie</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p><a href=" ://demo.peepso.com/profile/andrew/" title="Andrew Simmons">Andrew</a> yes! That's the first one we saw. But trust me, it's not nearly as empty as the gif shows. There's a lot of tourists. </p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"></div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1529076871"><span class="ps-js-autotime" data-timestamp="1529076871" title="June 15, 2018 3:34 pm">2 weeks ago</span></small>
+
+						<div id="act-like-497" class="ps-comment-links cstream-likes ps-js-act-like--497" data-count="1">
+				<a onclick="return activity.show_likes(497);" href="#showLikes">1 person likes this</a>			</div>
+
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="935" onclick="comment.like_comment(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
+<a data-stream-id="935" onclick="showReplyBox(2)" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="935" onclick="comment.edit_comment(10,935,this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="935" onclick="comment.delete_comment(10,935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="reply_wall_template" class="ps-comment ps-comment-nested ps-js-comment-reply--506">
+	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--2" data-act-id="2">
+			<div id="reply-item-2" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1120" style="display:table;">
+	
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href="https://demo.peepso.com/profile/demo/" data-hover-card="2"> Patricia Currie</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p>okay lets see how the css is like here</p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"></div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1547457853"><span class="ps-js-autotime" data-timestamp="1547457853" title="January 14, 2019 9:24 am">4 mins ago</span></small>
+
+						<div id="act-like-716" class="ps-comment-links cstream-likes ps-js-act-like--716" data-count="0" style="display:none"></div>
+			
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="1120" onclick="comment.like_reply(this, 716);" href="#like" class="actaction-like ps-icon-thumbs-up"><span>Like</span></a>
+<a data-stream-id="1120" onclick="showReplyBox(2);" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="1120" onclick="comment.edit_reply(10, this);" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="1120" onclick="comment.delete_reply();" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="comment-item-1121" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1121" style="display: none;">
+	<div class="ps-avatar-comment">
+		<a class="cstream-avatar cstream-author" href="https://demo.peepso.com/profile/demo/">
+			<img data-author="2" src="https://demo.peepso.com/wp-content/peepso/users/2/fca95305f7-avatar-full.jpg" alt="Patricia Currie avatar">
+		</a>
+	</div>
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href="https://demo.peepso.com/profile/demo/" data-hover-card="2"><img src="https://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge " data-id="2"> Patricia Currie</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p>yes and another one</p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"></div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1547458032"><span class="ps-js-autotime" data-timestamp="1547458032" title="January 14, 2019 9:27 am">just now</span></small>
+
+						<div id="act-like-717" class="ps-comment-links cstream-likes ps-js-act-like--717" data-count="0" style="display:none"></div>
+			
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="1121" onclick="activity.comment_action_like(this, 717); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span>Like</span></a>
+<a data-stream-id="1121" onclick="activity.comment_action_reply(717, 1121, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="1121" onclick="activity.comment_action_edit(1121, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="1121" onclick="activity.comment_action_delete(1121); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div></div>
+
+	<div id="reply_div_2" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-506" data-type="stream-newcomment" data-formblock="true" style="">
+		
+		<div class="ps-textarea-wrapper cstream-form-input">
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_2" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="comment.reply_field_change(2,this);" placeholder="Write a reply..." style="height: 37px;"></textarea><input type="hidden" class="ps-tagging-hidden" value=""><div class="ps-tagging-dropdown" style="display: none;"></div></div>
+				
+
+		</div>
+		<div class="ps-comment-send cstream-form-submit" style="display: none;">
+			<div class="ps-comment-loading" style="display: none;">
+				<img src="https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif" alt="">
+				<div> </div>
+			</div>
+			<div class="ps-comment-actions" style="display: none;">
+				<button onclick="return comment.reply_cancel(2,this);" class="ps-btn ps-button-cancel">Clear</button>
+				<button onclick="return comment.reply_comment(10,2, this);" class="ps-btn ps-btn-primary ps-button-action" >Post</button>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+	</div>
+<div id="delete-dialog" title="Delete Comment" style="display:none;">Are you sure you want to delete this comment</div>
+	<!--
+	<div id="act-new-comment-493"  onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display:block;">
+		<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
+			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
+		</a>
+		<div class="ps-textarea-wrapper cstream-form-input">
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+			
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_493" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.on_text_field_change(this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+
+		<!--		<div class="ps-commentbox__addons ps-js-addons">
+=======
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.reply_field_change(10,this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+            
+		<!--<div class="ps-commentbox__addons ps-js-addons">
+>>>>>>> development
+=======
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_1" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.reply_field_change(1,this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+            
+		<div class="ps-commentbox__addons ps-js-addons">
+>>>>>>> development
+		
+<div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
+	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
+	<img class="ps-js-img" alt="photo" src="">
+	<div class="ps-commentbox__addon-remove ps-js-remove">
+		<i class="ps-icon-remove"></i>
+	</div>
+</div>
+<div class="ps-commentbox__addon ps-js-addon-photo" style="display:none">
+	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
+
+	<img class="ps-js-img" alt="photo" src="" data-id="">
+
+	<div class="ps-loading ps-js-loading">
+		<img src="assets/images/ajax-loader.gif" alt="loading">
+	</div>
+
+	<div class="ps-commentbox__addon-remove ps-js-remove">
+				<i class="ps-icon-remove"></i>
+	</div>
+</div>
+</div>
+<div class="ps-commentbox-actions">
+<a onclick="peepso.photos.comment_attach_photo(this); return false;" title="Upload photos" href="#" class="ps-postbox__menu-item ps-icon-camera"><span></span></a>
+<a onclick="return false;" title="Send gif" href="#" class="ps-list-item ps-js-comment-giphy ps-icon-giphy"></a>
+</div> 
+		
+		</div>
 		<div class="ps-comment-send cstream-form-submit" style="display:none;">
 			<div class="ps-comment-loading" style="display:none;">
 				<img src="assets/images/ajax-loader.gif" alt="">
 				<div> </div>
 			</div>
 			<div class="ps-comment-actions" style="display:none;">
+<<<<<<< HEAD
 
 				<button onclick="return comment.cancel_reply(493,this);" class="ps-btn ps-button-cancel">Clear</button>
 
 				<button onclick="return comment.post_text(10,493,this);" class="ps-btn ps-btn-primary ps-button-action" >Post</button>
 
 
+=======
+				<button onclick="return comment.cancel_reply(1,this);" class="ps-btn ps-button-cancel">Clear</button>
+				<button onclick="return comment.reply_comment(10,1,this);" class="ps-btn ps-btn-primary ps-button-action" >Post</button>
+>>>>>>> development
 			</div>
 		</div>
 	</div>
-
+-->
 </div>
 		</div>
 
-						<div id="act-new-comment-10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
+<div id="act-new-comment-10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
 			
 			<div class="ps-textarea-wrapper cstream-form-input">
 				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="comment_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment"  oninput="return comment.autoGrow(this); " onkeypress = "comment.on_text_field_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." style="overflow:hidden;"></textarea></div>
@@ -3474,7 +3621,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			</div>
 </div></div>
 
-                        <div id="ps-activitystream-loading" style="display: none;">
+<div id="ps-activitystream-loading" style="display: none;">
                             <div class="ps-stream ps-stream--placeholder">
     <div class="ps-animated-background">
         <div class="ps-background-masker ps-header-top"></div>
@@ -3832,9 +3979,9 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
   </div>
 </div>
 
-<!--beginning of view template-->
+<!--beginning of comment template-->
 
-<div id="comment_template" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935">
+<div id="comment_template" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935" style="display:none;">
 	
 
 	<div class="ps-comment-body cstream-content">
@@ -3867,9 +4014,101 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	</div>
 </div>
 
+<!--end of comment template-->
+
+ <!-- the beginning of reply template -->
+
+<div id="reply_wall_template" class="ps-comment ps-comment-nested ps-js-comment-reply--506">
+	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--2" data-act-id="2">
+			<div id="reply-item-" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1120" style="display:block;">
+	
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href="https://demo.peepso.com/profile/demo/" data-hover-card="2"> Patricia Currie</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p>okay lets see how the css is like here</p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"></div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1547457853"><span class="ps-js-autotime" data-timestamp="1547457853" title="January 14, 2019 9:24 am">4 mins ago</span></small>
+
+						<div id="act-like-716" class="ps-comment-links cstream-likes ps-js-act-like--716" data-count="0" style="display:none"></div>
+			
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="1120" onclick="activity.comment_action_like(this, 716); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span>Like</span></a>
+<a data-stream-id="1120" onclick="activity.comment_action_reply(716, 1120, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="1120" onclick="activity.comment_action_edit(1120, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="1120" onclick="activity.comment_action_delete(1120); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div><div id="comment-item-1121" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1121" style="display: none;">
+	<div class="ps-avatar-comment">
+		<a class="cstream-avatar cstream-author" href="https://demo.peepso.com/profile/demo/">
+			<img data-author="2" src="https://demo.peepso.com/wp-content/peepso/users/2/fca95305f7-avatar-full.jpg" alt="Patricia Currie avatar">
+		</a>
+	</div>
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href="https://demo.peepso.com/profile/demo/" data-hover-card="2"><img src="https://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge " data-id="2"> Patricia Currie</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p>yes and another one</p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"></div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1547458032"><span class="ps-js-autotime" data-timestamp="1547458032" title="January 14, 2019 9:27 am">just now</span></small>
+
+						<div id="act-like-717" class="ps-comment-links cstream-likes ps-js-act-like--717" data-count="0" style="display:none"></div>
+			
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="1121" onclick="activity.comment_action_like(this, 717); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span>Like</span></a>
+<a data-stream-id="1121" onclick="activity.comment_action_reply(717, 1121, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="1121" onclick="activity.comment_action_edit(1121, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="1121" onclick="activity.comment_action_delete(1121); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div></div>
+
+	<div id="act-new-comment-506" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-506" data-type="stream-newcomment" data-formblock="true" style="">
+		
+		<div class="ps-textarea-wrapper cstream-form-input">
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="506" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.on_commentbox_change(this);" placeholder="Write a reply..." style="height: 37px;"></textarea><input type="hidden" class="ps-tagging-hidden" value=""><div class="ps-tagging-dropdown" style="display: none;"></div></div>
+				
+
+		</div>
+		<div class="ps-comment-send cstream-form-submit" style="display: none;">
+			<div class="ps-comment-loading" style="display: none;">
+				<img src="https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif" alt="">
+				<div> </div>
+			</div>
+			<div class="ps-comment-actions" style="display: none;">
+				<button onclick="return activity.comment_cancel(506);" class="ps-btn ps-button-cancel">Clear</button>
+				<button onclick="return activity.comment_save(506, this);" class="ps-btn ps-btn-primary ps-button-action" disabled="disabled">Post</button>
+			</div>
+		</div>
+	</div>
+
+</div>
 
 
-<!--end of view template-->
+<!-- the end of the reply template -->
 <!--- End Of Jquery Javascript file -->
 </div>
       <textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; padding: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; transition: none; height: 0px !important; min-height: 0px !important; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; word-spacing: 0px; text-indent: 0px; line-height: 18px; width: 720.391px;" class="autosizejs" id="autosizejs"></textarea>

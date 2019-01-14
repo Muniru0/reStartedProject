@@ -98,6 +98,7 @@ require_once(PRIVATE_DIR . "classes/class.post_images.php");
 require_once(PRIVATE_DIR . "classes/class.fetch_post.php");
 require_once(PRIVATE_DIR . "classes/class.reactions.php");
 require_once(PRIVATE_DIR . "classes/class.views.php");
+require_once(PRIVATE_DIR . "classes/class.reply_views.php");
 require_once(PRIVATE_DIR . "classes/class.notifications.php");
 require_once(PRIVATE_DIR . "classes/class.post_templates.php");
 
