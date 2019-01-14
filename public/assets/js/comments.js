@@ -535,15 +535,11 @@
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){ 
-			 
-			   console.log( document.querySelector("#reply_wall_template"));
-			      return;
-				    response = JSON.parse(response);
-				 
-				    let comment_template = document.querySelector("#reply_wall_template");
+			  response = JSON.parse(response);
+			 let comment_template = document.querySelector("#reply-items-template");
 		                comment_template = comment_template.cloneNode(true);
 		                
-                        comment_template.id = + response["reply_div_id"];
+                        comment_template.id = response["reply_div_id"];
 		                let user = $(comment_template).find(".ps-comment-user")[0];
 		                $(user).html(response["fullname"]);
 		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
@@ -564,11 +560,10 @@
 	// change the onclick attribute of the link 
   	$(deleteLink).attr("onclick","comment.delete_reply("+ response["reply_id"] +","+ commentID +"); return false;");
   }                 
-                 // find the comments list
- 				let comment_div = document.querySelector("#comment-item-" + commentID);  
- 				 
-				    // append the comment to the comments_container 
-				 $(comment_div).append(comment_template);  
+  console.log(comment_template);
+               
+				    // prepend the comment to the comments_container 
+				 $("#reply_container_" + commentID).append(comment_template);  
                // hide the grandParent
 			  $(returnedArray[2]).hide();
 			  // hide the parent

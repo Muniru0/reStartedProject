@@ -2133,7 +2133,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	</div>
 </div>
 <div id="reply_wall_template" class="ps-comment ps-comment-nested ps-js-comment-reply--506">
-	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--2" data-act-id="2">
+	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--2" id="reply_container_2">
 			<div id="reply-item-2" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1120" style="display:table;">
 	
 
@@ -2210,7 +2210,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		</div>
 		<div class="ps-comment-send cstream-form-submit" style="display: none;">
 			<div class="ps-comment-loading" style="display: none;">
-				<img src="https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif" alt="">
+				<img src="assets/images/ajax-loader.gif" alt="">
 				<div> </div>
 			</div>
 			<div class="ps-comment-actions" style="display: none;">
@@ -3997,7 +3997,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 	<div class="ps-comment-body cstream-content">
 		<div class="ps-comment-message stream-comment-content">
-			<a class="ps-comment-user cstream-author" href="https://demo.peepso.com/profile/demo/" data-hover-card="2"> Patricia Currie</a>
+			<a class="ps-comment-user cstream-author" href="" data-hover-card="2"> Patricia Currie</a>
 			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p>okay lets see how the css is like here</p></div></span>
 		</div>
 
@@ -4022,16 +4022,18 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			</div>
 		</div>
 	</div>
-</div><div id="comment-item-1121" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1121" style="display: none;">
+</div>
+
+<div id="comment-item-1121" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1121" style="display: none;">
 	<div class="ps-avatar-comment">
-		<a class="cstream-avatar cstream-author" href="https://demo.peepso.com/profile/demo/">
-			<img data-author="2" src="https://demo.peepso.com/wp-content/peepso/users/2/fca95305f7-avatar-full.jpg" alt="Patricia Currie avatar">
+		<a class="cstream-avatar cstream-author" href="">
+			<img data-author="2" src="" alt="Patricia Currie avatar">
 		</a>
 	</div>
 
 	<div class="ps-comment-body cstream-content">
 		<div class="ps-comment-message stream-comment-content">
-			<a class="ps-comment-user cstream-author" href="https://demo.peepso.com/profile/demo/" data-hover-card="2"><img src="https://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge " data-id="2"> Patricia Currie</a>
+			<a class="ps-comment-user cstream-author" href="" data-hover-card="2"><img src="" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge " data-id="2"> Patricia Currie</a>
 			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p>yes and another one</p></div></span>
 		</div>
 
@@ -4067,7 +4069,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		</div>
 		<div class="ps-comment-send cstream-form-submit" style="display: none;">
 			<div class="ps-comment-loading" style="display: none;">
-				<img src="https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif" alt="">
+				<img src="assets/images/ajax-loader.gif" alt="">
 				<div> </div>
 			</div>
 			<div class="ps-comment-actions" style="display: none;">
@@ -4079,6 +4081,41 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 </div>
 
+
+<!-- new reply template -->
+
+	<div id="reply-items-template" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1120" style="display:block;">
+	
+
+	<div class="ps-comment-body cstream-content">
+		<div class="ps-comment-message stream-comment-content">
+			<a class="ps-comment-user cstream-author" href="" data-hover-card="2"> Patricia Currie</a>
+			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p>okay lets see how the css is like here</p></div></span>
+		</div>
+
+		<div data-type="stream-more" class="cstream-more" data-commentmore="true"></div>
+
+		<div class="ps-comment-media cstream-attachments"></div>
+
+		<div class="ps-comment-time ps-shar-meta-date">
+			<small class="activity-post-age" data-timestamp="1547457853"><span class="ps-js-autotime" data-timestamp="1547457853" title="January 14, 2019 9:24 am">4 mins ago</span></small>
+
+						<div id="act-like-716" class="ps-comment-links cstream-likes ps-js-act-like--716" data-count="0" style="display:none"></div>
+			
+			<div class="ps-comment-links stream-actions" data-type="stream-action">
+				<span class="ps-stream-status-action ps-stream-status-action">
+					<nav class="ps-stream-status-action ps-stream-status-action">
+<a data-stream-id="1120" onclick="activity.comment_action_like(this, 716); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span>Like</span></a>
+<a data-stream-id="1120" onclick="activity.comment_action_reply(716, 1120, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="1120" onclick="activity.comment_action_edit(1120, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
+<a data-stream-id="1120" onclick="activity.comment_action_delete(1120); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
+</nav>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end of new reply template -->
 
 <!-- the end of the reply template -->
 <!--- End Of Jquery Javascript file -->
