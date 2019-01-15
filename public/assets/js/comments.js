@@ -54,11 +54,6 @@
 		    }  
 	  }
 
-<<<<<<< HEAD
-=======
-    
-	
->>>>>>> development
 
     // prepare the comment or reply text for the ajax request
     static prepare_text(element_id,post_button,option,toggleElement){
@@ -84,7 +79,7 @@
            	   default : "";
            }  
 
-          console.log(textArea);
+       
                
                if($.trim(textArea) == ""){
                	return "";
@@ -111,7 +106,7 @@
 			grandParent = $(post_button).parents()[1];
 			returnedArray.push(grandParent); 
 		// show the grandParent of the post actions
-			$(grandParent).hide();
+		//	$(grandParent).hide();
 		}	
 		
 		// initialize temporary variable for the parent 
@@ -124,9 +119,10 @@
 		}
 		
 		// show the loadinGif
-		loadinGif = $(grandParent).first();
+		loadinGif = $(grandParent).find(".ps-comment-loading")[0];
 		 returnedArray.push(loadinGif);
-		loadinGif.show();
+		 $(loadinGif).show();
+		 console.log(loadinGif);
 		
 	return returnedArray;
       
@@ -237,27 +233,23 @@
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){ 
-				   response = JSON.parse(response);
+			   response = JSON.parse(response);
 				 
 				    let comment_template = document.querySelector("#comment_template");
 		                comment_template = comment_template.cloneNode(true);
                         comment_template.id = response["comment_div_id"];
+                         $(comment_template).hide();
 		                let user = $(comment_template).find(".ps-comment-user")[0];
 		                $(user).html(response["fullname"]);
 		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
 		               $(time).attr("title",response["comment_date"]);
 		                
 		                $(time).html(response["comment_info"][4]);
-		               
-<<<<<<< HEAD
-		               // set the text of the comment
-				    let comment = $(comment_template).find("p");
-				        comment.html(response["comment_info"][3]);
-=======
+
 		               // set the text of the comment from the db
 				    let db_comment = $(comment_template).find("p");
 				        db_comment.html(response["comment_info"][3]);
->>>>>>> development
+
 
 				   // set the delete variable
           let deleteLink = "";
@@ -271,17 +263,18 @@
  				let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
 				    let comments_container = comments_list_children[1];
 				    
-				    // append the comment to the comments_container 
-				 $(comments_container).append(comment_template);  
-               // hide the grandParent
-			  $(returnedArray[2]).hide();
-			  // hide the parent
-			  $(returnedArray[3]).hide();
-			  // hide the loadinGif
-			  $(returnedArray[4]).hide();
-			  returnedArray[0].disabled = false;
+			// append the comment to the comments_container 
+			$(comments_container).append(comment_template);  
+			 $(comment_template).fadeIn(680);
+            // hide the grandParent
+			 $(returnedArray[2]).hide();
+			// hide the parent
+			$(returnedArray[3]).hide();
+			// hide the loadinGif
+			$(returnedArray[4]).hide();
+			returnedArray[0].disabled = false;
 			   
-				  
+			   
 			 }).fail(function (error){
 				 alert(error);
 			 });
@@ -478,12 +471,9 @@
 	
 	
 	// if the reply field has a change
-<<<<<<< HEAD
 
-	static reply_field_change(postID = 0,element = ""){
-=======
 	static reply_field_change(commentID = 0,textArea = ""){
->>>>>>> development
+
 		
 		// max length check 
 		   if(textArea.value.length > 4000){
@@ -530,23 +520,18 @@
 	}// reply_field_change();
 
 
-<<<<<<< HEAD
-// reply to a comment
-	static reply_comment(comment_Id,post_Id,post_button){
-=======
-	
+
 	// reply to a comment
 	static reply_comment(postID,commentID,post_button){
->>>>>>> development
+
 		
 		// return an array of all the relevant information
 		let returnedArray =  comment.prepare_text(commentID,post_button,"reply",true);
 		  if(returnedArray == [] || returnedArray == undefined || returnedArray == null){
-              console.log(returnedArray);
+             
 		  	return;
 		  }
-		  console.log(returnedArray);
-		return;
+		
 			 //  post a new comment
 	  	$.ajax({
 	  		 url: "../private/neutral_ajax.php",
@@ -555,14 +540,12 @@
 	  		datatype:"html",
 			}).done(function(response){ 
 			 
-			   console.log( document.querySelector("#reply_wall_template"));
-			      return;
-				    response = JSON.parse(response);
-				 
-				    let comment_template = document.querySelector("#reply_wall_template");
+			response = JSON.parse(response);
+			 let comment_template = document.querySelector("#reply-items-template");
 		                comment_template = comment_template.cloneNode(true);
 		                
-                        comment_template.id = + response["reply_div_id"];
+                        comment_template.id = response["reply_div_id"];
+						$(comment_template).hide();
 		                let user = $(comment_template).find(".ps-comment-user")[0];
 		                $(user).html(response["fullname"]);
 		               let time  =  $(comment_template).find(".ps-js-autotime")[0];
@@ -582,12 +565,11 @@
 	let comment_id = 
 	// change the onclick attribute of the link 
   	$(deleteLink).attr("onclick","comment.delete_reply("+ response["reply_id"] +","+ commentID +"); return false;");
-  }                 
-                 // find the comments list
- 				let comment_div = document.querySelector("#comment-item-" + commentID);  
- 				 
-				    // append the comment to the comments_container 
-				 $(comment_div).append(comment_template);  
+  }                
+  
+               // prepend the comment to the comments_container 
+				 $("#reply_container_" + commentID).append(comment_template); 
+                	  $(comment_template).fadeIn(680);			 
                // hide the grandParent
 			  $(returnedArray[2]).hide();
 			  // hide the parent
@@ -607,18 +589,16 @@
 	}
 	
 	// cancel reply 
-<<<<<<< HEAD
 
-	static cancel_reply(postID,element){
-=======
 	static reply_cancel(commentID,element){
->>>>>>> development
+
 		// check the validity of the postID		
 		if(commentID != null && commentID != undefined && 
 		commentID > 0  && $.trim(element) != ""){
 		  // set the textarea
 	     let textArea;
          let grandParent;
+          let parentWrapper;
 		 let parent;
 		 let loadinGif;
 			textArea  =  document.querySelector("#reply_area_" + commentID);
@@ -633,18 +613,26 @@
 		// define and initialize the grandParent of the textArea
 		if($(textArea) && $(textArea).parents()[2] ){
 			 grandParent = $(textArea).parents()[2];
-			
-			 $(grandParent).hide();
+			 
 
 		}
 	
+	 // define and initialize the parentWrapper of the textArea	
+		 if($(grandParent).find(".ps-comment-send")[0]){
+		 	parentWrapper = $(grandParent).find(".ps-comment-send")[0];
+		 	   $(parentWrapper).hide();
+            
+		 }
+		 
 	    // define and initialize the parent of the textArea	
-		 if($(".ps-comment-send")[0] &&  $(grandParent).find(".ps-comment-actions")[0]){
+		 if( $(grandParent).find(".ps-comment-actions")[0]){
+		 	
             parent  = $(grandParent).find(".ps-comment-actions")[0];
             
             $(parent).hide();
 		 }
 		 
+
 
 		  // hide the loading gif if displayed
 		if($(".ps-comment-loading")[0] && $(grandParent).find(".ps-comment-loading")[0] ){
