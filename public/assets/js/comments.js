@@ -239,27 +239,44 @@
   	$(actionsLink).attr("onclick","comment.edit_comment("+ response["comment_info"][0] +","+ response["comment_info"][1] +",this); return false;");
       }     
 
-
-       //set the reply template
+        //set the reply template
 	   let reply_template ;
+	   let textAreaDiv;
+	   let reply_container;
+	   let textArea;
 			if(document.querySelector("#reply_wall_template")){
 				reply_template = document.querySelector("#reply_wall_template");
-			}
-	     
-		   // clone the reply template
+				// clone the reply template
               reply_template = reply_template.cloneNode(true);	
-     // set the id of the reply wall template div			  
+			// set the id of the reply wall template div			  
            $(reply_template).attr("id","reply_wall_" + response["comment_info"][0]);  
-		   // find the id of the replys container
-	     let reply_container =	$(reply_template).find(".ps-comment-container")[0];
+		   
+		    // find the replys container
+	         if($(reply_template).find(".ps-comment-container")[0]){
+			 // find the id of the replys container
+	      reply_container =	$(reply_template).find(".ps-comment-container")[0];
 		// set the id of the replys container
 		   reply_container   =  $(reply_container).attr("id","reply_container_" + response["comment_info"][0]);
-		  // find the entire div with the textarea, the reply post button and cancel button
-            let textAreaDiv = $(reply_template).find(".ps-comment-reply")[0];
-			let textArea    = $(reply_template).find("textarea");
-			// set the id of reply textarea
+		   }
+		   
+		   //
+		   if($(reply_template).find(".ps-comment-reply")[0]){
+			   //find the entire div with the textarea, the reply post button and cancel button
+            textAreaDiv  = $(reply_template).find(".ps-comment-reply")[0];
+			 $(textAreaDiv).attr("id","reply_area_div_" + response["comment_info"][0]);
+		   }
+		   
+		   // find the text area associated with the reply template
+		      if($(reply_template).find("textarea")){
+				textArea    = $(reply_template).find("textarea");
+				// set the id of reply textarea
 			$(textArea).attr("id","reply_area_" + response["comment_info"][0]);
 			
+			  }
+			 
+			}
+	   
+		  
      // edit the post reply  link
       if( $(reply_template).find(".ps-button-action")[0]){
   	actionsLink =  $(reply_template).find(".ps-button-action")[0];
