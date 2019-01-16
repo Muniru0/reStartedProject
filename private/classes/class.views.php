@@ -344,13 +344,42 @@ public static function delete_view ($post_id ,$comment_id){
     $post_id     = $db->real_escape_string($post_id);
     $comment_id  = $db->real_escape_string($comment_id);	
 	
-	$query = "DELETE FROM views WHERE id = $comment_id && post_id = $post_id && commentor_id = ".$_SESSION["id"];
-    if($db->query($query) && $db->affected_rows > 0){
-		
-		print j(["true"]);
-	}else{
-		print j(["false" => "Operation failed Please try again"]);
-	}
+	$post_id     = (int) $post_id;
+	$comment_id  = (int) $comment_id;
+	
+	$query  = "DELETE FROM views WHERE id = $comment_id && post_id = $post_id && commentor_id = ".$_SESSION["id"].";";
+	$query .= "DELETE FROM ".ReplyViews::$table_name." WHERE post_id = {$post_id} && comment_id = {$comment_id} && user_id = ".$_SESSION["id"];
+	
+	  
+	  if($db->multi_query($query)){
+		  
+		  do{
+			  // echo $db->affected_rows;
+			  // store first result
+		  if($result = $db->use_result()){
+			   
+			$result->close();
+		  }else{
+			  // check if mysql does not return an empty string as a result since operations like insert and
+			  // delete will make multi_query return false
+			  if($db->error != ""){
+				  log_action(__CLASS__,"Query failed: $db->error on line :".__LINE__." in file: ".__FILE__);
+				   print j(["false" => "Operation failed Please try again... if problem persist refresh the page"]);
+				   break;
+			  }
+		  }
+		  if(!$db->more_results()){
+			    print j([true]);
+			 return;
+		  }
+		  
+		  }while($db->next_result());
+		  
+}else{
+	print j(["false" => "Operation failed: try again... if the problem persist refresh the page"]);
+}
+	  
+	
 }
 
 

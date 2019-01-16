@@ -2,10 +2,10 @@
 
 require_once("../private/initialize.php");
 
-class ReplyView  extends Views {
+class ReplyViews  extends Views {
 
     // table name of the 
-      public static $table_name    =    "reply_comment";
+      public static $table_name    =    "reply_comments";
 	  
 	// database columns
       public static $id            =    "id";
@@ -28,8 +28,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	 
 	// the insert query for the new comment	
 	$query = "CALL reply_comment(?)";
-	
-	
+
 	// prepare the new comment statement
 	if(!($stmt= $db->prepare($query))){
 		log_action(__CLASS__, " Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
@@ -56,7 +55,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	  
 	  if($result = $stmt->get_result()){
 		    if($row = $result->fetch_assoc()){
-			if($row["LAST_INSERT_ID()"]  && $row["LAST_INSERT_ID()"] > 0){
+			if(isset($row["LAST_INSERT_ID()"])  && $row["LAST_INSERT_ID()"] > 0){
 		 
 		//$view_info = self::get_reply($view_id,$post_id);
 	    // to be used as the title attribute for the time paragraph in html	
@@ -71,7 +70,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 			"reply_time" =>$formatted_reply_time,
 			"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],
 			"reply_date" => $post_date]);
- }elseif($row["invalid_request"]){
+ }elseif(Isset($row["invalid_request"])){
 	 log_action(__CLASS__," Query failed {$db->error} {$stmt->error}on line ".__LINE__." in file ".__FILE__);
 	 print j(["false" => "Operation failed, please try again..."]);
 	 return false;

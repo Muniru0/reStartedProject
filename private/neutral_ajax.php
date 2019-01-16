@@ -78,30 +78,15 @@ elseif(isset($_POST["delete_comment"]) ){
 	 
 		 
 // check to see if the post id is in the post ids array	  
-	/* 	 if(!in_array($post_id,$_SESSION["post_ids"],true) ||
-   		    !in_array($comment_id,$_SESSION["comment_ids"],true))
+        if(!in_array($comment_id,$_SESSION["comment_ids"],true) ||
+		    !in_array($post_id,$_SESSION["post_ids"],true) )
 		 {
-			 print_r($_SESSION);
-			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
-			return;
-		 } */
-	
-		 if(!in_array($comment_id,$_SESSION["comment_ids"],true))
-		 {
-			 print_r($_SESSION);
+			
 			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
 			
 		 }
 		 
-	 if(!in_array($post_id,$_SESSION["post_ids"],true) 
-   		   )
-		 {
-			 print_r($_SESSION);
-			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
-			return;
-		 }		 
-	 
-	// delete the view from the database			
+	 // delete the view from the database			
 	 Views::delete_view($post_id,$comment_id);
 	
 	
@@ -220,7 +205,7 @@ elseif(isset($_POST["reply_comment"])){
 		 }
 		 
 		
-		  ReplyView::reply_views($post_id,$comment_id,$_POST["reply"]);	
+		  ReplyViews::reply_views($post_id,$comment_id,$_POST["reply"]);	
 	  
 	  
 	

@@ -226,8 +226,6 @@ $query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$la
             $post_id = $row["LAST_INSERT_ID()"];
        }
     $result->free(); 
-//                           echo "got to the server";
-// // return; 
 
     if($db->more_results()){
     

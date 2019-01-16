@@ -4,7 +4,7 @@
 	
       commentID = commentID.valueOf();
 		 if(typeof commentID !== "number"  || commentID < 0 || commentID == null || commentID == undefined || $.trim(commentID) == "" ){
-			 console.log("failed");
+			
 			 return;
 		 }
 		 
@@ -233,8 +233,8 @@
   }    
   
     // edit the delete comment link
-      if($(comment_template).find(".actaction-delete")[0]){
-  	actionsLink = $(comment_template).find(".actaction-delete")[0];
+      if($(comment_template).find(".actaction-edit")[0]){
+  	actionsLink = $(comment_template).find(".actaction-edit")[0];
 	// change the onclick attribute of the link 
   	$(actionsLink).attr("onclick","comment.edit_comment("+ response["comment_info"][0] +","+ response["comment_info"][1] +",this); return false;");
       }     
@@ -244,6 +244,7 @@
 	   let textAreaDiv;
 	   let reply_container;
 	   let textArea;
+	   // set up the entire reply wall template
 			if(document.querySelector("#reply_wall_template")){
 				reply_template = document.querySelector("#reply_wall_template");
 				// clone the reply template
@@ -404,11 +405,18 @@
 								// hide the comment until the response from the server is positive
 
 								let hiddenComment;
-								
+								// find the comment to be deleted and hide it
 								if(document.querySelector("#new_comment_" + commentID)  != null  && document.querySelector("#new_comment_" + commentID)){
 								hiddenComment = document.querySelector("#new_comment_" + commentID);
 								hiddenComment.style.display = "none";
 								}
+								let hiddenReply;
+								// find the comment to be deleted and hide it
+								if(document.querySelector("#reply_wall_" + commentID)  != null  && document.querySelector("#reply_wall_" + commentID)){
+								hiddenReply = document.querySelector("#reply_wall_" + commentID);
+								hiddenReply.style.display = "none";
+								}
+								
 
 								
 								$.ajax({
@@ -417,10 +425,8 @@
 									data     : {post_id : postID,comment_id :commentID,delete_comment : true},
 									datatype : "html"
 								}).done(function(response){
-									 response = JSON.parse(response);
-									
-									
-							    if(response[0] == "true"){
+							   response = JSON.parse(response);
+								if(response[0] === true){
 
 							    	//now you can remove the comment from the dom
 							    	hiddenComment.remove();
@@ -428,12 +434,16 @@
 							    	
 							    }else{
 							    	hiddenComment.style.display = "block";
-							    	alert(response["false"]);
+									hiddenReply.style.display = "block";
+									setTimeout(function(){
+										alert(response["false"]);
+									},1000);
+							    	
 							    	}
 								}).fail(function(error){
 									 setTimeout(function(){
 									 alert(error);
-									  },2000);
+									  },800);
 								});// end of ajax request
 								
                                 }// click : function();
@@ -472,7 +482,7 @@
 		  
 		  $("#comment_area_" + postID).val(newComment);
 		 let newEvent = new Event('input',{'bubbles': true, cancelable: true});
-		     document.querySelector("#comment_area_" + post_Id).dispatchEvent(newEvent);
+		     document.querySelector("#comment_area_" + postID).dispatchEvent(newEvent);
 
 		 document.querySelector("#comment_area_" + postID).oninput = function(){
 				   comment.comment_field_change("#comment_area_" + postID);
@@ -567,6 +577,7 @@
 		  	return;
 		  }
 		
+		
 			 //  post a new comment
 	  	$.ajax({
 	  		 url: "../private/neutral_ajax.php",
@@ -574,7 +585,7 @@
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){ 
-
+                
 			 
 			response = JSON.parse(response);
 
@@ -685,7 +696,6 @@
 		
 	}
 	}// cancel_reply();
-
 
 	
 	// delete the comment reply

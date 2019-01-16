@@ -4035,7 +4035,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 <!-- new reply template -->
 
-	<div id="reply-items-template" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1120" style="display:block;">
+	<div id="reply-items-template" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1120" style="display:none;">
 	
 
 	<div class="ps-comment-body cstream-content">
@@ -4057,7 +4057,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				<span class="ps-stream-status-action ps-stream-status-action">
 					<nav class="ps-stream-status-action ps-stream-status-action">
 <a data-stream-id="1120" onclick="activity.comment_action_like(this, 716); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span>Like</span></a>
-<a data-stream-id="1120" onclick="activity.comment_action_reply(716, 1120, this, { id: 2, name: 'Patricia Currie' }); return false;" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+
 <a data-stream-id="1120" onclick="activity.comment_action_edit(1120, this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
 <a data-stream-id="1120" onclick="activity.comment_action_delete(1120); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
 </nav>
