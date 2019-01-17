@@ -1,4 +1,9 @@
 
+ function replaceString(oldS, newS, fullS) {
+  return fullS.split(oldS).join(newS);
+}
+
+
 
   function showReplyBox(commentID = 0){
 	
@@ -21,6 +26,7 @@
 	 // define the constructor of the class
 	  constructor (){
 		  this.commentUrl = "../private/neutral_ajax.php";
+		  this.returnedArray;
 		 
 	  }
 	
@@ -236,7 +242,7 @@
       if($(comment_template).find(".actaction-edit")[0]){
   	actionsLink = $(comment_template).find(".actaction-edit")[0];
 	// change the onclick attribute of the link 
-  	$(actionsLink).attr("onclick","comment.edit_comment("+ response["comment_info"][0] +","+ response["comment_info"][1] +",this); return false;");
+  	$(actionsLink).attr("onclick","comment.prepare_edit_comment("+ response["comment_info"][1] +","+ response["comment_info"][0] +",this); return false;");
       }     
 
         //set the reply template
@@ -459,42 +465,30 @@
 
 	}
 	
-   
-
-   // edit a comment
-	static edit_comment(postID,commentID,element){
+     static edit_comment(postID = 0,commentID = 0,element = ""){
+		let commentInfo;
 		
-		         
-		//validate the comment id
+     		//validate the comment id
 		if(commentID == null || 
 		commentID == 0 ||
 		commentID == undefined ||
 		commentID == NaN ||
-		commentID == false){
+		commentID == false||
+		postID == null || 
+		postID == 0 ||
+		postID == undefined ||
+		postID == NaN ||
+		postID == false){
 			
 		return false;	
 		}
 		
-		let commentDiv = document.querySelector("#new_comment_" + commentID);
-		 let commentPargh = $(commentDiv).find("p")[0];
-		
-		  let newComment = $(commentPargh).html();
-		  
-		  $("#comment_area_" + postID).val(newComment);
-		 let newEvent = new Event('input',{'bubbles': true, cancelable: true});
-		     document.querySelector("#comment_area_" + postID).dispatchEvent(newEvent);
-
-		 document.querySelector("#comment_area_" + postID).oninput = function(){
-				   comment.comment_field_change("#comment_area_" + postID);
-				   
-			   }; 
-		     
-		       return;
-		     
+// 	  commentInfo      = comment.prepare_edit_comment(postID,commentID,element);
+// 	    commentInfo['commentPargh'] = $(commentInfo['commentPargh']).html();
 		$.ajax({
 		url      : "../private/neutral_ajax.php",
 		type     : "POST",
-		data     : {post_id : post_Id,comment_id :comment_Id,comment: new_comment,edit_comment : true},
+		data     : {post_id : postID,comment_id :commentID,comment: commentInfo['commentPargh'],edit_comment : true},
 		datatype : "html"
 		}).done(function(response){
 		response = JSON.parse(response);
@@ -508,8 +502,101 @@
 		  }).fail(function(error){
 		 alert(error);
 		 });
-								
 		
+     }
+
+   // edit a comment
+	static prepare_edit_comment(postID = 0,commentID = 0,element = ""){
+		
+		           
+		//validate the comment id
+		if(commentID == null || 
+		commentID == 0 ||
+		commentID == undefined ||
+		commentID == NaN ||
+		commentID == false){
+			
+		return false;	
+		}
+		
+		let commentDiv;
+		let commentPargh;
+		let oldComment;
+		let commentArea;
+		let textAreaParent;
+		let buttonsGrParent; 
+		let buttonsWrapper;
+		let postButton;
+		let returnedArray = [];
+		
+		
+		if( document.querySelector("#new_comment_" + commentID)){
+			// find the entire div of the comment to edit
+		 commentDiv = document.querySelector("#new_comment_" + commentID);
+		   if($(commentDiv).find("p")[0]){
+		   // find the paragraph associated with the div with the comment text
+		 commentPargh = $(commentDiv).find("p")[0];
+				if( $(commentPargh).html()){
+			   // set the new comment to a temporal variable
+		oldComment = $(commentPargh).html();
+		     // push the old comment into the returnedArray;
+            		 
+
+				}
+		   }
+		}
+
+			// find the text area associated with the comments  
+		if($("#comment_area_" + postID)){
+			commentArea = $("#comment_area_" + postID)[0];
+			 // replace the line breaks in the string with empty string
+			oldComment = replaceString("<br>","", oldComment);
+		   $(commentArea).trigger("paste");
+		  // populate the text area with the old comment			
+		$(commentArea).val(oldComment);	
+		  $(commentArea).focus();
+	    //find the parent of the text area and post action buttons
+		   if($(commentArea).parents()[2]){
+			// find and set the parent of the comment text area   
+			    textAreaParent = $(commentArea).parents()[2];
+			  // find and set the grand parent of the post action buttons		
+			 if($(textAreaParent).find(".ps-comment-send")[0]){
+				
+             buttonsGrParent =  $(textAreaParent).find(".ps-comment-send")[0];
+			 // show the grand parent
+			 $(buttonsGrParent).show();
+				 }
+			
+			 // find the children of the grand parent 
+			 if(buttonsGrParent.hasChildNodes()){
+				if($(buttonsGrParent).find(".ps-comment-actions")[0]){
+			// set the child of the grand parent		
+			buttonsWrapper  = $(buttonsGrParent).find(".ps-comment-actions")[0];
+			// show the child of the grand parent
+			$(buttonsWrapper).show(); 
+			
+              // find the post button
+      if($(buttonsWrapper).find(".ps-button-action")[0]){
+  	postButton = $(buttonsWrapper).find(".ps-button-action")[0];
+	// change the onclick attribute of the post button to edit comment
+  	$(postButton).attr("onclick","comment.edit_comment("+ postID +","+ commentID +",this); return false;");
+  }    
+  
+ 
+
+				   }
+				   
+				
+			
+			 }
+				
+		   }
+       	
+		}
+
+		return returnedArray = {'comment': oldComment,'textArea': commentArea, 'textAreaParent':textAreaParent ,'commentPara' : commentPargh,'buttonsGrParent': buttonsGrParent,'buttonsWrapper' : buttonsWrapper};
+		
+	
 		
 	}
 	

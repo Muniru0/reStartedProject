@@ -6,8 +6,8 @@ require_once("../private/initialize.php");
       
     <head>
         <title>CTF</title>
-        <script src = "ajax_practice/jquery.js" ></script>
-         <script src = "ajax_practice/script.js" async></script>
+        <script src = "assets/js/jquery.js" ></script>
+       
     <style>
       
 
@@ -44,7 +44,7 @@ function autoGrow(oField){
 		oField.style.height = oField.scrollHeight + "px";
 	}
 }
- let comment = element.value;
+ /* let comment = element.value;
     		 
 		 let commentboxParent = $(element).parents()[2];
 		    let post_id = commentboxParent.id;
@@ -62,7 +62,7 @@ function autoGrow(oField){
 				 alert(error);
 			 });
 
-	}
+	} */
 let value = document.getElementById("#textarea");
 
  
@@ -78,11 +78,18 @@ let value = document.getElementById("#textarea");
 	}
  }
  activity.me();
+  (function(){
+	  $(document).on( '', 'textarea', function (){
+    $(this).height(0).height(this.scrollHeight);
+}).find( 'textarea' ).change();
+console.log("how to make things mov fast");
+  })();
+ 
 </script>
 
 
-<!--<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
-<input  type= "text" oninput="print_value(this) ;" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/> -->
+<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
+<input  type= "text" oninput="print_value(this) ;" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/> 
 <?
 
 
