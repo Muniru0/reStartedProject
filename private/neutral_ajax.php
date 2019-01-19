@@ -98,33 +98,35 @@ elseif(isset($_POST["delete_comment"]) ){
 
 // edit the view
 elseif(isset($_POST["edit_comment"])){
-	
-	
-	
+
+
+	  $comment =  nl2br($_POST["comment"],true);
+    
+	  
 	  if($_POST["edit_comment"] != "true"){
 		   
 		   print j(["false" => "Invalid request"]);
 		   return false;
 	   }
 	   
-	   	$_POST["comment"] = nl2br($_POST["comment"]);
+	  
 		
       // check if the comment is empty or set	  
-	  if(!isset($_POST["comment"]) || empty(trim($_POST["comment"]))){
+	  if(!isset($comment) || empty(trim($comment))){
 		  print j(["false" => "Please comment can't be empty"]);
-		  print j($_POST["comment"]);
+		  
 		  return false;
 	  }   
 	  
 	 // check the length of the comment
-	  if(!isset($_POST["comment"]) || (strlen($_POST["comment"]) > 4000)){
+	  if(!isset($comment) || (strlen($comment) > 4000)){
 		  
 		  print j(["false" => "Please the maximum number of characters for a comment is 4000"]);
 		  return false;
 	  }
 
-	 $post_id    = (int) $_POST["post_id"];
-	 $comment_id = (int) $_POST["comment_id"];
+	$post_id    = (int) $_POST["post_id"];
+	$comment_id = (int) $_POST["comment_id"];
 	 
 	 // check if the comment is empty or set	  
 	  if(!isset($post_id) || $post_id < 1 || !is_int($post_id)  &&
@@ -134,14 +136,14 @@ elseif(isset($_POST["edit_comment"])){
 	  }   
    
 // check to see if the post id is in the post ids array	  
-		 if(!in_array($post_id,$_SESSION["posts_ids"],true) ||
-   		    !in_array($comment_id,$_SESSION["comments_ids"],true))
+		 if(!in_array($post_id,$_SESSION["post_ids"],true) ||
+   		    !in_array($comment_id,$_SESSION["comment_ids"],true))
 		 {
 		    print j(["false" => "Operation failed, Please try again..."]); 
 		 }
 		 
 	// delete the view from the database			
-	 Views::edit_view($post_id,$_POST["comment_id"]);
+	 Views::edit_view($post_id,$comment_id,$comment);
 
 
 	

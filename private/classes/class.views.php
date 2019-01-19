@@ -263,31 +263,33 @@ return $stmt->get_result();
 
 
 // edit the view
-public static function edit_view($comment_id = 0,$post_id = 0){
-
-
-	global $db;
+public static function edit_view($post_id = 0,$comment_id = 0,$comment = ""){
  
+	  global $db;
+	    
+	$comment = str_replace("\n","",$comment);
+	 
+	$parameters = j([$post_id,$comment_id,$_SESSION["id"],$comment,time()]);
+     
 
-	$query = "UPDATE views SET comment = $comment WHERE id = $comment_id && post_id = $post_id && commentor_id=".$_SESSION["id"];
+     $query = "CALL edit_view('".j([$post_id,$comment_id,$_SESSION["id"],$comment,time()])."')";
 
+  $result = $db->multi_query($query);
+   do{
+	   if($result = $db->store_result()){
+		   if($row  = $result->fetch_assoc()){
+			  print j(["true" => $row["comment"]]);
+		   }
+		}elseif(trim($db->error) == ""){
+			
+		}else{
+		print j(["false" => "Operation failed please try again {$db->error}"]);
+		}
+		
+		
+   }while($db->more_results() && $db->next_result()); 
+  
 
-$stmt = self::prepare($query);
-
-	if(!$stmt){
-
-  log_action(__CLASS__,"Preparation failed: edit_view() Views|| ".$db->error);
-	}
-
-	if(!$stmt->bind_param("s",$info)){
-
-  log_action(__CLASS__,"binding failed: edit_view() Views || ".$stmt->error);
-	}
-
-	if(!$stmt->execute()){
-
-   log_action(__CLASS__,"Execution failed: edit_view() Views || ".$stmt->error);
-	}
 
 }
 

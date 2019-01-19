@@ -229,7 +229,11 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
         color: #525e6f;
     }
 
-
+     textarea {
+		white-space: pre-wrap;
+		word-wrap  : break-word;
+		white-space: -moz-pre-wrap;
+	 }
     .ui-dialog-titlebar-close{
         display:none !important;
     }
@@ -2130,7 +2134,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				<span class="ps-stream-status-action ps-stream-status-action">
 					<nav class="ps-stream-status-action ps-stream-status-action">
 <a data-stream-id="935" onclick="comment.like_comment(this, 497); return false;" href="#like" class="actaction-like ps-icon-thumbs-up"><span><span title="1 person likes this">Like</span></span></a>
-<a data-stream-id="935" onclick="showReplyBox(2)" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
+<a data-stream-id="935" onclick="comment.showReplyBox(2)" href="#reply" class="actaction-reply ps-icon-plus"><span>Reply</span></a>
 <a data-stream-id="935" onclick="comment.prepare_edit_comment(10,935,this); return false;" href="#edit" class="actaction-edit ps-icon-pencil"><span>Edit</span></a>
 <a data-stream-id="935" onclick="comment.delete_comment(10,935); return false;" href="#delete" class="actaction-delete ps-icon-trash"><span></span></a>
 </nav>

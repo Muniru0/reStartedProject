@@ -1,7 +1,8 @@
 (function ($) {
 	
-  $(document).on( 'change keyup keydown paste cut', 'textarea', function (){
-    $(this).height(0).height(this.scrollHeight);
+  $("textarea").on( 'change keyup keydown paste cut', function (){
+  
+    $(this).height(0).height(this.scrollHeight - 20);
 }).find( 'textarea' ).change();
 
  "use strict";
@@ -658,7 +659,7 @@ return false;
     // the iconClass and the mood(as plain text)
     function selectedMoodTemplate(iconClass, mood) {
 
-        return "<span class='ps-postbox-addons' style='display: inline;'>— <i class='ps-emoticon " + iconClass + "'></i> <b> feeling " + post_mood + "</b></span>";
+        return "<span class='ps-postbox-addons' style='display: inline;'>? <i class='ps-emoticon " + iconClass + "'></i> <b> feeling " + post_mood + "</b></span>";
 
     } // selectedMoodTemplate()
 

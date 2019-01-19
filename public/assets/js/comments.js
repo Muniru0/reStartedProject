@@ -1,25 +1,4 @@
 
- function replaceString(oldS, newS, fullS) {
-  return fullS.split(oldS).join(newS);
-}
-
-
-
-  function showReplyBox(commentID = 0){
-	
-      commentID = commentID.valueOf();
-		 if(typeof commentID !== "number"  || commentID < 0 || commentID == null || commentID == undefined || $.trim(commentID) == "" ){
-			
-			 return;
-		 }
-		 
-		
-		 // show the reply_area
-		 $("#reply_area_div_" + commentID).toggle();
-		 
-		
-	}// showReplyBox();
-
 
  class comment{
 	  
@@ -60,7 +39,30 @@
 		    }  
 	  }
 
+    
+   // helper method for replacing strings
+  static replaceString(oldS, newS, fullS) {
+  return fullS.split(oldS).join(newS);
+}
+	
+	
+  // helper static method for showing the replyBox
+  static showReplyBox(commentID = 0){
+	
+      commentID = commentID.valueOf();
+		 if(typeof commentID !== "number"  || commentID < 0 || commentID == null || commentID == undefined || $.trim(commentID) == "" ){
+			
+			 return;
+		 }
+		 
+		
+		 // show the reply_area
+		 $("#reply_area_div_" + commentID).toggle();
+		 
+		
+	}// showReplyBox();
 
+	
     // prepare the comment or reply text for the ajax request
     static prepare_text(element_id,post_button,option,toggleElement){
 
@@ -235,7 +237,7 @@
       if($(comment_template).find(".actaction-reply")[0]){
   	actionsLink = $(comment_template).find(".actaction-reply")[0];
 	// change the onclick attribute of the link 
-  	$(actionsLink).attr("onclick","showReplyBox("+ response["comment_info"][0] +"); return false;");
+  	$(actionsLink).attr("onclick","comment.showReplyBox("+ response["comment_info"][0] +"); return false;");
   }    
   
     // edit the delete comment link
@@ -326,13 +328,13 @@
 	
 	
 	// clear/cancel a comment
-	static cancel_comment(id,cancel_button){
-		if(id != null || id != undefined){
+	static cancel_comment(postID,cancelButton){
+		if(postID != null || postID != undefined){
 		  // set the textarea
-	     let comment_area = document.querySelector("#comment_area_" +id);
+	     let comment_area = document.querySelector("#comment_area_" + postID);
 		 
 		 // hide the loading gif if it is present
-		  let post_actions_gr_parent = $(cancel_button).parents()[1];
+		  let post_actions_gr_parent = $(cancelButton).parents()[1];
 		let loadinGif = post_actions_gr_parent.childNodes[1];
 		    loadinGif.style.display = "none";
 		if(comment_area != null && comment_area != undefined){
@@ -343,9 +345,9 @@
 		    // define the temporary variable for the grandParent
 			let grandParent;
 
-        if($(cancel_button).parents()[1]){
+        if($(cancelButton).parents()[1]){
 			
-			grandParent = $(cancel_button).parents()[1];
+			grandParent = $(cancelButton).parents()[1];
 			$(grandParent).hide();
 		}		   
 		// define the temporary variable for the parent 
@@ -354,6 +356,11 @@
 			let parent = $(grandParent).find(".ps-comment-actions")[0];
 			$(parent).hide();
 		}
+		
+		 // find the reset the onclick attribute of the post button
+		 if($(cancelButton).siblings()[0]){
+			 $(cancelButton).siblings().attr("onclick","return comment.post_comment(" + postID + ",this);");
+		 }
 
 			 
 
@@ -466,7 +473,7 @@
 	}
 	
      static edit_comment(postID = 0,commentID = 0,element = ""){
-		let commentInfo;
+	
 		
      		//validate the comment id
 		if(commentID == null || 
@@ -478,27 +485,140 @@
 		postID == 0 ||
 		postID == undefined ||
 		postID == NaN ||
-		postID == false){
+		postID == false ||
+        element == null || 
+		element == 0 ||
+		element == undefined ||
+		element == NaN ||
+		element == false
+		){
 			
 		return false;	
 		}
-		
-// 	  commentInfo      = comment.prepare_edit_comment(postID,commentID,element);
-// 	    commentInfo['commentPargh'] = $(commentInfo['commentPargh']).html();
-		$.ajax({
+
+         // define a temporal variable for the comment area
+        let commentArea;
+       
+        // define a temporal variable for the old comment
+        let newComment;
+       
+        // define a temporal variable for the edit button
+        let editButton;
+       
+        // define a temporal variable for the grand parent of
+        // the post button
+        let grandParent;
+       
+        //  define a temporal variable for the loading gif
+        let loadinGif;
+      
+       // define a temporal variable for the comment outer wrapper
+        let commentOuterWrapper;
+      
+       //  define a temporal variable for the comment paragraph
+       let commentParagraph; 
+       
+        //  define a temporal variable for the post actions buttons
+       let parent; 
+        
+        //  define a temporal variable for the buttons wrapper
+       let buttonsWrapper; 
+
+        //  define a temporal variable for the post buttons
+       let postButton;
+
+        //  define a temporal variable for the comment outer div
+       let oldCommentOuterDiv; 
+
+       
+          // check and initialize the variable
+        if( document.querySelector("#comment_area_" + postID)){
+        	 commentArea  = document.querySelector("#comment_area_" + postID);
+        }
+
+        // set the value of the old comment  
+    if($.trim(commentArea) != undefined 
+    && $(commentArea) != null 
+    && $(commentArea) != "" 
+    && $(commentArea).val() != ""){
+    	newComment = $(commentArea).val();
+    }
+  
+     // check and initialize the grandParent of the post button
+    if($(commentArea) && $(commentArea).parents()[2]){
+    	grandParent =  $(commentArea).parents()[2];
+    }
+       // check and initialize the loading gif 
+    if($.trim(grandParent) != undefined &&
+     $.trim(grandParent) != null && 
+     $.trim(grandParent) != "" && 
+     $(grandParent).find(".ps-comment-loading")[0]){
+    	loadinGif = $(grandParent).find(".ps-comment-loading")[0] ;
+    	// show the loading gif while the request is sent to the server
+    	$(loadinGif).show();
+    }
+
+// find an hide the old comment outer div to be able to fade it in
+    if($(commentOuterWrapper) && $("#new_comment_" + commentID)){
+    // find and initialize the comment outer wrapper ;
+		commentOuterWrapper = $("#new_comment_" + commentID);
+    	$(commentOuterWrapper).hide();
+
+    }
+
+
+   $.ajax({
 		url      : "../private/neutral_ajax.php",
 		type     : "POST",
-		data     : {post_id : postID,comment_id :commentID,comment: commentInfo['commentPargh'],edit_comment : true},
+		data     : {post_id : postID,comment_id :commentID,comment : newComment,edit_comment : true},
 		datatype : "html"
 		}).done(function(response){
+		console.log(response);
 		response = JSON.parse(response);
-		if(response["true"]){
-			 $(comment_pargh).html(new_comment);
-        // change the html of the comment
-		}else{
+		if(response["true"] && $.trim(response["true"] != "")){
 		
+		 $(commentArea).val("");
+		// find and initialize the comment paragraph
+	   commentParagraph =	$(commentOuterWrapper).find("p");
+	   $(commentParagraph).html(response["true"]);
+	   
+	   // fade the new comment outer div in
+	   $(commentOuterWrapper).fadeIn(680);
+	    // check and initialize the grandParent of the post button
+    if($(grandParent) && $(grandParent).find(".ps-comments-send")[0]){
+    	parent = $(grandParent).find(".ps-comments-send")[0];
+    	$(parent).hide();
+    }
+    
+      
+     // check and initialize the grandParent of the post button
+    if($(grandParent) &&  $(grandParent).find(".ps-comment-actions")[0]){
+    	buttonsWrapper =   $(grandParent).find(".ps-comments-actions")[0];
+    	$(buttonsWrapper).hide();
+    }
+	
+	  // hide the loading gif
+	  $(loadinGif).hide();
+	  
+	  //  find and hide the button
+	  if($(grandParent).find(".ps-button-action")[0]){
+    	postButton = $(grandParent).find(".ps-button-action")[0];
+	
+    	// set the onclick attribute of the post_comment button
+    	$(postButton).attr("onclick","return comment.post_comment(" + postID + ",this);");
+    }
+	  
+
+	  }else{
+		 // hide the loading gif
+	  $(loadinGif).hide();
+	   setTimeout(function(){
+
 	alert(response["false"]);
+		
+	   },500);
 		}
+
 		  }).fail(function(error){
 		 alert(error);
 		 });
@@ -527,7 +647,7 @@
 		let buttonsGrParent; 
 		let buttonsWrapper;
 		let postButton;
-		let returnedArray = [];
+	
 		
 		
 		if( document.querySelector("#new_comment_" + commentID)){
@@ -539,6 +659,7 @@
 				if( $(commentPargh).html()){
 			   // set the new comment to a temporal variable
 		oldComment = $(commentPargh).html();
+		
 		     // push the old comment into the returnedArray;
             		 
 
@@ -550,10 +671,11 @@
 		if($("#comment_area_" + postID)){
 			commentArea = $("#comment_area_" + postID)[0];
 			 // replace the line breaks in the string with empty string
-			oldComment = replaceString("<br>","", oldComment);
+			oldComment = comment.replaceString("<br>","", oldComment);
 		   $(commentArea).trigger("paste");
 		  // populate the text area with the old comment			
 		$(commentArea).val(oldComment);	
+		$(commentArea).trigger("keydown");
 		  $(commentArea).focus();
 	    //find the parent of the text area and post action buttons
 		   if($(commentArea).parents()[2]){
@@ -594,10 +716,7 @@
        	
 		}
 
-		return returnedArray = {'comment': oldComment,'textArea': commentArea, 'textAreaParent':textAreaParent ,'commentPara' : commentPargh,'buttonsGrParent': buttonsGrParent,'buttonsWrapper' : buttonsWrapper};
-		
 	
-		
 	}
 	
 	
@@ -784,12 +903,14 @@
 	}
 	}// cancel_reply();
 
+	// edit the comment reply
+	static edit_reply(){}
+	
+	
 	
 	// delete the comment reply
 	static delete_reply(){}
 	
-	// edit the comment reply
-	static edit_reply(){}
 	
 	
 	}
