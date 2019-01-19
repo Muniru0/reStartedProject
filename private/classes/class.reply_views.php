@@ -63,7 +63,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 		
 		// convert the time stamp from UNIX based timestamp to something more readable
        $formatted_reply_time = FetchPost::time_converter($time);
-			print j(["reply_div_id" => "reply_div_{$row["LAST_INSERT_ID()"]}",
+			print j(["new_reply_id" => "new_reply_{$row["LAST_INSERT_ID()"]}",
 			"reply_id" => $row["LAST_INSERT_ID()"],
 			"comment_id" => $comment_id,
 			"reply" => $reply,

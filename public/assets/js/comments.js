@@ -57,7 +57,7 @@
 		 
 		
 		 // show the reply_area
-		 $("#reply_area_div_" + commentID).toggle();
+		 $("#reply_area_wrapper_" + commentID).toggle();
 		 
 		
 	}// showReplyBox();
@@ -86,22 +86,23 @@
            	   }
            	   break;
            	   default : "";
-           }  
+           } 
+
+            
     
-       
-               
-               if($.trim(textArea) == ""){
+     if($.trim(textArea) == ""){
                	return "";
                }
        textArea.disabled = true;
 	    // add the textArea element to the returned Array
 		returnedArray.push(textArea);
 		// get the comment from the text area
-
+   
 		let comment_value = textArea.value;
 		 returnedArray.push(comment_value); 
    // return fast if the comment is an empty string	
 	if($.trim(comment_value) === ""){	
+	
      return ;
 	}
 		// reset the comment_area
@@ -244,7 +245,7 @@
       if($(comment_template).find(".actaction-edit")[0]){
   	actionsLink = $(comment_template).find(".actaction-edit")[0];
 	// change the onclick attribute of the link 
-  	$(actionsLink).attr("onclick","comment.prepare_edit_comment("+ response["comment_info"][1] +","+ response["comment_info"][0] +",this); return false;");
+  	$(actionsLink).attr("onclick","comment.prepare_edit_comment("+ response["comment_info"][1] +","+ response["comment_info"][0] +",this,'comment'); return false;");
       }     
 
         //set the reply template
@@ -272,7 +273,7 @@
 		   if($(reply_template).find(".ps-comment-reply")[0]){
 			   //find the entire div with the textarea, the reply post button and cancel button
             textAreaDiv  = $(reply_template).find(".ps-comment-reply")[0];
-			 $(textAreaDiv).attr("id","reply_area_div_" + response["comment_info"][0]);
+			 $(textAreaDiv).attr("id","comment_area_" + response["comment_info"][0]);
 		   }
 		   
 		   // find the text area associated with the reply template
@@ -300,7 +301,7 @@
   	$(actionsLink).attr("onclick","comment.reply_cancel("+ response["comment_info"][0] + ",this); return false;");
       }     
         // give the reply text area an id
-        $(textAreaDiv).attr("id","reply_area_div_" + response["comment_info"][0]);
+        $(textAreaDiv).attr("id","reply_area_wrapper_" + response["comment_info"][0]);
                  // find the comments list
  				let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
 				let comments_container = comments_list_children[1];
@@ -562,7 +563,7 @@
     if($(commentOuterWrapper) && $("#new_comment_" + commentID)){
     // find and initialize the comment outer wrapper ;
 		commentOuterWrapper = $("#new_comment_" + commentID);
-    	$(commentOuterWrapper).hide();
+    	$(commentOuterWrapper).fadeOut(200);
 
     }
 
@@ -583,7 +584,7 @@
 	   $(commentParagraph).html(response["true"]);
 	   
 	   // fade the new comment outer div in
-	   $(commentOuterWrapper).fadeIn(680);
+	   $(commentOuterWrapper).fadeIn(1200);
 	    // check and initialize the grandParent of the post button
     if($(grandParent) && $(grandParent).find(".ps-comments-send")[0]){
     	parent = $(grandParent).find(".ps-comments-send")[0];
@@ -626,20 +627,26 @@
      }
 
    // edit a comment
-	static prepare_edit_comment(postID = 0,commentID = 0,element = ""){
+	static prepare_edit_comment(postCommentID = 0,commentReplyID = 0,element = "",option = "comment"){
 		
 		           
 		//validate the comment id
-		if(commentID == null || 
-		commentID == 0 ||
-		commentID == undefined ||
-		commentID == NaN ||
-		commentID == false){
+		if(commentReplyID == null || 
+		commentReplyID == 0 ||
+		commentReplyID == undefined ||
+		commentReplyID == NaN ||
+		commentReplyID == false ||
+		postCommentID == null || 
+		postCommentID == 0 ||
+		postCommentID == undefined ||
+		postCommentID == NaN ||
+		postCommentID == false){
 			
 		return false;	
 		}
 		
-		let commentDiv;
+		
+		let commentDiv = "";
 		let commentPargh;
 		let oldComment;
 		let commentArea;
@@ -648,33 +655,75 @@
 		let buttonsWrapper;
 		let postButton;
 	
+
+	   switch(option){
+	   	   case "comment" :
+	   	   if( document.querySelector("#new_comment_" + commentReplyID)){
+	   	   	
+	   	   commentDiv = document.querySelector("#new_comment_" + commentReplyID);
+
+	   	   }
+	   	   break;
+
+ 	   	   case "reply"  :
+ 			 if( document.querySelector("#new_reply_" + commentReplyID)){
+	   	   	
+	   	   commentDiv = document.querySelector("#new_reply_" + commentReplyID);
+
+	   	   }
+
+ 			default : "";
+	   	  
+	   }
+	   console.log(commentDiv);
 		
-		
-		if( document.querySelector("#new_comment_" + commentID)){
-			// find the entire div of the comment to edit
-		 commentDiv = document.querySelector("#new_comment_" + commentID);
-		   if($(commentDiv).find("p")[0]){
+		if(commentDiv){
+		// find the entire div of the comment to edit
+	if($(commentDiv).find("p")[0]){
 		   // find the paragraph associated with the div with the comment text
 		 commentPargh = $(commentDiv).find("p")[0];
+		console.log(commentPargh);
 				if( $(commentPargh).html()){
 			   // set the new comment to a temporal variable
 		oldComment = $(commentPargh).html();
-		
+		  console.log(oldComment);
 		     // push the old comment into the returnedArray;
             		 
 
 				}
 		   }
 		}
+		
+  // find the text area associated with the comments  or replys
+		   switch(option){
+		    // find the text area for the comment
+		     case "comment" :
+		     if($("#comment_area_" + postCommentID)[0] && $.trim(oldComment) != ""){
+		     	 
+		     	 commentArea = $("#comment_area_" + postCommentID)[0];
+		     }
+		      break;
 
-			// find the text area associated with the comments  
-		if($("#comment_area_" + postID)){
-			commentArea = $("#comment_area_" + postID)[0];
+             // find the text area for the reply
+		     case "reply" :
+		     if($("#reply_area_" + postCommentID)[0] && $.trim(oldComment) != ""){
+		     	 
+		     	 commentArea = $("#reply_area_" + postCommentID)[0];
+		     	
+		     }
+		      break;
+
+		      default : "" ;
+		   }
+	  
+         
+		if($(commentArea) && $.trim(commentArea) != "" && $.trim(oldComment) != ""){
 			 // replace the line breaks in the string with empty string
 			oldComment = comment.replaceString("<br>","", oldComment);
-		   $(commentArea).trigger("paste");
 		  // populate the text area with the old comment			
 		$(commentArea).val(oldComment);	
+		 $(commentArea).trigger("paste");
+		 console.log("yess");
 		$(commentArea).trigger("keydown");
 		  $(commentArea).focus();
 	    //find the parent of the text area and post action buttons
@@ -701,7 +750,7 @@
       if($(buttonsWrapper).find(".ps-button-action")[0]){
   	postButton = $(buttonsWrapper).find(".ps-button-action")[0];
 	// change the onclick attribute of the post button to edit comment
-  	$(postButton).attr("onclick","comment.edit_comment("+ postID +","+ commentID +",this); return false;");
+  	$(postButton).attr("onclick","comment.edit_comment("+ postCommentID +","+ commentReplyID +",this); return false;");
   }    
   
  
@@ -714,8 +763,8 @@
 				
 		   }
        	
-		}
-
+		
+	}
 	
 	}
 	
@@ -779,7 +828,7 @@
 		// return an array of all the relevant information
 		let returnedArray =  comment.prepare_text(commentID,post_button,"reply",true);
 		  if(returnedArray == [] || returnedArray == undefined || returnedArray == null){
-           
+           console.log("d");
 		  	return;
 		  }
 		
@@ -798,7 +847,7 @@
 			 let comment_template = document.querySelector("#reply-items-template");
 		                comment_template = comment_template.cloneNode(true);
 		                
-                        comment_template.id = response["reply_div_id"];
+                        comment_template.id = response["new_reply_id"];
 
 						$(comment_template).hide();
 
@@ -813,16 +862,23 @@
 				    let db_comment = $(comment_template).find("p");
 				        db_comment.html(response["reply"]);
 
-				   // set the delete variable
-          let deleteLink = "";
+				   // set the action variable
+          let actionLink = "";
    
+   // find  adjust the onclick atrribute of the delete link in the reply
       if($(comment_template).find(".actaction-delete")[0]){
-  	deleteLink = $(comment_template).find(".actaction-delete")[0];
-	let comment_id = 
+  	actionLink = $(comment_template).find(".actaction-delete")[0];
 	// change the onclick attribute of the link 
-  	$(deleteLink).attr("onclick","comment.delete_reply("+ response["reply_id"] +","+ commentID +"); return false;");
+  	$(actionLink).attr("onclick","comment.delete_reply("+ response["reply_id"] +","+ commentID +"); return false;");
 
-  }            
+  }     
+   // find  adjust the onclick atrribute of the edit link in the reply
+   if($(comment_template).find(".actaction-edit")[0]){
+  	actionLink = $(comment_template).find(".actaction-edit")[0];
+	// change the onclick attribute of the link 
+  	$(actionLink).attr("onclick","comment.prepare_edit_comment("+ commentID +"," +  response["reply_id"] +",this,'reply'); return false;");
+
+  }       
 
 
          
