@@ -473,25 +473,32 @@
 
 	}
 	
-     static edit_comment(postID = 0,commentID = 0,element = ""){
+     static edit_comment(postCommentID = 0,commentReplyID = 0,element = "",option = "comment"){
 	
 		
      		//validate the comment id
-		if(commentID == null || 
-		commentID == 0 ||
-		commentID == undefined ||
-		commentID == NaN ||
-		commentID == false||
-		postID == null || 
-		postID == 0 ||
-		postID == undefined ||
-		postID == NaN ||
-		postID == false ||
+		if(commentReplyID == null || 
+		commentReplyID == 0 ||
+		commentReplyID == undefined ||
+		commentReplyID == NaN ||
+		commentReplyID == false||
+		postCommentID == null || 
+		postCommentID == 0 ||
+		postCommentID == undefined ||
+		postCommentID == NaN ||
+		postCommentID == false ||
         element == null || 
 		element == 0 ||
 		element == undefined ||
 		element == NaN ||
-		element == false
+		element == false ||
+		$.trim(element) == "" ||
+		option == null || 
+		option == 0 ||
+		option == undefined ||
+		option == NaN ||
+		option == false ||
+		$.trim(option) == ""
 		){
 			
 		return false;	
@@ -530,12 +537,65 @@
 
         //  define a temporal variable for the comment outer div
        let oldCommentOuterDiv; 
-
        
-          // check and initialize the variable
-        if( document.querySelector("#comment_area_" + postID)){
-        	 commentArea  = document.querySelector("#comment_area_" + postID);
-        }
+	   // define a temporal variable for the to be sent to the server for determining
+	   // if the line request is to edit a comment or reply
+	   let requestType;
+	   
+	   // define a temporal variable for the post Button Onclick Attribute
+	   let postButtonOnclickAttr;
+       
+          // check and initialize the text area variable for both the reply and comments 
+      // find the text area associated with the comments  or replys
+		   switch(option){
+		    // find the text area for the comment
+		     case "comment" :
+		     if($("#comment_area_" + postCommentID)[0]){
+		     	 
+		     	 commentArea = $("#comment_area_" + postCommentID)[0];
+				 // set the request type to be an edit comment
+				 requestType = "true";
+				 // set the post button onclick attribute
+				postButtonOnclickAttr = "return comment.post_comment(" + postCommentID + ",this);";
+     
+				// find an hide the old comment outer div to be able to fade it in
+					if($(commentOuterWrapper) && $("new_comment_" + commentReplyID) == undefined){
+					// find and initialize the comment outer wrapper ;
+                     commentOuterWrapper = $("#new_comment_" + commentReplyID);
+						}
+					
+				 
+		     }
+		      break;
+
+             // find the text area for the reply
+		     case "reply" :
+		     if($("#reply_area_" + postCommentID)[0]){
+		     	 
+		     	 commentArea = $("#reply_area_" + postCommentID)[0];
+				 // set the request type to be an edit reply
+				 requestType = "false";
+				 // set the post button onclick attribute
+				 postButtonOnclickAttr = "return comment.post_reply(" + postCommentID + ",this);";
+				     
+				// find an hide the old comment outer div to be able to fade it in
+					if($(commentOuterWrapper) && $("new_reply_" + commentReplyID) != undefined){
+					// find and initialize the comment outer wrapper ;
+                     commentOuterWrapper = $("#new_reply_" + commentReplyID);
+
+					}else{
+						
+						return;
+					}
+					
+		     	
+		     }
+		      break;
+
+		      default : "" ;
+		   }
+
+
 
         // set the value of the old comment  
     if($.trim(commentArea) != undefined 
@@ -559,30 +619,33 @@
     	$(loadinGif).show();
     }
 
+    
 // find an hide the old comment outer div to be able to fade it in
-    if($(commentOuterWrapper) && $("#new_comment_" + commentID)){
+    if($(commentOuterWrapper) && $.trim(commentOuterWrapper) != ""){
     // find and initialize the comment outer wrapper ;
-		commentOuterWrapper = $("#new_comment_" + commentID);
+	
     	$(commentOuterWrapper).fadeOut(200);
+    	
+    	
 
     }
-
+  
 
    $.ajax({
 		url      : "../private/neutral_ajax.php",
 		type     : "POST",
-		data     : {post_id : postID,comment_id :commentID,comment : newComment,edit_comment : true},
+		data     : {post_id : postCommentID,comment_id :commentReplyID,comment : newComment,edit_comment : requestType},
 		datatype : "html"
 		}).done(function(response){
-		console.log(response);
+	
 		response = JSON.parse(response);
 		if(response["true"] && $.trim(response["true"] != "")){
-		
+		 
 		 $(commentArea).val("");
 		// find and initialize the comment paragraph
-	   commentParagraph =	$(commentOuterWrapper).find("p");
+	   commentParagraph =	$(commentOuterWrapper).find("p")[0];
 	   $(commentParagraph).html(response["true"]);
-	   
+	  
 	   // fade the new comment outer div in
 	   $(commentOuterWrapper).fadeIn(1200);
 	    // check and initialize the grandParent of the post button
@@ -606,7 +669,7 @@
     	postButton = $(grandParent).find(".ps-button-action")[0];
 	
     	// set the onclick attribute of the post_comment button
-    	$(postButton).attr("onclick","return comment.post_comment(" + postID + ",this);");
+    	$(postButton).attr("onclick",postButtonOnclickAttr);
     }
 	  
 
@@ -675,18 +738,17 @@
  			default : "";
 	   	  
 	   }
-	   console.log(commentDiv);
-		
+	  
 		if(commentDiv){
 		// find the entire div of the comment to edit
 	if($(commentDiv).find("p")[0]){
 		   // find the paragraph associated with the div with the comment text
 		 commentPargh = $(commentDiv).find("p")[0];
-		console.log(commentPargh);
+
 				if( $(commentPargh).html()){
 			   // set the new comment to a temporal variable
 		oldComment = $(commentPargh).html();
-		  console.log(oldComment);
+		
 		     // push the old comment into the returnedArray;
             		 
 
@@ -723,7 +785,7 @@
 		  // populate the text area with the old comment			
 		$(commentArea).val(oldComment);	
 		 $(commentArea).trigger("paste");
-		 console.log("yess");
+		
 		$(commentArea).trigger("keydown");
 		  $(commentArea).focus();
 	    //find the parent of the text area and post action buttons
@@ -749,9 +811,20 @@
               // find the post button
       if($(buttonsWrapper).find(".ps-button-action")[0]){
   	postButton = $(buttonsWrapper).find(".ps-button-action")[0];
-	// change the onclick attribute of the post button to edit comment
-  	$(postButton).attr("onclick","comment.edit_comment("+ postCommentID +","+ commentReplyID +",this); return false;");
-  }    
+	// per if the post button belongs is for a reply text area or comment
+   //	adjust its onclick attribute accordingly
+	if( $.trim(option) === "comment"){
+		
+	
+  	$(postButton).attr("onclick","comment.edit_comment("+ postCommentID +","+ commentReplyID +",this,'comment'); return false;");
+	}else if($.trim(option) === "reply"){
+		
+	$(postButton).attr("onclick","comment.edit_comment("+ postCommentID +","+ commentReplyID +",this,'reply'); return false;");
+		
+	}else{
+	
+	}
+	}    
   
  
 
@@ -828,7 +901,7 @@
 		// return an array of all the relevant information
 		let returnedArray =  comment.prepare_text(commentID,post_button,"reply",true);
 		  if(returnedArray == [] || returnedArray == undefined || returnedArray == null){
-           console.log("d");
+          
 		  	return;
 		  }
 		
@@ -840,10 +913,10 @@
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){ 
-                
-			 
+                  
+			  try{
 			response = JSON.parse(response);
-
+			
 			 let comment_template = document.querySelector("#reply-items-template");
 		                comment_template = comment_template.cloneNode(true);
 		                
@@ -885,7 +958,15 @@
                // prepend the comment to the comments_container 
 				 $("#reply_container_" + commentID).append(comment_template); 
                 	  $(comment_template).fadeIn(680);			 
-
+  } catch(e){
+  	   setTimeout(function(){
+		   
+	  
+     alert("Something Unexpectedly happened");
+	  },680);
+	}finally {
+			  	
+			  
                // hide the grandParent
 			  $(returnedArray[2]).hide();
 			  // hide the parent
@@ -893,7 +974,7 @@
 			  // hide the loadinGif
 			  $(returnedArray[4]).hide();
 			  returnedArray[0].disabled = false;
-			   
+			  }  
 		
 			 }).fail(function (error){
 				 alert(error);

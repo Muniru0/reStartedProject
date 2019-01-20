@@ -95,7 +95,15 @@ console.log("how to make things mov fast");
 
 ?>
     <?php
+	$var = "";
+	if(isset($var)){
+		 echo "it is set";
+	}else{
+		echo "not set";
+	}
 	
+	
+	die();
 	$table_name = "test";
 	
 	  $id = 33;

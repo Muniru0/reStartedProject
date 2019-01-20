@@ -97,19 +97,12 @@ elseif(isset($_POST["delete_comment"]) ){
 
 
 // edit the view
-elseif(isset($_POST["edit_comment"])){
+elseif(isset($_POST["edit_comment"]) && $_POST["edit_comment"] === "true"){
 
-
+ 
 	  $comment =  nl2br($_POST["comment"],true);
     
-	  
-	  if($_POST["edit_comment"] != "true"){
-		   
-		   print j(["false" => "Invalid request"]);
-		   return false;
-	   }
-	   
-	  
+	 
 		
       // check if the comment is empty or set	  
 	  if(!isset($comment) || empty(trim($comment))){
@@ -129,7 +122,7 @@ elseif(isset($_POST["edit_comment"])){
 	$comment_id = (int) $_POST["comment_id"];
 	 
 	 // check if the comment is empty or set	  
-	  if(!isset($post_id) || $post_id < 1 || !is_int($post_id)  &&
+	   if(!isset($post_id) || $post_id < 1 || !is_int($post_id)  &&
 		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
 		  print j(["false" => "Operation failed, Please try again..."]);
 		  return false;
@@ -211,6 +204,58 @@ elseif(isset($_POST["reply_comment"])){
 	  
 	  
 	
+	
+}
+
+
+
+// edit a reply for a comment
+elseif(isset($_POST["edit_comment"]) && $_POST["edit_comment"] === "false"){
+  //echo "is reading from the replys";
+  
+	  $reply =  nl2br($_POST["comment"],true);
+    
+	 
+		
+      // check if the comment is empty or set	  
+	  if(!isset($reply) || empty(trim($reply))){
+		  print j(["false" => "Please reply can't be empty"]);
+		  
+		  return false;
+	  }   
+	  
+	 // check the length of the comment
+	  if(!isset($reply) || (strlen($reply) > 4000)){
+		  
+		  print j(["false" => "Please the maximum number of characters for a comment is 4000"]);
+		  return false;
+	  }
+    $comment_id  = (int) $_POST["post_id"];
+	$reply_id    = (int) $_POST["comment_id"];
+	
+	 
+	 // check if the comment is empty or set	  
+	   if(!isset($reply_id) || $reply_id < 1 || !is_int($reply_id)  &&
+		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
+		  print j(["false" => "Operation failed, Please try again..."]);
+		  return false;
+	  }   
+     
+	  /* echo $reply_id;
+	  echo $comment_id;
+	  print_r($_SESSION["comment_ids"]); */
+//  check to see if the post id is in the post ids array	  
+		 if(!in_array($comment_id,$_SESSION["comment_ids"],true) ||
+   		    !in_array($reply_id,$_SESSION["reply_ids"],true))
+		 {
+			
+		    print j(["false" => "Operation failed, Please try again..."]); 
+			return false;
+		 }
+		 
+		
+	// delete the view from the database			
+	 Views::edit_view($comment_id,$reply_id,$reply,"reply");
 	
 }
 
@@ -342,7 +387,7 @@ $mood      = $_POST["mood"]      ?? "";
 }
 else{
 
-	echo "not accessible";
+	print j(["false" => "Operation failed please try again"]);
 }
 
 }

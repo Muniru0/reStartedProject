@@ -263,27 +263,35 @@ return $stmt->get_result();
 
 
 // edit the view
-public static function edit_view($post_id = 0,$comment_id = 0,$comment = ""){
+public static function edit_view($post_id = 0,$comment_id = 0,$comment = "",$option = null){
  
 	  global $db;
 	    
 	$comment = str_replace("\n","",$comment);
+	 $query = "";
 	 
-	$parameters = j([$post_id,$comment_id,$_SESSION["id"],$comment,time()]);
-     
-
-     $query = "CALL edit_view('".j([$post_id,$comment_id,$_SESSION["id"],$comment,time()])."')";
-
+	 // set the edit view as the default
+	 if(!isset($option) || $option == null || trim($option) == "view"){
+		 //set the query for the edit_view  routine
+	  $query = "CALL edit_view('".j([$post_id,$comment_id,$_SESSION["id"],$comment,time()])."')";
+	 }elseif(isset($option) && trim($option) != "" && trim($option) == "reply"){
+		 // set the query for the edit_reply routine
+		  $query = "CALL edit_reply('".j([$post_id,$comment_id,$_SESSION["id"],$comment,time()])."')";
+	 }else{
+		 print j(["false" => "Operation failed please try again"]);
+		 return;
+	 }
   $result = $db->multi_query($query);
    do{
 	   if($result = $db->store_result()){
 		   if($row  = $result->fetch_assoc()){
+			   // print back the result to the client side
 			  print j(["true" => $row["comment"]]);
 		   }
 		}elseif(trim($db->error) == ""){
 			
 		}else{
-		print j(["false" => "Operation failed please try again {$db->error}"]);
+		print j(["false" => "Operation failed please try again"]);
 		}
 		
 		
@@ -291,7 +299,9 @@ public static function edit_view($post_id = 0,$comment_id = 0,$comment = ""){
   
 
 
-}
+}// edit_view();
+
+
 
 // add a reaction to the view
 public static function  add_view_reaction($info =""){

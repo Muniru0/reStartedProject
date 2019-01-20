@@ -5,7 +5,7 @@ require_once("../private/initialize.php");
 class ReplyViews  extends Views {
 
     // table name of the 
-      public static $table_name    =    "reply_comments";
+      public static $table_name    =    "reply_views";
 	  
 	// database columns
       public static $id            =    "id";
@@ -24,7 +24,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	
 	 global $db;
 	
-	
+  
 	 
 	// the insert query for the new comment	
 	$query = "CALL reply_comment(?)";
@@ -61,6 +61,8 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	    // to be used as the title attribute for the time paragraph in html	
 	    $post_date  = strftime("%B, %e    %G  %I:%M %p",$time);
 		
+		// add the reply id to the array of reply_ids
+		 $_SESSION["reply_ids"][] = $row["LAST_INSERT_ID()"];
 		// convert the time stamp from UNIX based timestamp to something more readable
        $formatted_reply_time = FetchPost::time_converter($time);
 			print j(["new_reply_id" => "new_reply_{$row["LAST_INSERT_ID()"]}",
@@ -88,7 +90,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 
 
   // get the reply for the view
-  public static function get_reply($comment_id,$post_id = 0){
+  public static function get_reply($comment_id = 0,$post_id = 0){
 	  global $db;
 	 
 	  $post_id = (int)$post_id;
@@ -118,6 +120,10 @@ return $record;
   }// get_reply();
 
 
+  // edit the reply for the view
+  public static function edit_reply($comment_id = 0,$reply_id = 0,$reply = ""){
+	  
+  }
 
 
 
