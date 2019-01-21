@@ -262,7 +262,7 @@ elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
 	 // check if the ids of the post and comment are integers and set	  
 	  if(!isset($reply_id)    || $reply_id < 1       || !is_int($reply_id)  &&
 		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
-		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the pagethere"]);
+		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
 		  return false;
 	  }   
 	 
@@ -272,7 +272,7 @@ elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
 		    !in_array($reply_id,$_SESSION["reply_ids"],true) )
 		 {
 			
-			print j(["false" => "Please try again...if problem persist please refresh the page here "]); 
+			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
 			
 		 }
 		 
@@ -287,7 +287,8 @@ elseif(isset($_POST["reaction"]) && !empty($_POST["reaction"])){
 print json_encode(Reaction::record_reaction($_POST["reaction"]));
  
 //Reaction::record_reaction($_POST["reaction"]);
-}elseif(isset($_POST["reaction_view"]) && !empty($_POST["reaction_view"])){
+}
+elseif(isset($_POST["reaction_view"]) && !empty($_POST["reaction_view"])){
 
 
 // a view of a post
@@ -302,7 +303,8 @@ print_r(Views::add_view($_POST["reaction_view"]));
    //die($_POST["get_views"]);
   echo FetchPost::get_views($_POST["get_views"]);
  // print ShowPost::get_views();
-}elseif(isset($_POST["trybe_member"]) && !empty($_POST["trybe_member"])){
+}
+elseif(isset($_POST["trybe_member"]) && !empty($_POST["trybe_member"])){
 
     //die($_POST["trybe_member"]);
     // add a member to your trybe list
@@ -324,7 +326,8 @@ print_r(Views::add_view($_POST["reaction_view"]));
 }
 
 // follow a particular issue
-}elseif(isset($_POST["follow_post"]) && !empty($_POST["follow_post"])) {
+}
+elseif(isset($_POST["follow_post"]) && !empty($_POST["follow_post"])) {
     // a general method that either adds a member to 
     // a trybe or allows you to follow a post
 	echo user::add_trybe_member_or_follow_post($_POST["follow_post"],user::$follow_query_type);
@@ -333,8 +336,7 @@ print_r(Views::add_view($_POST["reaction_view"]));
   
   print_r(user::search_for_user($_POST["name"]));
 
-}elseif(isset($_POST["label"]) && !empty($_POST["label"])
-    && isset($_POST["location"]) && !empty($_POST["location"])
+}elseif(isset($_POST["label"]) && !empty($_POST["label"])&& isset($_POST["location"]) && !empty($_POST["location"])
     && isset($_POST["media"]) && !empty($_POST["media"])
     && isset($_FILES["file"])){
 
@@ -407,7 +409,7 @@ $mood      = $_POST["mood"]      ?? "";
 }
 else{
 
-	print j(["false" => "Operation failed please try again"]);
+	print j(["false" => "Something Unexpectedly went wrong, please refresh and try again"]);
 }
 
 }

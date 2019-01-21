@@ -425,7 +425,7 @@
 								let hiddenComment;
 								let requestType;
 								let commentReplyAreaWrapper;
-
+                        
     						// initialize the various variables in the case of a comment
 								if($.trim(option) === "comment"){
 								// hide the comment until the response from the server is positive
@@ -433,25 +433,28 @@
 								// find the comment to be deleted and hide it
 								if(document.querySelector("#new_comment_" + commentReplyID)  != null  && document.querySelector("#new_comment_" + commentReplyID)){
 								hiddenComment = document.querySelector("#new_comment_" + commentReplyID);
-								$(hiddenComment).fadeOut(680);
+								$(hiddenComment).fadeOut(600);
 								}
 								
-								// find the comment to be deleted and hide it
+								// find the reply to be deleted and hide it
 								if(document.querySelector("#reply_wall_" + commentReplyID)  != null  && document.querySelector("#reply_wall_" + commentReplyID)){
 								hiddenReply = document.querySelector("#reply_wall_" + commentReplyID);
-								$(hiddenReply).fadeOut(680);
+								$(hiddenReply).fadeOut(600);
 								requestType = "comment";
 
+    				
 					// find and initialize the comment  text area wrapper and empty the text area if there are any text in it 
 					if($(commentReplyAreaWrapper) && $("#comment_area_wrapper_" + postCommentID)[0] != undefined){
 					commentReplyAreaWrapper = $("#comment_area_wrapper_" + postCommentID);
-					 commentReplyAreaWrapper = $(commentReplyAreaWrapper).find("textarea")[0];
-					  $(commentReplyAreaWrapper).val("");
-  
+					let commentReplyArea = $(commentReplyAreaWrapper).find("textarea")[0];
+					  $(commentReplyArea).val("");
+					 
+                    
 				  // find, initialize and hide  the post actions grandParent 
 					 if($(commentReplyAreaWrapper) && $(commentReplyAreaWrapper).find(".ps-comment-send")[0]){
 					 	commentReplyAreaWrapper = $(commentReplyAreaWrapper).find(".ps-comment-send")[0];
 					 	$(commentReplyAreaWrapper).hide();
+					 	 
 					 }
 					 
 					  // find, initialize and hide  the post actions wrapper 
@@ -462,8 +465,8 @@
 					
 
                     }
-					
 								}
+								
 							// initialize the various variables in the case of a reply
 								}else if($.trim(option) === "reply"){
                                 // find the comment to be deleted and hide it
@@ -473,12 +476,14 @@
 								requestType = "reply";
  						
  						}
+ 						
 
  							// find and initialize the comment  text area wrapper and empty the text area if there are any text in it 
 					if($(commentReplyAreaWrapper) && $("#reply_area_wrapper_" + postCommentID)[0] != undefined){
 					commentReplyAreaWrapper = $("#reply_area_wrapper_" + postCommentID);
 					 commentReplyAreaWrapper = $(commentReplyAreaWrapper).find("textarea")[0];
 					  $(commentReplyAreaWrapper).val("");
+					
   
 				  // find, initialize and hide  the post actions grandParent 
 					 if($(commentReplyAreaWrapper) && $(commentReplyAreaWrapper).find(".ps-comment-send")[0]){
@@ -495,6 +500,7 @@
 								}
 								}
 								
+								 console.log(requestType);
 								$.ajax({
 									url      : "../private/neutral_ajax.php",
 									type     : "POST",
@@ -523,7 +529,7 @@
 							setTimeout(function (){
 								 alert(response["false"]);
 							},1000);
-
+                             console.log("error from server");
 							
 							    }
 
@@ -721,7 +727,7 @@
 		data     : {post_id : postCommentID,comment_id :commentReplyID,comment : newComment,edit_comment : requestType},
 		datatype : "html"
 		}).done(function(response){
-	  
+	  try {
 		response = JSON.parse(response);
 		if(response["true"] && $.trim(response["true"] != "")){
 		
@@ -732,6 +738,18 @@
 	  
 	   // fade the new comment outer div in
 	   $(commentOuterWrapper).fadeIn(1200);
+		}else if(response["false"] && response["false"] != ""){
+			setTimeout(function(){
+
+	alert(response["false"]);
+		
+	   },500);
+		
+		}
+		}catch(e){
+			 alert("Something happened Unexpectedly... Please refresh the page an dtry again");
+		}
+		finally{
 	    // check and initialize the grandParent of the post button
     if($(grandParent) && $(grandParent).find(".ps-comment-send")[0]){
     	parent = $(grandParent).find(".ps-comment-send")[0];
@@ -741,7 +759,7 @@
       
      // check and initialize the wrapper of the post button
     if($(grandParent) &&  $(grandParent).find(".ps-comment-actions")[0]){
-    	buttonsWrapper =   $(grandParent).find(".ps-comments-actions")[0];
+    	buttonsWrapper =   $(grandParent).find(".ps-comment-actions")[0];
     	$(buttonsWrapper).hide();
     }
 	
@@ -762,16 +780,11 @@
 	    	textArea.style.height = "35px";
 	    }
 
-	  }else{
+
 		 // hide the loading gif
 	  $(loadinGif).hide();
-	   setTimeout(function(){
-
-	alert(response["false"]);
-		
-	   },500);
-		}
-
+	   }
+	 
 		  }).fail(function(error){
 		 alert(error);
 		 });

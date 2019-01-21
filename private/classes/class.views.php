@@ -383,7 +383,7 @@ public static function delete_view ($postCommentID = 0 ,$commentReplyID = 0,$fla
 			// check if mysql does not return an empty string as a result since operations like insert and
 			// delete will make multi_query return false
 		    log_action(__CLASS__,"Query failed: $db->error on line :".__LINE__." in file: ".__FILE__);
-				   print j(["false" => "Operation failed Please try again... if problem persist refresh the page"]);
+				   print j(["false" => "Something went wrong Please try again... if problem persist refresh the page"]);
 				   break;
 			}
 		  if(!$db->more_results() && $db->error == ""){
@@ -393,7 +393,7 @@ public static function delete_view ($postCommentID = 0 ,$commentReplyID = 0,$fla
 		 }while($db->next_result());
 		  
 }else{
-	print j(["false" => "Something went wrong please try again... if the problem persist refresh the page".$db->error]);
+	print j(["false" => "Something went wrong please try again... if the problem persist refresh the page1"]);
 }
 	  
 	
