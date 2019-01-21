@@ -57,13 +57,7 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
 
 
 // delete the view
-elseif(isset($_POST["delete_comment"]) ){
-	 
-	   if($_POST["delete_comment"] != "true"){
-		   
-		   print j(["false" => "Invalid request"]);
-		   return false;
-	   }
+elseif(isset($_POST["delete_comment"]) && trim($_POST["delete_comment"]) === "comment"){
 
 	 // cast the post and comment ids to integers  
 	 $post_id    = (int) $_POST["post_id"];
@@ -87,7 +81,7 @@ elseif(isset($_POST["delete_comment"]) ){
 		 }
 		 
 	 // delete the view from the database			
-	 Views::delete_view($post_id,$comment_id);
+	 Views::delete_view($post_id,$comment_id,"comment");
 	
 	
 	
@@ -254,12 +248,38 @@ elseif(isset($_POST["edit_comment"]) && $_POST["edit_comment"] === "false"){
 		 }
 		 
 		
-	// delete the view from the database			
+	// edit the reply to the view from the database			
 	 Views::edit_view($comment_id,$reply_id,$reply,"reply");
 	
 }
 
-
+elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
+	
+	 // cast the post and comment ids to integers  
+	$comment_id   = (int) $_POST["post_id"];
+	 $reply_id    = (int) $_POST["comment_id"]; 
+	 
+	 // check if the ids of the post and comment are integers and set	  
+	  if(!isset($reply_id)    || $reply_id < 1       || !is_int($reply_id)  &&
+		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
+		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the pagethere"]);
+		  return false;
+	  }   
+	 
+		 
+// check to see if the post id is in the post ids array	  
+        if(!in_array($comment_id,$_SESSION["comment_ids"],true) ||
+		    !in_array($reply_id,$_SESSION["reply_ids"],true) )
+		 {
+			
+			print j(["false" => "Please try again...if problem persist please refresh the page here "]); 
+			
+		 }
+		 
+	 // delete the view from the database			
+	 Views::delete_view($comment_id,$reply_id,"reply");
+	
+}
 // reactions 
 elseif(isset($_POST["reaction"]) && !empty($_POST["reaction"])){
 

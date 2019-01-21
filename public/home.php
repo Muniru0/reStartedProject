@@ -233,6 +233,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		white-space: pre-wrap;
 		word-wrap  : break-word;
 		white-space: -moz-pre-wrap;
+		overflow: hidden;
 	 }
     .ui-dialog-titlebar-close{
         display:none !important;
@@ -2231,7 +2232,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
 		</div>
 
-<div id="act-new-comment-10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
+<div id="comment_area_wrapper_10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
 			
 			<div class="ps-textarea-wrapper cstream-form-input">
 				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="comment_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea"  name="comment"  oninput="return comment.autoGrow(this); " onkeypress = "comment.on_text_field_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." style="overflow:hidden;"></textarea></div>

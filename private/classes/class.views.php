@@ -349,19 +349,26 @@ if($stmt->fetch()){
 
 
 // delete a view
-public static function delete_view ($post_id ,$comment_id){
+public static function delete_view ($postCommentID = 0 ,$commentReplyID = 0,$flag = ""){
 	
 	global $db;
 	
-    $post_id     = $db->real_escape_string($post_id);
-    $comment_id  = $db->real_escape_string($comment_id);	
+    $postCommentID     = $db->real_escape_string($postCommentID);
+    $commentReplyID    = $db->real_escape_string($commentReplyID);	
 	
-	$post_id     = (int) $post_id;
-	$comment_id  = (int) $comment_id;
+/* 	$post_id     = (int) $post_id;
+	$comment_id  = (int) $comment_id; */
 	
-	$query  = "DELETE FROM views WHERE id = $comment_id && post_id = $post_id && commentor_id = ".$_SESSION["id"].";";
-	$query .= "DELETE FROM ".ReplyViews::$table_name." WHERE post_id = {$post_id} && comment_id = {$comment_id} && user_id = ".$_SESSION["id"];
+	 if(trim($flag) === "comment"){
+	// query to delete a comment and it's associated replys
+	$query  = "DELETE FROM ".self::$table_name." WHERE id = $commentReplyID && post_id = $postCommentID && commentor_id = ".$_SESSION["id"].";";
+	$query .= "DELETE FROM ".ReplyViews::$table_name." WHERE post_id = {$postCommentID} && comment_id = {$commentReplyID} && user_id = ".$_SESSION["id"];
 	
+	// query to delete a reply
+	}elseif(trim($flag) === "reply"){
+	// query to be executed if the call was made to delete a reply
+	$query  = "DELETE FROM ".ReplyViews::$table_name." WHERE id = $commentReplyID && comment_id = $commentReplyID && user_id = ".$_SESSION["id"];
+	}
 	  
 	  if($db->multi_query($query)){
 		  
@@ -369,26 +376,24 @@ public static function delete_view ($post_id ,$comment_id){
 			  // echo $db->affected_rows;
 			  // store first result
 		  if($result = $db->use_result()){
-			   
+			 // clean up the resources  
 			$result->close();
-		  }else{
-			  // check if mysql does not return an empty string as a result since operations like insert and
-			  // delete will make multi_query return false
-			  if($db->error != ""){
-				  log_action(__CLASS__,"Query failed: $db->error on line :".__LINE__." in file: ".__FILE__);
+		  }elseif(trim($db->error) != "")
+			{
+			// check if mysql does not return an empty string as a result since operations like insert and
+			// delete will make multi_query return false
+		    log_action(__CLASS__,"Query failed: $db->error on line :".__LINE__." in file: ".__FILE__);
 				   print j(["false" => "Operation failed Please try again... if problem persist refresh the page"]);
 				   break;
-			  }
+			}
+		  if(!$db->more_results() && $db->error == ""){
+			  print j([true]);
+            break;			  
 		  }
-		  if(!$db->more_results()){
-			    print j([true]);
-			 return;
-		  }
-		  
-		  }while($db->next_result());
+		 }while($db->next_result());
 		  
 }else{
-	print j(["false" => "Operation failed: try again... if the problem persist refresh the page"]);
+	print j(["false" => "Something went wrong please try again... if the problem persist refresh the page".$db->error]);
 }
 	  
 	
