@@ -458,318 +458,61 @@ return json_encode($views);
 }
 
 
-/**************************************************************************************************************************/
+//
+public static function get_stream($more_results = null){
+	global $db;
+	 
+	 if(isset($_SESSION["pta"]) && $_SESSION["pta"] > 0){
+		 if(isset($more_results) && $more_results = true){
+			 
+			$_SESSION["pta"]  = $_SESSION["pta"] + 10;
+		 }
+		
+		 $_SESSION["pta"] = $_SESSION["pta"] + 10; 
+	 }else{
+		
+		 $_SESSION["pta"] = 20;
+	 }
+	 
+echo " ".$post_id = $_SESSION["pta"];
+$results  = $db->query("SELECT uploader_id,upload_time,normal_post_table.*,post_table.id AS post_table_id FROM post_table  JOIN normal_post_table ON normal_post_table.post_id = post_table.id HAVING post_id <= {$post_id} && post_id >= $post_id - 9 LIMIT 100");
 
-
-// function __construct(){
-//    self::$post = new FetchPost();
-//
-//}
-//public static function getPost()
-//{
-//
-//    $results = FetchPost::top_trends("");
-//    foreach ($results as $result => $resultSet ) {
-//        echo $resultSet["firstname"];
-//    }
-//}
-//
-//public static function stream_header_mood_and_files_template($mood,$files){
-//
-//     return "<div class=\"ps-stream-header\">
-//
-//      <!-- post author avatar -->
-//      <div class=\"ps-avatar-stream\">
-//          <a href=\"https://demo.peepso.com/profile/demo/\">
-//              <img data-author=\"2\" src=\"https://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg\" alt=\"Patricia Currie avatar\">
-//          </a>
-//      </div>
-//      <!-- post meta -->
-//      <div class=\"ps-stream-meta\">
-//          <div class=\"reset-gap\">
-//              <a class=\"ps-stream-user\" href=\"https://demo.peepso.com/profile/demo/\"><img src=\"https://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg\" alt=\"VIP\" title=\"VIP\" class=\"ps-img-vipicons ps-js-vip-badge\" data-id=\"2\"> Patricia Currie</a> <span class=\"ps-stream-action-title\"> uploaded 1 photo</span>                 <span class=\"ps-js-activity-extras\">          <span>
-//              <i class=\"ps-emoticon ps-emo-1\"></i>
-//              <span> feeling Joyful</span>
-//          </span>
-//          </span>
-//          </div>
-//          <small class=\"ps-stream-time\" data-timestamp=\"1537987149\">
-//              <a href=\"https://demo.peepso.com/activity/?status/2-2-1537958349/\">
-//                  <span class=\"ps-js-autotime\" data-timestamp=\"1537987149\" title=\"September 26, 2018 6:39 pm\">22 mins ago</span>                </a>
-//          </small>
-//                      <span class=\"ps-dropdown ps-dropdown-privacy ps-stream-privacy ps-js-dropdown ps-js-privacy--511\">
-//              <a href=\"#\" data-value=\"\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\">
-//                  <span class=\"dropdown-value\">
-//                      <i class=\"ps-icon-globe\"></i>                 </span>
-//              <!--<span class=\"dropdown-caret ps-icon-caret-down\"></span>-->
-//              </a>
-//              <input type=\"hidden\" id=\"_privacy_wpnonce_511\" name=\"_privacy_wpnonce_511\" value=\"29e654a561\"><input type=\"hidden\" name=\"_wp_http_referer\" value=\"/peepsoajax/postbox.post\">              <div class=\"ps-dropdown__menu ps-js-dropdown-menu\"><a href=\"#\" data-option-value=\"10\" onclick=\"return activity.change_post_privacy(this, 511)\"><i class=\"ps-icon-globe\"></i><span>Public</span></a><a href=\"#\" data-option-value=\"20\" onclick=\"return activity.change_post_privacy(this, 511)\"><i class=\"ps-icon-users\"></i><span>Site Members</span></a><a href=\"#\" data-option-value=\"30\" onclick=\"return activity.change_post_privacy(this, 511)\"><i class=\"ps-icon-user2\"></i><span>Friends Only</span></a><a href=\"#\" data-option-value=\"40\" onclick=\"return activity.change_post_privacy(this, 511)\"><i class=\"ps-icon-lock\"></i><span>Only Me</span></a></div>         </span>
-//                  </div>
-//      <!-- post options -->
-//      <div class=\"ps-stream-options\">
-//          <div class=\"ps-dropdown ps-dropdown--stream ps-js-dropdown\">
-//<a href=\"#\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\" data-value=\"\">
-//<span class=\"dropdown-caret ps-icon-caret-down\"></span>
-//</a>
-//<div class=\"ps-dropdown__menu ps-js-dropdown-menu\" style=\"display: none;\">
-//<a href=\"#\" onclick=\"activity.option_edit(967, 511); return false\" data-post-id=\"967\"><i class=\"ps-icon-edit\"></i><span>Edit Post</span>
-//</a>
-//<a href=\"#\" onclick=\"return activity.action_delete(967);\" data-post-id=\"967\"><i class=\"ps-icon-trash\"></i><span>Delete Post</span>
-//</a>
-//<a href=\"#\" onclick=\"return activity.action_pin(967, 1);\" data-post-id=\"967\"><i class=\"ps-icon-move-up\"></i><span>Pin to top</span>
-//</a>
-//</div>
-//</div>
-//      </div>
-//  </div>";
-//
-//}
-//
-//public static function stream_header_mood_and_files_location_template($mood,$files,$location){
-//     return "<div class=\"ps-stream-header\">
-//
-//      <!-- post author avatar -->
-//      <div class=\"ps-avatar-stream\">
-//          <a href=\"https://demo.peepso.com/profile/demo/\">
-//              <img data-author=\"2\" src=\"https://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg\" alt=\"Patricia Currie avatar\">
-//          </a>
-//      </div>
-//      <!-- post meta -->
-//      <div class=\"ps-stream-meta\">
-//          <div class=\"reset-gap\">
-//              <a class=\"ps-stream-user\" href=\"https://demo.peepso.com/profile/demo/\"><img src=\"https://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg\" alt=\"VIP\" title=\"VIP\" class=\"ps-img-vipicons ps-js-vip-badge\" data-id=\"2\"> Patricia Currie</a> <span class=\"ps-stream-action-title\"> uploaded 2 photos</span>                <span class=\"ps-js-activity-extras\">          <span>
-//              <i class=\"ps-emoticon ps-emo-1\"></i>
-//              <span> feeling Joyful</span>
-//          </span>
-//                      <span>
-//                <a href=\"#\" title=\"GT BANK\" onclick=\"pslocation.show_map(5.6327791, -0.17236560000003465, 'GT BANK'); return false;\">
-//                    <i class=\"ps-icon-map-marker\"></i>GT BANK                </a>
-//          </span>
-//          </span>
-//          </div>
-//          <small class=\"ps-stream-time\" data-timestamp=\"1537987521\">
-//              <a href=\"https://demo.peepso.com/activity/?status/2-2-1537958721/\">
-//                  <span class=\"ps-js-autotime\" data-timestamp=\"1537987521\" title=\"September 26, 2018 6:45 pm\">25 mins ago</span>                </a>
-//          </small>
-//                      <span class=\"ps-dropdown ps-dropdown-privacy ps-stream-privacy ps-js-dropdown ps-js-privacy--514\">
-//              <a href=\"#\" data-value=\"\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\">
-//                  <span class=\"dropdown-value\">
-//                      <i class=\"ps-icon-globe\"></i>                 </span>
-//              <!--<span class=\"dropdown-caret ps-icon-caret-down\"></span>-->
-//              </a>
-//              <input type=\"hidden\" id=\"_privacy_wpnonce_514\" name=\"_privacy_wpnonce_514\" value=\"02d9bec056\"><input type=\"hidden\" name=\"_wp_http_referer\" value=\"/peepsoajax/postbox.post\">              <div class=\"ps-dropdown__menu ps-js-dropdown-menu\"><a href=\"#\" data-option-value=\"10\" onclick=\"return activity.change_post_privacy(this, 514)\"><i class=\"ps-icon-globe\"></i><span>Public</span></a><a href=\"#\" data-option-value=\"20\" onclick=\"return activity.change_post_privacy(this, 514)\"><i class=\"ps-icon-users\"></i><span>Site Members</span></a><a href=\"#\" data-option-value=\"30\" onclick=\"return activity.change_post_privacy(this, 514)\"><i class=\"ps-icon-user2\"></i><span>Friends Only</span></a><a href=\"#\" data-option-value=\"40\" onclick=\"return activity.change_post_privacy(this, 514)\"><i class=\"ps-icon-lock\"></i><span>Only Me</span></a></div>         </span>
-//                  </div>
-//      <!-- post options -->
-//      <div class=\"ps-stream-options\">
-//          <div class=\"ps-dropdown ps-dropdown--stream ps-js-dropdown\">
-//<a href=\"#\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\" data-value=\"\">
-//<span class=\"dropdown-caret ps-icon-caret-down\"></span>
-//</a>
-//<div class=\"ps-dropdown__menu ps-js-dropdown-menu\">
-//<a href=\"#\" onclick=\"activity.option_edit(969, 514); return false\" data-post-id=\"969\"><i class=\"ps-icon-edit\"></i><span>Edit Post</span>
-//</a>
-//<a href=\"#\" onclick=\"return activity.action_delete(969);\" data-post-id=\"969\"><i class=\"ps-icon-trash\"></i><span>Delete Post</span>
-//</a>
-//<a href=\"#\" onclick=\"return activity.action_pin(969, 1);\" data-post-id=\"969\"><i class=\"ps-icon-move-up\"></i><span>Pin to top</span>
-//</a>
-//</div>
-//</div>
-//      </div>
-//  </div>";
-//}
-//
-//public static function hellow(){
-//
-//}
-//public static function post_meta($firstname,$lastname,$files,$time,$location){
-//    $count = count($files);
-//     return "<div class=\"ps-stream-meta\">
-//          <div class=\"reset-gap\">
-//              <a class=\"ps-stream-user\" href=\" ://demo.peepso.com/profile/demo/\"> $firstname $lastname</a> <span class=\"ps-stream-action-title\"> added $count photos to the album: <a href=\" ://demo.peepso.com/profile/demo/photos/album/37\">What a fantastic trip!</a></span>               <span class=\"ps-js-activity-extras\">          <span>
-//          <a href=\"javascript:\" title=\"Siem Reap Province\" onclick=\"pslocation.show_map(13.6915377, 104.10013260000005, 'Siem Reap Province');\">
-//              <i class=\"ps-icon-map-marker\"></i>$location           </a>
-//          </span>
-//          </span>
-//          </div>
-//          <small class=\"ps-stream-time\" data-timestamp=\"1528749581\">
-//              <a href=\" ://demo.peepso.com/activity/?status/2-2-1528720781/\">
-//                  <span class=\"ps-js-autotime\" data-timestamp=\"1528749581\" title=\"June 11, 2018 8:39 pm\">$time</span>               </a>
-//          </small>
-//                      <span class=\"ps-dropdown ps-dropdown-privacy ps-stream-privacy ps-js-dropdown ps-js-privacy--482\">
-//              <a href=\"javascript:\" data-value=\"\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\">
-//                  <span class=\"dropdown-value\">
-//                      <i class=\"ps-icon-globe\"></i>                 </span>
-//              <!--<span class=\"dropdown-caret ps-icon-caret-down\"></span>-->
-//              </a>
-//              </div>";
-//    }
-//
-//// mood template, will return the mood and it's template
-//public static function mood_template(){
-//
-//}
-//
-//// label template, will return the label and it's template
-//public static function label_and_post_manipulation_template($label){
-//
-//   return "<div class=\"ps-stream__post-pin\" style=\"display:block\">
-//      <span style=\"background-color: rgb(21, 73, 66);\">$label</span>
-//          </div>";
-//}
-//
-//public static function post_status_template($status){
-// return "<div class=\"ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--482\">
-//<div class=\"peepso-markdown\"><p>It was an amazing trip! Visited Siem Reap in Cambodia and with it Angkor Wat and a few other temples. We didn't have time to see it all. In all seriousness, you'd need a few weeks to get to see it all. </p>
-//<br><p>Totally worth it and unforgettable.</p></div></div>";
-//}
-//public static function edit_post_options(){
-//
-//    return  "<div class=\"ps-stream-options\">
-//          <div class=\"ps-dropdown ps-dropdown--stream ps-js-dropdown\">
-//<a href=\"javascript:\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\" data-value=\"\">
-//<span class=\"dropdown-caret ps-icon-caret-down\"></span>
-//</a>
-//<div class=\"ps-dropdown__menu ps-js-dropdown-menu\" style=\"display: none;\">
-//<a href=\"javascript:\" onclick=\"activity.option_edit(930, 482); return false\" data-post-id=\"930\"><i class=\"ps-icon-edit\"></i><span>Edit Post</span>
-//</a>
-//<a href=\"javascript:\" onclick=\"return peepso.photos.delete_stream_album(930,482);\" data-post-id=\"930\"><i class=\"ps-icon-trash\"></i><span>Delete Album</span>
-//</a>
-//<a href=\"javascript:\" onclick=\"return activity.action_pin(930, 1);\" data-post-id=\"930\"><i class=\"ps-icon-move-up\"></i><span>Pin to top</span>
-//</a>
-//<a href=\"javascript:\" onclick=\"return activity.action_pin(930, 0);\" data-post-id=\"930\"><i class=\"ps-icon-move-down\"></i><span>Unpin</span>
-//</a>
-//<a href=\"javascript:\" onclick=\"window.open(&quot; ://demo.peepso.com/profile/demo/&quot;, &quot;_blank&quot;);return false\" data-post-id=\"930\"><i class=\"ps-icon-info-circled\"></i><span>Pinned by Patricia</span>
-//</a>
-//<a href=\"javascript:\" class=\"active\" onclick=\"return false\" data-post-id=\"930\"><i class=\"ps-icon-calendar\"></i><span>Pinned June 11, 2018 at 8:39 pm</span>
-//</a>
-//</div>
-//</div>
-//      </div>";
-//}
-//// time template with time in milliseconds
-//public static function time_template($time){
-//
-//   return " <small class=\"ps-stream-time\" data-timestamp=\"1528749581\">
-//              <a href=\" ://demo.peepso.com/activity/?status/2-2-1528720781/\">
-//                  <span class=\"ps-js-autotime\" data-timestamp=\"1528749581\" title=\"June 11, 2018 8:39 pm\">3 weeks ago</span>             </a>
-//          </small>
-//
-//          <span class=\"ps-dropdown ps-dropdown-privacy ps-stream-privacy ps-js-dropdown ps-js-privacy--482\">
-//              <a href=\"javascript:\" data-value=\"\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\">
-//                  <span class=\"dropdown-value\">
-//                      <i class=\"ps-icon-globe\"></i></span>
-//              <!--<span class=\"dropdown-caret ps-icon-caret-down\"></span>-->
-//              </a>
-//              <input type=\"hidden\" id=\"_privacy_wpnonce_482\" name=\"_privacy_wpnonce_482\" value=\"bb669eb258\"><input type=\"hidden\" name=\"_wp_http_referer\" value=\"/peepsoajax/activity.show_posts_per_page\"><div class=\"ps-dropdown__menu ps-js-dropdown-menu\"><a href=\"javascript:\" data-option-value=\"10\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-globe\"></i><span>Public</span></a><a href=\"javascript:\" data-option-value=\"20\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-users\"></i><span>Site Members</span></a><a href=\"javascript:\" data-option-value=\"30\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-user2\"></i><span>Friends Only</span></a><a href=\"javascript:\" data-option-value=\"40\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-lock\"></i><span>Only Me</span></a></div></span>
-//          ";
-//}
-//
-//
-////ALL HEADER TEMPLATE
-//public static function header_template(){
-//     return "<div class=\"ps-stream-header\">
-//      <!-- post meta -->
-//      <div class=\"ps-stream-meta\">
-//          <div class=\"reset-gap\">
-//              <a class=\"ps-stream-user\" href=\"https://demo.peepso.com/profile/demo/\"> Patricia Currie</a> <span class=\"ps-stream-action-title\"> added 10 photos to the album: <a href=\"https://demo.peepso.com/profile/demo/photos/album/37\">What a fantastic trip!</a></span>                <span class=\"ps-js-activity-extras\">          <span>
-//                <a href=\"#\" title=\"Siem Reap Province\" onclick=\"pslocation.show_map(13.6915377, 104.10013260000005, 'Siem Reap Province'); return false;\">
-//                    <i class=\"ps-icon-map-marker\"></i>Siem Reap Province                </a>
-//          </span>
-//          </span>
-//          </div>
-//          <small class=\"ps-stream-time\" data-timestamp=\"1528749581\">
-//              <a href=\"https://demo.peepso.com/activity/?status/2-2-1528720781/\">
-//                  <span class=\"ps-js-autotime\" data-timestamp=\"1528749581\" title=\"June 11, 2018 8:39 pm\">4 months ago</span>                </a>
-//          </small>
-//                      <span class=\"ps-dropdown ps-dropdown-privacy ps-stream-privacy ps-js-dropdown ps-js-privacy--482\">
-//              <a href=\"#\" data-value=\"\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\">
-//                  <span class=\"dropdown-value\">
-//                      <i class=\"ps-icon-globe\"></i>                 </span>
-//              <!--<span class=\"dropdown-caret ps-icon-caret-down\"></span>-->
-//              </a>
-//              <input type=\"hidden\" id=\"_privacy_wpnonce_482\" name=\"_privacy_wpnonce_482\" value=\"0e2e69cadc\"><input type=\"hidden\" name=\"_wp_http_referer\" value=\"/peepsoajax/activity.show_posts_per_page\">              <div class=\"ps-dropdown__menu ps-js-dropdown-menu\"><a href=\"#\" data-option-value=\"10\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-globe\"></i><span>Public</span></a><a href=\"#\" data-option-value=\"20\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-users\"></i><span>Site Members</span></a><a href=\"#\" data-option-value=\"30\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-user2\"></i><span>Friends Only</span></a><a href=\"#\" data-option-value=\"40\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-lock\"></i><span>Only Me</span></a></div>         </span>
-//                  </div>
-//      <!-- post options -->
-//      <div class=\"ps-stream-options\">
-//          <div class=\"ps-dropdown ps-dropdown--stream ps-js-dropdown\">
-//<a href=\"#\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\" data-value=\"\">
-//<span class=\"dropdown-caret ps-icon-caret-down\"></span>
-//</a>
-//<div class=\"ps-dropdown__menu ps-js-dropdown-menu\">
-//<a href=\"#\" onclick=\"activity.option_edit(930, 482); return false\" data-post-id=\"930\"><i class=\"ps-icon-edit\"></i><span>Edit Post</span>
-//</a>
-//<a href=\"#\" onclick=\"return peepso.photos.delete_stream_album(930,482);\" data-post-id=\"930\"><i class=\"ps-icon-trash\"></i><span>Delete Album</span>
-//</a>
-//<a href=\"#\" onclick=\"return activity.action_pin(930, 1);\" data-post-id=\"930\"><i class=\"ps-icon-move-up\"></i><span>Pin to top</span>
-//</a>
-//<a href=\"#\" onclick=\"return activity.action_pin(930, 0);\" data-post-id=\"930\"><i class=\"ps-icon-move-down\"></i><span>Unpin</span>
-//</a>
-//<a href=\"#\" onclick=\"window.open(&quot;https://demo.peepso.com/profile/demo/&quot;, &quot;_blank&quot;);return false\" data-post-id=\"930\"><i class=\"ps-icon-info-circled\"></i><span>Pinned by Patricia</span>
-//</a>
-//<a href=\"#\" class=\"active\" onclick=\"return false\" data-post-id=\"930\"><i class=\"ps-icon-calendar\"></i><span>Pinned June 11, 2018 at 8:39 pm</span>
-//</a>
-//</div>
-//</div>
-//      </div>
-//  </div>";
-//}
-//
-//
-//public static function header_label_template(){
-//     return "<div class=\"ps-stream-header\">
-//
-//      <!-- post author avatar -->
-//      <div class=\"ps-avatar-stream\">
-//          <a href=\"https://demo.peepso.com/profile/demo/\">
-//              <img data-author=\"2\" src=\"https://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg\" alt=\"Patricia Currie avatar\">
-//          </a>
-//      </div>
-//      <!-- post meta -->
-//      <div class=\"ps-stream-meta\">
-//          <div class=\"reset-gap\">
-//              <a class=\"ps-stream-user\" href=\"https://demo.peepso.com/profile/demo/\"><img src=\"https://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg\" alt=\"VIP\" title=\"VIP\" class=\"ps-img-vipicons ps-js-vip-badge\" data-id=\"2\"> Patricia Currie</a> <span class=\"ps-stream-action-title\"> added 10 photos to the album: <a href=\"https://demo.peepso.com/profile/demo/photos/album/37\">What a fantastic trip!</a></span>                <span class=\"ps-js-activity-extras\">          <span>
-//                <a href=\"#\" title=\"Siem Reap Province\" onclick=\"pslocation.show_map(13.6915377, 104.10013260000005, 'Siem Reap Province'); return false;\">
-//                    <i class=\"ps-icon-map-marker\"></i>Siem Reap Province                </a>
-//          </span>
-//          </span>
-//          </div>
-//          <small class=\"ps-stream-time\" data-timestamp=\"1528749581\">
-//              <a href=\"https://demo.peepso.com/activity/?status/2-2-1528720781/\">
-//                  <span class=\"ps-js-autotime\" data-timestamp=\"1528749581\" title=\"June 11, 2018 8:39 pm\">4 months ago</span>                </a>
-//          </small>
-//                      <span class=\"ps-dropdown ps-dropdown-privacy ps-stream-privacy ps-js-dropdown ps-js-privacy--482\">
-//              <a href=\"#\" data-value=\"\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\">
-//                  <span class=\"dropdown-value\">
-//                      <i class=\"ps-icon-globe\"></i>                 </span>
-//              <!--<span class=\"dropdown-caret ps-icon-caret-down\"></span>-->
-//              </a>
-//              <input type=\"hidden\" id=\"_privacy_wpnonce_482\" name=\"_privacy_wpnonce_482\" value=\"0e2e69cadc\"><input type=\"hidden\" name=\"_wp_http_referer\" value=\"/peepsoajax/activity.show_posts_per_page\">              <div class=\"ps-dropdown__menu ps-js-dropdown-menu\"><a href=\"#\" data-option-value=\"10\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-globe\"></i><span>Public</span></a><a href=\"#\" data-option-value=\"20\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-users\"></i><span>Site Members</span></a><a href=\"#\" data-option-value=\"30\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-user2\"></i><span>Friends Only</span></a><a href=\"#\" data-option-value=\"40\" onclick=\"return activity.change_post_privacy(this, 482)\"><i class=\"ps-icon-lock\"></i><span>Only Me</span></a></div>         </span>
-//                  </div>
-//      <!-- post options -->
-//      <div class=\"ps-stream-options\">
-//          <div class=\"ps-dropdown ps-dropdown--stream ps-js-dropdown\">
-//<a href=\"#\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\" data-value=\"\">
-//<span class=\"dropdown-caret ps-icon-caret-down\"></span>
-//</a>
-//<div class=\"ps-dropdown__menu ps-js-dropdown-menu\">
-//<a href=\"#\" onclick=\"activity.option_edit(930, 482); return false\" data-post-id=\"930\"><i class=\"ps-icon-edit\"></i><span>Edit Post</span>
-//</a>
-//<a href=\"#\" onclick=\"return peepso.photos.delete_stream_album(930,482);\" data-post-id=\"930\"><i class=\"ps-icon-trash\"></i><span>Delete Album</span>
-//</a>
-//<a href=\"#\" onclick=\"return activity.action_pin(930, 1);\" data-post-id=\"930\"><i class=\"ps-icon-move-up\"></i><span>Pin to top</span>
-//</a>
-//<a href=\"#\" onclick=\"return activity.action_pin(930, 0);\" data-post-id=\"930\"><i class=\"ps-icon-move-down\"></i><span>Unpin</span>
-//</a>
-//<a href=\"#\" onclick=\"window.open(&quot;https://demo.peepso.com/profile/demo/&quot;, &quot;_blank&quot;);return false\" data-post-id=\"930\"><i class=\"ps-icon-info-circled\"></i><span>Pinned by Patricia</span>
-//</a>
-//<a href=\"#\" class=\"active\" onclick=\"return false\" data-post-id=\"930\"><i class=\"ps-icon-calendar\"></i><span>Pinned June 11, 2018 at 8:39 pm</span>
-//</a>
-//</div>
-//</div>
-//      </div>
-//  </div>";
-//}
-
+     if(!$results){
+		 echo $db->error;
+	 }
+	$returnedArray = [];
+	$post_ids = [];
+    while($row = $results->fetch_assoc()){
+	if(count($row) > 0 ){
+		
+	
+		if(isset($returnedArray[$row["post_table_id"]]) && array_key_exists($row["post_table_id"],$returnedArray)){
+			
+			 $returnedArray[$row["post_table_id"]][] = $row;
+		 }else{
+			 $returnedArray[$row["post_table_id"]][] = $row;
+		 }
+	}
+	}	
+	
+	
+		
+	
+  echo "<pre>";
+  
+foreach($returnedArray AS $single_post => $different_filename){
+	
+	echo $single_post."------------------<br />";
+	foreach($different_filename As $files){
+		 echo $files["filename"]."<br />";
+	}
+}
+	 echo "</pre>";
+	 
+	 if(empty($returnedArray) == 0){
+	 self::get_stream(true);
+	 }
+}// get_stream
 
 
 // helper method to get the appropriate mood
