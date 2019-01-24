@@ -649,53 +649,48 @@ return json_encode($views);
     }
     
     // get the recently uploaded post
-    public static function get_uploaded_post($post_ids = [])
+    public static function get_uploaded_post($post_id = 0)
     {
         global $db;
 		
 	
+       if(!isset($post_id) || $post_id < 1 ){
+		   print j(["false" => "Something Unexpectedly went wrong please try again"]);
+		   log_action(__CLASS__,"Query couldn't bring back post after uploading on line: ".__LINE__." in file: ".__FILE__);
+		   return [];
+	   }
+                
                 $query = " 
-				SELECT firstname,lastname,".PostImage::$table_name.".* ,
-				(SELECT COUNT(*) FROM ".FetchPost::$table_name." WHERE post_id = ?) AS count 
-				 FROM ".PostImage::$table_name."  JOIN ".user::$table_name." ON 
-				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id WHERE 
-				".PostImage::$table_name.".id = ? LIMIT 1";
-		
-     if(!($stmt = $db->prepare($query)))
-	 {
-		 log_action(__CLASS__," Statement preparation failed: ".$db->error." (".$db->errno.") on line: ".__LINE__);
-	 }		
-	 $post_id = array_shift($post_ids);
-	 if(!$stmt->bind_param("ii",$post_id,$post_id))
-	 {
-         log_action(__CLASS__," Parameter binding failed: ".$db->error." (".$db->errno.") on line: ".__LINE__);
-	 }
-	 
-	 if(!$stmt->execute())
-	 {
-		  log_action(__CLASS__," Statement Execution failed: ".$db->error." (".$db->errno.") on line: ".__LINE__);
-	 }
-	$result_array = [];
+				SELECT firstname,lastname,".PostImage::$table_name.".*,".self::$table_name.".*,".PostImage::$table_name.".id AS post_table_id,
+				JOIN ".user::$table_name." ON 
+				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id JOIN ".self::$table_name." ON ".self::$tabl_name.".post_id = ".PostImage::$table_name.".id WHERE 
+				".PostImage::$table_name.".id = $post_id  LIMIT 1";
+
+ // query the database	
+  $results = $db->query($query);
 	
-  if(!empty($post_ids))
-	{
-		foreach($post_ids as $post_id)
-		{
-			if(!$stmt->execute())
-			 {
-				log_action(__CLASS__," Statement Execution failed: with post_id {$post_id} on line:".__LINE__);
-			}
-		}
-	}
+	// check to see if there are any errors 
+ if(!$results || $db->error != ""){
+	    print j(["false" => "Something Unexpectedly went wrong please try again"]);
+	 log_action(__CLASS__,"Query failed: {$db->error} on line: ".__LINE__." in file: ".__FILE__);
+	 return [];
+ }	
   
-    if($result = $stmt->get_result()){
-		    if($row = $result->fetch_assoc())
-			{
-				 $result_array[] = $row;
-			}
-	}
+  // check for the number of rows returned
+  if($db->num_rows > 0){
+	 if($row = $result->fetch_assoc()){
+		 // return the result set if any
+	return	 $result_array[$row["post_table_id"]] = $row;
+		
+	 }  
+  }  
+  
+     print j(["false" => "Something Unexpectedly went wrong please try again"]);
+  // log errors if any
+  log_action(__CLASS__,"Query failed: db error: {$db->error} on line: ".__LINE__." in file: ".__FILE__);
  
-return $result_array;
+ // if there is an error return an empty array  
+return [];
 		
 	}// get_uploaded_post();
     
@@ -1162,14 +1157,13 @@ return $images_string;
         if($flag === RECENT)
 		{
 		$posts_info    = self::get_uploaded_post($post_ids);	
-		//get all the images for the specific post ids
-		$images = self::fetch_images($post_ids);
+		
 		}elseif($flag === STREAM)
 		{
 		$posts_info    = $post_ids;
 		}
 		
-		
+		$posts_info = self::organise_query_results($posts_info);
      
         
 		 // for every single post,...

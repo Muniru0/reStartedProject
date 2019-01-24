@@ -146,7 +146,7 @@ $(window).scroll(function() {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
       console.log(++page);
    //  $("body").append('<div class="big-box"><h1>Page ' + page + '</h1></div>');
-    $.ajax({
+ $.ajax({
 			 url:"../private/neutral_ajax.php",
 			 type: "POST",
 			 data: {stream: "stream"},
@@ -155,7 +155,7 @@ $(window).scroll(function() {
 			  $("body").append('<div class="big-box"><h1>Page ' + response + '</h1></div>');
 		 }).fail(function(error){
 			 alert(error);
-		 });
+		 }); 
       
     }
 });
@@ -168,7 +168,12 @@ $(window).scroll(function() {
 
 ?>
     <?php
-	 
+	
+	
+	
+			
+			
+			
 	 echo "how are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing now";
 	
 	$results = $db->query("SELECT * FROM test");

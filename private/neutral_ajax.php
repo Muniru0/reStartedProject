@@ -291,12 +291,14 @@ elseif(isset($_POST["stream"]) && trim($_POST["stream"]) === "stream"){
     $returnedArray = Pagination::get_infnite_scroll("main");
 	  if(!isset($returnedArray) || !is_array($returnedArray) ){
 		    print j(["waiting"]);
+			echo "not array";
 		   return;
 	  }
 	  
 	  
 		if(count($returnedArray)  < 1 || empty($returnedArray)){
 			print j(["waiting"]);
+			echo "empty";
 		   return;
 		}
 	  
