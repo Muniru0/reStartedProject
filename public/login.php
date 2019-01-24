@@ -54,6 +54,7 @@ if(validate_presence_on(["password","email"]) && is_email($email)){
 		$_SESSION["post_ids"]    = [10];
 		$_SESSION["comment_ids"] = [];
 		$_SESSION["reply_ids"]   = [];
+		$_SESSION["offset"]      = 0;
 		
          print j([true]);
       return;

@@ -3948,7 +3948,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 <div id="reply_wall_template" class="ps-comment ps-comment-nested ps-js-comment-reply--506">
 	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--2" data-act-id="2">
-			<div id="reply-item-" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1120" style="display:block;">
+			<div id="reply-item-" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1120" style="display:none;">
 	
 
 	<div class="ps-comment-body cstream-content">
@@ -4078,7 +4078,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
       <textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; padding: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; transition: none; height: 0px !important; min-height: 0px !important; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; word-spacing: 0px; text-indent: 0px; line-height: 18px; width: 720.391px;" class="autosizejs" id="autosizejs"></textarea>
       <div class="ad_unit ad-unit text-ad text_ad pub_300x250" style="width: 1px !important; height: 1px !important; position: absolute !important; left: 0px !important; top: 0px !important; overflow: hidden !important;">&nbsp;</div>
-     <img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" />
+     <!--<img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /> -->
    
     <script  type="text/javascript"  src="assets/js/bootstrap.bundle.min.js">  </script>
     <script  type="text/javascript"  src="assets/js/dropzone.js">  </script>

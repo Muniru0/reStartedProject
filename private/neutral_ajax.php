@@ -280,6 +280,45 @@ elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
 	 Views::delete_view($comment_id,$reply_id,"reply");
 	
 }
+
+
+
+// get the main stream infinite scroll
+elseif(isset($_POST["stream"]) && trim($_POST["stream"]) === "stream"){
+	
+	
+	
+    $returnedArray = Pagination::get_infnite_scroll("main");
+	  if(!isset($returnedArray) || !is_array($returnedArray) ){
+		    print j(["waiting"]);
+		   return;
+	  }
+	  
+	  
+		if(count($returnedArray)  < 1 || empty($returnedArray)){
+			print j(["waiting"]);
+		   return;
+		}
+	  
+	
+  echo "<pre>";
+  
+foreach($returnedArray AS $post_table_id => $unique_post){
+	
+	
+	print_r($unique_post);
+	return;
+	echo $single_post."------------------<br />";
+
+	foreach($different_filename As $files){
+		
+		 echo $files["filename"]."<br />";
+	}
+}
+	 echo "</pre>";
+
+}
+
 // reactions 
 elseif(isset($_POST["reaction"]) && !empty($_POST["reaction"])){
 

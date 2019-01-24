@@ -458,61 +458,7 @@ return json_encode($views);
 }
 
 
-//
-public static function get_stream($more_results = null){
-	global $db;
-	 
-	 if(isset($_SESSION["pta"]) && $_SESSION["pta"] > 0){
-		 if(isset($more_results) && $more_results = true){
-			 
-			$_SESSION["pta"]  = $_SESSION["pta"] + 10;
-		 }
-		
-		 $_SESSION["pta"] = $_SESSION["pta"] + 10; 
-	 }else{
-		
-		 $_SESSION["pta"] = 20;
-	 }
-	 
-echo " ".$post_id = $_SESSION["pta"];
-$results  = $db->query("SELECT uploader_id,upload_time,normal_post_table.*,post_table.id AS post_table_id FROM post_table  JOIN normal_post_table ON normal_post_table.post_id = post_table.id HAVING post_id <= {$post_id} && post_id >= $post_id - 9 LIMIT 100");
 
-     if(!$results){
-		 echo $db->error;
-	 }
-	$returnedArray = [];
-	$post_ids = [];
-    while($row = $results->fetch_assoc()){
-	if(count($row) > 0 ){
-		
-	
-		if(isset($returnedArray[$row["post_table_id"]]) && array_key_exists($row["post_table_id"],$returnedArray)){
-			
-			 $returnedArray[$row["post_table_id"]][] = $row;
-		 }else{
-			 $returnedArray[$row["post_table_id"]][] = $row;
-		 }
-	}
-	}	
-	
-	
-		
-	
-  echo "<pre>";
-  
-foreach($returnedArray AS $single_post => $different_filename){
-	
-	echo $single_post."------------------<br />";
-	foreach($different_filename As $files){
-		 echo $files["filename"]."<br />";
-	}
-}
-	 echo "</pre>";
-	 
-	 if(empty($returnedArray) == 0){
-	 self::get_stream(true);
-	 }
-}// get_stream
 
 
 // helper method to get the appropriate mood
@@ -1203,31 +1149,30 @@ return $images_string;
 	{
 		
 	
-        $headers = [];
-	
+       
+	    
    if(empty($post_ids) || !is_array($post_ids)){
       log_action(__CLASS__," {$flag} image(s) or post info is/are empty ");
     return;   
    }
+      $headers = [];
+	  $images;
         
         // get the posts info for the specific post ids		
         if($flag === RECENT)
 		{
 		$posts_info    = self::get_uploaded_post($post_ids);	
-		}elseif($flag === STREAM)
-		{
-		$posts_info    = self::get_streaming_posts($post_ids);
-		}
-		
 		//get all the images for the specific post ids
 		$images = self::fetch_images($post_ids);
+		}elseif($flag === STREAM)
+		{
+		$posts_info    = $post_ids;
+		}
+		
+		
      
         
-		  
-        // fetch the do be displayed post from the database
-        //$posts = self::top_trends("");
-   
-        // for every single post,...
+		 // for every single post,...
         foreach ($posts_info as $post_info) {
             $full_header = "";
            // $full_body   = self::get_post_body_wrapper($images,$post_info["caption"],$post_info["count"],$post_info["id"],$post_info["support"],$post_info["oppose"]);
@@ -1248,9 +1193,12 @@ return $images_string;
 			// get the images and their arrangements
 			 $full_body     = self::get_images_with_templates($images,$post_info["caption"]);
 			 // get the reaction and comment box
-			$full_body     .= Views::get_views_and_viewsbox_with_template($post_ids);
+			 if($flag === RECENT){
+				 $full_body     .= Views::get_views_and_viewsbox_with_template($post_ids);
+			 }
 			
-            $headers[$post_info["id"]] = $full_header.$full_body;
+			
+            $headers[$post_info["post_table_id"]] = $full_header.$full_body;
         }
         print j($headers);
         return true;

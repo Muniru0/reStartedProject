@@ -74,7 +74,7 @@ let value = document.getElementById("#textarea");
  let activity = class {
 	
     static me(){
-		console.log("me");
+		
 	}
  }
  activity.me();
@@ -82,26 +82,98 @@ let value = document.getElementById("#textarea");
 	  $(document).on( '', 'textarea', function (){
     $(this).height(0).height(this.scrollHeight);
 }).find( 'textarea' ).change();
-console.log("how to make things mov fast");
+
   })();
+  
  
 </script>
 
+<style>
 
-<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
+ body {
+	 text-align:center;
+ }
+ 
+ div{
+	 margin: 0px auto;
+ }
+ 
+
+body { 
+  margin: 0px;
+  padding: 0px;
+}
+
+img{
+	height: 200px;
+	width: 200px;
+}
+</style>
+
+<div id="log" style="cursor:pointer;"></div>
+<img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" />
+<div class="big-box"><h1>Page 1</h1></div>
+<div class="big-box"><h1>Page 2</h1></div>
+
+
+<script>
+var me = 0;
+ 
+$(document).scroll(function() {
+    me++;
+	 
+		  if($(document).scrollTop() > 500){
+		
+		}
+	
+	console.log("message");
+});
+$(window).ready(function(){
+	
+   $(document).scroll(function(){
+	   
+	   if($(document).scrollTop() > 520){
+	
+	   
+	    
+	   }
+		 
+   });
+});
+var page = 2;
+
+$(window).scroll(function() {
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+      console.log(++page);
+   //  $("body").append('<div class="big-box"><h1>Page ' + page + '</h1></div>');
+    $.ajax({
+			 url:"../private/neutral_ajax.php",
+			 type: "POST",
+			 data: {stream: "stream"},
+			 datatype: "html"
+		 }).done(function(response){
+			  $("body").append('<div class="big-box"><h1>Page ' + response + '</h1></div>');
+		 }).fail(function(error){
+			 alert(error);
+		 });
+      
+    }
+});
+</script>
+<!--<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
 <input  type= "text" oninput="print_value(this) ;" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/> 
+-->
 <?
 
 
 ?>
     <?php
-	$var = "";
-	if(isset($var)){
-		 echo "it is set";
-	}else{
-		echo "not set";
-	}
+	 
+	 echo "how are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing now";
 	
+	$results = $db->query("SELECT * FROM test");
+	
+	echo $results->num_rows;
 	
 	die();
 	$table_name = "test";
