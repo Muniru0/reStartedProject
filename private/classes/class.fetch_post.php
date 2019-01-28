@@ -6,7 +6,8 @@ class FetchPost extends DatabaseObject{
 
     public static $class_name = "FetchPost";
     public static $table_name = "normal_post_table";
-    public static $posts = "";
+	public static $images_dir_string = "../private/".UPLOADS_DIR.IMG_THUMBS_DIR;
+	public static $posts = "";
     public static $JOYFUL      = "joyful";
     public static $MEH         =  "meh";
     public static $LOVE        =  "love";
@@ -623,6 +624,14 @@ return json_encode($views);
             </small></div></div>";
     }
 
+	public static function get_caption_template($caption = ""){
+		
+		if(!isset($caption) || trim($caption) == "" || empty($caption)){
+			return "";
+		}
+		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown'		style='margin-left: 1em;'/><p>Captions provided meta data for posts</p></div><p>{$caption}</p></div></div>";
+	}// get_caption_template();
+	
     public static function get_stream_options_template($post_id,$uploader_id){
 
         return "<div class=\"ps-stream-options\">
@@ -676,13 +685,43 @@ return json_encode($views);
 	 return [];
  }	
   
+  $returned_array = [];
+  
   // check for the number of rows returned
   if($db->num_rows > 0){
 	 if($row = $result->fetch_assoc()){
-		 // return the result set if any
-	return	 $result_array[$row["post_table_id"]] = $row;
+			// if the information about the post is present  	  
+	if(isset($returned_array) && array_key_exists($row["post_table_id"],$returned_array)){
+	
+		    $returned_array = $returned_array[$row["post_table_id"]];
+// if one of the files with the of the post have been added the add more 
+	if(isset($returned_array) && array_key_exists("filenames_".$row["post_table_id"],$returned_array)){
+				 
+			    $returned_array["filenames_".$row["post_table_id"]][] = $row["filename"];
+				
+	// else define the key of the belonging to a specific post(the post_table_id from the db) and add the first file			
+			 }else{
+				$returned_array["filenames_".$row["post_table_id"]][] = $row["filename"];
+			 }
+		// else add the to the post array 	
+		}else{
+			  
+			  if(isset($returned_array) && array_key_exists("filenames_".$row["post_table_id"],$returned_array)){
+				 
+			    $returned_array["filenames_".$row["post_table_id"]][] = $row["filename"];
+				
+				
+			 }else{
+				 // with the post_table_id as the key
+				 $returned_array = $returned_array[$row["post_table_id"]] = $row;
+				$returned_array["filenames_".$row["post_table_id"]][] = $row["filename"];
+			 }
+			  
+			
+		 }
 		
 	 }  
+	 return $returned_array;
   }  
   
      print j(["false" => "Something Unexpectedly went wrong please try again"]);
@@ -695,44 +734,247 @@ return [];
 	}// get_uploaded_post();
     
 	
-	public static function get_bi_images($images =[] ,$count = 0,$caption = "")
-	{
-		if(empty($images) && ($count < 2 || $count > 2))
+
+	
+	//get the layout template for two images 
+	public static function images_layout_template($images =[] ,$caption = ""){
+		
+		if(!is_array($images) || !isset($images) || empty($images)){
+			return false;
+		}
+		$count = count($images);
+		
+		if($count < 1)
 		{
-			return "";
+			return  false;
 		}
 		
-	return "	<div class='ps-stream-body'>
-		<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class=\"peepso-markdown\" style=\"margin-left: 1em;\"><p>Captions provided meta data for posts</p></div><p>{$caption}</p></div></div>
-		<div class='ps-js-activity-edit ps-js-activity-edit--498' style='display:none'></div>
-		<div class='ps-stream-attachments cstream-attachments'><div class='cstream-attachment photo-attachment'>
-	<div class='ps-media-photos ps-media-grid ps-media-grid--single ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
-		<a href=' ://demo.peepso.com/activity/?status/4-4-1530440913/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(202, 'photo');' style=''>
-	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
-			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[0]['filename']}' id =image_{$images[0]['id']} />
-								</div>
-	</div>
-</a>
-
-	</div>
-	<div class='ps-media-photos ps-media-grid ps-media-grid--single ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
-		<a href=' ://demo.peepso.com/activity/?status/4-4-1530440913/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(202, 'photo');' style=''>
-	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
-			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[1]['filename']}' id =image_{$images[1]['id']} />
-								</div>
-	</div>
-</a>
-
-	</div>
+	if(isset($images)  && $count === 1){  
+	$width;
+	$height;
 	
-</div>
-</div>
-	</div>";
+	 if(getimagesize(self::$images_dir_string.$image)[0]){
+		 $width  = getimagesize(self::$images_dir_string.$image)[0];
+	 }else{
+		 
+		 return false;
+		 
+	 }
+	  
+      if(file_exists(self::$images_dir_string.$image)){
+		 $height = getimagesize(self::$images_dir_string.$image) [1];
+	  }else{
+		  return false;
+	  }  
 		
+	// check to see if the file is large	
+		 if($width >= 1000){
+			 $width = 100; 
+		 }elseif($width < 1000 && $width > 0){
+			 $width = rand(50,75);
+		 }else{
+			 return false;
+		 }
+		 
+		  if($height >= 1000){
+			 $height = 100; 
+		 }elseif($height < 1000 && $height > 0){
+			 $height = rand(50,75);
+		 }else{
+			 return false;
+		 }
+		 
+		 
+		 
+		return "<div class='ps-stream-attachments cstream-attachments'>
+		<div class='cstream-attachment photo-attachment'>
+		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
+		
+			
+		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, 'photo');'style='float: left;width: ".$width."%;padding-top: ".$padding_top."%;'>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src=".self::$images_dir_string."{$images[0]}  class='ps-js-fitted' style='width: auto; height: 100%;'>
+								</div>
+	</div>
+</a>
+  </div>
+  </div>
+  </div>
+		
+		";
+	}
+		
+		
+	 $dimen = [];
+	$images_string = "";
+	
+    $previous_width  = 0;
+    $previous_height = 0;	
+	
+	 
+	 
+	
+	foreach($images As $image_id => $image){
+$width;
+	$height;
+	
+	 if(file_exists(self::$images_dir_string.$image)){
+		 $width  = getimagesize(self::$images_dir_string.$image)[0];
+	 }else{
+		 
+	continue;
+		 
+	 }
+	  
+      if(file_exists(self::$images_dir_string.$image)){
+		 $height = getimagesize(self::$images_dir_string.$image) [1];
+	  }else{
+	continue;
+	  }  
+		
+    if(is_array($dimen) && empty($dimen) && !isset($dimen["width"]) 
+		&& !isset($dimen["height"])
+		&& $previous_width === 0  && $previous_height === 0
+	&& $width > 0 &&  $height > 0){
+	   
+	// check whether it is a portrait or landscape	
+	if($width >= 1000 && $width > 0){
+		if($width > $height){
+			
+			// get a random width from 50 to 60 for that image 	
+		$width = rand(40,60);
+			}elseif($height > $width){
+			// get a random width from 50 to 60 for that image 	
+		$width = rand(33.3,40);
+			}
+		
+	}elseif($width < 1000  && $width > 0){
+		$width = 33.3;
+		$previous_width    = $width;
+		 $dimen["width"][] = $width; 
+		
+	}else{
+		 continue;
 	}
 	
+	// check whether it is a portrait or landscape	
+	if($height >= 1000 && $height > 0){
+		if($width > $height){
+			
+			// get a random width from 50 to 60 for that image 	
+		$height = rand(40,60);
+			}elseif($height > $width){
+			// get a random width from 50 to 60 for that image 	
+		$height = rand(33.3,40);
+			}
+		
+	}elseif($height < 1000  && $height > 0){
+		$height = 33.3;
+		$previous_height   = $height;
+		 $dimen["height"][] = $height; 
+		
+	}else{
+		continue;
+	}
+	
+	
+	
+	}elseif(!empty($dimen) && isset($dimen) && count($dimen["width"]) > 1){
+		
+		 $width  = getimagesize(self::$images_dir_string.$image) [0];
+		 $height = getimagesize(self::$images_dir_string.$image) [1];
+		
+		   $count_images_processed = count($dimen["width"]);
+	// check to see if the line is full then allocate new height and width	   
+	if(array_sum($dimen) % 100 === 0){
+		
+		
+	// check whether it is a portrait or landscape	
+	if($width >= 1000 && $width > 0){
+		 
+		if($width > $height){
+			
+		// get a random width from 50 to 60 for that image 	
+		$width = rand(40,60);
+			}elseif($height > $width){
+			// get a random width from 50 to 60 for that image 	
+		$width = rand(33.3,40);
+			}
+		
+	}elseif($width < 1000  && $width > 0){
+		$width = 33.3;
+		$previous_width    = $width;
+		 $dimen["width"][] = $width; 
+		
+	}else{
+		continue;
+	}
+	
+	// check whether it is a portrait or landscape	
+	if($height >= 1000 && $height > 0){
+		if($width > $height){
+			
+			// get a random width from 50 to 60 for that image 	
+		$height = rand(40,60);
+			}elseif($height > $width){
+			// get a random width from 50 to 60 for that image 	
+		$height = rand(33.3,40);
+			}
+		
+	}elseif($height < 1000  && $height > 0){
+		$height = 33.3;
+		$previous_height   = $height;
+		 $dimen["height"][] = $height; 
+		
+	}else{
+		 return "";
+	}
+	
+	
+		  if(($count % 2) == 1){
+			   $width = array_sum($dimen["width"])/ 100;
+		   }
+		   
+	// that means you are dealing with 	   
+	}elseif((array_sum($dimen["width"]) % 100) > 0 ){
+		
+	$width           = $previous_width;
+	$dimen["width"]  = $width;
+	$height          = $previous_height;
+	$dimen["height"] = $height;
+		
+		
+		
+	}
+		   
+	}		
+	$images_string .="
+		
+		
+		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, 'photo');'style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
+								</div>
+	</div>
+</a>
+  </div>
+  </div>
+  </div>
+
+";
+
+	}
+
+	unset($dimen);
+ return $images_string;
+		
+	}// two_images_layout_template();
+
+
+
+
 	// get all comments from the database for a specific post 
 	public static function get_comments_with_template($post_ids = []){
 		if(!isset($post_id) || !is_array($post_id <= 0 ) || in_array(0,$post_ids,true))
@@ -844,87 +1086,8 @@ return [];
 ";
 	}
 	
-	//get the images5 and above from the uploaded post
-	public static function get_images_more_than_five($images = [],$caption = "")
-	{
-	  
 	
-	if(empty($images))
-	{
-		return "";
-		
-	}
-	   $count = count($images) - 5;
-	   $images_string = "";
-	   $images_overlay_div = $count === 0 ?  "<div class='ps-media-photo-counter' style='top:0; left:0; right:0; bottom:0;'>
-				<span>+$count</span>
-			</div>" : "";
-         
-$images_string .= "<div class ='ps-stream-body'><div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--482'><div class=\"peepso-markdown\"><p>{$caption}</p></div><div class='cstream-attachment photo-attachment'>
-	<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden; margin-left: 1em;'>
-		<a href='://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, 'photo');' style='float: left; width: 50%; padding-top: 50%;'>
-	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
-			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[0]['filename']}' id =image_{$images[0]['id']} class='ps-js-fitted' style='width: auto; height: 100%;'>
-								</div>
-	</div>
-</a>
-<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(201, 'photo');' style='float: left; width: 50%; padding-top: 50%;'>
-	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
-			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[1]['filename']}' id =image_{$images[1]['id']} class='ps-js-fitted' style='width: auto; height: 100%;'>
-								</div>
-	</div>
-</a>
-<a href='://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(195, 'photo');' style='float: left; width: 33.3%; padding-top: 33.3%;'>
-	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
-			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[2]['filename']}' id =image_{$images[2]['id']} class='ps-js-fitted' style='width: auto; height: 100%;'>
-								</div>
-	</div>
-</a>
-<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item'' onclick='return ps_comments.open(196, 'photo');' style='float: left; width: 33.3%; padding-top: 33.3%;'>
-	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
-			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[3]['filename']}' id =image_{$images[3]['id']} class='ps-js-fitted' style='width: auto; height: 100%;'>
-								</div>
-	</div>
-</a>
-<a href='://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item ='' onclick='return ps_comments.open(197, 'photo');' style='float: left; width: 33.3%; padding-top: 33.3%;'>
-	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
-			<img src='../private/".UPLOADS_DIR.IMG_THUMBS_DIR."{$images[4]['filename']}' id =image_{$images[4]['id']} class='ps-js-fitted' style='width: 100%; height: auto;'>{$images_overlay_div}
-					</div>
-	</div>
-</a>
-
-	</div>
-</div>
-</div></div>";
-	
-return $images_string;
-	}//get_images_more_than_five()
-	
-     // get_images_more_than_five(); 
-	public static function get_images_with_templates($images = [],$caption = "")
-	{
-		 $count  = count($images);
-		if(empty($images) || $count < 1)
-		{
-			return "";
-		}
-		
-		if($count == 2)
-		{
-			return self::get_bi_images($images,$caption);
-		}elseif($count > 4)
-		{
-			return self::get_images_more_than_five($images,$caption);
-			
-		}
-	}//get_images();
-	
-	
+    
 	// fetch filenames based on the post_ids
 	public static function fetch_images($post_ids = [])
 	{
@@ -968,16 +1131,7 @@ return $images_string;
 	return $results_array;
 	}// fetch_images();
 	
-	public static function get_caption_template($caption = "")
-	{
-		if(!isset($caption) || empty($caption) || $caption == "")
-		{
-			return "";
-		}
-		
-		return "";
-		
-	}// get_caption_template();
+	
 	
 
     public static function get_post_confirmation($confirmation = 0){
@@ -1138,7 +1292,7 @@ return $images_string;
 
 // GET THE FULL HEADER
 // brings back the header of the post
-    public static function get_full_post($post_ids = [],$flag = ""){
+    public static function get_full_post($returned_array = [],$flag = ""){
 
 	try
 	{
@@ -1146,13 +1300,15 @@ return $images_string;
 	
        
 	    
-   if(empty($post_ids) || !is_array($post_ids)){
-      log_action(__CLASS__," {$flag} image(s) or post info is/are empty ");
+   if(empty($returned_array) || !is_array($returned_array)){
+	   print j(["false" => "Something happend Unexpectedly, Please refresh the page and try again"]);
+      log_action(__CLASS__," {$flag} image(s) or post info is/are empty on LINE ".__LINE__." in FILE ".__FILE__);
     return;   
    }
       $headers = [];
-	  $images;
-        
+	  $post_ids = [];
+       $posts_info ;
+		
         // get the posts info for the specific post ids		
         if($flag === RECENT)
 		{
@@ -1160,22 +1316,29 @@ return $images_string;
 		
 		}elseif($flag === STREAM)
 		{
-		$posts_info    = $post_ids;
+			
+		$posts_info    = $returned_array;
 		}
 		
-		$posts_info = self::organise_query_results($posts_info);
-     
-        
+	
+     if(empty($posts_info)){
+		 print j(["false" => "Something happend Unexpectedly, Please refresh the page and try again"]);
+		 log_action(__CLASS__," The queried post is empty on Line: ".__LINE__." in file: ".__FILE__);
+		return ; 
+	 }
 		 // for every single post,...
-        foreach ($posts_info as $post_info) {
+        foreach ($posts_info as $single_post => $images_or_info){
+			 $post_info = array_pop($images_or_info);
+			 $post_ids [] = $post_info["post_table_id"];
             $full_header = "";
            // $full_body   = self::get_post_body_wrapper($images,$post_info["caption"],$post_info["count"],$post_info["id"],$post_info["support"],$post_info["oppose"]);
             // brings back the begining of the post wrapper too
             $full_header   = self::get_post_confirmation($post_info["confirmation"]);
+			
             // gets the full name
             $full_header   .= self::get_fullname($post_info["firstname"],$post_info["lastname"]);
             // gets the number of files uploaded and label of the issue
-            $full_header   .= self::get_post_title($post_info["count"],$post_info["label"]);
+            $full_header   .= self::get_post_title(count($images_or_info),$post_info["label"]);
             // gets the mood of the post
            // $full_header .= self::get_mood_template($post_info["mood"]);
             // gets the location of the post
@@ -1185,15 +1348,19 @@ return $images_string;
             // gets the time the post was uploaded
             $full_header   .= self::get_time_template($post_info["upload_time"]);
 			// get the images and their arrangements
-			 $full_body     = self::get_images_with_templates($images,$post_info["caption"]);
+			
+			  if(self::images_layout_template(array_shift($images_or_info),$post_info["caption"]) === false){
+				  log_action(__CLASS__,"The images were not found on line: ".__LINE__." in file: ".__FILE__);
+				  continue;
+			  }
+			  
+			 $full_body     = self::images_layout_template(array_shift($images_or_info),$post_info["caption"]);
 			 // get the reaction and comment box
-			 if($flag === RECENT){
-				 $full_body     .= Views::get_views_and_viewsbox_with_template($post_ids);
-			 }
-			
-			
-            $headers[$post_info["post_table_id"]] = $full_header.$full_body;
+			/*  $full_body     .= Views::get_views_and_viewsbox_with_template($post_ids);
+		 */
+			$headers[$post_info["post_table_id"]] = $full_header.$full_body;
         }
+		
         print j($headers);
         return true;
 	}catch(Exception $e)
@@ -1662,6 +1829,11 @@ public static function get_reaction_template($support = 0, $oppose = 0,$post_id)
 
 
 }
+
+
+
+
+
 
 
 

@@ -188,9 +188,16 @@ return $record;
 	// assign the parameters
 	$id = NULL;
 	$time = time();
+	$user_id = $_SESSION["id"] ? $_SESSION["id"] : 0;
+	$firstname = $_SESSION["firstname"] ? $_SESSION["firstname"] : "";
+	$lastname = $_SESSION["lastname"]   ? $_SESSION["lastname"]  : "";
+	if($user_id === 0 || $id !== NULL || strlen($time) < 10 || trim($firstname) == "" || trim($lastname) == ""){
+		 print j(["false" =>"Something Unexpectedly went wrong, please refresh the page and try again"]);
+		 
+	 }
 	
 	// bind the parameters
-	if(!$stmt->bind_param("iiisi",$id,$post_id,$_SESSION["id"],$comment,$time)){
+	if(!$stmt->bind_param("iiisi",$id,$post_id,$_SESSION["id"],$firstname,$lastname,$comment,$time)){
 		log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
          return false;
 		}

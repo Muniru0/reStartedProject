@@ -11,13 +11,10 @@ $message = "";
 //$user = new user();
 
 
-//echo user::$firstName;
-$profile_image = "../private/";
-
 // if the profile image has being set the use it
 // else load the default profile_image;
  //$profile_image .= h($_SESSION["profile_image"]) ?? h("IPmHxc3tDbNYWfiGz6FB5LHml2RJNTykk6uxED1bLs/5bb37f1b67c721.41691450.png");
- $profile_image .=  h("uploads_dir/images/5c1a00fc33bda9.00320722.jpg");
+ $profile_image =  h("assets/images/6th.jpg");
 ?>
 <!DOCTYPE html>
 <html lang="en-US" class="no-js fontawesome-i2svg-active fontawesome-i2svg-complete">
@@ -4086,7 +4083,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrhBOort1omiPN4Vbqzm53abzTZSswtio&callback=initMap"
             async defer></script>
     <script   type="text/javascript"  src="assets/js/jquery-ui.min.js">  </script>
-    <script   type="text/javascript"  src="assets/js/su_post.js"></script> 
+    <script   type="text/javascript"  src="assets/js/su_post.js"></script>   <script   type="text/javascript"  src="assets/js/stream.js"></script> 
 	
   
     <script   type="text/javascript"  src="assets/js/script.js"></script>

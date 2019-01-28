@@ -102,19 +102,51 @@ let value = document.getElementById("#textarea");
 body { 
   margin: 0px;
   padding: 0px;
+  background: #f7f7f7;
 }
 
 img{
 	height: 200px;
 	width: 200px;
+	
+}
+
+.outer_div {
+	height: 200px;
+    width: 200px;
+    display: inline;
+}
+
+.inner_div {
+	float: left;
+  
+	
+}
+
+.div_wrapper {
+	padding: 20px;
+	width: 60%;
+    height: 1020px;
+    margin-top: 30px;
+    border-radius: 6px;
+    position: relative;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
+    background-color: #fff;
+	overflow:hidden;
+}
+
+img_style{
+	
 }
 </style>
 
 <div id="log" style="cursor:pointer;"></div>
-<img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /><img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" />
-<div class="big-box"><h1>Page 1</h1></div>
-<div class="big-box"><h1>Page 2</h1></div>
 
+
+<!--<div class="big-box"><h1>Page 1</h1></div>
+<div class="big-box"><h1>Page 2</h1></div>
+-->
 
 <script>
 var me = 0;
@@ -126,7 +158,7 @@ $(document).scroll(function() {
 		
 		}
 	
-	console.log("message");
+	
 });
 $(window).ready(function(){
 	
@@ -141,24 +173,28 @@ $(window).ready(function(){
    });
 });
 var page = 2;
-
+/*
 $(window).scroll(function() {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
       console.log(++page);
    //  $("body").append('<div class="big-box"><h1>Page ' + page + '</h1></div>');
- $.ajax({
+  $.ajax({
 			 url:"../private/neutral_ajax.php",
 			 type: "POST",
 			 data: {stream: "stream"},
 			 datatype: "html"
 		 }).done(function(response){
-			  $("body").append('<div class="big-box"><h1>Page ' + response + '</h1></div>');
-		 }).fail(function(error){
+			 console.log(response);
+			 
+			/* $("body").append('<div class="big-box"><h1>Page ' + response + '</h1></div>'); 
+				$("body").append(response);		
+	}).fail(function(error){
 			 alert(error);
-		 }); 
+		 });  
       
     }
 });
+*/
 </script>
 <!--<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
 <input  type= "text" oninput="print_value(this) ;" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/> 
@@ -166,19 +202,35 @@ $(window).scroll(function() {
 <?
 
 
+
 ?>
+
+
     <?php
 	
+	$array = [33.3,66.7,34.5,65.5];
+foreach($array as $value){
+	  if($value > 60){
+		  echo "the value";
+		  continue;
+	  }
+		 echo $value;
+	  
+	  
+		
+	}
 	
-	
-			
-			
-			
-	 echo "how are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing nowhow are you doing now";
-	
-	$results = $db->query("SELECT * FROM test");
-	
-	echo $results->num_rows;
+	 if(array_sum($array) % 100 === 0){
+		 echo "line full" ;
+	 }
+	 echo "<pre>";
+	 print_r($array);
+	 echo "</pre>"; 
+	$array = getimagesize("assets/images/image_2.jpg")[0];
+
+echo "<pre>";
+  print_r($array);
+  echo "</pre>";
 	
 	die();
 	$table_name = "test";
