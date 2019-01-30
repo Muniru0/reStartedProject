@@ -977,7 +977,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
     <legend style="display:inline">Please attach a label to your Post</legend>
    <small class="label-error" style="display:none;">A label is required *</small>
-    <div class="label-div">
+    <div class="label-div" style="padding-top: 0.7%;">
     <!--Transport Label -->
     <input type="radio" name="label" id="transport" value="transport" class="checkboxradio">
      <label for="transport">Transport</label>
@@ -4077,6 +4077,17 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
       <div class="ad_unit ad-unit text-ad text_ad pub_300x250" style="width: 1px !important; height: 1px !important; position: absolute !important; left: 0px !important; top: 0px !important; overflow: hidden !important;">&nbsp;</div>
      <!--<img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /> -->
    
+   
+   
+   <script>
+    $("textarea").on( 'change keyup keydown paste cut keypress', function (){
+    
+    $(this).height(0).height(this.scrollHeight -20);
+}).find( 'textarea' ).change();
+
+   
+   </script>
+   
     <script  type="text/javascript"  src="assets/js/bootstrap.bundle.min.js">  </script>
     <script  type="text/javascript"  src="assets/js/dropzone.js">  </script>
 
@@ -4086,7 +4097,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
     <script   type="text/javascript"  src="assets/js/su_post.js"></script>   <script   type="text/javascript"  src="assets/js/stream.js"></script> 
 	
   
-    <script   type="text/javascript"  src="assets/js/script.js"></script>
+    <script   type="text/javascript"  src="assets/js/script.js"></script> 
     <!-- showing location in textarea -->
 <!--    <span class="ps-postbox-addons">— <b><i class="ps-icon-map-marker"></i>Ghana Highway Authority Accommodation For Employees</b></span>-->
 <!--    location template-->

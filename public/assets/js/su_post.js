@@ -1,9 +1,5 @@
 (function ($) {
-	
-  $("textarea").on( 'change keyup keydown paste cut', function (){
-  
-    $(this).height(0).height(this.scrollHeight - 20);
-}).find( 'textarea' ).change();
+
 
  "use strict";
 
@@ -46,7 +42,7 @@
     var post_caption       = $("#post_caption") ? $("#post_caption"): false;
     var post_selectedLabel = post_selectedLabel ? post_selectedLabel : "";
     var post_title         = $(".ps-videos-url") ? $(".ps-videos-url") : "this is just a placeholder title" ;
-
+    var showPostErrorAlert;
 
     // End of  Global Variables
     function refreshLabel() {
@@ -132,12 +128,12 @@
                 }
                 // console.log("all passed now lets proceed");
                // console.log(post_mood["span"]);
-                console.log($(post_caption).val());
+              /*   console.log($(post_caption).val());
                 console.log($(post_title).first().val());
                 //console.log(post_links);
                 console.log(post_selectedLabel);
                 console.log(post_lat);
-				console.log(post_log);
+				console.log(post_log); */
                // refresh the label selection
                 try{
                     dz.processQueue();
@@ -209,27 +205,41 @@
 
     });
 
+	// when the entire queue has being uploaded successfully
 	myDropzone.on("queuecomplete",function(file){
            		
 
-		 $("#ps-activitystream-recent").prepend(returnedPost);
-		 $("#ps-activitystream-recent").show();
+ $("#ps-activitystream").prepend(returnedPost);
+		 $("#ps-activitystream").show();
 		
 		  reset_postbox();
 	});
 
     // if the file sending completed without errors
     myDropzone.on("success", function (file, response) {
-            
+          
+		  
+		 
+        try {
+			 console.log(response);				  
 		 response = JSON.parse(response);
-		 
-		 
+		     if(response[0] == null){
+		     	showPostErrorAlert = true;
+		     }
+		     
+		  if(response["false"]){
+			  
+			  alert(response["false"]);
+			  return;
+		  }
 		 $.each(response,function(index,value){
 			 
 			 returnedPost = value;
 		 });
 		 
-		
+		}catch(e){
+			alert("It's our fault but please try again");
+		}
        
       
         return;
@@ -286,9 +296,16 @@
             $(progressBar).css("width", Math.ceil(percentage) + "%");
 
         }
+		 
         if ($(sizeSent)) {
             $(sizeSent).html(Math.floor(percentage) + "% ( " + size + " ) ");
         }
+		
+		if(percentage == 100 && showPostErrorAlert === true ){
+			  setTimeout(function(){
+				  
+			  });
+		}
         //  console.log($(progressBar).prev());
         //        console.log("ceil: " + Math.ceil(percentage) +" round: " + Math.round(percentage));
     });
@@ -319,15 +336,7 @@
     });
 
 
-function autoGrow(oField){
-	if(oField.scrollHeight > oField.clientHeight)
-	{
-		oField.style.height = oField.scrollHeight + "px";
-	}
-}
 
-
-  
   function showDialog(selector,key,text = null){
 
     if(key === true){
@@ -398,8 +407,6 @@ function autoGrow(oField){
   }
 
 
-
-
     // display the error for the label
     function labelError(count = null) {
    
@@ -407,8 +414,9 @@ function autoGrow(oField){
 
      
        $("fieldset").effect("shake");
-        if($(".label-error") != null && $(".label-error").hide()){
-        $(".label-error").show();
+      let labelError = $(".label-error")[1]
+        if($(labelError) != null && $(labelError).hide()){
+        $(labelError).show();
            $( "fieldset" ).tooltip({
              classes: {
         "ui-tooltip": "tooltip-error",
@@ -695,6 +703,12 @@ return false;
       if($(".label-error") && $(".label-error").css("display") == "block"){
            $(".label-error").hide();
       }
+	  
+	   let titleError = $("sup")[0];
+	   console.log( $(titleError).css("display"));
+	  if($(titleError) && ($(titleError).css("display") == "inline" || $(titleError).css("display") == "block")){
+		$(titleError).hide();
+	  }
 
 
       $(post_title).val("");
@@ -746,21 +760,7 @@ return false;
     } //reset_postbox()
 
 
-    // autosize the postbox when the enter key is pressed
-    $(post_caption).on("focus", function () {
-        var textarea = $(this);
-        $(textarea).keypress(function (e) {
-            if (e.which == 13) {
-                var height = $(textarea).css("height");
-                height = height.split("p");
-                height = parseInt(height[0]);
-                // console.log(height + 8);
-                $(textarea).css("height", height + 8 + "px");
-                // console.log($(textarea).css("height"));
-            }
-        });
-    });
-
+   
 
     $(document).ready(function () {
 
@@ -918,19 +918,7 @@ return false;
             }
              // let stringLength = $.trim($(postbox).val()).length;
            
-             if($(".ps-postbox-addons") != null && $(postbox_mood) != "") {
-
-                     let initialMargin = $(".ps-postbox-addons").css("margin-left");
-                        if(initialMargin == "0px"){
-                            $(".ps-postbox-addons").css("margin-left","0.5em");
-                       }else {
-                            // console.log(initialMargin)
-                         initialMargin = initialMargin.split("p");
-                            $(".ps-postbox-addons").css("margin-left",   0.07+ "em");
-                        }
-                 }else{
-                     console.log("element not found@@@");
-                 }
+             
 
             // if the post textarea is not empty or null
             // fill the poststatus with the contents of the // post textarea

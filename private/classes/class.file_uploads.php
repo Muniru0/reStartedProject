@@ -14,7 +14,7 @@ private static $max_file_size = 502042880; // 5 MB expressed in bytes
 // Of course, when outside the public path, you need PHP code that can
 // access those files. The browser can't access them directly.
 private static $upload_path = PRIVATE_DIR."/".UPLOADS_DIR;
-private static $final_width_of_the_image = 500;
+
 
 // Allowed mime types and extensions for audio files
 public static $allowed_mime_types_audios = ['audio/mpeg','audio/mp4',"audio/mp3"];
@@ -181,13 +181,28 @@ if(empty($filenames) || !isset($filenames))
 public static  function createThumbnail($filename) {
 
    /*************** optimal size for thumbnail(140 x 106px) *****************/
-
+          if(!file_exists(self::$upload_path.IMGS_DIR.$filename)){
+			  log_action(__CLASS__,self::$upload_path.IMGS_DIR.$filename);
+			 return false;   
+		  }
+		   
+		  $width  = getimagesize(self::$upload_path.IMGS_DIR.$filename)[0];
+		  if($width >= 1000){
+			  
+			  $width = 1000;
+		  }elseif( $width >= 500 && $width < 1000){
+			  $width = 500;
+			  
+		  }elseif(!$width > 0  && $width < 500){
+			   $width = 200;
+		  }
+		  
         if(preg_match('/[.](jpg)$/', $filename)) {
-            $im = imagecreatefromjpeg( $filename);
-        } else if (preg_match('/[.](gif)$/', $filename)) {
+            $im = imagecreatefromjpeg(self::$upload_path.IMGS_DIR.$filename);
+        } else if (preg_match('/[.](gif)$/',self::$upload_path.IMGS_DIR.$filename)) {
             $im = imagecreatefromgif($filename);
-        } else if (preg_match('/[.](png)$/', $filename)) {
-            $im = imagecreatefrompng( $filename);
+        } else if (preg_match('/[.](png)$/',self::$upload_path.IMGS_DIR.$filename)) {
+            $im = imagecreatefrompng(self::$upload_path.IMGS_DIR.$filename);
         }
 
     $filename = explode("/",$filename);
@@ -196,25 +211,24 @@ public static  function createThumbnail($filename) {
         $ox = imagesx($im);
         $oy = imagesy($im);
 
-        $nx = self::$final_width_of_the_image;
-        $ny = floor($oy * ( self::$final_width_of_the_image / $ox));
+        $nx = $width;
+        $ny = floor($oy * ( $width / $ox));
 
         $nm = imagecreatetruecolor($nx, $ny);
 
         imagecopyresized($nm, $im, 0,0,0,0,$nx,$ny,$ox,$oy);
 
-        if(!file_exists(IMG_THUMBS_DIR)) {
-            if(!mkdir(IMG_THUMBS_DIR)) {
-                die("There was a problem. Please try again!");
-            }
-        }
+     
 
 
-    if(!imagejpeg($nm, UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename)){
-       log_action(__CLASS__," Failure to create thumbnail for image:".UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename);
+    if(!imagejpeg($nm, self::$upload_path.IMGS_THUMBS_DIR.$filename)){
+       log_action(__CLASS__," Failure to create thumbnail for image:".self::$upload_path.IMGS_THUMBS_DIR.$filename);
+	   return false;
     }
+	
+	return true;
        
-    }
+    }// createThumbnail();
 
 // Runs file being uploaded through a series of validations.
 // If file passes, it is moved to a permanent upload directory
@@ -259,7 +273,7 @@ public static function upload_file($location = "",$name = "",$count) {
    
             // Prepend the base upload path to prevent hacking the path
             // Example: $sanitized_filename = '/etc/passwd' becomes harmless
-            $file_destination = self::$upload_path . '/' . $sanitized_filename;
+            $file_destination = self::$upload_path.IMGS_DIR.$sanitized_filename;
 
             if ($error > 0) {
                 // Display errors caught by PHP
@@ -326,12 +340,20 @@ public static function upload_file($location = "",$name = "",$count) {
 
                 if (move_uploaded_file($tmp_location, $file_destination)) {
 
-                    if((in_array($file_type, self::$allowed_mime_types_images) || in_array($file_type, self::$allowed_mime_types_videos))
+        if((in_array($file_type, self::$allowed_mime_types_images) || in_array($file_type, self::$allowed_mime_types_videos))
                         && (in_array($file_extension, self::$allowed_extensions_images)
                         || in_array($file_extension, self::$allowed_extensions_videos))
                     ){
 
-                        self::createThumbnail(UPLOADS_DIR."/".$sanitized_filename);
+          if(!self::createThumbnail($sanitized_filename)){
+			  
+			   if(!self::createThumbnail($sanitized_filename)){
+				     
+	log_action(__CLASS__,"failure to create thumbnail for the image (".$sanitized_filename.")");
+			    return false;   
+			   }
+			
+		  }  
                     }
 
                     //echo "File moved to: {$destination}<br />";

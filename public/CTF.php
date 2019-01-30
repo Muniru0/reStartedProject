@@ -207,30 +207,14 @@ $(window).scroll(function() {
 
 
     <?php
-	
-	$array = [33.3,66.7,34.5,65.5];
-foreach($array as $value){
-	  if($value > 60){
-		  echo "the value";
-		  continue;
-	  }
-		 echo $value;
-	  
-	  
-		
-	}
-	
-	 if(array_sum($array) % 100 === 0){
-		 echo "line full" ;
-	 }
-	 echo "<pre>";
-	 print_r($array);
-	 echo "</pre>"; 
-	$array = getimagesize("assets/images/image_2.jpg")[0];
+	 $post_id = 20;
+	echo "SELECT firstname,lastname,".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".id AS post_table_id
+				JOIN ".user::$table_name." ON 
+				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id JOIN ".FetchPost::$table_name." ON ".FetchPost::$table_name.".post_id = ".PostImage::$table_name.".id WHERE 
+				".PostImage::$table_name.".id = $post_id  LIMIT 1";
+	echo "<br />". 	1000 % 625 ."<br />";
+	echo 375 / 75;
 
-echo "<pre>";
-  print_r($array);
-  echo "</pre>";
 	
 	die();
 	$table_name = "test";

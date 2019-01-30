@@ -218,55 +218,62 @@ $query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$la
 }
  else{
      $post_id = 0;
-
    
-      // store first result set
-    if($result = $db->store_result()){
-        while($row = $result->fetch_assoc()){
+   do{
+	    if($result = $db->store_result()){
+        if($row = $result->fetch_assoc()){
             $post_id = $row["LAST_INSERT_ID()"];
        }
-    $result->free(); 
-
-    if($db->more_results()){
-    
-     while($db->next_result()){
-        break;
-     }
-    }
-
+	    // store first result set
+    $result->free();
+}
+   }
+   while($db->more_results() && $db->next_result());
+       
     
 }
-  }
-}
-catch(Exception $e){
+  }catch(Exception $e){
     print j($e);
 }
 
 if(self::normalize_post($post_id,$filenames))
-{  
-    
+{    
+
+      
+	  if(is_array($post_id)){
+		
+log_action(__CLASS__, print_r($post_id));
+return;
+	  }
 	  
 	   // cast the post id into an integer
-    $post_id = [(int)$post_id];
-   
+    $post_id = (int)$post_id;
+	
+      if($post_id > 1 && is_int($post_id)){
+		  
+	  
     // send back a full post containing all the information of the post(label,caption,etc,)
     // and all the images
- if(!FetchPost::get_full_post($post_id,RECENT))
+ if(!FetchPost::get_uploaded_post($post_id))
  {
 	 log_action(__CLASS__," get full post execution failed: on line ".__LINE__." in file ".__FILE__);
-	if(Notifications::send_notification($post_id[0],$uploader_id,POST,$upload_time))
+	 // send a notification to those that this post may be connected to and alert them of the new post 
+	 // and its x'tics
+	/* if(Notifications::send_notification($post_id[0],$uploader_id,POST,$upload_time))
 	{
 		
-	}
+	} */
  } 
      
 	
 }else{
-		print j("the normal post_table refused to insert");
+		log_action("the normal post_table refused to insert");
+		return false;
 	}
-     return false;
-
-     return true;
+    }else{
+		log_action(__CLASS__," Post id less than 1 but passed the first on line: ".__LINE__." in file ".__FILE__);
+		print j(["false" => ""]);
+	}
     }//post();
 
 

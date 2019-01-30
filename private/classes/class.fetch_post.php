@@ -6,7 +6,7 @@ class FetchPost extends DatabaseObject{
 
     public static $class_name = "FetchPost";
     public static $table_name = "normal_post_table";
-	public static $images_dir_string = "../private/".UPLOADS_DIR.IMG_THUMBS_DIR;
+	public static $images_dir_string = "../private/".UPLOADS_DIR.IMGS_THUMBS_DIR;
 	public static $posts = "";
     public static $JOYFUL      = "joyful";
     public static $MEH         =  "meh";
@@ -600,7 +600,8 @@ return json_encode($views);
 
     public static function get_post_title($count,$label){
 
-        $photos_string = ((int)$count === 1) ? "a photo" : "{$count} photos";
+        $photos_string = (int)$count === 1 ? "a photo" : "{$count} photos";
+		
         return "<span class=\"ps-stream-action-title\"> uploaded {$photos_string} about a  <a href=\"https://demo.peepso.com/profile/demo/photos/album/37\">".h($label)."  issue</a></span>";
     }
 
@@ -629,7 +630,7 @@ return json_encode($views);
 		if(!isset($caption) || trim($caption) == "" || empty($caption)){
 			return "";
 		}
-		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown'		style='margin-left: 1em;'/><p>Captions provided meta data for posts</p></div><p>{$caption}</p></div></div>";
+		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown'		style='margin-left: 1em;'/><p>Captions provided meta data for posts</p></div><p>{$caption}</p></div>";
 	}// get_caption_template();
 	
     public static function get_stream_options_template($post_id,$uploader_id){
@@ -658,91 +659,97 @@ return json_encode($views);
     }
     
     // get the recently uploaded post
-    public static function get_uploaded_post($post_id = 0)
-    {
+ public static function get_uploaded_post($post_id = 0){
         global $db;
 		
 	
-       if(!isset($post_id) || $post_id < 1 ){
-		   print j(["false" => "Something Unexpectedly went wrong please try again"]);
+	  
+if( !isset($post_id) || is_array($post_id) 
+	|| !is_int($post_id) || $post_id < 1){
+	
 		   log_action(__CLASS__,"Query couldn't bring back post after uploading on line: ".__LINE__." in file: ".__FILE__);
+		   
 		   return [];
 	   }
-                
-                $query = " 
-				SELECT firstname,lastname,".PostImage::$table_name.".*,".self::$table_name.".*,".PostImage::$table_name.".id AS post_table_id,
+	  
+	   
+     $query = " 
+				SELECT firstname,lastname,".PostImage::$table_name.".*,".self::$table_name.".*,".PostImage::$table_name.".id AS post_table_id,normal_post_table.id AS file_id FROM post_table
 				JOIN ".user::$table_name." ON 
-				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id JOIN ".self::$table_name." ON ".self::$tabl_name.".post_id = ".PostImage::$table_name.".id WHERE 
-				".PostImage::$table_name.".id = $post_id  LIMIT 1";
+				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id JOIN ".self::$table_name." ON ".self::$table_name.".post_id = ".PostImage::$table_name.".id WHERE 
+				".PostImage::$table_name.".id = $post_id  LIMIT 10";
 
  // query the database	
-  $results = $db->query($query);
+  $result = $db->query($query);
 	
 	// check to see if there are any errors 
- if(!$results || $db->error != ""){
+ if(!$result || $db->error != ""){
 	    print j(["false" => "Something Unexpectedly went wrong please try again"]);
 	 log_action(__CLASS__,"Query failed: {$db->error} on line: ".__LINE__." in file: ".__FILE__);
+	
 	 return [];
  }	
   
   $returned_array = [];
-  
+
   // check for the number of rows returned
-  if($db->num_rows > 0){
-	 if($row = $result->fetch_assoc()){
-			// if the information about the post is present  	  
-	if(isset($returned_array) && array_key_exists($row["post_table_id"],$returned_array)){
+  if($result->num_rows > 0){
+	 while($row = $result->fetch_assoc()){
+		 
+		 
+		// if the information about the post is present  	  
+if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
+	 
+	if(isset($returned_array[$row["post_id"]]) &&
+	array_key_exists("filenames_".$row["post_id"],
+	$returned_array[$row["post_id"]])){
+	 
+				
+ $returned_array[$row["post_id"]]["filenames_".$row["post_id"]][$row["file_id"]] = $row["filename"];
 	
-		    $returned_array = $returned_array[$row["post_table_id"]];
-// if one of the files with the of the post have been added the add more 
-	if(isset($returned_array) && array_key_exists("filenames_".$row["post_table_id"],$returned_array)){
-				 
-			    $returned_array["filenames_".$row["post_table_id"]][] = $row["filename"];
+	}
+	
+	// else add the to the post array 	
+}else{
+	
+		// with the post_table_id as the key
+		$returned_array[$row["post_id"]][] = $row;
+		$returned_array[$row["post_id"]]["filenames_".$row["post_id"]][$row["file_id"]] = $row["filename"];
 				
-	// else define the key of the belonging to a specific post(the post_table_id from the db) and add the first file			
-			 }else{
-				$returned_array["filenames_".$row["post_table_id"]][] = $row["filename"];
-			 }
-		// else add the to the post array 	
-		}else{
-			  
-			  if(isset($returned_array) && array_key_exists("filenames_".$row["post_table_id"],$returned_array)){
-				 
-			    $returned_array["filenames_".$row["post_table_id"]][] = $row["filename"];
-				
-				
-			 }else{
-				 // with the post_table_id as the key
-				 $returned_array = $returned_array[$row["post_table_id"]] = $row;
-				$returned_array["filenames_".$row["post_table_id"]][] = $row["filename"];
-			 }
-			  
-			
-		 }
-		
-	 }  
-	 return $returned_array;
-  }  
-  
-     print j(["false" => "Something Unexpectedly went wrong please try again"]);
-  // log errors if any
-  log_action(__CLASS__,"Query failed: db error: {$db->error} on line: ".__LINE__." in file: ".__FILE__);
+	   }
+	
+	
+  }
  
- // if there is an error return an empty array  
-return [];
-		
+
+  if(empty($returned_array)){
+		print j(["false" =>"Sorry please try again($post_id)"]);
+		return [];
+	}else{
+	// was the post giving out to the user	
+	  return self::get_full_post($returned_array,RECENT);
+	
+	}
+  
+	 }else{
+	  print j(["false" => "Sorry, Please try again"]);
+	  return [];
+	 }  
+  
 	}// get_uploaded_post();
     
 	
 
 	
 	//get the layout template for two images 
-	public static function images_layout_template($images =[] ,$caption = ""){
-		
+public static function images_layout_template($images =[] ){
+
+	
 		if(!is_array($images) || !isset($images) || empty($images)){
 			return false;
 		}
-		$count = count($images);
+		
+		 $count = count($images);
 		
 		if($count < 1)
 		{
@@ -752,8 +759,10 @@ return [];
 	if(isset($images)  && $count === 1){  
 	$width;
 	$height;
-	
-	 if(getimagesize(self::$images_dir_string.$image)[0]){
+
+	$image = array_shift($images);
+	 if(file_exists(self::$images_dir_string.$image)){
+		 
 		 $width  = getimagesize(self::$images_dir_string.$image)[0];
 	 }else{
 		 
@@ -762,211 +771,130 @@ return [];
 	 }
 	  
       if(file_exists(self::$images_dir_string.$image)){
-		 $height = getimagesize(self::$images_dir_string.$image) [1];
+		 $height = getimagesize(self::$images_dir_string.$image)[1];
 	  }else{
 		  return false;
 	  }  
+	
+if($width >= 1000){  
+	// if the width is greater than the height 
+   // give the width more priority	
+	if($width >= $height){
+		  $width = rand(97,100);
+		  
+          $height = rand(85,89);	
+			 log_action(__CLASS__,"methodtop 1 ".__LINE__);
+	}elseif($width < $height){
+    log_action(__CLASS__,"method2 ".__LINE__);
+	
+	$width = rand(97,100);
+	$height = rand(85,89);
+			  }
+}elseif($width < 1000 && $height > 300){
+	 
+	   
+		 if($width >= $height){
+		  $width = rand(80,90);
+		  
+          $height = rand(79,85);	
+			
+	}elseif($width < $height){
+    
+	
+	 $width = rand(80,90);
+	 $height = rand(79,85);	
+			  }
+			  
+}elseif($width < 1000 && $height <= 300){
+	
+	  if(($width / 2) == $height){
+		   $width = 98;
+		   $height = 41;
+		   
+	   }elseif(($height / 2) ==  $width){
+		    $width = 50;
+		   $height = rand(85,100);
+		   
+	   }elseif($width >= $height){
+		  $width = 85;
+		  
+          $height = 41;	
+			
+	}elseif($width < $height){
+    log_action(__CLASS__,"method2 ".__LINE__);
+	
+	 $width  = 65;
+	 $height = 83;	
+}
+}else{
+	 
+	 $width = rand(33.6,44.4);
+	 $height = rand(33.6,44.4);
+}
+	
 		
-	// check to see if the file is large	
-		 if($width >= 1000){
-			 $width = 100; 
-		 }elseif($width < 1000 && $width > 0){
-			 $width = rand(50,75);
-		 }else{
-			 return false;
-		 }
-		 
-		  if($height >= 1000){
-			 $height = 100; 
-		 }elseif($height < 1000 && $height > 0){
-			 $height = rand(50,75);
-		 }else{
-			 return false;
-		 }
-		 
-		 
-		 
-		return "<div class='ps-stream-attachments cstream-attachments'>
+		return "<div class='ps-stream-body'>
+		<div class='ps-stream-attachments cstream-attachments'>
 		<div class='cstream-attachment photo-attachment'>
 		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
 		
 			
-		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, 'photo');'style='float: left;width: ".$width."%;padding-top: ".$padding_top."%;'>
-	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
-			<img src=".self::$images_dir_string."{$images[0]}  class='ps-js-fitted' style='width: auto; height: 100%;'>
-								</div>
-	</div>
-</a>
-  </div>
-  </div>
-  </div>
-		
-		";
-	}
-		
-		
-	 $dimen = [];
-	$images_string = "";
-	
-    $previous_width  = 0;
-    $previous_height = 0;	
-	
-	 
-	 
-	
-	foreach($images As $image_id => $image){
-$width;
-	$height;
-	
-	 if(file_exists(self::$images_dir_string.$image)){
-		 $width  = getimagesize(self::$images_dir_string.$image)[0];
-	 }else{
-		 
-	continue;
-		 
-	 }
-	  
-      if(file_exists(self::$images_dir_string.$image)){
-		 $height = getimagesize(self::$images_dir_string.$image) [1];
-	  }else{
-	continue;
-	  }  
-		
-    if(is_array($dimen) && empty($dimen) && !isset($dimen["width"]) 
-		&& !isset($dimen["height"])
-		&& $previous_width === 0  && $previous_height === 0
-	&& $width > 0 &&  $height > 0){
-	   
-	// check whether it is a portrait or landscape	
-	if($width >= 1000 && $width > 0){
-		if($width > $height){
-			
-			// get a random width from 50 to 60 for that image 	
-		$width = rand(40,60);
-			}elseif($height > $width){
-			// get a random width from 50 to 60 for that image 	
-		$width = rand(33.3,40);
-			}
-		
-	}elseif($width < 1000  && $width > 0){
-		$width = 33.3;
-		$previous_width    = $width;
-		 $dimen["width"][] = $width; 
-		
-	}else{
-		 continue;
-	}
-	
-	// check whether it is a portrait or landscape	
-	if($height >= 1000 && $height > 0){
-		if($width > $height){
-			
-			// get a random width from 50 to 60 for that image 	
-		$height = rand(40,60);
-			}elseif($height > $width){
-			// get a random width from 50 to 60 for that image 	
-		$height = rand(33.3,40);
-			}
-		
-	}elseif($height < 1000  && $height > 0){
-		$height = 33.3;
-		$previous_height   = $height;
-		 $dimen["height"][] = $height; 
-		
-	}else{
-		continue;
-	}
-	
-	
-	
-	}elseif(!empty($dimen) && isset($dimen) && count($dimen["width"]) > 1){
-		
-		 $width  = getimagesize(self::$images_dir_string.$image) [0];
-		 $height = getimagesize(self::$images_dir_string.$image) [1];
-		
-		   $count_images_processed = count($dimen["width"]);
-	// check to see if the line is full then allocate new height and width	   
-	if(array_sum($dimen) % 100 === 0){
-		
-		
-	// check whether it is a portrait or landscape	
-	if($width >= 1000 && $width > 0){
-		 
-		if($width > $height){
-			
-		// get a random width from 50 to 60 for that image 	
-		$width = rand(40,60);
-			}elseif($height > $width){
-			// get a random width from 50 to 60 for that image 	
-		$width = rand(33.3,40);
-			}
-		
-	}elseif($width < 1000  && $width > 0){
-		$width = 33.3;
-		$previous_width    = $width;
-		 $dimen["width"][] = $width; 
-		
-	}else{
-		continue;
-	}
-	
-	// check whether it is a portrait or landscape	
-	if($height >= 1000 && $height > 0){
-		if($width > $height){
-			
-			// get a random width from 50 to 60 for that image 	
-		$height = rand(40,60);
-			}elseif($height > $width){
-			// get a random width from 50 to 60 for that image 	
-		$height = rand(33.3,40);
-			}
-		
-	}elseif($height < 1000  && $height > 0){
-		$height = 33.3;
-		$previous_height   = $height;
-		 $dimen["height"][] = $height; 
-		
-	}else{
-		 return "";
-	}
-	
-	
-		  if(($count % 2) == 1){
-			   $width = array_sum($dimen["width"])/ 100;
-		   }
-		   
-	// that means you are dealing with 	   
-	}elseif((array_sum($dimen["width"]) % 100) > 0 ){
-		
-	$width           = $previous_width;
-	$dimen["width"]  = $width;
-	$height          = $previous_height;
-	$dimen["height"] = $height;
-		
-		
-		
-	}
-		   
-	}		
-	$images_string .="
-		
-		
-		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, 'photo');'style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
+		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
 	<div class='ps-media-grid-padding'>
 		<div class='ps-media-grid-fitwidth'>
 			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
 								</div>
 	</div>
 </a>
+
   </div>
   </div>
   </div>
+	</div>	
+		";
+	}
+		
+		
+	 $dimen = [];
+
+	
+    $previous_width  = 0;
+    $previous_height = 0;	
+	
+	 
+	 
+		$images_string = "<div class='ps-stream-body'>
+		<div class='ps-stream-attachments cstream-attachments'>
+		<div class='cstream-attachment photo-attachment'>
+		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>";
+		
+	foreach($images As $image_id => $image){
+    
+	 if($count == 2){
+		 
+	 }elseif($count == 3){
+		 
+	 }elseif($count == 4){
+		 
+	 }else($count > 4)
+		   
+	}		
+	$images_string .="
+		
+		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
+								</div>
+	</div>
+</a>
 
 ";
 
 	}
 
+	$images_string .= "</div></div></div></div>"
+	;
 	unset($dimen);
  return $images_string;
 		
@@ -1297,48 +1225,43 @@ $width;
 	try
 	{
 		
-	
-       
-	    
-   if(empty($returned_array) || !is_array($returned_array)){
+	if(empty($returned_array) || !is_array($returned_array)){
 	   print j(["false" => "Something happend Unexpectedly, Please refresh the page and try again"]);
       log_action(__CLASS__," {$flag} image(s) or post info is/are empty on LINE ".__LINE__." in FILE ".__FILE__);
     return;   
    }
+   
       $headers = [];
 	  $post_ids = [];
-       $posts_info ;
-		
-        // get the posts info for the specific post ids		
-        if($flag === RECENT)
-		{
-		$posts_info    = self::get_uploaded_post($post_ids);	
-		
-		}elseif($flag === STREAM)
-		{
-			
-		$posts_info    = $returned_array;
-		}
-		
-	
-     if(empty($posts_info)){
+     
+	 // check if the results array($returned_array) is empty
+	 if(empty($returned_array)){
 		 print j(["false" => "Something happend Unexpectedly, Please refresh the page and try again"]);
 		 log_action(__CLASS__," The queried post is empty on Line: ".__LINE__." in file: ".__FILE__);
 		return ; 
 	 }
-		 // for every single post,...
-        foreach ($posts_info as $single_post => $images_or_info){
-			 $post_info = array_pop($images_or_info);
+
+
+// for every single post,...
+foreach ($returned_array as $posts_info => $images_or_info){
+			 $post_info = array_shift($images_or_info);
 			 $post_ids [] = $post_info["post_table_id"];
+			
+			 $images      = array_pop($images_or_info);
+			  if(!isset($images) || empty($images)){
+				 log_action(__CLASS__,"No images in the post on line :".__LINE__." in file: ".__FILE__);
+				  continue;
+			  }
+			  
+			  
             $full_header = "";
-           // $full_body   = self::get_post_body_wrapper($images,$post_info["caption"],$post_info["count"],$post_info["id"],$post_info["support"],$post_info["oppose"]);
-            // brings back the begining of the post wrapper too
+          // get the post confirmation template
             $full_header   = self::get_post_confirmation($post_info["confirmation"]);
 			
             // gets the full name
             $full_header   .= self::get_fullname($post_info["firstname"],$post_info["lastname"]);
             // gets the number of files uploaded and label of the issue
-            $full_header   .= self::get_post_title(count($images_or_info),$post_info["label"]);
+            $full_header   .= self::get_post_title(count($images),$post_info["label"]);
             // gets the mood of the post
            // $full_header .= self::get_mood_template($post_info["mood"]);
             // gets the location of the post
@@ -1349,20 +1272,23 @@ $width;
             $full_header   .= self::get_time_template($post_info["upload_time"]);
 			// get the images and their arrangements
 			
-			  if(self::images_layout_template(array_shift($images_or_info),$post_info["caption"]) === false){
-				  log_action(__CLASS__,"The images were not found on line: ".__LINE__." in file: ".__FILE__);
-				  continue;
-			  }
-			  
-			 $full_body     = self::images_layout_template(array_shift($images_or_info),$post_info["caption"]);
+			$full_body     = self::images_layout_template($images,$post_info["caption"]);
 			 // get the reaction and comment box
 			/*  $full_body     .= Views::get_views_and_viewsbox_with_template($post_ids);
 		 */
+		    if($full_body === false){
+				print j(["false" => "Sorry, something went wrong,Please try  again after some time"]);
+				 unset($headers[$post_info["post_table_id"]]);
+				continue;				
+			}
 			$headers[$post_info["post_table_id"]] = $full_header.$full_body;
         }
-		
-        print j($headers);
-        return true;
+		 if(!empty($headers)){
+			 print j($headers);
+        return true; 
+		 }
+    return false;		 
+       
 	}catch(Exception $e)
 	{
 	log_action(__CLASS__," Exception occured '{$e}' on line: ".__LINE__." in file ".__FILE__);

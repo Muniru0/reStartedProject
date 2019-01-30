@@ -54,23 +54,25 @@
 !defined("POST")    ? define("POST","post")                  : null;
 !defined("SUPPORT") ? define("SUPPORT","support")            : null;
 !defined("OPPOSE")  ? define("OPPOSE","oppose")              : null;
-!defined("COMMENT")    ? define("COMMENT","comment")         : null;
+!defined("COMMENT")          ? define("COMMENT","comment")         : null;
 
-!defined("APP_ROOT")     ? define("APP_ROOT", dirname(dirname(__FILE__)))   : null;
+!defined("APP_ROOT")         ? define("APP_ROOT", dirname(dirname(__FILE__)))   : null;
 
-!defined("PRIVATE_DIR")  ? define("PRIVATE_DIR", APP_ROOT . "/private/")    : null;
-!defined("PUBLIC_DIR")   ? define("PUBLIC_DIR", APP_ROOT . "/public/")      : null;
-!defined("PRIVATE")  ? define("PRIVATE", "private/")    : null;
-!defined("PUBLIC")   ? define("PUBLIC", "public/")      : null;
+!defined("PRIVATE_DIR")      ? define("PRIVATE_DIR", APP_ROOT . "/private/")    : null;
+!defined("PUBLIC_DIR")       ? define("PUBLIC_DIR", APP_ROOT . "/public/")      : null;
+!defined("PRIVATE")          ? define("PRIVATE", "private/")    : null;
+!defined("PUBLIC")           ? define("PUBLIC", "public/")      : null;
 
 
-!defined("UPLOADS_DIR")      ?  define("UPLOADS_DIR","uploads_dir/")             : null;
-!defined("IMAGES_DIR")       ?  define("IMAGES_DIR","images/")                  : null;
-!defined("IMG_THUMBS_DIR")   ?  define("IMG_THUMBS_DIR","img_thumbs/")          : null;
+!defined("UPLOADS_DIR")      ?  define("UPLOADS_DIR","uploads_dir/")            : null;
+!defined("IMGS_DIR")       ?  define("IMGS_DIR","images/")                  : null;
+!defined("IMGS_THUMBS_DIR")   ?  define("IMGS_THUMBS_DIR","img_thumbs/")          : null;
 !defined("VIDEOS_DIR")       ?  define("VIDEOS_DIR","videos/")                  : null;
 !defined("VID_THUMBS_DIR")   ?  define("VID_THUMBS_DIR","vid_thumbs/")          : null;
 !defined("SHARED_DIR")       ?  define("SHARED_DIR","shared/")                  : null;
 !defined("DS")               ?  define("DS",DIRECTORY_SEPARATOR)                : null;
+
+
 
 
 
