@@ -212,10 +212,14 @@ $(window).scroll(function() {
 				JOIN ".user::$table_name." ON 
 				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id JOIN ".FetchPost::$table_name." ON ".FetchPost::$table_name.".post_id = ".PostImage::$table_name.".id WHERE 
 				".PostImage::$table_name.".id = $post_id  LIMIT 1";
-	echo "<br />". 	1000 % 625 ."<br />";
-	echo 375 / 75;
-
 	
+	$array = [2 =>"me",4=> "you",5=> 6, 3 => 1];
+	
+	if(krsort($array)){
+		
+	
+	 print_r($array);
+	}
 	die();
 	$table_name = "test";
 	

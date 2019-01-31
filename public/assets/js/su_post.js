@@ -105,6 +105,7 @@
         clickable: ["#ps-upload-container", ".dropzone"],
         //    forceFallback: true,
         dictDefaultMessage: "",
+		dictMaxFilesExceeded :"Please you can upload a Maximun of 10 files",
         dictRemoveFileConfirmationn: true,
         init: function () {
             var dz = this;
@@ -221,7 +222,7 @@
 		  
 		 
         try {
-			 console.log(response);				  
+			console.log(response);	 	  
 		 response = JSON.parse(response);
 		     if(response[0] == null){
 		     	showPostErrorAlert = true;
@@ -290,7 +291,7 @@
 
     // tracks the progress of the file
     myDropzone.on("uploadprogress", function (file, percentage, bytes) {
-        var progressBar = $("#uploadprogress").find("span");
+        var progressBar = $("#uploadprogress").find("span")[0];
         var size = convertFileSize(bytes);
         if ($(progressBar)) {
             $(progressBar).css("width", Math.ceil(percentage) + "%");
@@ -656,7 +657,7 @@ return false;
                     toggleMoodPicker("hide");
                     break;
                 default:
-                    console.log("");
+                   /*  console.log(""); */
             }
 
         }
@@ -705,7 +706,7 @@ return false;
       }
 	  
 	   let titleError = $("sup")[0];
-	   console.log( $(titleError).css("display"));
+	  
 	  if($(titleError) && ($(titleError).css("display") == "inline" || $(titleError).css("display") == "block")){
 		$(titleError).hide();
 	  }

@@ -861,24 +861,24 @@ if($width >= 1000){
     $previous_width  = 0;
     $previous_height = 0;	
 	
-	 
+	
 	 
 		$images_string = "<div class='ps-stream-body'>
 		<div class='ps-stream-attachments cstream-attachments'>
 		<div class='cstream-attachment photo-attachment'>
 		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>";
+	
+if(krsort($images)){
+	
+	$width = 50;
+	$height = 50;
+	
+	if($count % 2 === 0 && $count < 5){
 		
+	
+	
 	foreach($images As $image_id => $image){
     
-	 if($count == 2){
-		 
-	 }elseif($count == 3){
-		 
-	 }elseif($count == 4){
-		 
-	 }else($count > 4)
-		   
-	}		
 	$images_string .="
 		
 		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
@@ -890,11 +890,111 @@ if($width >= 1000){
 </a>
 
 ";
-
+	
+}
+// if the images are of an odd number
+}
+elseif($count % 2 === 1 || $count >= 5){
+ 
+	$height  = 50;
+	$width  = 50;
+	$margin = "0px";
+	$display_inline = false;
+	
+	foreach($images  AS $image_id => $image){
+		$dimen["width"][] = getimagesize(self::$images_dir_string.$image)[0];
+		$dimen["height"][] = getimagesize(self::$images_dir_string.$image)[1];
+		
 	}
+	
+	if(sort($dimen["width"])){
+	$last_key = array_key_last($dimen["width"]);
+    $first_key = array_key_first($dimen["width"]);
+		 
+		if($dimen["width"][$last_key - $first_key] < 200 && $count == 3){
+			$height = 50;
+			$width  = 33.3;
+			$display_inline = true;
+		}
+	}
+	 
+	
+	// get the index of the last image
+	$last_key = array_key_last($images);
+	 $images_processed = 1;
+	 $overlay = "";
+	foreach($images As $image_id => $image){
+	  // if(!$display_inline){
+		  
+	     
+	  if(($image_id === $last_key && $count == 3) || ($images_processed === 5)){
+	  
+	
+	  if($count > 5){
+		 
+		  $overlay = "<div class='ps-media-photo-counter' style='top:0; left:0; right:0; bottom:0;'>
+				<span>+". ($count - 5) ."</span>
+			</div>";
+	  
+	  }
+		  if(($height - $width) > 200){
+			  $height = 100;
+			  $width  = 100;
+		  }elseif(($height - $width) < 200){
+			  $height = 50;
+			  $width = 60;
+			  $margin = 40 / 2 . "%"; 
+		  }
+		 
+		
+		 $images_string .="
+		
+		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%; margin-left: ".$margin."'>
+	<div class='ps-media-grid-padding'>
+<div class='ps-media-grid-fitwidth'>
+<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
+				{$overlay}
+								</div>
+	</div>
+</a>
 
-	$images_string .= "</div></div></div></div>"
-	;
+";
+ break;
+	 }
+	 
+	
+	//}
+	
+	
+	$images_string .="
+		
+		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
+	<div class='ps-media-grid-padding'>
+		<div class='ps-media-grid-fitwidth'>
+			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
+								</div>
+	</div>
+</a>
+
+";
+	 $images_processed ++;
+		}
+			}
+				}
+
+	
+/* 
+	 if($count == 2){
+		 
+	 }elseif($count == 3){
+		 
+	 }elseif($count == 4){
+		 
+	 }elseif($count > 4){
+		   
+	}	 */
+	
+$images_string .= "</div></div></div></div>";
 	unset($dimen);
  return $images_string;
 		

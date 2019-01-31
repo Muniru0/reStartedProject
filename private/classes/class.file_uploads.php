@@ -200,7 +200,7 @@ public static  function createThumbnail($filename) {
         if(preg_match('/[.](jpg)$/', $filename)) {
             $im = imagecreatefromjpeg(self::$upload_path.IMGS_DIR.$filename);
         } else if (preg_match('/[.](gif)$/',self::$upload_path.IMGS_DIR.$filename)) {
-            $im = imagecreatefromgif($filename);
+            $im = imagecreatefromgif(self::$upload_path.IMGS_DIR.$filename);
         } else if (preg_match('/[.](png)$/',self::$upload_path.IMGS_DIR.$filename)) {
             $im = imagecreatefrompng(self::$upload_path.IMGS_DIR.$filename);
         }
