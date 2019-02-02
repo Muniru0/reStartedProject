@@ -37,16 +37,15 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	
 	$time = time();
 	$user_id = $_SESSION["id"] ? $_SESSION["id"] : 0;
-	$firstname = $_SESSION["firstname"] ? $_SESSION["firstname"] : "";
-	$lastname = $_SESSION["lastname"]   ? $_SESSION["lastname"]  : "";
 	
-	if($user_id === 0 || $id !== NULL || strlen($time) < 10 || trim($firstname) == "" || trim($lastname) == ""){
+	
+	if($user_id === 0 || $id !== NULL || strlen($time) < 10){
 		 print j(["false" =>"Something Unexpectedly went wrong, please refresh the page and try again"]);
 		 
 	 }
 	
 	// assign the parameters
-   $parameter = j([$post_id,$comment_id,$_SESSION["id"],$firstname,$lastname,$reply,$time]);
+   $parameter = j([$post_id,$comment_id,$_SESSION["id"],$reply,$time]);
 	// bind the parameters
 	if(!$stmt->bind_param("s",$parameter)){
 		log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);

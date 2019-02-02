@@ -18,10 +18,9 @@ class PostImage extends FileUpload {
     public static $acceptable_labels = ['transport','health','sol','security','sanitation','other','work','corruption'];
 
     public static $id          = "id";
-    public static $uploader_id = 0;
-    public static $filename    = "";
-    public static $upload_time = "";
-    public static $caption     = "";
+    public static $uploader_id = "uploader_id";
+    public static $upload_time = "upload_time";
+    public static $caption     = "caption";
     public static $db_support     = "support";
     public static $db_oppose      = "oppose";
 

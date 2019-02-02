@@ -19,9 +19,9 @@ class user extends DatabaseObject{
    
 
 
-    public static $id                = "" ;
-    public static $firstname         = "" ; 
-    public static $lastname          = "" ;
+    public static $id                = "id" ;
+    public static $firstname         = "firstname" ; 
+    public static $lastname          = "lastname" ;
     public static $email             = "" ;
     public static $gov               = "" ;
     public static $password          = "" ;

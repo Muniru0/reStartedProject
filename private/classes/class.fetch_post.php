@@ -6,7 +6,16 @@ class FetchPost extends DatabaseObject{
 
     public static $class_name = "FetchPost";
     public static $table_name = "normal_post_table";
+    public static $id         = "id";
+	public static $post_id    = "post_id";
+	public static $filenames  = "filenames";
+	 
+	
 	public static $images_dir_string = "../private/".UPLOADS_DIR.IMGS_THUMBS_DIR;
+	
+	
+	
+	
 	public static $posts = "";
     public static $JOYFUL      = "joyful";
     public static $MEH         =  "meh";
@@ -721,13 +730,15 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 	
   }
  
+   
+ $comments = [];
 
   if(empty($returned_array)){
 		print j(["false" =>"Sorry please try again($post_id)"]);
 		return [];
 	}else{
 	// was the post giving out to the user	
-	  return self::get_full_post($returned_array,RECENT);
+	  return self::get_full_post($returned_array,$comments,RECENT);
 	
 	}
   
@@ -851,7 +862,18 @@ if($width >= 1000){
   </div>
   </div>
 	</div>	
-		";
+		<div class='ps-stream-actions stream-actions' data-type='stream-action'>
+    <nav class='ps-stream-status-action ps-stream-status-action'>
+<!--<a data-stream-id='482' onclick='return reactions.action_reactions(this, 482);' href='javascript:' class='ps-reaction-toggle--482 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>-->
+<!--</nav>-->
+      
+        <input type='radio' name='reaction' id='support' value='support' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
+        <label for='support' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span> Suppport</label>
+        <!--   post label for health community  -->
+        <input type='radio' name='reaction' id='oppose' value='oppose' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
+        <label for='oppose' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span> Oppose </label>
+
+</nav></div>";
 	}
 		
 		
@@ -878,7 +900,9 @@ if(krsort($images)){
 	
 	
 	foreach($images As $image_id => $image){
-    
+      if(!file_exists(self::$images_dir_string.$image)){
+		 continue; 
+	  }
 	$images_string .="
 		
 		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
@@ -902,11 +926,14 @@ elseif($count % 2 === 1 || $count >= 5){
 	$display_inline = false;
 	
 	foreach($images  AS $image_id => $image){
+		if(!file_exists(self::$images_dir_string.$image)){
+		 continue; 
+	  }
 		$dimen["width"][] = getimagesize(self::$images_dir_string.$image)[0];
 		$dimen["height"][] = getimagesize(self::$images_dir_string.$image)[1];
 		
 	}
-	
+	if(isset($dimen["width"]) && !empty($dimen["width"]) && count($dimen["width"]) > 0){
 	if(sort($dimen["width"])){
 	$last_key = array_key_last($dimen["width"]);
     $first_key = array_key_first($dimen["width"]);
@@ -917,7 +944,7 @@ elseif($count % 2 === 1 || $count >= 5){
 			$display_inline = true;
 		}
 	}
-	 
+} 
 	
 	// get the index of the last image
 	$last_key = array_key_last($images);
@@ -925,7 +952,10 @@ elseif($count % 2 === 1 || $count >= 5){
 	 $overlay = "";
 	foreach($images As $image_id => $image){
 	  // if(!$display_inline){
-		  
+		
+if(!file_exists(self::$images_dir_string.$image)){
+		 continue; 
+	  }		
 	     
 	  if(($image_id === $last_key && $count == 3) || ($images_processed === 5)){
 	  
@@ -994,7 +1024,19 @@ elseif($count % 2 === 1 || $count >= 5){
 		   
 	}	 */
 	
-$images_string .= "</div></div></div></div>";
+$images_string .= "</div></div></div></div>
+<div class='ps-stream-actions stream-actions' data-type='stream-action'>
+    <nav class='ps-stream-status-action ps-stream-status-action'>
+<!--<a data-stream-id='482' onclick='return reactions.action_reactions(this, 482);' href='javascript:' class='ps-reaction-toggle--482 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>-->
+<!--</nav>-->
+      
+        <input type='radio' name='reaction' id='support' value='support' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
+        <label for='support' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span> Suppport</label>
+        <!--   post label for health community  -->
+        <input type='radio' name='reaction' id='oppose' value='oppose' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
+        <label for='oppose' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span> Oppose </label>
+
+</nav></div>";
 	unset($dimen);
  return $images_string;
 		
@@ -1052,8 +1094,7 @@ $images_string .= "</div></div></div></div>";
 	
 
 	// get reaction and comment box
-	public static function get_reaction_and_commentbox($support = 0,$oppose = 0 ,$post_id = 0)
-	{
+	public static function get_reaction_and_commentbox($support = 0,$oppose = 0 ,$post_id = 0){
 		if((!isset($support) || !isset($oppose)) && (!isset($post_id) && $post_id < 0 ))
 		{
 			return "";
@@ -1117,8 +1158,7 @@ $images_string .= "</div></div></div></div>";
 	
     
 	// fetch filenames based on the post_ids
-	public static function fetch_images($post_ids = [])
-	{
+	public static function fetch_images($post_ids = []){
 		global $db;
 		
 		$query = "SELECT * FROM ".self::$table_name." WHERE post_id = ? ";
@@ -1320,19 +1360,19 @@ $images_string .= "</div></div></div></div>";
 
 // GET THE FULL HEADER
 // brings back the header of the post
-    public static function get_full_post($returned_array = [],$flag = ""){
+    public static function get_full_post($returned_array = [],$views = null,$flag = ""){
 
-	try
-	{
+	try{
 		
-	if(empty($returned_array) || !is_array($returned_array)){
+	if(empty($returned_array) || !is_array($returned_array) && !isset($views)){
 	   print j(["false" => "Something happend Unexpectedly, Please refresh the page and try again"]);
-      log_action(__CLASS__," {$flag} image(s) or post info is/are empty on LINE ".__LINE__." in FILE ".__FILE__);
+      log_action(__CLASS__," {$flag}image(s) or post info is/are empty on LINE ".__LINE__." in FILE ".__FILE__);
     return;   
    }
    
+   
       $headers = [];
-	  $post_ids = [];
+	 /*  $post_ids = []; */
      
 	 // check if the results array($returned_array) is empty
 	 if(empty($returned_array)){
@@ -1344,16 +1384,33 @@ $images_string .= "</div></div></div></div>";
 
 // for every single post,...
 foreach ($returned_array as $posts_info => $images_or_info){
-			 $post_info = array_shift($images_or_info);
-			 $post_ids [] = $post_info["post_table_id"];
-			
-			 $images      = array_pop($images_or_info);
+	    $skip_post = false;
+		$post_info = array_shift($images_or_info);
+		/* $post_ids [] = $post_info["post_table_id"]; */
+		// pop the images from the trailing end of the array
+		$images      = array_pop($images_or_info);
+		 foreach($images AS $image){
+			 if(!file_exists(self::$images_dir_string.$image)){
+				 $skip_post = true;
+				 break;
+			 }
+		 }
+		 
+		 if($skip_post){
+			 continue;
+		 }
+		$comments = $views["postID_".$post_info["post_table_id"]] ?? [];
 			  if(!isset($images) || empty($images)){
 				 log_action(__CLASS__,"No images in the post on line :".__LINE__." in file: ".__FILE__);
 				  continue;
 			  }
 			  
+			  if(!isset($post_info["post_table_id"]) || $post_info["post_table_id"] < 1){
+				 log_action(__CLASS__,"The post id ( ".$post_info["post_table_id"].") is less than 1 in the post array  on line :".__LINE__." in file: ".__FILE__);
+				  continue;
+			  }
 			  
+			 
             $full_header = "";
           // get the post confirmation template
             $full_header   = self::get_post_confirmation($post_info["confirmation"]);
@@ -1374,8 +1431,12 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			
 			$full_body     = self::images_layout_template($images,$post_info["caption"]);
 			 // get the reaction and comment box
-			/*  $full_body     .= Views::get_views_and_viewsbox_with_template($post_ids);
-		 */
+			 
+				  
+		    $full_body        .= Views::get_views_with_replys($post_info["post_table_id"],$comments); 
+			
+            			
+		 
 		    if($full_body === false){
 				print j(["false" => "Sorry, something went wrong,Please try  again after some time"]);
 				 unset($headers[$post_info["post_table_id"]]);
@@ -1385,6 +1446,9 @@ foreach ($returned_array as $posts_info => $images_or_info){
         }
 		 if(!empty($headers)){
 			 print j($headers);
+        return true; 
+		 }else{
+		print j(["waiting"]);
         return true; 
 		 }
     return false;		 

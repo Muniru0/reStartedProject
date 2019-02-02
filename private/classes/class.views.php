@@ -15,129 +15,108 @@ class Views extends DatabaseObject{
    
 
    // get all the views for some specific post_ids
-   public static function get_views_and_viewsbox_with_template($post_ids = []) {
+   public static function get_views_with_replys($post_id , $views_with_replys) {
 	   
-	   if(empty($post_ids) || !is_array($post_ids) || in_array(0,$post_ids)){
-		   return "";
+	   if(empty($post_id)  || $post_id < 1 ){
+		   log_action(__CLASS__, " View with this post id is zero (".$post_id.") on line: ".__LINE__." in file: ".__FILE__);
+		 
 	   }
 	   
-	   global $db;
-	   
-	   $query = "SELECT ".self::$table_name.".*,firstname,lastname FROM ".self::$table_name." JOIN ".user::$table_name." ON ".user::$table_name.".id = ".self::$table_name.".commentor_id WHERE ";
-	   
-	   foreach($post_ids as $post_id)
-	{
-		$query .= " post_id = {$post_id} ||";
-		
+	   if(!is_array($views_with_replys) || in_array(0,$views_with_replys)){
+		   log_action(__CLASS__, "on one the views with the post id as (".$post_id.") has an index as zero or the array of views and replys is not an array on line: ".__LINE__." in file: ".__FILE__);
 	}
-	
-	
-	// remove the last '||' from the $query string.
-	 $query = substr_replace($query,'',-2, 2);
-	  
-
-     if(!($result = $db->query($query)))
-	 {
-		 log_ation(__CLASS__," Query failed with db error '{$db->error}' on line  ".__LINE__." on file ".__FILE__);
-	 } 	  
 	   
-	    $views_and_viewsbox_template_string = "<div class='ps-comment cstream-respond wall-cocs' id='wall-cmt-482' />";
-	   while($row = $result->fetch_array(MYSQLI_ASSOC)){
+     	 
+	 $views_and_viewsbox_template_string = "<div class='ps-comment cstream-respond wall-cocs' id='wall-cmt-{$post_id}'>
+		<div class='ps-comment-container comment-container ps-js-comment-container'> ";
+		
+		if(empty($views_with_replys) || !is_array($views_with_replys) 
+			|| in_array(0,$views_with_replys) || empty($post_id)  || $post_id < 1 ){
+		
+	   foreach($views_with_replys As $view => $replys){
+		   $view_info = array_pop($view);
 		   
-		 $views_and_viewsbox_template_string .= "<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--482\" data-act-id=\"482\">
-			<div id=\"comment-item-931\" class=\"ps-comment-item cstream-comment stream-comment\" data-comment-id=\"931\">
-	<div class=\"ps-comment-body cstream-content\">
-		<div class=\"ps-comment-message stream-comment-content\">
-			<a class=\"ps-comment-user cstream-author\" href=\" ://demo.peepso.com/profile/william/\">{$row["firstname"]} {$row["lastname"]}</a>
-			<span class=\"ps-comment__content\" data-type=\"stream-comment-content\"><div class=\"peepso-markdown\"><p>{$row['comment']}</p></div></span>
+		 $views_and_viewsbox_template_string .= "<div id='new_comment_'{$post_id} class='ps-comment-item cstream-comment stream-comment'  style='display:none;'>
+	
+
+	<div class='ps-comment-body cstream-content'>
+		<div class='ps-comment-message stream-comment-content'>
+			<a class='ps-comment-user cstream-author' href=' ://demo.peepso.com/profile/demo/'>Patricia Currie</a>
+			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p>".$views_info["comment"]." </p></div></span>
 		</div>
 
-		<div data-type=\"stream-more\" class=\"cstream-more\" data-commentmore=\"true\"></div>
+		<div data-type='stream-more' class='cstream-more' ></div>
 
-		
+		<div class='ps-comment-media cstream-attachments'></div>
 
-		<div class=\"ps-comment-time ps-shar-meta-date\">
-			<small class=\"activity-post-age\" data-timestamp=\"1529076577\"><span class=\"ps-js-autotime\" data-timestamp=\"1529076577\" title=\"".strftime("%B, %e   &nbsp; &nbsp; %G  %i:%M:%S %P",$row["comment_time"])."\">".self::time_converter($row["comment_time"])."</span></small>
+		<div class='ps-comment-time ps-shar-meta-date'>
+			<small class='activity-post-age' data-timestamp='1529076871'><span class='ps-js-autotime' data-timestamp='1529076871' title='".strftime("%B, %e    %G  %I:%M %p",$view_info["comment_time"])."'>".FetchPost::time_converter($view_info["comment_time"])."</span></small>
 
-						<div id=\"act-like-493\" class=\"ps-comment-links cstream-likes ps-js-act-like--493\" data-count=\"2\">
-				<a onclick=\"return activity.show_likes(493);\" href=\"#showLikes\">2 people like this.</a>			</div>
+						<div id='act-like-497' class='ps-comment-links cstream-likes ps-js-act-like--497' data-count='1'>
+				<a onclick='' href='#showLikes'>1 person likes this</a>			</div>
 
-			<div class=\"ps-comment-links stream-actions\" data-type=\"stream-action\">
-				<span class=\"ps-stream-status-action ps-stream-status-action\">
-					<nav class=\"ps-stream-status-action ps-stream-status-action\">
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_like(this, 493); return false;\" href=\"#like\" class=\"actaction-like liked ps-icon-thumbs-up\"><span><span title=\"2 people like this\">Like</span></span></a>
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_report(493); return false;\" href=\"#report\" class=\"actaction-report ps-icon-warning-sign\"><span>Report</span></a>
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_reply(493, 931, this, { id: 6, name: 'William Torres' }); return false;\" href=\"#reply\" class=\"actaction-reply ps-icon-plus\"><span>Reply</span></a>
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_edit(931, this); return false;\" href=\"#edit\" class=\"actaction-edit ps-icon-pencil\"><span>Edit</span></a>
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_delete(931); return false;\" href=\"#delete\" class=\"actaction-delete ps-icon-trash\"><span></span></a>
+			<div class='ps-comment-links stream-actions' data-type='stream-action'>
+				<span class='ps-stream-status-action ps-stream-status-action'>
+					<nav class='ps-stream-status-action ps-stream-status-action'>
+<a  onclick='activity.comment_action_like(this, 497); return false;' href='#like' class='actaction-like ps-icon-thumbs-up'><span><span title='1 person likes this'>Like</span></span></a>
+<a  onclick='comment.showReplyBox({$view_info["comment_id"]}); return false;' href='#reply' class='actaction-reply ps-icon-plus'><span>Reply</span></a>
+<a  onclick='comment.prepare_edit_comment({$post_id},{$view_info["comment_id"]},this,'comment'}, this); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
+<a  onclick='comment.delete_comment({$post_id},{$view_info["comment_id"]}); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
 </nav>
 				</span>
 			</div>
 		</div>
 	</div>
-</div>
-
-
-		</div>";
+</div>";
 	   }
 	   
-	   $views_and_viewsbox_template_string .= "<div class='ps-stream-actions stream-actions' data-type='stream-action'><nav class='ps-stream-status-action ps-stream-status-action'>
-<a data-stream-id='498' onclick='return reactions.action_reactions(this, 498);' href='javascript:' class='ps-reaction-toggle--498 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>
-<a data-stream-id='498' onclick='return activity.action_report(498);' href='#report' class='actaction-report ps-icon-warning-sign'><span>Report</span></a>
-</nav>
-</div>
-  <div class=\"ps-comment cstream-respond wall-cocs\" id=\"wall-cmt-498\">
-		<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--498\" data-act-id=\"498\">
-					</div>
+	 
+}
 
-						<div id=\"act-new-comment-".$row["post_id"]."\" class=\"ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498\" data-id=\"498\" data-type=\"stream-newcomment\" data-formblock=\"true\">
-			<a class=\"ps-avatar cstream-avatar cstream-author\" href=\" ://demo.peepso.com/profile/demo/\">
-				<img data-author=\"4\" src=\" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg\" alt=\"\">
-			</a>
-			<div class=\"ps-textarea-wrapper cstream-form-input\">
-				<div class=\"ps-tagging-wrapper\"><div class=\"ps-tagging-beautifier\"></div><textarea data-act-id=\"498\" class=\"ps-textarea cstream-form-text ps-tagging-textarea\" name=\"comment\" oninput=\"return activity.on_commentbox_change(this);\" placeholder=\"Write a comment...\" style=\"height: 35px;\"></textarea><input type=\"hidden\" class=\"ps-tagging-hidden\"><div class=\"ps-tagging-dropdown\"></div></div>
-				<div class=\"ps-commentbox__addons ps-js-addons\">
-<div class=\"ps-commentbox__addon ps-js-addon-giphy\" style=\"display:none\">
-	<div class=\"ps-popover__arrow ps-popover__arrow--up\"></div>
-	<img class=\"ps-js-img\" alt=\"photo\" src=\"\">
-	<div class=\"ps-commentbox__addon-remove ps-js-remove\">
-		<i class=\"ps-icon-remove\"></i>
+ return $views_and_viewsbox_template_string .= " <div id='comment_area_wrapper_{$post_id}' onkeyup='autoGrow(this);' class='ps-comment-reply cstream-form stream-form wallform ps-js-comment-new'>
+			
+			<div class='ps-textarea-wrapper cstream-form-input'>
+				<div class='ps-tagging-wrapper'><div class='ps-tagging-beautifier'></div><textarea id='comment_area_{$post_id}' class='ps-textarea cstream-form-text ps-tagging-textarea' name='comment' oninput='return comment.autoGrow(this); ' onkeypress='comment.on_text_field_change(this);' maxlength='4000' placeholder='Write a comment...' style='overflow:hidden;'></textarea></div>
+				<div class='ps-commentbox__addons ps-js-addons'>
+<div class='ps-commentbox__addon ps-js-addon-giphy' style='display:none'>
+	<div class='ps-popover__arrow ps-popover__arrow--up'></div>
+	<img class='ps-js-img' alt='photo' src=''>
+	<div class='ps-commentbox__addon-remove ps-js-remove'>
+		<i class='ps-icon-remove'></i>
 	</div>
 </div>
-<div class=\"ps-commentbox__addon ps-js-addon-photo\" style=\"display:none\">
-	<div class=\"ps-popover__arrow ps-popover__arrow--up\"></div>
+<div class='ps-commentbox__addon ps-js-addon-photo' style='display:none'>
+	<div class='ps-popover__arrow ps-popover__arrow--up'></div>
 
-	<img class=\"ps-js-img\" alt=\"photo\" src=\"\" data-id=\"\">
+	<img class='ps-js-img' alt='photo' src='' data-id=''>
 
-	<div class=\"ps-loading ps-js-loading\">
-		<img src=\"assets/images/ajax-loader.gif\" alt=\"loading\">
+	<div class='ps-loading ps-js-loading'>
+		<img src='assets/images/ajax-loader.gif' alt='loading'>
 	</div>
 
-	<div class=\"ps-commentbox__addon-remove ps-js-remove\">
-		<input type=\"hidden\" id=\"_wpnonce_remove_temp_comment_photos\" name=\"_wpnonce_remove_temp_comment_photos\" value=\"3ca8a9ab47\"><input type=\"hidden\" name=\"_wp_http_referer\" value=\"/peepsoajax/activity.show_posts_per_page\">		<i class=\"ps-icon-remove\"></i>
+	<div class='ps-commentbox__addon-remove ps-js-remove'>
+		<input type='hidden' id='_wpnonce_remove_temp_comment_photos' name='_wpnonce_remove_temp_comment_photos' value='3ca8a9ab47'><input type='hidden' name='_wp_http_referer' value='/peepsoajax/activity.show_posts_per_page'>		<i class='ps-icon-remove'></i>
 	</div>
 </div>
 </div>
-
+<div class='ps-commentbox-actions'>
+<a title='Upload photos' class='ps-postbox__menu-item '><span style=' position: absolute; right: .2em; bottom: .1em; background-color: #E3E5E7; padding: 0.1em; font-size: .7em !important; border-radius: 5px; color: black;'>4000</span></a>
+<a onclick='return false;' title='Send gif' href='#' class='ps-list-item ps-js-comment-giphy'></a>
+</div>
 			</div>
-			<div class=\"ps-comment-send cstream-form-submit\" style=\"display:none;\">
-				<div class=\"ps-comment-loading\" style=\"display:block;\">
-					<img src=\"assets/images/ajax-loader.gif\" alt=\"\">
-					<div> </div>
+			<div class='ps-comment-send cstream-form-submit' style='display:none;'>
+				<div class='ps-comment-loading' style='display:none;'>
+					<img src='assets/images/ajax-loader.gif' alt=''>
+					
 				</div>
-				<div class=\"ps-comment-actions\" style=\"display:block;\">
-					<button onclick=\"return activity.comment_cancel(498);\" class=\"ps-btn ps-button-cancel\">Clear</button>
-					<button onclick=\"return activity.comment_save(498, this);\" class=\"ps-btn ps-btn-primary ps-button-action\" disabled=\"\">Post</button>
+				<div class='ps-comment-actions' style='display:none;'>
+					<button onclick='return comment.cancel_comment({$post_id},this);' class='ps-btn ps-button-cancel'>Clear</button>
+					<button onclick='return comment.post_comment({$post_id},this);' class='ps-btn ps-btn-primary ps-button-action'>Post</button>
 				</div>
 			</div>
-		</div>
-			</div>
-
-";
-
- return $views_and_viewsbox_template_string;
+		</div></div>";
 	   
-   }// get_views_and_viewsbox_with_template();
+   }// get_views_with_replys();
    
    
   public static function get_view($comment_id,$post_id = 0){
@@ -189,15 +168,14 @@ return $record;
 	$id = NULL;
 	$time = time();
 	$user_id = $_SESSION["id"] ? $_SESSION["id"] : 0;
-	$firstname = $_SESSION["firstname"] ? $_SESSION["firstname"] : "";
-	$lastname = $_SESSION["lastname"]   ? $_SESSION["lastname"]  : "";
-	if($user_id === 0 || $id !== NULL || strlen($time) < 10 || trim($firstname) == "" || trim($lastname) == ""){
+	
+	if($user_id === 0 || $id !== NULL || strlen($time) < 10 ){
 		 print j(["false" =>"Something Unexpectedly went wrong, please refresh the page and try again"]);
 		 
 	 }
 	
 	// bind the parameters
-	if(!$stmt->bind_param("iiisi",$id,$post_id,$_SESSION["id"],$firstname,$lastname,$comment,$time)){
+	if(!$stmt->bind_param("iiisi",$id,$post_id,$_SESSION["id"],$comment,$time)){
 		log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
          return false;
 		}
