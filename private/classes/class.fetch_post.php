@@ -639,7 +639,7 @@ return json_encode($views);
 		if(!isset($caption) || trim($caption) == "" || empty($caption)){
 			return "";
 		}
-		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown'		style='margin-left: 1em;'/><p>Captions provided meta data for posts</p></div><p>{$caption}</p></div>";
+		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown' ><p>{$caption}</p></div></div>";
 	}// get_caption_template();
 	
     public static function get_stream_options_template($post_id,$uploader_id){
@@ -753,19 +753,48 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 
 	
 	//get the layout template for two images 
-public static function images_layout_template($images =[] ){
+public static function images_layout_template($post_id = 0,$images =[],$supports,$opposes,$caption = null){
 
 	
+	  // veirfy the entire the images array
 		if(!is_array($images) || !isset($images) || empty($images)){
 			return false;
 		}
 		
 		 $count = count($images);
 		
+		// verify the number of images
 		if($count < 1)
 		{
 			return  false;
 		}
+		
+		// verify the post id
+		if($post_id < 1){
+		return false;	
+		}
+
+		  $toggle_reactions_count = "";
+		  
+		  if($supports < 1 && $opposes < 1){
+			  $toggle_reactions_count = "style='display:none;'";
+		  }
+		  
+		$number_of_supports_string = $supports > 0 ? "<a title='Number of supports' href='javascript:void(0)' style='margin-left: 3.3em;'>
+		{$supports} supported</a>" : "<a title='Number of supports' href='javascript:void(0)' style ='display:none; margin-left:3.3em;'>
+</a>";
+		$number_of_opposess_string = $opposes > 0 ? "<a title='Number of opposes' href='javascript:void(0)' style='margin-left: 2em;'>
+		{$opposes} supported</a>" : "<a title='Number of opposes' href='javascript:void(0)' style ='display:none; margin-left: 2em;'>
+</a>";
+		
+ $images_string = "<div class='ps-stream-body'>
+		".self::get_caption_template($caption)."
+		<div class='ps-stream-attachments cstream-attachments'>
+		<div class='cstream-attachment photo-attachment'>
+		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
+		
+		";		
+		
 		
 	if(isset($images)  && $count === 1){  
 	$width;
@@ -844,12 +873,8 @@ if($width >= 1000){
 }
 	
 		
-		return "<div class='ps-stream-body'>
-		<div class='ps-stream-attachments cstream-attachments'>
-		<div class='cstream-attachment photo-attachment'>
-		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
+		return $images_string .= "
 		
-			
 		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
 	<div class='ps-media-grid-padding'>
 		<div class='ps-media-grid-fitwidth'>
@@ -867,13 +892,28 @@ if($width >= 1000){
 <!--<a data-stream-id='482' onclick='return reactions.action_reactions(this, 482);' href='javascript:' class='ps-reaction-toggle--482 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>-->
 <!--</nav>-->
       
-        <input type='radio' name='reaction' id='support' value='support' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
-        <label for='support' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span> Suppport</label>
-        <!--   post label for health community  -->
-        <input type='radio' name='reaction' id='oppose' value='oppose' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
-        <label for='oppose' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span> Oppose </label>
+      
+
+	<div class='reactions'>
+
+    <input type='radio' name='reaction_{$post_id}' id='support_{$post_id}' oninput='reaction.addReaction({$post_id},2,this)'/>
+	<label for='support_{$post_id}'  title='Support the above post' ></label>
+    <span class='support-span'>Support</span>
+	
+	<span class='oppose-span'>Oppose</span>
+	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)'/>
+	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em'></label>
+ </div>
+   
+   <div id='reactions_count_{$post_id}' class='ps-reaction-likes ps-stream-status cstream-reactions' $toggle_reactions_count>
+							
+".$number_of_supports_string.$number_of_opposess_string." 
+</div>
+ 
+
 
 </nav></div>";
+
 	}
 		
 		
@@ -885,10 +925,7 @@ if($width >= 1000){
 	
 	
 	 
-		$images_string = "<div class='ps-stream-body'>
-		<div class='ps-stream-attachments cstream-attachments'>
-		<div class='cstream-attachment photo-attachment'>
-		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>";
+		
 	
 if(krsort($images)){
 	
@@ -1204,7 +1241,7 @@ $images_string .= "</div></div></div></div>
 
     public static function get_post_confirmation($confirmation = 0){
    
-         $switch = "<span style=\"background-color: rgb(210, 73, 66);\">Not Confirmed</span>";
+         $switch = "<span style=\"background-color: rgb(210, 73, 66);\">UnConfirmed \n</span>";
 	   if($confirmation == 1)
 	   {
 		   $switch = "<span style=\"background-color: rgb(60, 189, 172);\">Confirmed</span>";
@@ -1423,13 +1460,13 @@ foreach ($returned_array as $posts_info => $images_or_info){
            // $full_header .= self::get_mood_template($post_info["mood"]);
             // gets the location of the post
             $full_header   .= self::get_location_template($post_info["longitude"],$post_info["latitude"]);
-			// gets the caption of post
-            $full_header   .= self::get_caption_template($post_info["caption"]);			
             // gets the time the post was uploaded
             $full_header   .= self::get_time_template($post_info["upload_time"]);
+			// gets the caption of post
+           // $full_header   .= self::get_caption_template($post_info["caption"]);			
 			// get the images and their arrangements
 			
-			$full_body     = self::images_layout_template($images,$post_info["caption"]);
+			$full_body     = self::images_layout_template($post_info["post_table_id"],$images,$post_info["caption"]);
 			 // get the reaction and comment box
 			 
 				  

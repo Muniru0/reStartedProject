@@ -6,7 +6,8 @@ require_once("../private/initialize.php");
       
     <head>
         <title>CTF</title>
-        <script src = "assets/js/jquery.js" ></script>
+        <script src = "assets/js/jquery.js" ></script> 
+		<link rel="stylesheet" href= "assets/css/bootstrap.css" />
        
     <style>
       
@@ -16,11 +17,90 @@ require_once("../private/initialize.php");
  }
 
 
+@font-face {
+  font-family: "Open Sans";
+  src: url("/fonts/OpenSans-Regular-webfont.woff2") format("woff2"),
+     url("assets/fonts/glyphicons-halflings-regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "fontawesome";
+  src: url("assets/fonts/peepso.woff2") format("woff2"),
+     url("assets/fonts/peepso.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Second";
+  src:url("assets/fonts/glyphicons-halflings-regular.eot") format("EOT");
+}
+
+ body {
+	 text-align:center;
+	 font-family: "Open Sans" !important;
+ }
+ 
+<!--  div{
+	 margin: 0px auto;
+ } -->
+ 
+
+
+
+
+.switch{
+	position: relative;
+	display: inline;
+    margin-left: 32px;
+}
+
+.switch label {
+	
+	width: 55px;
+	height: 23px;
+	position: absolute;
+	background-color: #999;
+	top: 0;
+	left: 0px;
+	border-radius: 50px;
+	}
+	
+.switch input[type="radio"]{
+	visibility: hidden;
+}
+
+.switch label:first-child {
+	margin-left: 100px;
+}
+.switch label:after {
+	content: "";
+	width: 21px;
+	height: 21px;
+	border-radius: 50px;
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	transition: all 0.5s;
+	background-color: white;
+}
+
+.switch input[type="radio"]:checked + label:after {
+	left: 33px;
+}
+
+.switch input[type="radio"]:checked  + label{
+	background-color:#5bc5a1;
+}
+
+.scroller {
+  width: 300px;
+  height: 100px;
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+}
+
 </style>
-<script>
 
-
-</script>
 
     </head>
  <body>
@@ -35,7 +115,7 @@ require_once("../private/initialize.php");
 <script>
 window.addEventListener("input",function(e)
 {
-	console.log("on input event detected by this element" + e.target);
+	console.log( e.target);
 },false);
 
 function autoGrow(oField){
@@ -88,69 +168,20 @@ let value = document.getElementById("#textarea");
  
 </script>
 
-<style>
 
- body {
-	 text-align:center;
- }
- 
- div{
-	 margin: 0px auto;
- }
- 
+<!--
 
-body { 
-  margin: 0px;
-  padding: 0px;
-  background: #f7f7f7;
-}
-
-img{
-	height: 200px;
-	width: 200px;
-	
-}
-
-.outer_div {
-	height: 200px;
-    width: 200px;
-    display: inline;
-}
-
-.inner_div {
-	float: left;
-  
-	
-}
-
-.div_wrapper {
-	padding: 20px;
-	width: 60%;
-    height: 1020px;
-    margin-top: 30px;
-    border-radius: 6px;
-    position: relative;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
-    -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
-    background-color: #fff;
-	overflow:hidden;
-}
-
-img_style{
-	
-}
-</style>
-
-<div id="log" style="cursor:pointer;"></div>
+<div id="log" style="cursor:pointer;"><p style="color: #fff;">I am the main guy in the trend of things\n\n\n\n\n\b INSHA ALLAH</p></div>
 
 
-<!--<div class="big-box"><h1>Page 1</h1></div>
+<div class="big-box"><h1>Page 1</h1></div>
 <div class="big-box"><h1>Page 2</h1></div>
 -->
 
 <script>
 var me = 0;
- 
+  
+  $("#log p").css("background","#000");
 $(document).scroll(function() {
     me++;
 	 
@@ -173,7 +204,7 @@ $(window).ready(function(){
    });
 });
 var page = 2;
-/*
+
 $(window).scroll(function() {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
       console.log(++page);
@@ -187,39 +218,94 @@ $(window).scroll(function() {
 			 console.log(response);
 			 
 			/* $("body").append('<div class="big-box"><h1>Page ' + response + '</h1></div>'); 
-				$("body").append(response);		
+				$("body").append(response);	*/	
 	}).fail(function(error){
 			 alert(error);
 		 });  
       
     }
 });
-*/
+
+	// helper method for replacing strings
+    function replaceString(oldS, newS, fullS) {
+    return fullS.split(oldS).join(newS);
+}
+
+  console.log($("div#log").html());
 </script>
 <!--<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
 <input  type= "text" oninput="print_value(this) ;" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/> 
 -->
+
+
+
+<div class="switch">
+
+    <span>Support</span>
+    <input type="radio" name="reaction_1" id="support_1"/>
+	<label for="support_1" style="margin-left:100px;"></label>
+	
+	<span>Oppose</span>
+	<input type="radio" name="reaction_1" id="oppose_1"/>
+	<label for="oppose_1"></label>
+ </div>
+  
+ 
+
+
+ 
+
+
+
 <?
 
 
 
 ?>
 
+<?php
+ 
 
-    <?php
-	 $post_id = 20;
-	echo "SELECT firstname,lastname,".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".id AS post_table_id
-				JOIN ".user::$table_name." ON 
-				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id JOIN ".FetchPost::$table_name." ON ".FetchPost::$table_name.".post_id = ".PostImage::$table_name.".id WHERE 
-				".PostImage::$table_name.".id = $post_id  LIMIT 1";
+
+
+$array1 = [2,3,4,5,6,6,7,5,6,7,];
+ foreach($array1 as $array){
+	  if($array > 5){
+		  continue;
+	  }
+	  echo $array;
+	  
+ }
+die();
+$array2 = ["a","b","c"];
+    foreach($array1 AS $array){
+		       $switch = false;
+			   $counter = 0;
+foreach($array2 AS $letter){
 	
-	$array = [2 =>"me",4=> "you",5=> 6, 3 => 1];
-	
-	if(krsort($array)){
+		if($counter > $array){
+		$switch = true;
+		break;
+			}
+			   $counter ++;
+}
+			  
+			   if($switch){
+				   continue;
+			   }
+		   echo $array;
 		
-	
-	 print_r($array);
 	}
+
+
+
+   
+
+
+
+
+	echo    "<div  style='overflow:scroll; width: 200px; height : 800px;'> helloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojellohelloheloojello</div>";
+	
 	die();
 	$table_name = "test";
 	

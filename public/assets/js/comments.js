@@ -9,23 +9,7 @@
 		 
 	  }
 	
-
-	// auto grow a text field
-	static  autoGrow(oField){
-		// if the scroll height is > than the clientHeight  
-	if(oField.scrollHeight > oField.clientHeight)
-	{
-		
-		// update the height of the input text field in px;
-		oField.style.height = oField.scrollHeight + "px";
-	}else if(oField.clientHeight < oField.scrollHeight){
-	    	// update the height of the input text field in px;
-			
-		oField.style.height = oField.clientHeight + "px";
-	}
-	  }// autGrow();
-	  
-
+	
 	  
 	  
 	// just for debugging
@@ -39,13 +23,7 @@
 		    }  
 	  }
 
-    
-   // helper method for replacing strings
-  static replaceString(oldS, newS, fullS) {
-  return fullS.split(oldS).join(newS);
-}
-	
-	
+   
   // helper static method for showing the replyBox
   static showReplyBox(commentID = 0){
 	
@@ -890,7 +868,7 @@
          
 		if($(commentArea) && $.trim(commentArea) != "" && $.trim(oldComment) != ""){
 			 // replace the line breaks in the string with empty string
-			oldComment = comment.replaceString("<br>","", oldComment);
+			// oldComment = utility.replaceString("<br>","", oldComment);
 		  // populate the text area with the old comment			
 		$(commentArea).val(oldComment);	
 		 $(commentArea).trigger("paste");

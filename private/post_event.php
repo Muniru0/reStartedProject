@@ -23,7 +23,12 @@ try {
 	 $count = count($_FILES["file"]["name"]);
 	  if( $count > 0)
 	  {
+		   $_POST["caption"] = h($_POST["caption"]);
+		  
+		   
 		  $_POST["caption"] = $db->real_escape_string(nl2br($_POST["caption"]));
+		  
+	
 		// if(csrf_token_is_recent() && csrf_token_is_valid()){
               // check the length of the caption string        
         if(isset($_POST["caption"]) && !empty(trim($_POST["caption"])) && strlen($_POST["caption"]) > 4000){

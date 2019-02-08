@@ -313,6 +313,94 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
            margin-right: 10px !important;
      }
 
+	
+	
+ .reactions {
+	position: relative;
+	display: inline;
+	line-height: 2.6em;
+  
+}
+
+  .reactions span {
+	  
+	  
+  }
+.reactions label {
+	width: 55px;
+	height: 23px;
+	position: absolute;
+	background-color: #999;
+	top: 0;
+	left: 0.3em;
+	border-radius: 50px;
+	}
+	
+	
+	
+.reactions input[type="radio"]{
+	visibility: hidden;
+}
+
+.reactions label:after {
+	content: "";
+	width: 21px;
+	height: 21px;
+	border-radius: 50px;
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	transition: all 0.5s;
+	background-color: white;
+}
+
+
+
+.reactions input[type="radio"]:checked + label:after {
+	left: 33px;
+}
+
+.reactions input[type="radio"]:checked  + label{
+	background-color:#3cbdac;
+	
+}
+
+ .oppose-selected {
+	 
+	background: #d83f3f;
+    border-radius: 3px;
+    padding: 4px;
+    /* border: 1px solid #d83f3f; */
+    color: #fff;
+    vertical-align: middle;
+    line-height: normal;
+ }
+ 
+.oppose-span {
+	font-weight: 540;
+    position: relative;
+    top: 3px;
+	left: 10.6em;
+}
+
+.support-span {
+    left: 3em;
+    font-weight: 540;
+    position: relative;
+    top: 3px;
+}
+
+.checked-reaction {
+  background: #3cbdac !important;
+    padding: .3em !important;
+    border-radius: 3px !important;
+    color: #fff !important;	
+}
+
+.reactions-count:hover{
+	opacity: 0;
+}
+
 
 </style>
 	  </head>
@@ -1093,7 +1181,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
                 <div class="ps-postbox-input ps-inputbox">
              <div class="ps-tagging-wrapper">
                 <div class="ps-tagging-beautifier"></div>
-                <textarea id="post_caption" class="ps-textarea ps-postbox-textarea ps-tagging-textarea" placeholder="A caption for your post(optional)..." maxlength="4000" style="overflow: hidden; word-wrap: break-word; resize: none; height: 36px;"></textarea>
+                <textarea id="post_caption" class="ps-textarea ps-postbox-textarea ps-tagging-textarea" placeholder="You can eloborate more on the above title here(optional)..." maxlength="4000"  oninput="utility.resizeTextarea(this);" style="overflow: hidden; word-wrap: break-word; resize: none; height: 20px; min-height: 20px;font-size:0.9em;"></textarea>
                 <input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
              </div>
             </div>
@@ -1879,14 +1967,18 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <!--<a data-stream-id="482" onclick="return reactions.action_reactions(this, 482);" href="javascript:" class="ps-reaction-toggle--482 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction"><span>Like</span></a>-->
 <!--</nav>-->
         <!--Transport Label -->
-        <input type="radio" name="reaction" id="support" value="support" class="checkboxradio">
-        <label for="support"> Suppport</label>
-        <!--   post label for health community  -->
-        <input type="radio" name="reaction" id="oppose" value="oppose" class="checkboxradio">
-        <label for="oppose"> Oppose </label>
+      <div class='reactions'>
 
-</div>
-
+    <input type='radio' name='reaction' id='support_10' oninput='reaction.addReaction(10,2,this)'/>
+	<label for='support_10' title='Support the above post' ></label>
+    <span class='support-span'>Support</span>
+	
+	<span class='oppose-span'>Oppose</span>
+	<input type='radio' name='reaction' id='oppose_10' oninput='reaction.addReaction(10,1,this)'/>
+	<label for='oppose_10'  title='Oppose the above post' style='margin-left: 11em'></label>
+ </div>
+   
+ <!--
 				<div id="act-reactions-482" class="ps-reactions cstream-reactions-options ps-js-reaction-options ps-js-act-reactions-options--482" data-count="">
 			<ul class="ps-reaction-options">
 									<li>
@@ -1942,14 +2034,16 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				</li>
 
 				</ul>
-			</div>
-						<div id="act-react-482" class="ps-reaction-likes ps-stream-status cstream-reactions ps-js-act-reactions--482  " data-count="">
-							<span class="ps-reactions-count-icon ps-reaction-emoticon-1 ps-reactions-count-icon-first" title="Love (1)"></span>
-						<span class="ps-reactions-count-icon ps-reaction-emoticon-4" title="Wow (1)"></span>
-						<span class="ps-reactions-count-icon ps-reaction-emoticon-10" title="Celebrate (1)"></span>
-					<a title="Celebrate (1)" href="javascript:void(0)" onclick="return reactions.action_html_reactions_details(this, 482)">
+			</div> -->
+					
+					<div id="reactions_count_10" class="ps-reaction-likes ps-stream-status cstream-reactions " style="display:none;">
+					<a title="Number of supports" href="javascript:void(0)" style="margin-left:3.3em">
 
-		3 people</a>			</div>
+		3 supports</a>	
+			
+					<a title="Number of opposes" href="javascript:void(0)" style="margin-left:2em;">
+
+		4 opposes</a>	</div>
 
 		<div id="act-like-482" class="ps-stream-status cstream-likes ps-js-act-like--482" data-count="0" style="display:none"></div>
 			<div class="ps-comment cstream-respond wall-cocs" id="wall-cmt-482">
@@ -4077,23 +4171,33 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
       <div class="ad_unit ad-unit text-ad text_ad pub_300x250" style="width: 1px !important; height: 1px !important; position: absolute !important; left: 0px !important; top: 0px !important; overflow: hidden !important;">&nbsp;</div>
      <!--<img src="assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg" /> -->
    
-   
-   
-   <script>
-    $("textarea").on( 'change keyup keydown paste cut keypress', function (){
+  
+   <!--<script>
+    $("textarea").on( 'change keyup keydown paste cut keypress input', function (){
     
     $(this).height(0).height(this.scrollHeight -20);
 }).find( 'textarea' ).change();
 
    
-   </script>
+   </script> 
    
+   <script>
+   
+   $("nav.ps-stream-status-action.ps-stream-status-action").click(function(e){
+	   console.log($(e.delegateTarget));
+   });
+   
+   </script>
+   -->
     <script  type="text/javascript"  src="assets/js/bootstrap.bundle.min.js">  </script>
     <script  type="text/javascript"  src="assets/js/dropzone.js">  </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrhBOort1omiPN4Vbqzm53abzTZSswtio&callback=initMap"
             async defer></script>
     <script   type="text/javascript"  src="assets/js/jquery-ui.min.js">  </script>
+	<script   type="text/javascript"  src="assets/js/utility.js">  </script>
+	<script   type="text/javascript"  src="assets/js/reactions.js">  </script>
+	
     <script   type="text/javascript"  src="assets/js/su_post.js"></script>   <script   type="text/javascript"  src="assets/js/stream.js"></script> 
 	
   

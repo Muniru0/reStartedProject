@@ -1,3 +1,13 @@
+
+ /* $("textarea").on( 'change keyup keydown paste cut keypress input', function (){
+    
+    $(this).height(0).height(this.scrollHeight -20);
+}).find( 'textarea' ).change(); 
+
+ $("button").click(function(e){
+       console.log($("nav"));
+   }); */
+   
 (function ($) {
 
 
@@ -47,8 +57,11 @@
     // End of  Global Variables
     function refreshLabel() {
         //$(selectedLabel).controlgroup();
-        $(".checkboxradio").prop("checked", false);
-        $(".checkboxradio").checkboxradio("refresh");
+        $("fieldset .checkboxradio").prop("checked", false);
+        $("fieldset .checkboxradio").checkboxradio("refresh");  
+	
+		
+		
     }
 
   
@@ -222,8 +235,9 @@
 		  
 		 
         try {
-			console.log(response);	 	  
+			 	  
 		 response = JSON.parse(response);
+		 
 		     if(response[0] == null){
 		     	showPostErrorAlert = true;
 		     }
@@ -235,7 +249,8 @@
 		  }
 		 $.each(response,function(index,value){
 			 
-			 returnedPost = value;
+			 returnedPost =  utility.replaceString("\\n","",value);
+			 console.log(returnedPost);	
 		 });
 		 
 		}catch(e){
@@ -710,7 +725,10 @@ return false;
 	  if($(titleError) && ($(titleError).css("display") == "inline" || $(titleError).css("display") == "block")){
 		$(titleError).hide();
 	  }
-
+     
+	 if($(post_caption)){
+		 $(post_caption).val();
+	 }
 
       $(post_title).val("");
       var span = $("span.ps-postbox-addons");
@@ -761,7 +779,8 @@ return false;
     } //reset_postbox()
 
 
-   
+	
+	
 
     $(document).ready(function () {
 
@@ -948,3 +967,4 @@ return false;
     });
 
 })(jQuery);
+

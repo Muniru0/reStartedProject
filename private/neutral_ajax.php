@@ -16,6 +16,8 @@ if(is_ajax()){
 // add the view 
 if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
 	    
+		$_POST["comment"] = h($_POST["comment"]);
+		
 	$_POST["comment"] = nl2br($_POST["comment"]);
 		
       // check if the comment is empty or set	  
@@ -291,12 +293,29 @@ elseif(isset($_POST["stream"]) && trim($_POST["stream"]) === "stream"){
 }
 
 // reactions 
-elseif(isset($_POST["reaction"]) && !empty($_POST["reaction"])){
-
+elseif(isset($_POST["reaction_param"]) && !empty($_POST["reaction_param"])){
+	   
+	   
+	/*    echo "reaction type: ".$_POST["reaction_param"]." post_id: ".$_POST["post_id"];
+	   return; */
+	   
+	if(!isset( $_POST["reaction_param"]) || !isset( $_POST["post_id"])){
+	    print j(["false"=>"Please try again, if problem persists refresh the page"]);
+		return;
+   }
+   $_POST["reaction_param"] = (int) $_POST["reaction_param"];
+   $_POST["post_id"]        = (int) $_POST["post_id"];
+   $_POST["reaction_param"]  =   $_POST["reaction_param"] -1;
+   
+   if(!is_int($_POST["reaction_param"]) || !is_int($_POST["post_id"])|| $_POST["reaction_param"] < 0 || $_POST["post_id"] < 1  ){
+	   print j(["false"=>"Please try again, if problem persists refresh the page"]);
+		return; 
+   }
+   
 //record reaction for a post
-print json_encode(Reaction::record_reaction($_POST["reaction"]));
+Reaction::record_reaction($_POST["post_id"],$_POST["reaction_param"]);
  
-//Reaction::record_reaction($_POST["reaction"]);
+
 }
 elseif(isset($_POST["reaction_view"]) && !empty($_POST["reaction_view"])){
 
@@ -419,7 +438,7 @@ $mood      = $_POST["mood"]      ?? "";
 }
 else{
 
-	print j(["false" => "Something Unexpectedly went wrong, please refresh and try again"]);
+	print j(["false" => "Something Unexpectedly went wrong, please refresh the page and try again"]);
 }
 
 }

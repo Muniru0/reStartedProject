@@ -201,7 +201,7 @@ $filenames = FileUpload::upload_file($file_destination, $files,$count);
 // database query parameters
     $uploader_id = $_SESSION["id"];
     $upload_time = time();
-     
+ if(false){     
 $query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$lat]);
 
     $query = "CALL post_image('".$query_parameters."')";
@@ -212,7 +212,8 @@ $query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$la
     
     try{
  if(!$db->multi_query($query)) {
-    echo "CALL failed: (".$db->errno.") ".$db->error;
+    log_action(__CLASS__," CALL failed: (".$db->errno.") ".$db->error);
+	print j(["false" => "Please try again...Something Unexpectedly happened"]);
          return false;
 }
  else{
@@ -232,9 +233,43 @@ $query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$la
     
 }
   }catch(Exception $e){
-    print j($e);
+    log_action(__CLASS__," Exception with error : ".$e." on line : ".__LINE__." in file: ".__FILE__);
+	print j(["false" => "Please try again...Something Unexpectedly happened"]);
+	return false;
 }
 
+}
+$query = "INSERT INTO post_table  VALUES(?,?,?,?,?,?,?,?,?,?,?)ON DUPLICATE KEY UPDATE id = id + ?";
+
+
+// prepare the statement
+$stmt = $db->prepare($query);
+
+if(!$stmt){
+	log_action(__CLASS__," Statement preparation failed: ".$stmt->error." with db error: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
+}
+$id = null;
+$duplicate_update_factor = 1;
+$support = 0;
+$oppose  = 0;
+$confirmation = 0;
+if(!$stmt->bind_param("isiisssiiiii",$id,$uploader_id,$upload_time,$title,$label,$caption,$log,$lat,$support,$oppose,$confirmation,$duplicate_update_factor)){
+	log_action(__CLASS__," Statement preparation failed: ".$stmt->error." with db error: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
+}
+
+
+if(!$stmt->execute()){
+	log_action(__CLASS__," Statement preparation failed: ".$stmt->error." with db error: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
+}
+
+$post_id = 0;
+
+if($stmt->insert_id){
+	$post_id = $stmt->insert_id;
+	
+}
+ 
+$stmt->close();
 if(self::normalize_post($post_id,$filenames))
 {    
 
