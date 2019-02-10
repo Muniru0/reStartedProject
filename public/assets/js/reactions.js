@@ -10,7 +10,8 @@ class reaction {
      
       let opposeLabel = "";
       let supportLabel = "";
-	
+	  let supportCount = "";
+	  let opposeCount = "";
 	  let parent   = $(targetElement).parent();
 	 
 	  let reactionType = $(targetElement).attr("id");
@@ -18,31 +19,47 @@ class reaction {
 	    reactionValue = reactionValue.valueOf();
        // toggle the colors of the label and reactions text
        if(reactionValue === 2){
+       	
        	 // find the support span tag 
        	 let supportSpan =  $(parent).find("span")[0];
 		   if($(supportSpan) && $.trim(supportSpan) != ""){
 		//change it's html 
-       	   $(supportSpan).html("Supported");
-       	   // change it's color
-       	 $(supportSpan).css("color","#333");
-       	 $(supportSpan).css("font-weight","500");
+       	  $(supportSpan).html("Supported");
+       	   // add the support span selected class
+       	   $(supportSpan).removeClass("deselected-support-span").addClass("selected-support-span");
+       	   
 		  }
-		  
+		 
+          // find and highlight the support count
+          if( ($(supportCount) || $(opposeCount)) && $.trim($("#reactions_count_" + postID).find("a")) != ""){
+          	// find the support count and add a selected reactions count class to it
+          	  if($(supportCount) && $.trim($("#reactions_count_" + postID).find("a")[0]) != "" ){
+          	  	  supportCount = $("#reactions_count_" + postID).find("a")[0];
+          	  	  $(supportCount).removeClass("deselected-reactions-count").addClass("selected-reactions-count");
+          	  }
+          	  // find the oppose count and add a deselected reactions count class to it
+                 if($(opposeCount) && $.trim($("#reactions_count_" + postID).find("a")[1]) != ""){
+          	  	  opposeCount = $("#reactions_count_" + postID).find("a")[1];
+          	  	  $(opposeCount).removeClass("selected-reactions-count").addClass("deselected-reactions-count");
+          	  }
+
+          	
+          }
+
            // find the oppose span 
           let opposeSpan =  $(parent).find("span")[1];
 		  if($(opposeSpan) && $.trim(opposeSpan) != ""){
 		  // change the text inside the oppose span
           $(opposeSpan).html("oppose");
           // change it's color
-          $(opposeSpan).css("color","#999");
-		  // adjust the font weight
-          $(opposeSpan).css("font-weight","normal");
+          $(opposeSpan).removeClass("selected-oppose-span").addClass("deselected-oppose-span");
+		  
 		  }
           // find the support label and set its background
            supportLabel = $(parent).find("label")[0];
 		   if($(supportLabel) && $.trim(supportLabel) != ""){
 			   
-           // set the background o the support lable
+           // set the background o the support label
            // to show a selected option
          $(supportLabel).css("background","#3bcdac");
 		   } 
@@ -53,7 +70,7 @@ class reaction {
            // set its background to reflect a de-selected optio
             $(opposeLabel).css("background","#999");
 			}
-       
+    
        //if the the reaction is an oppose
        }else if(reactionValue === 1){
        	// find the support span
@@ -64,12 +81,15 @@ class reaction {
         $(supportSpan).html("Support");
           // change the color of the support span 
           // to show a de-selected option
-       	 $(supportSpan).css("color","#999");
+       	 $(supportSpan).removeClass("selected-support-span").addClass("deselected-support-span");
        	// find the support label
        	supportLabel = $(parent).find("label")[0];
         // change the background color of support lable
          $(supportLabel).css("background","#999");
 		 }
+
+
+
 		 
 		 if($(supportSpan) && $.trim(supportSpan) != ""){
 			 
@@ -78,13 +98,30 @@ class reaction {
           // change its html
           $(opposeSpan).html("Opposed");
           // change the color of the oppose span
-          $(opposeSpan).css("color","#333");
+          $(opposeSpan).removeClass("deselected-oppose-span").addClass("selected-oppose-span");
+        
           // find the label of the oppose 
          opposeLabel = $(parent).find("label")[1];
          // set the background of the label
          $(opposeLabel).css("background","#dc756f");
 		 }
          
+       // find and highlight the support count
+          if( ($(supportCount) || $(opposeCount)) && $.trim($("#reactions_count_" + postID).find("a")) != ""){
+          	// find the support count and add a selected reactions count class to it
+          	  if($(supportCount) && $.trim($("#reactions_count_" + postID).find("a")[0]) != "" ){
+          	  	  supportCount = $("#reactions_count_" + postID).find("a")[0];
+          	  	  $(supportCount).removeClass("selected-reactions-count").addClass("deselected-reactions-count");
+          	  }
+          	  // find the oppose count and add a deselected reactions count class to it
+                 if($(opposeCount) && $.trim($("#reactions_count_" + postID).find("a")[1]) != ""){
+          	  	  opposeCount = $("#reactions_count_" + postID).find("a")[1];
+          	  	  $(opposeCount).removeClass("deselected-reactions-count").addClass("selected-reactions-count");
+          	  }
+
+          	
+          }
+
        	
        }
 
@@ -99,7 +136,7 @@ class reaction {
        }).done(function(response){
                   
 				  console.log(response);
-				 
+				 console.log(response);
 				  
             try{
             	response = JSON.parse(response);
@@ -113,6 +150,16 @@ class reaction {
                     if( $("#reactions_count_" + response["post_id"]) && $("#reactions_count_" + response["post_id"]).find("a")[0]){
                     	  let supportChange = $("#reactions_count_" + response["post_id"]).find("a")[0];
                     	   if($(supportChange) && $(supportChange) != ""){
+                    	   	if(response["support"].valueOf() > 1){
+                    	   		console.log("greater than 1 in valueOf");
+                    	   	}else{
+                    	   		console.log("not greater than 1 in valueOf");
+                    	   	}
+                    	   	if(response["support"] > 1){
+                    	   		console.log("greater than 1 in other");
+                    	   	}else{
+                    	   		console.log("not greater than 1 in other");
+                    	   	}
                     	   let reactionString = response["support"] > 1 ? response["support"] + " supports" : response["support"] + " support";
                     	  $(supportChange).html(reactionString);
                     	   }

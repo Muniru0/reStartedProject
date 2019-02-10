@@ -322,10 +322,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
   
 }
 
-  .reactions span {
-	  
-	  
-  }
+ 
 .reactions label {
 	width: 55px;
 	height: 23px;
@@ -365,16 +362,17 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	
 }
 
+
  .oppose-selected {
 	 
 	background: #d83f3f;
     border-radius: 3px;
     padding: 4px;
-    /* border: 1px solid #d83f3f; */
     color: #fff;
     vertical-align: middle;
     line-height: normal;
  }
+ 
  
 .oppose-span {
 	font-weight: 540;
@@ -383,6 +381,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	left: 10.6em;
 }
 
+
 .support-span {
     left: 3em;
     font-weight: 540;
@@ -390,17 +389,45 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
     top: 3px;
 }
 
-.checked-reaction {
-  background: #3cbdac !important;
-    padding: .3em !important;
-    border-radius: 3px !important;
-    color: #fff !important;	
-}
-
 .reactions-count:hover{
 	opacity: 0;
 }
 
+.deselected-reactions-count {
+	color: #999999;
+    font-size: 0.9em !important;
+}
+
+.selected-reactions-count {
+	color: #333;
+    font-weight: 600;
+}
+
+.selected-support-span {
+	color: rgb(59, 205, 172);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+	transition: all 0.5s;
+}
+
+.deselected-support-span {
+	color: rgb(153, 153, 153);
+    font-weight: normal;
+    letter-spacing: 0px;
+}
+
+.selected-oppose-span {
+	color: rgb(220, 117, 111);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+	transition: all 0.5s;
+}
+
+.deselected-oppose-span {
+	color: rgb(153, 153, 153);
+    font-weight: normal;
+    letter-spacing: 0px;
+}
 
 </style>
 	  </head>
@@ -1975,7 +2002,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	
 	<span class='oppose-span'>Oppose</span>
 	<input type='radio' name='reaction' id='oppose_10' oninput='reaction.addReaction(10,1,this)'/>
-	<label for='oppose_10'  title='Oppose the above post' style='margin-left: 11em'></label>
+	<label for='oppose_10'  title='Oppose the above post' style='margin-left: 11em;'></label>
  </div>
    
  <!--

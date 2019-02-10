@@ -104,7 +104,7 @@ $result = $stmt->get_result();
 		}
    else{
 	    
-	   print j(["empty"+ $row["id"]]);
+	   print j(["empty"]);
 	   
    }
    
