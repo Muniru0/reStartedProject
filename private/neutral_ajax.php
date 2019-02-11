@@ -305,9 +305,9 @@ elseif(isset($_POST["reaction_param"]) && !empty($_POST["reaction_param"])){
    }
    $_POST["reaction_param"] = (int) $_POST["reaction_param"];
    $_POST["post_id"]        = (int) $_POST["post_id"];
-   $_POST["reaction_param"]  =   $_POST["reaction_param"] -1;
+  
    
-   if(!is_int($_POST["reaction_param"]) || !is_int($_POST["post_id"])|| $_POST["reaction_param"] < 0 || $_POST["post_id"] < 1  ){
+   if(!is_int($_POST["reaction_param"]) || !is_int($_POST["post_id"])|| $_POST["reaction_param"] < 1 || $_POST["post_id"] < 1  ){
 	   print j(["false"=>"Please try again, if problem persists refresh the page"]);
 		return; 
    }

@@ -253,6 +253,12 @@ $duplicate_update_factor = 1;
 $support = 0;
 $oppose  = 0;
 $confirmation = 0;
+
+  if(!isset($uploader_id) || $uploader_id < 1 ){
+	  print j(["false"=>"Routine security checks,Please refresh the page and continue"]);
+	  return;
+  }
+  
 if(!$stmt->bind_param("isiisssiiiii",$id,$uploader_id,$upload_time,$title,$label,$caption,$log,$lat,$support,$oppose,$confirmation,$duplicate_update_factor)){
 	log_action(__CLASS__," Statement preparation failed: ".$stmt->error." with db error: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
 }
@@ -485,6 +491,11 @@ return;
 
 
         $id = $_SESSION["id"];
+		
+		 if(!isset($id) || $id < 1 ){
+	  print j(["false"=>"Routine security checks,Please refresh the page and continue"]);
+	  return;
+  }
         $upload_time = time();
         if(!$stmt->bind_param("isis",$id,$post,$upload_time,$label)){
             //replace with log statement when the code is working
