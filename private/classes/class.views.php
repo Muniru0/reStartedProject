@@ -27,7 +27,7 @@ class Views extends DatabaseObject{
 	}
 	   
      	 
-	 $views_and_viewsbox_template_string = "<div class='ps-comment cstream-respond wall-cocs' id='wall-cmt-{$post_id}'>
+	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' >
 		<div class='ps-comment-container comment-container ps-js-comment-container'> ";
 		
 		if(empty($views_with_replys) || !is_array($views_with_replys) 
@@ -248,24 +248,30 @@ return $stmt->get_result();
 
 
 // edit the view
-public static function edit_view($post_id = 0,$comment_id = 0,$comment = "",$option = null){
+public static function edit_view($postCommentID = 0,$commentReplyID = 0,$commentReply = "",$option = null){
  
 	  global $db;
 	    
-	$comment = str_replace("\n","",$comment);
+	$commentReply = $db->real_escape_string(str_replace("\n","",$commentReply));
 	 $query = "";
-	 
+	    
 	 // set the edit view as the default
 	 if(!isset($option) || $option == null || trim($option) == "view"){
 		 //set the query for the edit_view  routine
-	  $query = "CALL edit_view('".j([$post_id,$comment_id,$_SESSION["id"],$comment,time()])."')";
+	  $query = "CALL edit_view('".j([$postCommentID,$commentReplyID,$_SESSION["id"],$commentReply,time()])."')";
 	 }elseif(isset($option) && trim($option) != "" && trim($option) == "reply"){
 		 // set the query for the edit_reply routine
-		  $query = "CALL edit_reply('".j([$post_id,$comment_id,$_SESSION["id"],$comment,time()])."')";
+		  $query = "CALL edit_reply('".j([$postCommentID,$commentReplyID,$_SESSION["id"],$commentReply,time()])."')";
 	 }else{
-		 print j(["false" => "Operation failed please try again"]);
+		 print j(["false" => "Server problem, please refresh the page and try again if the problem persists."]);
 		 return;
 	 }
+	 
+	 if($db->error != ""){
+		 log_action(__CLASS__," Query encountered an error: $db->error"." on line: ".__LINE__." in file: ".__FILE__);return;
+	 }
+	 
+	 
   $result = $db->multi_query($query);
    do{
 	   if($result = $db->store_result()){
@@ -273,10 +279,10 @@ public static function edit_view($post_id = 0,$comment_id = 0,$comment = "",$opt
 			   // print back the result to the client side
 			  print j(["true" => $row["comment"]]);
 		   }
-		}elseif(trim($db->error) == ""){
-			
-		}else{
-		print j(["false" => "Operation failed please try again"]);
+		}elseif(trim($db->error) != ""){
+			 print j(["false" => "Server problem, please refresh the page and try again if the problem persist."]);
+			log_action(__CLASS__," Query encountered an error: $db->error"." on line: ".__LINE__." in file ".__FILE__);
+			return;
 		}
 		
 		

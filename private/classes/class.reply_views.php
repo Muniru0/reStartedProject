@@ -36,13 +36,14 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	} 
 	
 	$time = time();
-	$user_id = $_SESSION["id"] ? $_SESSION["id"] : 0;
 	
 	
-	if($user_id === 0 || $id !== NULL || strlen($time) < 10){
-		 print j(["false" =>"Something Unexpectedly went wrong, please refresh the page and try again"]);
-		 
-	 }
+	
+	if($_SESSION["id"] < 0 || $_SESSION["id"] == NULL || strlen($time) < 10 ){
+	 
+	print j(["false"=>" Sorry server problem please refresh the page and try again"]); 
+	 return;
+ }
 	
 	// assign the parameters
    $parameter = j([$post_id,$comment_id,$_SESSION["id"],$reply,$time]);

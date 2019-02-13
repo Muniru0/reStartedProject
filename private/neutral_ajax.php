@@ -48,7 +48,8 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
 		  // check to see if the post_id is in the post_ids array
 		 if(!in_array($post_id,$_SESSION["post_ids"],true))
 		 {
-		    print j(["false" => "Please try again"]); 
+		    print j(["false" => "Please check the post and try again, if problem persist refresh the page."]); 
+			return;
 		 }
 		 
 		  Views::add_views($post_id,$_POST["comment"]);	
@@ -207,7 +208,7 @@ elseif(isset($_POST["reply_comment"])){
 
 // edit a reply for a comment
 elseif(isset($_POST["edit_comment"]) && $_POST["edit_comment"] === "false"){
-  //echo "is reading from the replys";
+  
   
 	  $reply =  nl2br($_POST["comment"],true);
     

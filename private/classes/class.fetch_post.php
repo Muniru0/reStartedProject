@@ -780,12 +780,20 @@ public static function images_layout_template($post_id = 0,$images =[],$number_o
 			  $toggle_reactions_count = "style='display:none;'";
 		  }
 		  
-		$number_of_supports_string = $number_of_supports > 0 ? "<a title='Number of supports' href='javascript:void(0)' style='margin-left: 3.3em;'>
+		/* $number_of_supports_string = $number_of_supports > 0 ? "<a title='Number of supports' href='javascript:void(0)' style='margin-left: 3.3em;'>
 		{$supports} supported</a>" : "<a title='Number of supports' href='javascript:void(0)' style ='display:none; margin-left:3.3em;'>
 </a>";
 		$number_of_opposess_string = $number_of_opposes > 0 ? "<a title='Number of opposes' href='javascript:void(0)' style='margin-left: 2em;'>
 		{$opposes} supported</a>" : "<a title='Number of opposes' href='javascript:void(0)' style ='display:none; margin-left: 2em;'>
 </a>";
+		 */
+		 
+		 $number_of_supports_string = 
+		 "<a title='Number of supports' href='javascript:void(0)' style='margin-left: 3.3em;'>
+		{$number_of_supports} supported</a>";
+		
+		$number_of_opposess_string ="<a title='Number of opposes' href='javascript:void(0)' style='margin-left: 2em;'>
+		{$number_of_opposes} supported</a>" ;
 		
  $images_string = "<div class='ps-stream-body'>
 		".self::get_caption_template($caption)."
@@ -887,8 +895,8 @@ if($width >= 1000){
   </div>
   </div>
 	</div>	
-		<div class='ps-stream-actions stream-actions' data-type='stream-action'>
-    <nav class='ps-stream-status-action ps-stream-status-action'>
+		<div class='ps-stream-actions stream-actions' data-type='stream-action' style='padding-left: 0px;padding-right: 0px; padding-bottom: 0px;'>
+    <nav class='ps-stream-status-action ps-stream-status-action' >
 <!--<a data-stream-id='482' onclick='return reactions.action_reactions(this, 482);' href='javascript:' class='ps-reaction-toggle--482 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>-->
 <!--</nav>-->
       
@@ -905,7 +913,7 @@ if($width >= 1000){
 	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em'></label>
  </div>
    
-   <div id='reactions_count_{$post_id}' class='ps-reaction-likes ps-stream-status cstream-reactions' $toggle_reactions_count>
+   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' $toggle_reactions_count style='padding-left:0px;padding-right: 0px;'>
 							
 ".$number_of_supports_string.$number_of_opposess_string." 
 </div>
@@ -1142,8 +1150,8 @@ $images_string .= "</div></div></div></div>
 <a data-stream-id='498' onclick='return activity.action_report(498);' href='#report' class='actaction-report ps-icon-warning-sign'><span>Report</span></a>
 </nav>
 </div>
-  <div class=\"ps-comment cstream-respond wall-cocs\" id=\"wall-cmt-498\">
-		<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--498\" data-act-id=\"498\">
+  <div class=\"ps-comment cstream-respond wall-cocs\" id=\"wall-cmt-498\" style='background:##e1dcd9; padding-left: 3px;'>
+		<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--498\" data-act-id=\"498\" style='background:#f7f7f7'>
 					</div>
 
 						<div id=\"act-new-comment-498\" class=\"ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498\" data-id=\"498\" data-type=\"stream-newcomment\" data-formblock=\"true\">
@@ -1448,6 +1456,8 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			  }
 			  
 			 
+			// add the post to the array of post in the users session
+			 $_SESSION["post_ids"][] = (int)$post_info["post_table_id"];
             $full_header = "";
           // get the post confirmation template
             $full_header   = self::get_post_confirmation($post_info["confirmation"]);

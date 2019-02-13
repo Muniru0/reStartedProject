@@ -429,6 +429,17 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
     letter-spacing: 0px;
 }
 
+.reply-sidebar{
+	border-radius: 0.6em !important;
+    background: #e1dcd9 !important;
+    padding-left: 0.1em !important;
+}
+
+.comment-sidebar{
+	background: #e1dcd9 !important;
+    padding-left: 0.3em !important;
+}
+
 </style>
 	  </head>
   <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 logged-in plg-peepso" id="top">
@@ -2127,7 +2138,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 <div id="cmt-list-10" class="ps-comment ps-comment-nested ps-js-comment-reply--10">
 	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--10" data-act-id="10">
-<div id="comment-item-1" class="ps-comment-item cstream-comment stream-comment" data-comment-id="934">
+<div id="comment-item-1" class="ps-comment-item cstream-comment stream-comment" data-comment-id="934" style="display:none;">
 	<div class="ps-avatar-comment">
 		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/andrew/">
 			<img data-author="8" src=" ://demo.peepso.com/wp-content/peepso/users/8/avatar-full.jpg" alt="Andrew Simmons avatar">
@@ -2227,15 +2238,11 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	
 	
 <div id="comment-item-2" class="ps-comment-item cstream-comment stream-comment" data-comment-id="935">
-	<div class="ps-avatar-comment">
-		<a class="cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
-			<img data-author="2" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="Patricia Currie avatar">
-		</a>
-	</div>
+	
 
 	<div class="ps-comment-body cstream-content">
 		<div class="ps-comment-message stream-comment-content">
-			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/demo/"><img src=" ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg" alt="VIP" title="VIP" class="ps-img-vipicons ps-js-vip-badge" data-id="2"> Patricia Currie</a>
+			<a class="ps-comment-user cstream-author" href=" ://demo.peepso.com/profile/demo/"> Patricia Currie</a>
 			<span class="ps-comment__content" data-type="stream-comment-content"><div class="peepso-markdown"><p><a href=" ://demo.peepso.com/profile/andrew/" title="Andrew Simmons">Andrew</a> yes! That's the first one we saw. But trust me, it's not nearly as empty as the gif shows. There's a lot of tourists. </p></div></span>
 		</div>
 
@@ -2263,7 +2270,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	</div>
 </div>
 
-<div id="reply_wall_template" class="ps-comment ps-comment-nested ps-js-comment-reply--506">
+<div id="reply_wall_template" class="ps-comment ps-comment-nested reply-sidebar">
 
 <div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--2" id="">
 
@@ -2394,7 +2401,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		</div>
 			</div>
 </div>
-
+</div>
 <div class="ps-stream ps-js-activity  ps-js-activity--498" data-id="498" data-post-id="936" style="display: block;">
 
 
@@ -4064,7 +4071,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
  <!-- the beginning of reply template -->
 
-<div id="reply_wall_template" class="ps-comment ps-comment-nested ps-js-comment-reply--506">
+<div id="reply_wall_template" class="ps-comment reply-wall ps-comment-nested ps-js-comment-reply--506">
 	<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--2" data-act-id="2">
 			<div id="reply-item-" class="ps-comment-item cstream-comment stream-comment" data-comment-id="1120" style="display:none;">
 	

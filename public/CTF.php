@@ -7,6 +7,7 @@ require_once("../private/initialize.php");
     <head>
         <title>CTF</title>
         <script src = "assets/js/jquery.js" ></script> 
+		<script src = "assets/js/jquery-ui.min.js" ></script> 
 		<link rel="stylesheet" href= "assets/css/bootstrap.css" />
        
     <style>
@@ -47,7 +48,7 @@ require_once("../private/initialize.php");
 
 
 
-.switch{
+<!-- .switch{
 	position: relative;
 	display: inline;
     margin-left: 32px;
@@ -97,7 +98,7 @@ require_once("../private/initialize.php");
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
-}
+} -->
 
 </style>
 
@@ -238,6 +239,72 @@ $(window).scroll(function() {
 -->
 
 
+<style>
+    .parent { width: 250px; height:125px;}
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    font-size: 20px;
+    left: 0px;
+    top: 0px;
+    position:absolute;
+    -webkit-transition-property: width height background-color font-size left top transform -webkit-transform color;
+    -webkit-transition-duration: 0.5s;
+    -webkit-transition-timing-function: ease-in-out;
+    transition-property: width height background-color font-size left top transform -webkit-transform color;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+}
+.box1{
+    transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    width: 50px;
+    height: 50px;
+    background-color: blue;
+    color: yellow;
+    font-size: 18px;
+    left: 150px;
+    top: 25px;
+    position: absolute;
+    -webkit-transition-property: width height background-color font-size left top transform -webkit-transform color;
+    -webkit-transition-duration: 0.5s;
+    -webkit-transition-timing-function: ease-in-out;
+    transition-property: width height background-color font-size left top transform -webkit-transformv color;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+}
+
+    
+    </style>  
+    
+    
+ <div class="parent">
+  <div class="box">Lorem</div>
+</div>
+  
+    
+    <script>
+$(".box").click(function(){
+	  $(".box").switchClass( "box", "box1", 1000, "easeInOutQuad" );
+});
+
+$(".box1").click(function(){
+	  $(".box1").switchClass( "box1","box", 1000, "easeInOutQuad" );;
+});
+
+    
+    
+    </script>
+
+<br>
+<br>
+<br>
+<br>    
+
+
+  
+ 
 
 <div class="switch">
 
@@ -250,10 +317,171 @@ $(window).scroll(function() {
 	<label for="oppose_1"></label>
  </div>
   
- 
+
+<!--
+<style>
 
 
- 
+
+/* Shorthand classes for different perspective values */
+.pers250 {
+  perspective: 250px;
+}
+
+.pers350 {
+  perspective: 350px;
+}
+
+.pers500 {
+  perspective: 500px;
+}
+
+.pers650 {
+  perspective: 650px;
+}
+
+/* Define the container div, the cube div, and a generic face */
+.container {
+  width: 200px;
+  height: 200px;
+  margin: 75px 0 0 75px;
+  border: none;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  backface-visibility: visible;
+  perspective-origin: 150% 150%;
+  transform-style: preserve-3d;
+}
+
+.face {
+  display: block;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: none;
+  line-height: 100px;
+  font-family: sans-serif;
+  font-size: 60px;
+  color: white;
+  text-align: center;
+}
+
+/* Define each face based on direction */
+.front {
+  background: rgba(0, 0, 0, 0.3);
+  transform: translateZ(50px);
+}
+
+.back {
+  background: rgba(0, 255, 0, 1);
+  color: black;
+  transform: rotateY(180deg) translateZ(50px);
+}
+
+.right {
+  background: rgba(196, 0, 0, 0.7);
+  transform: rotateY(90deg) translateZ(50px);
+}
+
+.left {
+  background: rgba(0, 0, 196, 0.7);
+  transform: rotateY(-90deg) translateZ(50px);
+}
+
+.top {
+  background: rgba(196, 196, 0, 0.7);
+  transform: rotateX(90deg) translateZ(50px);
+}
+
+.bottom {
+  background: rgba(196, 0, 196, 0.7);
+  transform: rotateX(-90deg) translateZ(50px);
+}
+
+/* Make the table a little nicer */
+th, p, td {
+  background-color: #EEEEEE;
+  padding: 10px;
+  font-family: sans-serif;
+  text-align: left;
+}
+
+
+
+</style>
+ <table>
+  <tbody>
+    <tr>
+      <th><code>perspective: 250px;</code>
+      </th>
+      <th><code>perspective: 350px;</code>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <div class="container">
+          <div class="cube pers250">
+            <div class="face front">1</div>
+            <div class="face back">2</div>
+            <div class="face right">3</div>
+            <div class="face left">4</div>
+            <div class="face top">5</div>
+            <div class="face bottom">6</div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="container">
+          <div class="cube pers350">
+            <div class="face front">1</div>
+            <div class="face back">2</div>
+            <div class="face right">3</div>
+            <div class="face left">4</div>
+            <div class="face top">5</div>
+            <div class="face bottom">6</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><code>perspective: 500px;</code>
+      </th>
+      <th><code>perspective: 650px;</code>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <div class="container">
+          <div class="cube pers500">
+            <div class="face front">1</div>
+            <div class="face back">2</div>
+            <div class="face right">3</div>
+            <div class="face left">4</div>
+            <div class="face top">5</div>
+            <div class="face bottom">6</div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="container">
+          <div class="cube pers650">
+            <div class="face front">1</div>
+            <div class="face back">2</div>
+            <div class="face right">3</div>
+            <div class="face left">4</div>
+            <div class="face top">5</div>
+            <div class="face bottom">6</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+-->
 
 
 
@@ -268,14 +496,11 @@ $(window).scroll(function() {
 
 
 
-$array1 = [2,3,4,5,6,6,7,5,6,7,];
- foreach($array1 as $array){
-	  if($array > 5){
-		  continue;
-	  }
-	  echo $array;
-	  
- }
+if(isset($_SESSION["post_ids"]) && !empty($_SESSION["post_ids"])){
+	
+	print_r($_SESSION["post_ids"]);
+	
+}
 die();
 $array2 = ["a","b","c"];
     foreach($array1 AS $array){

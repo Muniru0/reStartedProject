@@ -38,7 +38,8 @@ public static function record_reaction($post_id = 0,$reactionType = 0){
 global $db;
 
 
-$query = "CALL  add_reactions(?,?,?)";
+
+$query = "CALL  add_reactions(?)";
   
  
 // prepare the statement
@@ -64,8 +65,13 @@ $stmt = $db->prepare($query);
  }
 $user_id = $_SESSION["id"];
  
+ if(!isset($user_id) || $user_id < 1 ){
+	  print j(["false"=>"Routine security checks,Please refresh the page and continue"]);
+	  return;
+  }
 
- if(!$stmt->bind_param("iii",$post_id,$user_id,$reactionType)){
+  $parameters = j([$post_id,$user_id,$reactionType]);
+ if(!$stmt->bind_param("s",$parameters)){
   
  log_action(__CLASS__," Binding failed   {$stmt->error} ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
  
@@ -95,20 +101,23 @@ $user_id = $_SESSION["id"];
 } */
   
 $result = $stmt->get_result();
-   
+     if($db->error === "" && $stmt->error === ""){
+		 
+	 
    if($row = $result->fetch_assoc()){
 	    if((isset($row["support"]) && isset($row["oppose"]) && isset($row["id"])) && $row["id"] > 0 ){
 			
  print j(["support" => "{$row["support"]}",
  "oppose"=>"{$row["oppose"]}","post_id"=>"{$row["id"]}"]);
 		}
-   else{
+	 }
+	 }else{
 	    
 	   print j(["empty"]);
 	   
    }
    
-  }
+  
    
    $stmt->free_result();
 }//record_reaction()

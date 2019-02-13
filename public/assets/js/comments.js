@@ -182,10 +182,12 @@
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){ 
+			   console.log(response);
+			  try{
 			   response = JSON.parse(response);
 				
 				    let comment_template = document.querySelector("#comment_template");
-					 
+					     console.log(comment_template);
 		                comment_template = comment_template.cloneNode(true);
                         comment_template.id = response["comment_div_id"];
                          $(comment_template).hide();
@@ -235,6 +237,7 @@
 	   // set up the entire reply wall template
 			if(document.querySelector("#reply_wall_template")){
 				reply_template = document.querySelector("#reply_wall_template");
+				console.log(reply_template);
 				// clone the reply template
               reply_template = reply_template.cloneNode(true);	
 			// set the id of the reply wall template div			  
@@ -277,27 +280,33 @@
       if( $(reply_template).find(".ps-button-cancel")[0]){
   	actionsLink =  $(reply_template).find(".ps-button-cancel")[0];
 	// change the onclick attribute of the link 
-  	$(actionsLink).attr("onclick","comment.reply_cancel("+ response["comment_info"][0] + ",this); return false;");
+  	$(actionsLink).attr("onclick","comment.reply_cancel("+ postID + "," +response["comment_info"][0] + ",this); return false;");
       }     
         // give the reply text area an id
         $(textAreaDiv).attr("id","reply_area_wrapper_" + response["comment_info"][0]);
                  // find the comments list
- 				let comments_list_children = document.querySelector("#cmt-list-10").childNodes;  
-				let comments_container = comments_list_children[1];
+ 				let comments_container = document.querySelector("#comment_area_wrapper_" + postID); 
+//  			    comments_container = $(comments_container).parent()[0];
+//  				  console.log(comments_container);
 		
             // append the comment to the comments_container 
-			$(comments_container).append(comment_template);
-            $(comments_container).append(reply_template);
+			$(comments_container).before(comment_template);
+            $(comments_container).before(reply_template);
 			
 			 $(comment_template).fadeIn(680);
             // hide the grandParent
+			}catch(e){
+				console.log(e);
+				alert("Sorry it is our fault, but please try again.");
+			}finally{
+            //finally block
 			 $(returnedArray[2]).hide();
 			// hide the parent
 			$(returnedArray[3]).hide();
 			// hide the loadinGif
 			$(returnedArray[4]).hide();
 			returnedArray[0].disabled = false;
-			   
+			}
 			   
 			 }).fail(function (error){
 				 alert(error);
@@ -406,12 +415,14 @@
                         
     						// initialize the various variables in the case of a comment
 								if($.trim(option) === "comment"){
+								
 								// hide the comment until the response from the server is positive
                                 
 								// find the comment to be deleted and hide it
-								if(document.querySelector("#new_comment_" + commentReplyID)  != null  && document.querySelector("#new_comment_" + commentReplyID)){
+if(document.querySelector("#new_comment_" + commentReplyID)  != null  && document.querySelector("#new_comment_" + commentReplyID)){
 								hiddenComment = document.querySelector("#new_comment_" + commentReplyID);
 								$(hiddenComment).fadeOut(600);
+								
 								}
 								
 								// find the reply to be deleted and hide it
@@ -478,7 +489,7 @@
 								}
 								}
 								
-								 console.log(requestType);
+								
 								$.ajax({
 									url      : "../private/neutral_ajax.php",
 									type     : "POST",
@@ -644,7 +655,7 @@
 				 // set the request type to be an edit reply
 				 requestType = "false";
 				 // set the post button onclick attribute
-				 postButtonOnclickAttr = "return comment.post_reply(" + postCommentID + ",this);";
+				 postButtonOnclickAttr = "return comment.reply_comment(" + postCommentID +"," + commentReplyID + ",this);";
 				     
 				// find an hide the old comment outer div to be able to fade it in
 					if($(commentOuterWrapper) && $("#new_reply_" + commentReplyID) != undefined){
@@ -705,6 +716,7 @@
 		data     : {post_id : postCommentID,comment_id :commentReplyID,comment : newComment,edit_comment : requestType},
 		datatype : "html"
 		}).done(function(response){
+			console.log(response);
 	  try {
 		response = JSON.parse(response);
 		if(response["true"] && $.trim(response["true"] != "")){
@@ -815,9 +827,11 @@
 	   	     
 
 	   	   }
+	   	   // show or hide the reply area wrapper when the edit reply
+	   	   // link is clicked
 	   	     if($("#reply_area_wrapper_" + postCommentID)[0]){
             reply_area_wrapper =  $("#reply_area_wrapper_" + postCommentID)[0];
-               $(reply_area_wrapper).toggle();
+               $(reply_area_wrapper).show();
 
 	   	     }
 	   	     
@@ -1000,7 +1014,7 @@
 			type: "POST",
 	  		datatype:"html",
 			}).done(function(response){ 
-                  
+                   console.log(response);
 			  try{
 			response = JSON.parse(response);
 			
@@ -1074,11 +1088,12 @@
 	
 	// cancel reply 
 
-	static reply_cancel(commentID,element){
+	static reply_cancel(postID,commentID,element){
 
 		// check the validity of the postID		
 		if(commentID != null && commentID != undefined && 
-		commentID > 0  && $.trim(element) != ""){
+		commentID > 0  && $.trim(element) != "" && postID != null && postID != undefined && 
+		postID > 0 ){
 		  // set the textarea
 	     let textArea;
          let grandParent;
@@ -1123,6 +1138,11 @@
 		loadinGif = $(grandParent).find(".ps-comment-loading")[0];
 		$(loadinGif).hide();
 		}
+
+		 // find the reset the onclick attribute of the post button
+		 if($(element).siblings()[0]){
+			 $(element).siblings().attr("onclick","return comment.reply_comment(" + postID + "," + commentID + ",this);");
+		 }
 		
 	}
 	}// cancel_reply();
