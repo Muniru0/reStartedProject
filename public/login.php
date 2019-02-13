@@ -268,7 +268,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <p>Come and join our community. Expand your network and get to know new people!</p>
 </div>
 <div class="ps-landing-signup">
-<a class="ps-btn ps-btn-join" href="https://demo.peepso.com/register/">Join us now, it's free!</a>
+<a class="ps-btn ps-btn-join" href="https://demo.peepso.com/register/">Join us now, to SpeakUp!</a>
 </div>
 			</div>
 		</div>
