@@ -319,6 +319,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	position: relative;
 	display: inline;
 	line-height: 2.6em;
+	margin-left:1em;
   
 }
 
@@ -433,13 +434,19 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	border-radius: 0.6em !important;
     background: #e1dcd9 !important;
     padding-left: 0.1em !important;
+	background-image: linear-gradient(109.6deg, #fdc78d 11.3%, #f98ffd 100.2%) !important;
 }
 
 .comment-sidebar{
+	border-radius: 0.6em;	
 	background: #e1dcd9 !important;
     padding-left: 0.3em !important;
+	background-image: linear-gradient(109.6deg, #fdc78d 11.3%, #f98ffd 100.2%) !important;
 }
 
+.ps-comment-container{
+	background: #f7f7f7;
+}
 </style>
 	  </head>
   <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 logged-in plg-peepso" id="top">
