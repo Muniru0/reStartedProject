@@ -631,9 +631,43 @@ return json_encode($views);
         return "<small class=\"ps-stream-time\" data-timestamp=\"1528749581\">
                 <a href=\"https://demo.peepso.com/activity/?status/2-2-1528720781/\">
                     <span class=\"ps-js-autotime\" data-timestamp=\"1528749581\" title=\"June 11, 2018 8:39 pm\">".self::time_converter($time)."</span>             </a>
-            </small></div></div>";
+            </small></div>";
     }
 
+	// get the post options template
+	public static function get_post_options($user_id = "",$post_id = "",$firstname = "",$lastname = ""){
+		
+		$edit_post_string = "<a href='javascript:' onclick='activity.option_edit(930, 482); return false' data-post-id='930'><i class='ps-icon-edit'></i><span>Edit Post</span>
+</a>";
+		$delete_post_string = "<a href='javascript:' onclick='return peepso.photos.delete_stream_album(930,482);' data-post-id='930'><i class='ps-icon-trash'></i><span>Delete Post</span>
+</a> ";
+		
+		$follow_post_string = "<a href='javascript:' onclick='return activity.action_pin(930, 0);' data-post-id='930'><i class='ps-icon-move-down'></i><span>Unfollow this post</span>
+</a>";
+		
+		$link_user_string = "<a href='javascript:' onclick='window.open(&quot; ://demo.peepso.com/profile/demo/&quot;, &quot;_blank&quot;);return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span>Link with Yussif Muniru</span>
+</a>
+";
+		
+		
+		return "<div class='ps-stream-options'>
+			<div class='ps-dropdown ps-dropdown--stream ps-js-dropdown'>
+			<a href='javascript:' class='ps-dropdown__toggle ps-js-dropdown-toggle' data-value=''>
+<span class='dropdown-caret ps-icon-caret-down'></span>
+</a>
+<div class='ps-dropdown__menu ps-js-dropdown-menu' style='display: none;'>
+{$edit_post_string}
+{$delete_post_string} 
+{$follow_post_string} 
+{$link_user_string}
+
+</div>
+</div>
+		</div></div>
+";
+		
+		
+	}
 	public static function get_caption_template($caption = ""){
 		
 		if(!isset($caption) || trim($caption) == "" || empty($caption)){
@@ -1075,11 +1109,23 @@ $images_string .= "</div></div></div></div>
 <!--<a data-stream-id='482' onclick='return reactions.action_reactions(this, 482);' href='javascript:' class='ps-reaction-toggle--482 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>-->
 <!--</nav>-->
       
-        <input type='radio' name='reaction' id='support' value='support' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
-        <label for='support' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span> Suppport</label>
-        <!--   post label for health community  -->
-        <input type='radio' name='reaction' id='oppose' value='oppose' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
-        <label for='oppose' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span> Oppose </label>
+       
+	<div class='reactions'>
+
+    <input type='radio' name='reaction_{$post_id}' id='support_{$post_id}' oninput='reaction.addReaction({$post_id},2,this)'/>
+	<label for='support_{$post_id}'  title='Support the above post' ></label>
+    <span class='support-span'>Support</span>
+	
+	<span class='oppose-span'>Oppose</span>
+	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)'/>
+	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em'></label>
+ </div>
+   
+   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' $toggle_reactions_count style='padding-left:0px;padding-right: 0px;'>
+							
+".$number_of_supports_string.$number_of_opposess_string." 
+</div>
+ 
 
 </nav></div>";
 	unset($dimen);
@@ -1472,6 +1518,10 @@ foreach ($returned_array as $posts_info => $images_or_info){
             $full_header   .= self::get_location_template($post_info["longitude"],$post_info["latitude"]);
             // gets the time the post was uploaded
             $full_header   .= self::get_time_template($post_info["upload_time"]);
+			
+			// add the manipulation options to the post header
+			$full_header    .= self::get_post_options($post_info["post_table_id"],$post_info["firstname"],$post_info["lastname"]);
+			
 			// gets the caption of post
            // $full_header   .= self::get_caption_template($post_info["caption"]);			
 			// get the images and their arrangements
@@ -1729,7 +1779,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 		
 		<div id=\"act-like-507\" class=\"ps-stream-status cstream-likes ps-js-act-like--507\" data-count=\"0\" style=\"display:none\"></div>
 			<div class=\"ps-comment cstream-respond wall-cocs\" id=\"wall-cmt-507\">
-		<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--507\" data-act-id=\"507\" style=\"display: none;\">
+		<div class=\"ps-comment-container comment-container ps-js-comment-container \" data-act-id=\"507\" style=\"display: none;\">
 					</div>
 
 						<div id=\"act-new-comment-507\" class=\"ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-507\" data-id=\"507\" data-type=\"stream-newcomment\" data-formblock=\"true\">
