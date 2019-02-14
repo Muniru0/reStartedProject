@@ -1,1 +1,2 @@
 [13/Feb/2019 10:33:14 AM] : [Views] |  Query encountered an error: Column 'reply' cannot be null on line: 284 in file C:\wamp64\www\sample_app\private\classes\class.views.php
+[13/Feb/2019 01:27:47 PM] : [FetchPost] | methodtop 1 834

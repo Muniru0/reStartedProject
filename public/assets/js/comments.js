@@ -654,9 +654,7 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
 		     	textArea = $("#reply_area_" + postCommentID)[0];
 				 // set the request type to be an edit reply
 				 requestType = "false";
-				 // set the post button onclick attribute
-				 postButtonOnclickAttr = "return comment.reply_comment(" + postCommentID +"," + commentReplyID + ",this);";
-				     
+				 
 				// find an hide the old comment outer div to be able to fade it in
 					if($(commentOuterWrapper) && $("#new_reply_" + commentReplyID) != undefined){
 					// find and initialize the comment outer wrapper ;
@@ -759,9 +757,22 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
 	  //  find and hide the button
 	  if($(grandParent).find(".ps-button-action")[0]){
     	postButton = $(grandParent).find(".ps-button-action")[0];
-	
-    	// set the onclick attribute of the post_comment button
-    	$(postButton).attr("onclick",postButtonOnclickAttr);
+
+	    if($.trim(option) == 'reply'){
+ 		let postID = $(grandParent).find(".ps-button-cancel")[0];
+	   postID = $(postID).attr("onclick");
+	   postID = postID.split("(");
+	    postID = postID[1].split(",");
+	    postID = postID[0];
+	    // set the post button onclick attribute for a reply
+	    $(postButton).attr("onclick","return comment.reply_comment("+ postID +","+postCommentID+",this);");
+	    }else{
+	    	// set the onclick attribute of the post comment button
+	    	$(postButton).attr("onclick",postButtonOnclickAttr);
+	    }     
+	  
+    	
+    	
     }
 	    if(textArea){
 	    	// reset the height of the height of the text area

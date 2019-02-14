@@ -9,6 +9,7 @@ require_once("../private/initialize.php");
         <script src = "assets/js/jquery.js" ></script> 
 		<script src = "assets/js/jquery-ui.min.js" ></script> 
 		<link rel="stylesheet" href= "assets/css/bootstrap.css" />
+		<link rel="stylesheet" href= "assets/fonts/font-awesome/css/font-awesome.min.css" />
        
     <style>
       
@@ -19,16 +20,12 @@ require_once("../private/initialize.php");
 
 
 @font-face {
-  font-family: "Open Sans";
-  src: url("/fonts/OpenSans-Regular-webfont.woff2") format("woff2"),
-     url("assets/fonts/glyphicons-halflings-regular.woff") format("woff");
+  font-family: "fontawesome";
+  src: url("/fonts/fontawesome-webfont.woff2") format("woff2"),
+     url("assets/fonts/fontawesome-webfont.woff") format("woff");
 }
 
-@font-face {
-  font-family: "fontawesome";
-  src: url("assets/fonts/peepso.woff2") format("woff2"),
-     url("assets/fonts/peepso.woff") format("woff");
-}
+
 
 @font-face {
   font-family: "Second";
@@ -37,7 +34,7 @@ require_once("../private/initialize.php");
 
  body {
 	 text-align:center;
-	 font-family: "Open Sans" !important;
+	 font-family: "fontawesome" !important;
  }
  
 <!--  div{
@@ -302,7 +299,7 @@ $(".box1").click(function(){
 <br>
 <br>    
 
-
+<i class="fa fa-eye" aria-hidden="true"></i>
   
  
 

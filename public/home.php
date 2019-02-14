@@ -663,7 +663,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 			<!-- Profile Links -->
 			<span class="ps-widget--profile__title">My Profile</span>
 			<div class="ps-widget--profile__menu">
-				<a href=" ://demo.peepso.com/profile/demo/" class=""><span class="ps-icon-home"></span> Stream</a><a href=" ://demo.peepso.com/profile/demo/about" class=""><span class="ps-icon-user"></span> About</a><a href=" ://demo.peepso.com/profile/demo/friends" class=""><span class="ps-icon-users"></span> Friends</a><a href=" ://demo.peepso.com/profile/demo/groups" class=""><span class="ps-icon-group"></span> Groups</a><a href=" ://demo.peepso.com/profile/demo/photos" class=""><span class="ps-icon-camera"></span> Photos</a><a href=" ://demo.peepso.com/profile/demo/videos" class=""><span class="ps-icon-videocam"></span> Videos</a>			</div>
+				<a href=" ://demo.peepso.com/profile/demo/" class=""><span class="ps-icon-home"></span> Stream</a><a href=" ://demo.peepso.com/profile/demo/about" class=""><span class="ps-icon-user"></span> About</a><a href="../private/" class=""><span class="ps-icon-users"></span> Friends</a><a href=" ://demo.peepso.com/profile/demo/groups" class=""><span class="ps-icon-group"></span> Groups</a><a href=" ://demo.peepso.com/profile/demo/photos" class=""><span class="ps-icon-camera"></span> Photos</a><a href=" ://demo.peepso.com/profile/demo/videos" class=""><span class="ps-icon-videocam"></span> Videos</a>			</div>
        <div class="ps-widget--profile__menu">
 					<a href=" ://demo.peepso.com/profile/?logout" class=""><span class="ps-icon-off"></span> Log Out</a>				</div>
 
