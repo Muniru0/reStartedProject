@@ -796,7 +796,11 @@ button:hover {
 			<div class="ps-widget--profile__menu">
 				<a href=" ://demo.peepso.com/profile/demo/" class=""><span class="ps-icon-home"></span> Stream</a><a href=" ://demo.peepso.com/profile/demo/about" class=""><span class="ps-icon-user"></span> About</a><a href="../private/" class=""><span class="ps-icon-users"></span> Friends</a><a href=" ://demo.peepso.com/profile/demo/groups" class=""><span class="ps-icon-group"></span> Groups</a><a href=" ://demo.peepso.com/profile/demo/photos" class=""><span class="ps-icon-camera"></span> Photos</a><a href=" ://demo.peepso.com/profile/demo/videos" class=""><span class="ps-icon-videocam"></span> Videos</a>			</div>
        <div class="ps-widget--profile__menu">
-					<a href=" ://demo.peepso.com/profile/?logout" class=""><span class="ps-icon-off"></span> Log Out</a>				</div>
+					<a href="#" onclick="utility.logout();" class=""><span class="ps-icon-off"></span> Log Out</a>	
+   <form id="logout_form" ACTION="../private/logout.php" METHOD="POST" style="display:none;">
+   <?php csrf_token_tag();?>
+   </form>
+					</div>
 
 		</div>
 	</div>

@@ -89,7 +89,7 @@ return true;
         $("#modal-wrapper").hide();
     }
 
-	
+
 	 // redirect back to the login pageX
 	 static toLoginPage(){
 		 location.href = "login.php";
@@ -143,4 +143,9 @@ return true;
 		
 	}
 	
+	  static logout(){
+	$( "#logout_form" ).submit(function( event ) {
+  event.preventDefault();
+});
+	  }
 	}
