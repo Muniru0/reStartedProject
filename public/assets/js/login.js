@@ -40,17 +40,20 @@ $("#button_login").on("click",function(e){
             data:$("#form").serialize(),
             dataType:"html"
   }).done(function(response,status){
-        response = JSON.parse(response);
+	  
+    response = JSON.parse(response);
+	
 if(status  === "success"){
 	
 	$.each(response,function(index,value){
-		console.log(value);
+		
 		 if(value == true)
 		 {
 		  location.href="home.php";
+		  return;
 		 }else
     if(index == "false"){
-     var errors = "";
+	var errors = "";
      $.each(response,function(index,value){
    errors += "<li>"+value+"</li>";
    });  

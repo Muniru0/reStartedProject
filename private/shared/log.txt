@@ -1,2 +1,55 @@
-[13/Feb/2019 10:33:14 AM] : [Views] |  Query encountered an error: Column 'reply' cannot be null on line: 284 in file C:\wamp64\www\sample_app\private\classes\class.views.php
-[13/Feb/2019 01:27:47 PM] : [FetchPost] | methodtop 1 834
+[21/Feb/2019 10:15:11 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | method2 924
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:18:26 AM] : [FetchPost] | Array on line:1567 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:20:09 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:03 AM] : [FetchPost] |  this is the number of files that has being found:1 817 in file: C:\wamp64\www\sample_app\private\classes\class.fetch_post.php
+[21/Feb/2019 10:21:08 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:21:08 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:21:08 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:21:08 AM] : [FetchPost] | methodtop 1 886
+[21/Feb/2019 10:21:49 AM] : [FetchPost] | methodtop 1 886

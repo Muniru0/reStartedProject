@@ -1,12 +1,104 @@
+function post_options_dropdown(element){
+$(element).find(".ps-dropdown__menu").toggle("fade",100);
 
- /* $("textarea").on( 'change keyup keydown paste cut keypress input', function (){
+}
+
+function post_option_edit(user_id,post_id,element){
+
+}
+
+function post_option_delete(userID,postID,element){
+  
+  if(Number(userID)  == 0 || Number(userID)  == undefined  || Number(userID) == null ||
+     Number(postID)  == 0 || Number(postID)  == undefined  || Number(postID) == null ||
+     $.trim(element)  == "" || $.trim(element) == undefined || $.trim(element) == null){
+
+ return;
+  }
+	
+	 let postContainer = $(element).parentsUntil("#ps-activitystream").fadeOut(600);
+
+	$.ajax({
+		url: "../private/neutral_ajax.php",
+		type: "POST",
+		data: {post_id: postID,user_id: userID,request_type:"delete_post"},
+		dataType: "html"
+	}).done(function(response){
+		 
+       try{
+response = JSON.parse(response);
+
+	// if the session is invalid
+					    if(response["false"] == "login"){
+							utility.toLoginPage();
+							return;
+						}else if($.trim(response["false"]) != ""){
+							utility.showErrorDialogBox(response["false"]);
+							return;
+						}
+       if(response["true"]){
+       	 $(postContainer).remove();
+       }
+       }catch(e){
+       	$(postContainer).fadeIn(600);
+  utility.showErrorDialogBox("It is our fault, but please try again.<br /> if problem persist refresh the page ");
+       }
+       
+	}).fail(function(error){
+		utility.showErrorDialogBox("It is our fault, but please try again.<br /> if problem persist refresh the page ");
+		$(postContainer).fadeIn(600);
+	});
+
+}
+
+function post_option_follow(post_id,element){
+	
+}
+
+function post_option_link(post_id,element){
+	
+}
+
+function post_option_confirm(postID = 0 , element = ""){
+
+    if(!utility.validate_presence(postID)){
+    	return;
+    }
+
     
-    $(this).height(0).height(this.scrollHeight -20);
-}).find( 'textarea' ).change(); 
 
- $("button").click(function(e){
-       console.log($("nav"));
-   }); */
+    $.ajax({
+    	url: "../private/neutral_ajax.php",
+    	type: "POST",
+    	data: {request_type: "confirm_post",post_id: postID},
+    	dataType: "json"
+    }).done(function(response){
+      
+try{
+      response = JSON.parse(response);
+      
+      if($.trim(response[0]) == "true"){
+
+      	console.log("post confirmed");
+      }else if($.trim(response["false"]) != ""){
+      	 console.log("failed");
+      }
+	  
+	}catch(e){
+		
+	utility.showErrorDialogBox(response["false"]);
+						
+	}
+    });
+
+
+
+
+
+
+}
+
+
    
 (function ($) {
 
@@ -232,7 +324,7 @@
     // if the file sending completed without errors
     myDropzone.on("success", function (file, response) {
           
-		  
+		  console.log(response);
 		 
         try {
 			 	  
@@ -242,11 +334,14 @@
 		     	showPostErrorAlert = true;
 		     }
 		     
-		  if(response["false"]){
-			  
-			  alert(response["false"]);
-			  return;
-		  }
+		// if the session is invalid
+		if(response["false"] == "login"){
+			  utility.toLoginPage();
+							return;
+						}else if($.trim(response["false"]) != ""){
+							utility.showErrorDialogBox(response["false"]);
+							return;
+						}
 		 $.each(response,function(index,value){
 			 
 			 returnedPost =  utility.replaceString("\\n","",value);
@@ -254,6 +349,7 @@
 		 });
 		 
 		}catch(e){
+			console.log(e);
 			alert("It's our fault but please try again");
 		}
        

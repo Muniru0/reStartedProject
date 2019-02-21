@@ -46,6 +46,17 @@ $query = " SELECT failed_logins, failure_time FROM ".Throttle::$table_name." WHE
     if(!$stmt->execute()){
     log_action(__CLASS__, "Execution failed : ( " .$db->errno. " ) ".$db->error);
     }
+	
+	
+	$result = $stmt->get_result();
+	
+	if($row = $result->fetch_assoc()){
+		
+		return [$row["failed_logins"],$row["failure_time"]];
+	}else{
+	log_action(__CLASS__," Failure to return throttle results {$db->error} on line: ".__LINE__);
+	return;
+	}
 
     // bind the result
      $stmt->bind_result($failed_logins,$failure_time);

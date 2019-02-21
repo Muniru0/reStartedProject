@@ -1,6 +1,6 @@
 <?php
  require_once("../private/initialize.php");
-Session::before_every_protected_page();
+Session::before_every_protected_page("home");
 //Session::after_successful_logout();
 
 
@@ -159,7 +159,15 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <script   type="text/javascript"  src="assets/js/comments.js">  </script> 
 	
 <style>
-        .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon{
+       
+
+<!-- personal media queries -->
+
+@media only screen and (min-width: 481px)
+.ps-stream__post--pinned .ps-dropdown--stream .ps-dropdown__menu {
+    min-width: 150px !important;
+}
+	   .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon{
           border-style:none;
     }
     legend {
@@ -446,6 +454,129 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 .ps-comment-container{
 	background: #f7f7f7;
+}
+
+/* Full-width input fields */
+
+input[type=text], input[type=password] {
+    font-family: "Roboto Condensed",Sans serif !important;
+    width: 46%;
+    padding: 0.6em 0.3em;
+    margin: 0.6em 0.1em;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 16px;
+    border-color: #e1e5aa;
+    background: #faffbd;
+    border-radius: 5px;
+    outline: none;
+    font-size: 0.81em;
+}
+
+/* Set a style for all buttons */
+
+
+button {
+    background-color: #00b0ff;
+    color: white;
+    padding: 10px 2px;
+    margin: 8px 3px;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    font-size: 16px;
+    border-radius: 5px;
+	
+	
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Center the image and position the close button */
+
+.imgcontainer {
+   margin: 0px 0 9px 0;
+    position: relative;
+    padding: 1.2em 0px;
+    padding-left: 1.2em;
+    background: black;
+    color: #fff;
+    font-size: 0.8em !important;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.avatar {
+    width: 200px;
+	height:200px;
+    border-radius: 50%;
+}
+
+/* The Modal (background) */
+
+.modal {
+    display: none;
+    position: fixed;
+   /*  z-index: 1; */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+
+}
+
+/* Modal Content Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 4% auto 15% auto;
+    border: 1px solid #888;
+    width: 40%;
+    padding-bottom: 30px;
+    border-radius: 5px 5px 5px 6px;
+}
+
+/* The Close Button (x) */
+.close {
+  position: absolute;
+    right: 25px;
+    top: 0.2em;
+    color: #d5d5d5;
+    font-size: 30px;
+    font-weight: 500;
+}
+.close:hover,.close:focus {
+    color: #fefefe;
+    cursor: pointer;
+    font-weight: 900;
+	
+}
+
+/* Add Zoom Animation */
+.animate {
+   
+}
+@keyframes zoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+.password-recover {
+   font-size: 0.6em;
+    color: #a64444;
+    margin-left: 0.2em;
+    margin-bottom: 0.8em;
+    position: relative;
+   
+	}
+	
+.login-box-container {
+	margin: 0px 5px 0px 5px;
+    border-radius: 5px;
+    font-size: 1.5em;
 }
 </style>
 	  </head>
@@ -1770,7 +1901,6 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				</div>
 	</nav>
 </div>
-<input type="hidden" id="peepso_context" value="stream">
 <div class="ps-stream__filters">
     <input type="hidden" id="peepso_stream_id" value="core_community">
 
@@ -1836,7 +1966,6 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	</div>
 </span>
 
-<input type="hidden" id="peepso_search" value="1">
 <span class="ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter" data-id="peepso_search">
 	<a class="ps-btn ps-btn--small ps-js-dropdown-toggle" aria-haspopup="true" aria-label="Search">
 		<i class="ps-icon-search"></i>
@@ -1894,6 +2023,99 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
                     <div class="ps-stream-wrapper">
                         <div id="ps-activitystream-recent" class="ps-stream-container" style="display:none"></div>
                         <div id="ps-activitystream" class="ps-stream-container" style="">
+  
+<div id="modal-wrapper" class="modal" style="display: none;">
+  
+ <!-- <form class="modal-content animate" action="/action_page.php" style="
+    padding-bottom: 5px;
+">
+        
+    <div class="imgcontainer" >
+      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">×</span>
+      
+      <h1 style="color: #fff !important;
+    font-size: 1.3em;" >Please complete this and proceed</h1>
+    </div>
+
+    <div class="login-box-container" style="margin: 0px 5px 0px 5px;border-radius: 5px;
+">
+<div class="ps-form-input ps-form-input-icon">
+          <span class="ps-icon"><i class="ps-icon-user"></i></span>
+          <input class="ps-input" type="text" id="email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+        </div>
+		<div class="ps-form-input ps-form-input-icon">
+          <span class="ps-icon"><i class="ps-icon-user"></i></span>
+          <input class="ps-input" type="password" id="email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+        </div>     
+        <div class="ps-form-input ps-form-input--button">
+          <button type="submit" id="button_login" name="submit" class="ps-btn ps-btn-login">
+            <span>Login</span>
+            <img style="display:none" src="assets/images/ajax-loader.gif">
+          </button>
+        </div>
+      <span class="password-recover">Forgot Password</span>     
+      
+    </div>
+    
+  </form> -->
+  
+  
+  <div id="registration" class="ps-landing-action">
+<div class="alert alert-danger" id="login_err" role="alert" style="display:none;">
+ <button type="button" class="close" data-dismiss="alert" id="close" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+<script>
+      $("#close").click(function(){
+        $("#login_err").toggle();    
+      });
+</script>
+            
+  <div class="login-area">
+<form class="ps-form ps-js-form-login" method="post" name="login" id="form">
+   <input id="csrf" type="hidden" name="csrf_token" value="15a6b97e16503f7789a1e98b4ae29039"><div class="ps-landing-form">
+        <div class="ps-form-input ps-form-input-icon">
+          <span class="ps-icon"><i class="ps-icon-user"></i></span>
+          <input class="ps-input" type="text" id="login_box_email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+        </div>
+        <div class="ps-form-input ps-form-input-icon">
+          <span class="ps-icon"><i class="ps-icon-lock"></i></span>
+          <input class="ps-input" id="login_box_password" type="password" name="password" placeholder="Password" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+        </div>
+        <div class="ps-form-input ps-form-input--button">
+          <button type="submit"  name="submit" onclick="utility.loginWithLoginBox(this);" class="ps-btn ps-btn-login">
+            <span>Login</span>
+            <img style="display:none" src="assets/images/ajax-loader.gif">
+          </button>
+        </div>
+</div>
+<div class="ps-checkbox">
+        <input type="checkbox" alt="Remember Me" value="yes" id="remember" name="remember">
+        <label for="remember">Remember Me</label>
+      </div>
+      <a class="ps-link ps-link--recover" href="signup.php">Recover Password</a>
+        <a class="ps-link ps-link--recover" href="signup.php">Register</a>
+            <a class="ps-link ps-link--activation ps-js-register-activation" href="https://demo.peepso.com/register/?resend" style="display: none;">Resend activation code</a>
+            <!-- Alert -->
+      <div class="errlogin calert clear alert-error" style="display:none"></div>
+          </form>
+     </div>
+</div>
+</div>
+
+<script>
+// If user clicks anywhere outside of the modal, Modal will close
+
+var modal = document.getElementById('modal-wrapper');
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+                        
     <!--First Post Display -->
     <div class="ps-stream ps-js-activity ps-stream__post--pinned ps-js-activity-pinned ps-js-activity--482" data-id="482" data-post-id="930" style="display: block;">
 
@@ -2287,7 +2509,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	<div class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-506" data-type="stream-newcomment" data-formblock="true" style="display:none;">
 		
 		<div class="ps-textarea-wrapper cstream-form-input">
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="utility.resizeTextarea(this);" placeholder="Write a reply..." style="height: 37px;"></textarea><input type="hidden" class="ps-tagging-hidden" value=""><div class="ps-tagging-dropdown" style="display: none;"></div></div>
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="utility.resizeTextarea(this);" onkeydown="comment.reply_field_change();" placeholder="Write a reply..." style="height: 37px;"></textarea><input type="hidden" class="ps-tagging-hidden" value=""><div class="ps-tagging-dropdown" style="display: none;"></div></div>
 				
 
 		</div>

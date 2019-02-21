@@ -135,14 +135,19 @@ class reaction {
        	dataType:"html"
        }).done(function(response){
                   
-				  console.log(response);
-				 console.log(response);
+				
 				  
             try{
             	response = JSON.parse(response);
-            	if(response["false"]){
-            		 alert(response["false"]);
-            	}else if(response["support"] && response["oppose"] && response["post_id"] > 0){
+					// if the session is invalid
+					    if(response["false"] == "login"){
+							utility.toLoginPage();
+							return;
+						}else if($.trim(response["false"]) != ""){
+							utility.showErrorDialogBox(response["false"]);
+							return;
+						}
+            	 if(response["support"] && response["oppose"] && response["post_id"] > 0){
             	   if($("#reactions_count_" + response["post_id"])){
 					   $("#reactions_count_" + response["post_id"]).show();
 				   }

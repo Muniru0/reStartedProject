@@ -5485,10 +5485,11 @@ one {
     content: '\f279'
 }
 
+
 @font-face {
     font-family: 'peepso-social';
-    src: url("../../assets/fonts/peepso-social.eot?5793615");
-    src: url("../../assets/fonts/peepso-social.eot?5793615#iefix") format("embedded-opentype"),url("../../assets/fonts/peepso-social.woff2?5793615") format("woff2"),url("../../assets/fonts/peepso-social.woff?5793615") format("woff"),url("../../assets/fonts/peepso-social.ttf?5793615") format("truetype"),url("../../assets/fonts/peepso-social.svg?5793615#peepso-social") format("svg");
+    src: url("../../assets/fonts/peepso-social.eot");
+    src: url("../../assets/fonts/peepso-social.eot") format("embedded-opentype"),url("../../assets/fonts/peepso-social.woff2") format("woff2"),url("../../assets/fonts/peepso-social.woff") format("woff"),url("../../assets/fonts/peepso-social.ttf") format("truetype");
     font-weight: normal;
     font-style: normal
 }

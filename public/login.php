@@ -4,6 +4,7 @@
 
  require_once("../private/initialize.php");
 
+ 
 // initialize variables to default values
 
 $message = "";
@@ -32,7 +33,7 @@ if(is_request_post() && request_is_same_domain()) {
   if(!csrf_token_is_valid() || !csrf_token_is_recent()) {
 
    
-  	print j(["false" => "Sorry, request was not valid."]);
+  	print j(["false" => "Sorry, Please refresh the page and try again."]);
       return;
 
   } else {
@@ -51,12 +52,7 @@ if(validate_presence_on(["password","email"]) && is_email($email)){
           // if they are authenticated successfully
 	   	 // then clear all the failed logins
         throttle::clear_failed_logins();
-		$_SESSION["post_ids"]    = [10];
-		$_SESSION["comment_ids"] = [];
-		$_SESSION["reply_ids"]   = [];
-		$_SESSION["offset"]      = 0;
-		
-         print j([true]);
+		 print j([true]);
       return;
 } else {
 throttle::record_failed_logins($email);

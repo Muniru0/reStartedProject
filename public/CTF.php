@@ -293,7 +293,22 @@ $(".box1").click(function(){
     
     
     </script>
-
+	
+	<div class = "div-1">
+	  <ul>
+	  
+	  <li>
+	    <a><p>
+		 <em>How are you doing</em>
+		</p></a>
+		
+	  </li></ul>
+	  
+	  <script>
+	  
+	 console.log($("em").parentsUntil(".div-1"));
+	  </script>
+<!--
 <br>
 <br>
 <br>
@@ -301,7 +316,6 @@ $(".box1").click(function(){
 
 <i class="fa fa-eye" aria-hidden="true"></i>
   
- 
 
 <div class="switch">
 
@@ -314,7 +328,7 @@ $(".box1").click(function(){
 	<label for="oppose_1"></label>
  </div>
   
-
+-->
 <!--
 <style>
 

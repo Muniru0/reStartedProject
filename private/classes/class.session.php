@@ -54,6 +54,7 @@ require_once(PRIVATE_DIR."initialize.php");
 // Has too much time passed since the last login?
  public static function last_login_is_recent() {
 	$max_elapsed = 60 * 60 * 24; // 1 day
+	
 	// return false if value is not set
 	if(!isset($_SESSION['last_login'])) {
 		return false;
@@ -87,12 +88,9 @@ require_once(PRIVATE_DIR."initialize.php");
  public static function confirm_session_is_valid() {
 	if(!self::is_session_valid()) {
 		self::end_session();
-		// Note that header redirection requires output buffering 
-		// to be turned on or requires nothing has been output 
-		// (not even whitespace).
-		header("Location: login.php");
-		exit;
+	return false;
 	}
+	return true;
 }
 
 
@@ -105,13 +103,11 @@ require_once(PRIVATE_DIR."initialize.php");
  public static function confirm_user_logged_in() {
 	if(!self::is_logged_in()) {
 		self::end_session();
-		// Note that header redirection requires output buffering 
-		// to be turned on or requires nothing has been output 
-		// (not even whitespace).
-		header("Location: login.php");
-		exit;
+		return false;
 	}
+	return true;
 }
+
 
 
 // Actions to preform after every successful login
@@ -126,6 +122,14 @@ require_once(PRIVATE_DIR."initialize.php");
     $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
     $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 	$_SESSION['last_login'] = time();
+	$_SESSION["post_ids"]    = [];
+	$_SESSION["comment_ids"] = [];
+	$_SESSION["reply_ids"]   = [];
+	$_SESSION["offset"]      = 0;
+	$_SESION["scroll_ready_state"] = true;
+		
+		
+        
 	
 	
 }
@@ -134,7 +138,7 @@ require_once(PRIVATE_DIR."initialize.php");
  public static function after_successful_logout() {
 	if (session_status() === PHP_SESSION_ACTIVE) {
 		$_SESSION['logged_in'] = false;
-self::end_session();
+        self::end_session();
 	}
 
 
@@ -142,9 +146,21 @@ self::end_session();
 
 // Actions to preform before giving access to any 
 // access-restricted page.
- public static function before_every_protected_page() {
-	self::confirm_user_logged_in();
-	self::confirm_session_is_valid();
+ public static function before_every_protected_page($home_flag = NULL) {
+	if(!self::confirm_user_logged_in() || !self::confirm_session_is_valid()){
+		// Note that header redirection requires output buffering 
+		// to be turned on or requires nothing has been output 
+		// (not even whitespace).
+         if(trim($home_flag) == "home"){
+             header("Location: login.php");
+             exit;
+             return;
+         }
+		print j(["false"=>"login"]);
+		return false;
+	}
+	
+	return true;
 }
 
 

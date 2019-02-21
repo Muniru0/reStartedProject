@@ -635,22 +635,40 @@ return json_encode($views);
     }
 
 	// get the post options template
-	public static function get_post_options($user_id = "",$post_id = "",$firstname = "",$lastname = ""){
+	public static function get_post_options($user_id = 0,$post_id = 0,$firstname = "",$lastname = "",$confirmation_eligibility = 0 ,$confirmation = 0,$confirmer = 0){
 		
-		$edit_post_string = "<a href='javascript:' onclick='activity.option_edit(930, 482); return false' data-post-id='930'><i class='ps-icon-edit'></i><span>Edit Post</span>
+		 if($_SESSION["id"] < 1){
+			 
+			print j(["false" => "Routine Security checks, please refresh the page and try again."]);
+			 return;
+		 }
+		$edit_post_string =  $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_edit({$_SESSION["id"]}, {$post_id},this); return false' data-post-id='930'><i class='ps-icon-edit'></i><span>Edit Post</span>
 </a>";
-		$delete_post_string = "<a href='javascript:' onclick='return peepso.photos.delete_stream_album(930,482);' data-post-id='930'><i class='ps-icon-trash'></i><span>Delete Post</span>
+		$delete_post_string = $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_delete({$_SESSION["id"]}, {$post_id},this);' data-post-id='930'><i class='ps-icon-trash'></i><span>Delete Post</span>
 </a> ";
 		
-		$follow_post_string = "<a href='javascript:' onclick='return activity.action_pin(930, 0);' data-post-id='930'><i class='ps-icon-move-down'></i><span>Unfollow this post</span>
+		$follow_post_string =  $_SESSION["id"] == $user_id ? "" : "<a href='javascript:' onclick='post_option_follow({$post_id},this);' data-post-id='930'><i class='ps-icon-eye'></i><span>follow this post</span>
 </a>";
 		
-		$link_user_string = "<a href='javascript:' onclick='window.open(&quot; ://demo.peepso.com/profile/demo/&quot;, &quot;_blank&quot;);return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span>Link with Yussif Muniru</span>
+	    $link_user_string =  $_SESSION["id"] == $user_id ? "" :"<a href='javascript:' onclick='post_option_link({$post_id},this);return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span>Link with {$firstname} {$lastname}</span>
 </a>
 ";
+  $confirmation_option_string = "";
+ if((int)$_SESSION[user::$post_confirmation_eligibility] === 2 || (int)$_SESSION[user::$post_confirmation_eligibility] === 3){
+	
+    // post option with the link to confirm or reverse the confirmation 	
+	if($confirmation == 0){
 		
+		  $confirmation_option_string = "<a href='javascript:' onclick='post_option_confirm({$post_id},this);return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span title='You can confirm that this incident really happened'>Confirm  this post</span>
+</a>";
+	}elseif(isset($confirmer) && $confirmer == $_SESSION["id"] && $confirmation == 1){
+	    $confirmation_option_string = "<a href='javascript:' onclick='post_option_reveseConfirmation({$post_id},this);return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span title='You can reverse the the confirmation of this post'>Reverse Confirmation</span>
+</a>";
+   }
+
+}	
 		
-		return "<div class='ps-stream-options'>
+		return "<div class='ps-stream-options' onclick=' post_options_dropdown(this);'>
 			<div class='ps-dropdown ps-dropdown--stream ps-js-dropdown'>
 			<a href='javascript:' class='ps-dropdown__toggle ps-js-dropdown-toggle' data-value=''>
 <span class='dropdown-caret ps-icon-caret-down'></span>
@@ -660,6 +678,7 @@ return json_encode($views);
 {$delete_post_string} 
 {$follow_post_string} 
 {$link_user_string}
+{$confirmation_option_string}
 
 </div>
 </div>
@@ -716,8 +735,7 @@ if( !isset($post_id) || is_array($post_id)
 	   }
 	  
 	   
-     $query = " 
-				SELECT firstname,lastname,".PostImage::$table_name.".*,".self::$table_name.".*,".PostImage::$table_name.".id AS post_table_id,normal_post_table.id AS file_id FROM post_table
+     $query = "SELECT ".user::$table_name.".".user::$firstname.",".user::$table_name.".".user::$lastname.",".user::$post_confirmation_eligibility.",".PostImage::$table_name.".*,".self::$table_name.".*,".PostImage::$table_name.".id AS post_table_id,".self::$table_name.".id AS file_id FROM ".PostImage::$table_name."
 				JOIN ".user::$table_name." ON 
 				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id JOIN ".self::$table_name." ON ".self::$table_name.".post_id = ".PostImage::$table_name.".id WHERE 
 				".PostImage::$table_name.".id = $post_id  LIMIT 10";
@@ -788,7 +806,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 	
 	//get the layout template for two images 
 public static function images_layout_template($post_id = 0,$images =[],$number_of_supports,$number_of_opposes,$caption = null){
-
+ 
 	
 	  // veirfy the entire the images array
 		if(!is_array($images) || !isset($images) || empty($images)){
@@ -1295,10 +1313,15 @@ $images_string .= "</div></div></div></div>
 
     public static function get_post_confirmation($confirmation = 0){
    
-         $switch = "<span style=\"background-color: rgb(210, 73, 66);\">UnConfirmed \n</span>";
+         $switch = "";
+		
 	   if($confirmation == 1)
 	   {
-		   $switch = "<span style=\"background-color: rgb(60, 189, 172);\">Confirmed</span>";
+		   $switch = "<span title='this incident has being confirmed' style=\"background-color: rgb(60, 189, 172);\">Confirmed</span>";
+	   }elseif($confirmation == 0){
+		   
+		   $switch =  "<span  title='this incident is pending confirmation' style=\"background-color: rgb(210, 73, 66);\">UnConfirmed \n</span>";
+		 
 	   }
 	   
         return "<div class=\"ps-stream ps-js-activity ps-stream__post--pinned ps-js-activity-pinned ps-js-activity--482\">
@@ -1452,7 +1475,8 @@ $images_string .= "</div></div></div></div>
 // GET THE FULL HEADER
 // brings back the header of the post
     public static function get_full_post($returned_array = [],$views = null,$flag = ""){
-
+		
+  
 	try{
 		
 	if(empty($returned_array) || !is_array($returned_array) && !isset($views)){
@@ -1503,49 +1527,56 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			  
 			 
 			// add the post to the array of post in the users session
-			 $_SESSION["post_ids"][] = (int)$post_info["post_table_id"];
+			$_SESSION["post_ids"][] = (int)$post_info["post_table_id"];
             $full_header = "";
-          // get the post confirmation template
-            $full_header   = self::get_post_confirmation($post_info["confirmation"]);
+           // get the post confirmation template
+            $full_header   = self::get_post_confirmation($post_info[PostImage::$confirmation]);
 			
             // gets the full name
-            $full_header   .= self::get_fullname($post_info["firstname"],$post_info["lastname"]);
+            $full_header   .= self::get_fullname($post_info[user::$firstname],$post_info[user::$lastname]);
             // gets the number of files uploaded and label of the issue
-            $full_header   .= self::get_post_title(count($images),$post_info["label"]);
+            $full_header   .= self::get_post_title(count($images),$post_info[PostImage::$label]);
             // gets the mood of the post
            // $full_header .= self::get_mood_template($post_info["mood"]);
             // gets the location of the post
-            $full_header   .= self::get_location_template($post_info["longitude"],$post_info["latitude"]);
+            $full_header   .= self::get_location_template($post_info[PostImage::$log],$post_info[PostImage::$lat]);
             // gets the time the post was uploaded
-            $full_header   .= self::get_time_template($post_info["upload_time"]);
+            $full_header   .= self::get_time_template($post_info[PostImage::$upload_time]);
 			
 			// add the manipulation options to the post header
-			$full_header    .= self::get_post_options($post_info["post_table_id"],$post_info["firstname"],$post_info["lastname"]);
+			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info["post_table_id"],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[user::$post_confirmation_eligibility],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);
 			
 			// gets the caption of post
            // $full_header   .= self::get_caption_template($post_info["caption"]);			
 			// get the images and their arrangements
 			
-			$full_body     = self::images_layout_template($post_info["post_table_id"],$images,$post_info["support"],$post_info["oppose"],$post_info["caption"]);
+			$full_body     = self::images_layout_template($post_info["post_table_id"],$images,$post_info[PostImage::$support],$post_info[PostImage::$oppose],$post_info[PostImage::$caption]);
 			 // get the reaction and comment box
-			 
+			  
 				  
-		    $full_body        .= Views::get_views_with_replys($post_info["post_table_id"],$comments); 
+		    $full_body     .= Views::get_views_with_replys($post_info["post_table_id"],$comments); 
 			
-            			
-		 
+			
+		 // if the post body is false then uset the post table id since we no longer 
+		 // need it to reference any post
 		    if($full_body === false){
 				print j(["false" => "Sorry, something went wrong,Please try  again after some time"]);
 				 unset($headers[$post_info["post_table_id"]]);
 				continue;				
 			}
+		
 			$headers[$post_info["post_table_id"]] = $full_header.$full_body;
         }
-		 if(!empty($headers)){
+		
+		
+  if(!empty($headers)){
 			 print j($headers);
+			 $_SESSION["scroll_ready_state"] = true;
         return true; 
 		 }else{
-		print j(["waiting"]);
+		print j(["pending"=>"waiting"]);
+		
+		$_SESSION["scroll_ready_state"] = true;
         return true; 
 		 }
     return false;		 

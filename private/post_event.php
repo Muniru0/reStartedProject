@@ -2,7 +2,9 @@
 
 require_once("../private/initialize.php");
 
-
+if(!Session::before_every_protected_page()){
+	return;
+}
     // FetchPost::get_post_full_header_and_body();
     // return;
 

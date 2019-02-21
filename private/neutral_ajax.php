@@ -3,7 +3,43 @@
 
 
 require_once("../private/initialize.php");
+/* if(isset($_POST["login"]) && !empty(trim($_POST["login"])) && (Boolean)trim($_POST["login"]) === true){
+	
+	    // CSRF tests passed--form was created by us recently.
+   // retrieve the values submitted via the form
+$email    =  user::$email    = $_POST['email'];
+$password =  user::$password = $_POST['password'];
+// validate the presence of the required fields  
+if(validate_presence_on(["password","email"]) && is_email($email)){
+// check that they are not being throttled before 
+  //  
+  if(throttle::throttle_user()){
+    
+  if(user::found_user()) {
+    Session::after_successful_login();
+          // if they are authenticated successfully
+	   	 // then clear all the failed logins
+        throttle::clear_failed_logins();
+		 print j([true]);
+      return;
+} else {
+throttle::record_failed_logins($email);
+    // if the person is throttled or not give
+	// the same information out
+      $_POST = null;
+        return ;
+		    }
+		}else{
+// don't tell the person that he is being throttled
+          print j(["false"=>"Throttled! Try again after 10mins"]);
+          return;
+		}
+}
 
+} */
+if(!Session::before_every_protected_page()){
+	return;
+}
 
 
 function is_ajax(){
@@ -56,7 +92,25 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
 
   
 }
-
+elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "delete_post"){
+   $post_id = (int)$_POST["post_id"];
+   $user_id = (int) $_POST["user_id"];
+   
+   if($post_id < 0 || $user_id < 0){
+	   print j(["false" => "Sorry server problem ,please try again"]);
+	return;
+}
+   
+   if(!in_array($post_id,$_SESSION["post_ids"],true) || $user_id !== (int)$_SESSION["id"]){
+	   log_action(__CLASS__," user_id: ".$user_id." post: ".$post_id);
+	print j(["false" => "Sorry server problem ,please try again here"]);
+	return;
+	}
+	
+//delete post
+PostImage::delete_post($user_id,$post_id);
+	
+}// delete the post
 
 
 // delete the view
@@ -287,12 +341,43 @@ elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
 
 
 // get the main stream infinite scroll
-elseif(isset($_POST["stream"]) && trim($_POST["stream"]) === "stream"){
+elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "mainstream"){
+
+	  if(!isset($_SESSION["scroll_ready_state"]) || $_SESSION["scroll_ready_state"] === false){
+		  print j(["pending"=>"waiting"]);
+		  $_SESSION["scroll_ready_state"] = true;
+		 return; 
+	  }
+	  
 	// get the main infinite scroll for the sreaming of post
-	Pagination::get_infnite_scroll("main");
-	 
+	Pagination::get_infnite_scroll($_POST["request_type"]);
+	 $_SESSION["scroll_ready_state"] = false;
 }
 
+
+elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "confirm_post"){
+	
+	//check the validity of the session
+	if((int)$_SESSION["id"] < 1){
+	 print j(["false"=>"Routine security checks, please just refresh and try again."]);
+		return;
+	}
+	
+	// check the eligibility of the person to confirm the post
+	if((int)$_SESSION[user::$post_confirmation_eligibility] < 2 ){
+		 print j(["false" =>"Invalid request,if the problem persists re-login"]);
+		 return;
+	}
+	
+	$post_id = (int)($_POST["post_id"]);
+	if( $post_id < 1 || !in_array($post_id,$_SESSION["post_ids"])){
+		 print j(["false" => "Invalid request,if the problem persists please re-login"]);
+		 return;
+	}
+	//confirm the post
+	PostImage::confirm_post($post_id);
+	
+}
 // reactions 
 elseif(isset($_POST["reaction_param"]) && !empty($_POST["reaction_param"])){
 	   

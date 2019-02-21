@@ -22,7 +22,7 @@ class user extends DatabaseObject{
     public static $id                = "id" ;
     public static $firstname         = "firstname" ; 
     public static $lastname          = "lastname" ;
-    public static $email             = "" ;
+    public static $email             = "email" ;
     public static $gov               = "" ;
     public static $password          = "" ;
     public static $date              = "" ;
@@ -37,6 +37,7 @@ class user extends DatabaseObject{
     public static $logo_time         = "" ;
     public static $location          = "" ;
     public static $description       = "" ;
+	public static $post_confirmation_eligibility     = "post_confirmation_eligibility";
     public static $follow_query_type = "query_type";
 
    
