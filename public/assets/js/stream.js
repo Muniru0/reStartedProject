@@ -10,7 +10,7 @@ $(window).scroll(function() {
 			 data: {request_type: "mainstream"},
 			 datatype: "html"
 		 }).done(function(response){
-			
+			console.log(response);
 			response = JSON.parse(response);
 			
 			if($.trim(response["pending"]) == "waiting"){

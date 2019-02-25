@@ -375,9 +375,10 @@ return;
 
    
    // confirm a post
-   public static function confirm_post($post_id = 0){
+   public static function confirm_post($post_id = 0,$flag = null){
 	   
 	   global $db;
+      
 	     $post_id = $db->real_escape_string($post_id);
 	   if((int)$post_id < 1){
 		   log_action(__CLASS__," post id less than 1 but passed the neutral ajax file on LINE: ".__LINE__." in FILE: ".__FILE__);
@@ -385,23 +386,35 @@ return;
 		   return;
 	   }
 	   
-	   
-	  
-$query = " IF(SELECT ".self::$table_name.".".self::$confirmer." FROM ".self::$table_name." WHERE ".self::$id." ={$post_id} ) < 1;THEN ";
-$query  .= " UPDATE ".self::$table_name." SET ".self::$confirmer." = {$_SESSION["id"] }, ".self::$confirmation."= 1 WHERE ".self::$id."={$post_id} LIMIT 1 ;SELECT {$post_id} AS post_id;";
- $query .= " ELSE 
-   IF(SELECT ".user::$table_name.".".self::$post_confirmation_eligibility." FROM ".self::$table_name." WHERE ".user::$table_name.".".user::$id." = {$_SESSION["id"]}) > 1 THEN
-SELECT 'Please this post has already being confirmed try some other post' AS result;
-	 END IF;";	  
+	  if(isset($_SESSION) || (int)$_SESSION["id"] < 0){
+      print j(["false"=>"login"]);
+      return;
+      }
+      $id = $_SESSION["id"];
+    
+     if($flag === "confirm_post" && $flag !== null){
+       $flag = 1;
+     }elseif($flag !== null && $flag === "reverse_confirmation"){
+    $flag = 2;
+     }else{
+        print j(["false"=>"Please try again"]);
+        return;
+     }
 
-log_action(__CLASS__," this is the query: {$query}");
+  // if check that the post hasn't already being confirmed   
+$query = "CALL confirm_post($post_id,{$id},{$flag})";    
+
+
 // perform the query on the database
 if($db->multi_query($query)){
 	 do{
-		 
+		  log_action(__CLASS__,"endr");
 		// store the result set
        	if($result = $db->store_result()){
 			if($row = $result->fetch_assoc()){
+                foreach($row As $value){
+                    log_action(__CLASS__,"value: ".$value." on line: ".__LINE__);
+                }
 				if(isset($row["result"]) && trim($db->error) != ""){
 					print j(["false" =>$row["result"]]);
 					return;
@@ -413,8 +426,12 @@ if($db->multi_query($query)){
 					 print j(["false"=>"Sorry server problem,please try again."]);
 					 return;
 				}
-			}
-		}	
+			}else{
+            log_action(__CLASS__, "{$db->error} ".__LINE__);
+        }   
+		}else{
+            log_action(__CLASS__, "{$db->error} ".__LINE__);
+        }	
 		 
 		
 	 }while($db->more_results() && $db->next_result());
@@ -427,10 +444,77 @@ if($db->multi_query($query)){
 	log_action(__CLASS__," Failure to confirm the post ");
 	print j(["false" =>"Invalid request,please try again."]);
 	
-}
+}else{
+            log_action(__CLASS__, "{$db->error} ".__LINE__);
+        }	
 	   
 	   
    }//confirm_post();
+
+
+   // revers the confirmation of a post
+   public static function reverse_confirmation($post_id = 0){
+    
+       global $db;
+         $post_id = $db->real_escape_string($post_id);
+       if((int)$post_id < 1){
+           log_action(__CLASS__," post id less than 1 but passed the neutral ajax file on LINE: ".__LINE__." in FILE: ".__FILE__);
+           print j(["false" =>"Please try again"]);
+           return;
+       }
+       
+       
+      
+$query = " IF(SELECT ".self::$table_name.".".self::$confirmer." FROM ".self::$table_name." WHERE ".self::$id." ={$post_id} ) < 1;THEN ";
+$query  .= " UPDATE ".self::$table_name." SET ".self::$confirmer." = 0, ".self::$confirmation."= 0 WHERE ".self::$id."={$post_id} LIMIT 1 ;SELECT {$post_id} AS post_id;";
+ $query .= " ELSE 
+   IF(SELECT ".user::$table_name.".".self::$user_category." FROM ".self::$table_name." WHERE ".user::$table_name.".".user::$id." = {$_SESSION["id"]}) > 1 THEN
+SELECT 'Please this post has already being confirmed try some other person' AS result;
+      ELSE 
+      SELECT 'Please you are not eligible for the confirmation of a post' AS result;
+       END IF;
+     END IF;";    
+
+log_action(__CLASS__," this is the query: {$query}");
+// perform the query on the database
+if($db->multi_query($query)){
+     do{
+         
+        // store the result set
+        if($result = $db->store_result()){
+            if($row = $result->fetch_assoc()){
+                if(isset($row["result"]) && trim($db->error) != ""){
+                    print j(["false" =>$row["result"]]);
+                    return;
+                }elseif($row["post_id"] && trim($db->error) != ""){
+                    
+                    print j(["true"]);
+                    return;
+                }elseif(trim($db->error) != ""){
+                     print j(["false"=>"Sorry server problem,please try again."]);
+                     return;
+                }
+            }
+        }   
+         
+        
+     }while($db->more_results() && $db->next_result());
+    
+    if($db->affected_rows  == 1){
+        print j(["true"]);
+        return;
+    }
+    
+    log_action(__CLASS__," Failure to confirm the post ");
+    print j(["false" =>"Invalid request,please try again."]);
+    
+}
+       
+   }//reverse_confirmation();
+
+
+
+
 
  // delete the post 
   public static function delete_post($user_id = 0 ,$post_id = 0){

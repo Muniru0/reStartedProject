@@ -4860,6 +4860,12 @@ one {
 }
 
 @font-face {
+	font-family: 'Rubik';
+	src: url("../fonts/rubik-regular-webfont.woff2") format("woff2");
+	font-weight:normal;
+	font-style: normal;
+}
+@font-face {
     font-family: 'peepso';
     src: url("../fonts/peepso.eot");
     src: url("../fonts/peepso.eot") format("embedded-opentype"),url("../fonts/peepso.woff2") format("woff2"),url("../fonts/peepso.woff") format("woff"),url("../fonts/peepso.ttf") format("truetype"),url("../fonts/peepso.svg?99676370#peepso") format("svg");

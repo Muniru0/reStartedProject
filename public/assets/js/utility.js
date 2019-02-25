@@ -1,6 +1,62 @@
 
+$("#logout_link").click(function(e){
+      let element = $(e.delegateTarget)[0];
+      
+    if(!utility.validate_presence(element)){
+	  		return;
+	  	}
+	$(element).addClass("deactivate-logout");
+      
+	$(element).find("img").show();
+   
+	$("#logout_form").unbind("submit");  
+    $("#logout_form").submit(function(e){
+   $.ajax({
+            url:"../private/logout.php",
+            type:"POST",
+            data:$("#logout_form").serialize(),
+            dataType:"html"
+  }).done(function(response){
+	  console.log(response);
+	  try{
+		  
+		   response = JSON.parse(response);
+	  
+	  if(response["true"] != undefined && $.trim(response["true"]) != "" && $.trim(response["true"]) == "logout"){
+		  location.href= "login.php";
+	  }else if(response["false"] != undefined && $.trim(response["false"]) != ""){
+		  showErrorDialogBox(response["false"]);
+	  }else{
+		  alert("Please something went wrong please try again later");
+	  }
+	   }catch(e){
+		    alert("Please something went wrong please try again later");
+	   }finally{
+		  $(element).removeClass("deactivate-logout",1000,"easeInBack");
+			
+	   }
+	 
+  }).fail(function(){
+  	alert("Server error please try again");
+  });
+  e.preventDefault();
+});
+e.preventDefault();
+});
 
 class utility {
+   
+
+   // just for debugging
+    static nodes_and_indeces(element){
+
+
+       for(var index = 0; index < element.length ; index++){
+          console.log(index);
+
+          console.log(element[index]);
+        }  
+    }
 
 
    // auto resize all text areas
@@ -22,7 +78,6 @@ $(textArea).change();
 		oField.style.height = oField.scrollHeight + "px";
 	}else if(oField.clientHeight < oField.scrollHeight){
 	    	// update the height of the input text field in px;
-			 console.log("this is a console log for the pressing of a key");
 		oField.style.height = oField.clientHeight + "px";
 	}
 	  }// autGrow();
@@ -135,17 +190,9 @@ return true;
 			utility.showErrorDialogBox("Sorry, please try again.");
 		});
 		
-		
-		
-		
-		
-		
-		
-	}
+		}
 	
-	  static logout(){
-	$( "#logout_form" ).submit(function( event ) {
-  event.preventDefault();
-});
-	  }
-	}
+	
+	  	
+
+}	

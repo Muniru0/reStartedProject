@@ -6,6 +6,7 @@ if(is_request_post() && request_is_same_domain()) {
   if(!csrf_token_is_valid() || !csrf_token_is_recent()) {
 	  
 	// Do the logout processes and redirect to login page.
+	log_action("logout","this is a log out action");
 	after_successful_logout();
 	redirect_to('login.php');
 	

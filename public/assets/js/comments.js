@@ -10,17 +10,7 @@ class comment{
   
     
     
-  // just for debugging
-    static nodes_and_indeces(element){
-
-
-       for(var index = 0; index < element.length ; index++){
-          console.log(i);
-
-          console.log(element[index]);
-        }  
-    }
-
+  
    
   // helper static method for showing the replyBox
   static showReplyBox(commentID = 0){

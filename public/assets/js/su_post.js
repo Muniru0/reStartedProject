@@ -15,80 +15,85 @@ function post_option_delete(userID,postID,element){
 
  return;
   }
-	
-	 let postContainer = $(element).parentsUntil("#ps-activitystream").fadeOut(600);
+    
+     let postContainer = $(element).parentsUntil("#ps-activitystream").fadeOut(600);
 
-	$.ajax({
-		url: "../private/neutral_ajax.php",
-		type: "POST",
-		data: {post_id: postID,user_id: userID,request_type:"delete_post"},
-		dataType: "html"
-	}).done(function(response){
-		 
+    $.ajax({
+        url: "../private/neutral_ajax.php",
+        type: "POST",
+        data: {post_id: postID,user_id: userID,request_type:"delete_post"},
+        dataType: "html"
+    }).done(function(response){
+         
        try{
 response = JSON.parse(response);
 
-	// if the session is invalid
-					    if(response["false"] == "login"){
-							utility.toLoginPage();
-							return;
-						}else if($.trim(response["false"]) != ""){
-							utility.showErrorDialogBox(response["false"]);
-							return;
-						}
+    // if the session is invalid
+                        if(response["false"] == "login"){
+                            utility.toLoginPage();
+                            return;
+                        }else if($.trim(response["false"]) != ""){
+                            utility.showErrorDialogBox(response["false"]);
+                            return;
+                        }
        if(response["true"]){
-       	 $(postContainer).remove();
+         $(postContainer).remove();
        }
        }catch(e){
-       	$(postContainer).fadeIn(600);
+        $(postContainer).fadeIn(600);
   utility.showErrorDialogBox("It is our fault, but please try again.<br /> if problem persist refresh the page ");
        }
        
-	}).fail(function(error){
-		utility.showErrorDialogBox("It is our fault, but please try again.<br /> if problem persist refresh the page ");
-		$(postContainer).fadeIn(600);
-	});
+    }).fail(function(error){
+        utility.showErrorDialogBox("It is our fault, but please try again.<br /> if problem persist refresh the page ");
+        $(postContainer).fadeIn(600);
+    });
 
 }
 
 function post_option_follow(post_id,element){
-	
+    
 }
 
 function post_option_link(post_id,element){
-	
+    
 }
 
-function post_option_confirm(postID = 0 , element = ""){
-
-    if(!utility.validate_presence(postID)){
-    	return;
+function post_option_confirm(postID = 0 , element = "",option = null){
+ 
+    if(!utility.validate_presence(postID) || !utility.validate_presence(element)){
+        return;
     }
+  
+  let requestTypeValue = "confirm_post";
+    if($.trim(option) == "reverse_confirmation"){
+        requestTypeValue = "reverse_confirmation";
+     } 
 
     
 
     $.ajax({
-    	url: "../private/neutral_ajax.php",
-    	type: "POST",
-    	data: {request_type: "confirm_post",post_id: postID},
-    	dataType: "json"
+        url: "../private/neutral_ajax.php",
+        type: "POST",
+        data: {request_type: requestTypeValue,post_id: postID},
+        dataType: "json"
     }).done(function(response){
-      
+       console.log(response);
 try{
       response = JSON.parse(response);
       
       if($.trim(response[0]) == "true"){
 
-      	console.log("post confirmed");
+        console.log("post confirmed");
       }else if($.trim(response["false"]) != ""){
-      	 console.log("failed");
+         console.log("failed");
       }
-	  
-	}catch(e){
-		
-	utility.showErrorDialogBox(response["false"]);
-						
-	}
+      
+    }catch(e){
+        
+    utility.showErrorDialogBox(response["false"]);
+                        
+    }
     });
 
 
@@ -139,7 +144,7 @@ try{
     // var post_location      = post_location ? post_location : "Accra";
     //var post_location      = $("#location-tab") ? $("#location-tab") :  "";
     var post_log     =  10234456583;
-	var post_lat     = 38493083838;
+    var post_lat     = 38493083838;
   //  var post_links       = post_links ? post_links : ["Yussif","Muniru","Kareem","Ganiu"];
     var post_caption       = $("#post_caption") ? $("#post_caption"): false;
     var post_selectedLabel = post_selectedLabel ? post_selectedLabel : "";
@@ -151,9 +156,9 @@ try{
         //$(selectedLabel).controlgroup();
         $("fieldset .checkboxradio").prop("checked", false);
         $("fieldset .checkboxradio").checkboxradio("refresh");  
-	
-		
-		
+    
+        
+        
     }
 
   
@@ -210,7 +215,7 @@ try{
         clickable: ["#ps-upload-container", ".dropzone"],
         //    forceFallback: true,
         dictDefaultMessage: "",
-		dictMaxFilesExceeded :"Please you can upload a Maximun of 10 files",
+        dictMaxFilesExceeded :"Please you can upload a Maximun of 10 files",
         dictRemoveFileConfirmationn: true,
         init: function () {
             var dz = this;
@@ -239,7 +244,7 @@ try{
                 //console.log(post_links);
                 console.log(post_selectedLabel);
                 console.log(post_lat);
-				console.log(post_log); */
+                console.log(post_log); */
                // refresh the label selection
                 try{
                     dz.processQueue();
@@ -303,7 +308,7 @@ try{
        // formData.append("mood", post_mood["span"]);
         formData.append("caption",$(post_caption).val());
         formData.append("log",post_log);
-		formData.append("lat",post_lat);
+        formData.append("lat",post_lat);
         //formData.append("media", post_links);
         formData.append("title",post_title.val());
         formData.append("csrf_token", $.trim($("#csrf").prop("value")));
@@ -311,47 +316,47 @@ try{
 
     });
 
-	// when the entire queue has being uploaded successfully
-	myDropzone.on("queuecomplete",function(file){
-           		
+    // when the entire queue has being uploaded successfully
+    myDropzone.on("queuecomplete",function(file){
+                
 
  $("#ps-activitystream").prepend(returnedPost);
-		 $("#ps-activitystream").show();
-		
-		  reset_postbox();
-	});
+         $("#ps-activitystream").show();
+        
+          reset_postbox();
+    });
 
     // if the file sending completed without errors
     myDropzone.on("success", function (file, response) {
           
-		  console.log(response);
-		 
+          console.log(response);
+         
         try {
-			 	  
-		 response = JSON.parse(response);
-		 
-		     if(response[0] == null){
-		     	showPostErrorAlert = true;
-		     }
-		     
-		// if the session is invalid
-		if(response["false"] == "login"){
-			  utility.toLoginPage();
-							return;
-						}else if($.trim(response["false"]) != ""){
-							utility.showErrorDialogBox(response["false"]);
-							return;
-						}
-		 $.each(response,function(index,value){
-			 
-			 returnedPost =  utility.replaceString("\\n","",value);
-			 console.log(returnedPost);	
-		 });
-		 
-		}catch(e){
-			console.log(e);
-			alert("It's our fault but please try again");
-		}
+                  
+         response = JSON.parse(response);
+         
+             if(response[0] == null){
+                showPostErrorAlert = true;
+             }
+             
+        // if the session is invalid
+        if(response["false"] == "login"){
+              utility.toLoginPage();
+                            return;
+                        }else if($.trim(response["false"]) != ""){
+                            utility.showErrorDialogBox(response["false"]);
+                            return;
+                        }
+         $.each(response,function(index,value){
+             
+             returnedPost =  utility.replaceString("\\n","",value);
+             console.log(returnedPost); 
+         });
+         
+        }catch(e){
+            console.log(e);
+            alert("It's our fault but please try again");
+        }
        
       
         return;
@@ -408,16 +413,16 @@ try{
             $(progressBar).css("width", Math.ceil(percentage) + "%");
 
         }
-		 
+         
         if ($(sizeSent)) {
             $(sizeSent).html(Math.floor(percentage) + "% ( " + size + " ) ");
         }
-		
-		if(percentage == 100 && showPostErrorAlert === true ){
-			  setTimeout(function(){
-				  
-			  });
-		}
+        
+        if(percentage == 100 && showPostErrorAlert === true ){
+              setTimeout(function(){
+                  
+              });
+        }
         //  console.log($(progressBar).prev());
         //        console.log("ceil: " + Math.ceil(percentage) +" round: " + Math.round(percentage));
     });
@@ -807,7 +812,7 @@ return false;
     // reset the entire postbox
     function reset_postbox(key) {
        
-	   myDropzone.on("reset",function(){});
+       myDropzone.on("reset",function(){});
       refreshLabel();
       toggleCancelButton("hide");
       post_selectedLabel = "";
@@ -815,16 +820,16 @@ return false;
       if($(".label-error") && $(".label-error").css("display") == "block"){
            $(".label-error").hide();
       }
-	  
-	   let titleError = $("sup")[0];
-	  
-	  if($(titleError) && ($(titleError).css("display") == "inline" || $(titleError).css("display") == "block")){
-		$(titleError).hide();
-	  }
+      
+       let titleError = $("sup")[0];
+      
+      if($(titleError) && ($(titleError).css("display") == "inline" || $(titleError).css("display") == "block")){
+        $(titleError).hide();
+      }
      
-	 if($(post_caption)){
-		 $(post_caption).val();
-	 }
+     if($(post_caption)){
+         $(post_caption).val();
+     }
 
       $(post_title).val("");
       var span = $("span.ps-postbox-addons");
@@ -875,8 +880,8 @@ return false;
     } //reset_postbox()
 
 
-	
-	
+    
+    
 
     $(document).ready(function () {
 

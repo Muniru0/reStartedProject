@@ -229,7 +229,7 @@ $(window).scroll(function() {
     return fullS.split(oldS).join(newS);
 }
 
-  console.log($("div#log").html());
+ 
 </script>
 <!--<textarea id="textarea" oninput=" return activity.me(this);" onkeyup="autoGrow(this);" class="" ></textarea>
 <input  type= "text" oninput="print_value(this) ;" placeholder ="type here and see console" onkeyup="autoGrow(this);"  style="overflow:hidden; width:600px; height:300px;"/> 
@@ -293,22 +293,20 @@ $(".box1").click(function(){
     
     
     </script>
-	
-	<div class = "div-1">
-	  <ul>
-	  
-	  <li>
-	    <a><p>
-		 <em>How are you doing</em>
-		</p></a>
-		
-	  </li></ul>
-	  
+	 <button type="button" id="logout" class="btn">Logout</button>
+	<form id="target" action="../private/logout.php" method="POST" name="login" style="display:none;">
+    <?php echo csrf_token_tag();?>
+	  </form>
 	  <script>
 	  
-	 console.log($("em").parentsUntil(".div-1"));
+	$("#logout").click(function(e){
+   $("#target").unbind("submit");
+   $( "#target" ).submit();
+
+  });
 	  </script>
-<!--
+  
+<!--  
 <br>
 <br>
 <br>
@@ -503,7 +501,7 @@ th, p, td {
 ?>
 
 <?php
- 
+echo strtotime("29 January 2019"), "\n"; 
 
 
 

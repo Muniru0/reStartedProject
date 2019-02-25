@@ -91,7 +91,7 @@ img.emoji {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 -->
 <!-- Bootstrap styles -->
-<link rel="stylesheet" href="assets/jquery.fileupload.plugin/css/bootstrap.min.css" async>
+<!--<link rel="stylesheet" href="assets/jquery.fileupload.plugin/css/bootstrap.min.css" async>-->
 <!-- Generic page styles -->
 <link rel="stylesheet" href="assets/css/style.css" async>
 <!--
@@ -578,19 +578,31 @@ button:hover {
     border-radius: 5px;
     font-size: 1.5em;
 }
+
+#logout_link {
+	background:#a6abb2;
+    color:#643c3ce0;
+}
+
+#logout_link:hover {
+	opacity: 0.9;
+}
+
+.deactivate-logout{
+	background: #ccced1 !important;
+    color: #8b8585e0 !important;
+    font-size: 0.8em;
+}
+
+.ps-postbox-charcount, .ps-charcount--input {
+   background-color: #a6abb2;
+    color: #643c3ce0;
+    border-radius: 0.2em !important;
+}
 </style>
 	  </head>
   <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 logged-in plg-peepso" id="top">
-  <script>
-     function autoGrow(oField){
-	if(oField.scrollHeight > oField.clientHeight)
-	{
-		oField.style.height = oField.scrollHeight + "px";
-	}
-}
-
-
-  </script>
+  
     <div class="top__button" style="display: none;">
       <a class="btn btn--red" href="#top"><svg class="svg-inline--fa fa-angle-up fa-w-10" aria-hidden="true" data-prefix="fas" data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"></path></svg><!-- <i class="fas fa-angle-up"></i> --></a>
     </div>
@@ -787,7 +799,7 @@ button:hover {
 							<div class="ps-progress-status ps-completeness-status" style="">
 					<a href=" ://demo.peepso.com/profile/demo/about">Your profile is 37% complete</a>				</div>
 				<div class="ps-progress-bar ps-completeness-bar" style="">
-					<span style="width:0%"></span>
+					<span style="width:60%"></span>
 				</div>
 
 
@@ -796,9 +808,12 @@ button:hover {
 			<div class="ps-widget--profile__menu">
 				<a href=" ://demo.peepso.com/profile/demo/" class=""><span class="ps-icon-home"></span> Stream</a><a href=" ://demo.peepso.com/profile/demo/about" class=""><span class="ps-icon-user"></span> About</a><a href="../private/" class=""><span class="ps-icon-users"></span> Friends</a><a href=" ://demo.peepso.com/profile/demo/groups" class=""><span class="ps-icon-group"></span> Groups</a><a href=" ://demo.peepso.com/profile/demo/photos" class=""><span class="ps-icon-camera"></span> Photos</a><a href=" ://demo.peepso.com/profile/demo/videos" class=""><span class="ps-icon-videocam"></span> Videos</a>			</div>
        <div class="ps-widget--profile__menu">
-					<a href="#" onclick="utility.logout();" class=""><span class="ps-icon-off"></span> Log Out</a>	
-   <form id="logout_form" ACTION="../private/logout.php" METHOD="POST" style="display:none;">
-   <?php csrf_token_tag();?>
+					<a href="#" id="logout_link" tabindex="0" role="button"  style="border-radius:3px;"><span class="ps-icon-off" style="color:#d2578b;"></span> Log Out <img src="assets/images/ajax-loader.gif" alt="ajax loader" style="position: relative;top: 0.2em;left: 1.3em; display:none;" /></a>	
+
+   <form id="logout_form" METHOD="POST" style="display:none;">
+   <?php echo csrf_token_tag();?>
+   <button type="submit" id="logout_button" name="submit"></button>
+   
    </form>
 					</div>
 
@@ -1230,7 +1245,7 @@ button:hover {
             <div style="position:relative">
                 <div class="ps-postbox-input ps-inputbox " id="post_title">
                     <sup class="label-error" style="font-size: 1em; top: 0.01em; right: 0em; display:none;">Please a title is required *</sup>
-                    <input class="ps-textarea ps-videos-url input" maxlength="50" placeholder="Please give a title to your post (Max: 50 characters)" style="min-height: 1.4em; text-align: center; font-size: 14px !important">
+                    <input class="ps-textarea ps-videos-url input" maxlength="100" placeholder="Please give a title to your post (Max: 100 characters)" style="min-height: 1.4em; text-align: center; font-size: 14px !important">
                     <div class="ps-postbox-loading" style="display: none;">
                         <img src="https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif">
                         <div>
@@ -2078,7 +2093,8 @@ button:hover {
             
   <div class="login-area">
 <form class="ps-form ps-js-form-login" method="post" name="login" id="form">
-   <input id="csrf" type="hidden" name="csrf_token" value="15a6b97e16503f7789a1e98b4ae29039"><div class="ps-landing-form">
+   <!--<input id="csrf" type="hidden" name="csrf_token" value="15a6b97e16503f7789a1e98b4ae29039">
+   --><div class="ps-landing-form"> 
         <div class="ps-form-input ps-form-input-icon">
           <span class="ps-icon"><i class="ps-icon-user"></i></span>
           <input class="ps-input" type="text" id="login_box_email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true">
@@ -2420,12 +2436,12 @@ window.onclick = function(event) {
 		</div>
 	</div>
 </div>
-<div id="reply_div_1" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display: none;">
+<div id="reply_div_1"  class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-493" data-type="stream-newcomment" data-formblock="true" style="display: none;">
 		<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 			<img src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_1" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); " oninput="comment.reply_field_change(1,this);" ="write="" a="" reply..."="" style="overflow: hidden; height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_1" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return  " oninput="comment.reply_field_change(1,this);" ="write="" a="" reply..."="" style="overflow: hidden; height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
             
 		<!--<div class="ps-commentbox__addons ps-js-addons">
 		
@@ -2540,7 +2556,7 @@ window.onclick = function(event) {
 		</a>
 		<div class="ps-textarea-wrapper cstream-form-input">
 
-			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return comment.autoGrow(this); "  oninput = "comment.reply_field_change(10,this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+			<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="reply_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" onkeypress="return  "  oninput = "comment.reply_field_change(10,this);" ="Write a reply..." style="overflow:hidden;" ></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
             
 		<!--<div class="ps-commentbox__addons ps-js-addons">
 
@@ -2590,10 +2606,10 @@ window.onclick = function(event) {
 </div>
 		</div>
 
-<div id="comment_area_wrapper_10" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
+<div id="comment_area_wrapper_10"  class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-482" data-id="482" data-type="stream-newcomment" data-formblock="true" >
 			
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="comment_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea"  name="comment"  oninput="return comment.autoGrow(this); " onkeypress = "comment.on_text_field_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." style="overflow:hidden;"></textarea></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea id="comment_area_10" class="ps-textarea cstream-form-text ps-tagging-textarea"  name="comment"  oninput="return  " onkeypress = "comment.on_text_field_change(this);" MAXLENGTH="4000" placeholder="Write a comment..." style="overflow:hidden;"></textarea></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2768,12 +2784,12 @@ window.onclick = function(event) {
 		<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--498" data-act-id="498">
 					</div>
 
-						<div id="act-new-comment-498"  onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498" data-id="498" data-type="stream-newcomment" data-formblock="true">
+						<div id="act-new-comment-498"   class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498" data-id="498" data-type="stream-newcomment" data-formblock="true">
 			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 				<img data-author="4" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 			</a>
 			<div class="ps-textarea-wrapper cstream-form-input">
-				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="498" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return activity.autoGrow(this); activity.on_commentbox_change(this);"  placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
+				<div class="ps-tagging-wrapper"><div class="ps-tagging-beautifier"></div><textarea data-act-id="498" class="ps-textarea cstream-form-text ps-tagging-textarea" name="comment" oninput="return "  placeholder="Write a comment..." style="height: 35px;"></textarea><input type="hidden" class="ps-tagging-hidden"><div class="ps-tagging-dropdown"></div></div>
 				<div class="ps-commentbox__addons ps-js-addons">
 <div class="ps-commentbox__addon ps-js-addon-giphy" style="display:none">
 	<div class="ps-popover__arrow ps-popover__arrow--up"></div>
@@ -2979,7 +2995,7 @@ window.onclick = function(event) {
 		<div class="ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--500" data-act-id="500">
 					</div>
 
-						<div id="act-new-comment-500" onkeyup="autoGrow(this);" class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-500" data-id="500" data-type="stream-newcomment" data-formblock="true">
+						<div id="act-new-comment-500"  class="ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-500" data-id="500" data-type="stream-newcomment" data-formblock="true">
 			<a class="ps-avatar cstream-avatar cstream-author" href=" ://demo.peepso.com/profile/demo/">
 				<img data-author="4" src=" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg" alt="">
 			</a>
