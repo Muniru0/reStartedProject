@@ -76,6 +76,7 @@ img.emoji {
 <link rel="stylesheet" id="widgetopts-styles-css" href="assets/css/widget-options.css" type="text/css" media="all"> -->
 <!--<link rel="stylesheet" id="peepso-theme-css-css" href=" ://demo.peepso.com/wp-content/themes/new/style.css?ver=4.9.7" type="text/css" media="all">-->
 <!--<link rel="stylesheet" id="peepso-site-font-css" href=" ://fonts.googleapis.com/css?family=Roboto+Condensed%3A300%2C400%2C700&amp;ver=4.9.7" type="text/css" media="all">-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" id="peepso-site-css-04-06-css" href="assets/css/speakup_minor.css" type="text/css" media="all" async>
 <!-- <link rel="stylesheet" id="peepso-moods-css" href="assets/css/moods.css" type="text/css" media="all">
 <link rel="stylesheet" id="peepso-giphy-css" href="assets/css/giphy.css" type="text/css" media="all">

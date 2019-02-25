@@ -136,8 +136,13 @@ require_once(PRIVATE_DIR."initialize.php");
 
 // Actions to preform after every successful logout
  public static function after_successful_logout() {
+	
 	if (session_status() === PHP_SESSION_ACTIVE) {
+	/*  if(!self::update_invalid_confirmations()){
+			return;
+		}  */
 		$_SESSION['logged_in'] = false;
+		
         self::end_session();
 	}
 
@@ -164,6 +169,46 @@ require_once(PRIVATE_DIR."initialize.php");
 }
 
 
+// check the number of invalid confirmations and take 
+// the appropriate action
+  public static function check_invalid_confirmatory_attempts(){
+	 
+	  // if the user has acceptable invalid confirmations parameters
+	  if(isset($_SESSION) && isset($_SESSION[user::$invalid_confirmations]) && (int)$_SESSION[user::$invalid_confirmations] < 100  && (int)$_SESSION[user::$invalid_confirmations] > -1){
+		   
+		   return true;
+	  }
+	
+	  return false;
+  }// check_invalid_confirmatory_attempts();
 
+  
+  // update the number of invalid confirmations 
+  public static function update_invalid_confirmations(){
+	  global $db;
+	  if(!isset($_SESSION) || !isset($_SESSION[user::$invalid_confirmations]) || $_SESSION[user::$invalid_confirmations] < 0){
+	
+	  return false;
+	  }
+	  
+	  
+	 $query = "UPDATE ".user::$table_name." SET ".user::$invalid_confirmations."= {$_SESSION[user::$invalid_confirmations]} WHERE id={$_SESSION[user::$id]} LIMIT 1";
+
+$result = $db->query($query);
+
+if(trim($db->error) == "" && $result){
+	
+	return true;
+  }
+log_action(__CLASS__," this is a complete log action: ".__LINE__);
+print j(["false"=> "Please server problem, refresh the page and try again"]);
+
+$result->close();
+return false;	 
+  
+ 
+  
+  
+ }
  }
 ?>

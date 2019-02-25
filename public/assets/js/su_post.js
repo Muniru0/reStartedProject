@@ -82,9 +82,25 @@ function post_option_confirm(postID = 0 , element = "",option = null){
 try{
       response = JSON.parse(response);
       
-      if($.trim(response[0]) == "true"){
-
-        console.log("post confirmed");
+      if(response[0] == "true"){
+          
+           if(option == "reverse_confirmation" ){
+               $(element).attr("title"," You have just confirmed that post really happened");
+                 $(element).find("span").replaceWith("<span>Confirm this post</span>");
+         $(element).attr("onclick","post_option_confirm("+ postID +",this)");
+           }else if(option == "confirm_post" || option == null){
+                $(element).attr("title","Confirm that this incident really happened");
+                 $(element).find("span").replaceWith("<span>Reverse Confirmation</span>");
+         $(element).attr("onclick","post_option_confirm("+ postID +",this,'reverse_confirmation')");
+           }else{
+               return;
+           }
+        
+  let mainParent = $(element).parentsUntil(".ps-stream");
+  
+  $(mainParent).find(".ps-stream__post-pin").find("span").css("background","#3cbdac");  
+  $(element).css("background","#3cbdac");
+  $(element).html();
       }else if($.trim(response["false"]) != ""){
          console.log("failed");
       }

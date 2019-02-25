@@ -386,7 +386,7 @@ return;
 		   return;
 	   }
 	   
-	  if(isset($_SESSION) || (int)$_SESSION["id"] < 0){
+	  if(!isset($_SESSION) || (int)$_SESSION["id"] < 0){
       print j(["false"=>"login"]);
       return;
       }
@@ -408,23 +408,25 @@ $query = "CALL confirm_post($post_id,{$id},{$flag})";
 // perform the query on the database
 if($db->multi_query($query)){
 	 do{
-		  log_action(__CLASS__,"endr");
+		 
 		// store the result set
        	if($result = $db->store_result()){
 			if($row = $result->fetch_assoc()){
-                foreach($row As $value){
-                    log_action(__CLASS__,"value: ".$value." on line: ".__LINE__);
-                }
-				if(isset($row["result"]) && trim($db->error) != ""){
-					print j(["false" =>$row["result"]]);
+                if(isset($row["result"])){
+					print j(["false" =>"Please try again,if refresh the page if the problem persist"]);
 					return;
-				}elseif($row["post_id"] && trim($db->error) != ""){
-					
+				}elseif(isset($row["post_id"]) && $row["post_id"] > 0 ){
+					  
 					print j(["true"]);
 					return;
 				}elseif(trim($db->error) != ""){
+					
 					 print j(["false"=>"Sorry server problem,please try again."]);
 					 return;
+				}elseif(isset($row["invalid_confirmer"])){
+					$_SESSION[user::$invalid_confirmation] = $_SESSION[user::$invalid_confirmation]++;
+					print j(["false"=>"Please you not eligible to confirm a post"]);
+					return;
 				}
 			}else{
             log_action(__CLASS__, "{$db->error} ".__LINE__);
@@ -440,10 +442,6 @@ if($db->multi_query($query)){
 		print j(["true"]);
 		return;
 	}
-	
-	log_action(__CLASS__," Failure to confirm the post ");
-	print j(["false" =>"Invalid request,please try again."]);
-	
 }else{
             log_action(__CLASS__, "{$db->error} ".__LINE__);
         }	
