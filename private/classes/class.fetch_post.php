@@ -654,7 +654,7 @@ return json_encode($views);
 </a>
 ";
   $confirmation_option_string = "";
- if((int)$_SESSION[user::$post_confirmation_eligibility] === 2 || (int)$_SESSION[user::$post_confirmation_eligibility] === 3){
+ if((int)$_SESSION[user::$user_category] === 2 || (int)$_SESSION[user::$user_category] === 3){
 	
     // post option with the link to confirm or reverse the confirmation 	
 	if($confirmation == 0){
@@ -662,7 +662,7 @@ return json_encode($views);
 		  $confirmation_option_string = "<a href='javascript:' onclick='post_option_confirm({$post_id},this);return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span title='You can confirm that this incident really happened'>Confirm  this post</span>
 </a>";
 	}elseif(isset($confirmer) && $confirmer == $_SESSION["id"] && $confirmation == 1){
-	    $confirmation_option_string = "<a href='javascript:' onclick='post_option_reveseConfirmation({$post_id},this);return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span title='You can reverse the the confirmation of this post'>Reverse Confirmation</span>
+	    $confirmation_option_string = "<a href='javascript:' onclick='post_option_confirm({$post_id},this,'reverse_confirmation');return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span title='You can reverse the the confirmation of this post'>Reverse Confirmation</span>
 </a>";
    }
 
@@ -735,7 +735,7 @@ if( !isset($post_id) || is_array($post_id)
 	   }
 	  
 	   
-     $query = "SELECT ".user::$table_name.".".user::$firstname.",".user::$table_name.".".user::$lastname.",".user::$post_confirmation_eligibility.",".PostImage::$table_name.".*,".self::$table_name.".*,".PostImage::$table_name.".id AS post_table_id,".self::$table_name.".id AS file_id FROM ".PostImage::$table_name."
+     $query = "SELECT ".user::$table_name.".".user::$firstname.",".user::$table_name.".".user::$lastname.",".user::$user_category.",".PostImage::$table_name.".*,".self::$table_name.".*,".PostImage::$table_name.".id AS post_table_id,".self::$table_name.".id AS file_id FROM ".PostImage::$table_name."
 				JOIN ".user::$table_name." ON 
 				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id JOIN ".self::$table_name." ON ".self::$table_name.".post_id = ".PostImage::$table_name.".id WHERE 
 				".PostImage::$table_name.".id = $post_id  LIMIT 10";
@@ -1544,7 +1544,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
             $full_header   .= self::get_time_template($post_info[PostImage::$upload_time]);
 			
 			// add the manipulation options to the post header
-			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info["post_table_id"],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[user::$post_confirmation_eligibility],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);
+			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info["post_table_id"],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[user::$user_category],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);
 			
 			// gets the caption of post
            // $full_header   .= self::get_caption_template($post_info["caption"]);			

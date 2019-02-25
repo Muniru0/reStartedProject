@@ -5,7 +5,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
     border: 0;
     font-size: 1%;
     font: inherit;
-    font-family: 'Roboto Condensed', sans-serif !important;
+    font-family: 'Rubik', sans-serif !important;
     vertical-align: baseline;
 }
 
@@ -79,7 +79,7 @@ img {
 }
 
 h1,h2,h3,h4,h5 {
-    font-family: 'Roboto Condensed', sans-serif !important;
+    font-family: 'Rubik', sans-serif !important;
     color: #333
 }
 
@@ -94,7 +94,7 @@ a:hover {
 }
 
 p {
-    font-family: 'Roboto Condensed', sans-serif !important;
+    font-family: 'Rubik', sans-serif !important;
     line-height: 1.4;
     letter-spacing: .2px
 }
@@ -105,16 +105,16 @@ strong {
 
 body {
     font-size: 16px !important;
-    font-family: 'Roboto Condensed', sans-serif !important;
+    font-family: 'Rubik', sans-serif !important;
     color: #9298a0
 }
 
 input {
-    font-family: 'Roboto Condensed', sans-serif !important
+    font-family: 'Rubik', sans-serif !important
 }
 
 button,input[type="submit"] {
-    font-family: 'Roboto Condensed', sans-serif !important;
+    font-family: 'Rubik', sans-serif !important;
     cursor: pointer
 }
 

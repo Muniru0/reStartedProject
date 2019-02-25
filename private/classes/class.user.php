@@ -11,7 +11,7 @@
 class user extends DatabaseObject{
     
     
-    public    static $table_name            = "users";
+    public    static $table_name     = "users";
     private   static $class_name     = "user";
 
     protected static $fields = ["id","firstname","lastname","email","password","gov","date","interest","business_logo","business_name","profile_image","profession","phone","profile_image_time","industry","logo_time","location","description"]; 
@@ -37,7 +37,7 @@ class user extends DatabaseObject{
     public static $logo_time         = "" ;
     public static $location          = "" ;
     public static $description       = "" ;
-	public static $post_confirmation_eligibility     = "post_confirmation_eligibility";
+	public static $user_category     = "user_category";
     public static $follow_query_type = "query_type";
 
    

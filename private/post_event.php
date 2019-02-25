@@ -38,7 +38,7 @@ try {
            return;
         }
         // check the length of the title string
-     if(!has_length("title",["max" => 50])){
+     if(!has_length("title",["max" => 100])){
         print  j(["false" => "Please the maximum number of characters for the title is <b>(50)</b>"]);
            return;
         }

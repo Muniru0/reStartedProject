@@ -353,9 +353,7 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "mainst
 	Pagination::get_infnite_scroll($_POST["request_type"]);
 	 $_SESSION["scroll_ready_state"] = false;
 }
-
-
-elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "confirm_post"){
+elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "confirm_post" || trim($_POST["request_type"]) === "reverse_confirmation")){
 	
 	//check the validity of the session
 	if((int)$_SESSION["id"] < 1){
@@ -364,7 +362,7 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "confir
 	}
 	
 	// check the eligibility of the person to confirm the post
-	if((int)$_SESSION[user::$post_confirmation_eligibility] < 2 ){
+	if((int)$_SESSION[user::$user_category] < 2 ){
 		 print j(["false" =>"Invalid request,if the problem persists re-login"]);
 		 return;
 	}
@@ -374,8 +372,9 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "confir
 		 print j(["false" => "Invalid request,if the problem persists please re-login"]);
 		 return;
 	}
+
 	//confirm the post
-	PostImage::confirm_post($post_id);
+	PostImage::confirm_post($post_id,$_POST["request_type"]);
 	
 }
 // reactions 

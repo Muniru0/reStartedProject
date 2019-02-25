@@ -18,8 +18,8 @@ function create_csrf_token() {
 
 // Destroys a token by removing it from the session.
 function destroy_csrf_token() {
-    $_SESSION['csrf_token'] = null;
- 	$_SESSION['csrf_token_time'] = null;
+   $_SESSION["csrf_token"] = isset($_SESSION["csrf_token"]) ? $_SESSION['csrf_token'] = null : null ;
+ 	$_SESSION["csrf_token_token"] = isset($_SESSION['csrf_token_time']) ? $_SESSION["csrf_token"] = null :  null;
 	return true;
 }
 
