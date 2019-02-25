@@ -343,11 +343,7 @@ elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
 // get the main stream infinite scroll
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "mainstream"){
 
-	  if(!isset($_SESSION["scroll_ready_state"]) || $_SESSION["scroll_ready_state"] === false){
-		  print j(["pending"=>"waiting"]);
-		  $_SESSION["scroll_ready_state"] = true;
-		 return; 
-	  }
+	
 	  
 	// get the main infinite scroll for the sreaming of post
 	Pagination::get_infnite_scroll($_POST["request_type"]);
