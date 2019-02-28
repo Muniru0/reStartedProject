@@ -9,104 +9,16 @@ require_once("../private/initialize.php");
         <script src = "assets/js/jquery.js" ></script> 
 		<script src = "assets/js/jquery-ui.min.js" ></script> 
 		<link rel="stylesheet" href= "assets/css/bootstrap.css" />
-		<link rel="stylesheet" href= "assets/fonts/font-awesome/css/font-awesome.min.css" />
-       
-    <style>
-      
-
- .noScrollbars {
-	 overflow:hidden; width:600px; height:300px;
- }
+		
 
 
-@font-face {
-  font-family: "fontawesome";
-  src: url("/fonts/fontawesome-webfont.woff2") format("woff2"),
-     url("assets/fonts/fontawesome-webfont.woff") format("woff");
-}
-
-
-
-@font-face {
-  font-family: "Second";
-  src:url("assets/fonts/glyphicons-halflings-regular.eot") format("EOT");
-}
-
- body {
-	 text-align:center;
-	 font-family: "fontawesome" !important;
- }
- 
-<!--  div{
-	 margin: 0px auto;
- } -->
- 
-
-
-
-
-<!-- .switch{
-	position: relative;
-	display: inline;
-    margin-left: 32px;
-}
-
-.switch label {
-	
-	width: 55px;
-	height: 23px;
-	position: absolute;
-	background-color: #999;
-	top: 0;
-	left: 0px;
-	border-radius: 50px;
-	}
-	
-.switch input[type="radio"]{
-	visibility: hidden;
-}
-
-.switch label:first-child {
-	margin-left: 100px;
-}
-.switch label:after {
-	content: "";
-	width: 21px;
-	height: 21px;
-	border-radius: 50px;
-	position: absolute;
-	top: 1px;
-	left: 1px;
-	transition: all 0.5s;
-	background-color: white;
-}
-
-.switch input[type="radio"]:checked + label:after {
-	left: 33px;
-}
-
-.switch input[type="radio"]:checked  + label{
-	background-color:#5bc5a1;
-}
-
-.scroller {
-  width: 300px;
-  height: 100px;
-  overflow-y: scroll;
-  scrollbar-color: rebeccapurple green;
-  scrollbar-width: thin;
-} -->
-
-</style>
-
-
-    </head>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" > 
+</head>
  <body>
-<!---->
 <!--    //<img src="../includes/assets/images/loader.gif" />
  <form action="#" METHOD="POST" enctype="multipart/form-data">
  <input type="file" id="file" name="file" />
-<input type="submit" name="submit" />
+<input type="submit" name="submit" /><link rel="stylesheet" href="assets/fonts/font-awesome/css/font-awesome.min.css" />
  </form>
 -->
 
@@ -293,18 +205,7 @@ $(".box1").click(function(){
     
     
     </script>
-	 <button type="button" id="logout" class="btn">Logout</button>
-	<form id="target" action="../private/logout.php" method="POST" name="login" style="display:none;">
-    <?php echo csrf_token_tag();?>
-	  </form>
-	  <script>
-	  
-	$("#logout").click(function(e){
-   $("#target").unbind("submit");
-   $( "#target" ).submit();
-
-  });
-	  </script>
+	
   
 <!--  
 <br>
@@ -501,15 +402,15 @@ th, p, td {
 ?>
 
 <?php
-echo strtotime("29 January 2019"), "\n"; 
+$string = "post_id = 351 || post_id=";
 
-
-
-if(isset($_SESSION["post_ids"]) && !empty($_SESSION["post_ids"])){
-	
-	print_r($_SESSION["post_ids"]);
-	
+echo substr_replace($string,'',-11, 11);
+if(isset($_SESSION["id"])){
+	echo "set";
 }
+echo "<i class='fal fa-check-circle'></i>";
+
+
 die();
 $array2 = ["a","b","c"];
     foreach($array1 AS $array){
