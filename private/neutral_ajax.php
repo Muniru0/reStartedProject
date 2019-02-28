@@ -42,6 +42,11 @@ if(!Session::before_every_protected_page()){
 }
 
 
+if(!Session::check_invalid_confirmatory_attempts()){
+	return;
+}
+
+
 function is_ajax(){
 
 	return isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == "xmlhttprequest";

@@ -19,10 +19,17 @@ class Reaction extends DatabaseObject{
   public static $checked     = "checked";
   public static $not_checked = "not_checked";
 
-  public static $db_id       = "id";
-  public static $db_user_id  = "user_id";
-  public static $db_reaction = "reaction";
-  public static $db_post_id  = "post_id";
+  // table column names
+  public static $id       = "id";
+  public static $post_id  = "post_id";
+  public static $user_id  = "user_id";
+  public static $reaction_type = "reaction_type";
+  
+  //Join query column aliases
+  public static $alias_of_id       = "reactions_table_id";
+  public static $alias_of_post_id  = "reactions_table_post_id";
+  public static $alias_of_user_id  = "reactions_table_user_id";
+  public static $alias_of_reaction_type = "reactions_table_reaction_type";
 
 
 

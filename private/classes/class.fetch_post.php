@@ -4,11 +4,17 @@ require_once("../private/initialize.php");
 
 class FetchPost extends DatabaseObject{
 
-    public static $class_name = "FetchPost";
+    //  table and column columns names
     public static $table_name = "normal_post_table";
     public static $id         = "id";
 	public static $post_id    = "post_id";
-	public static $filenames  = "filenames";
+	public static $filename  = "filename";
+	
+	
+	// aliases of table columns
+    public static $alias_of_id         = "normal_post_table_id";
+	public static $alias_of_post_id    = "normal_post_table_post_id";
+	public static $alias_of_filename  = "normal_post_table_filename";
 	 
 	
 	public static $images_dir_string = "../private/".UPLOADS_DIR.IMGS_THUMBS_DIR;
@@ -647,10 +653,10 @@ return json_encode($views);
 		$delete_post_string = $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_delete({$_SESSION["id"]}, {$post_id},this);' data-post-id='930'><i class='ps-icon-trash'></i><span>Delete Post</span>
 </a> ";
 		
-		$follow_post_string =  $_SESSION["id"] == $user_id ? "" : "<a href='javascript:' onclick='post_option_follow({$post_id},this);' data-post-id='930'><i class='ps-icon-eye'></i><span>follow this post</span>
+		$follow_post_string =  $_SESSION["id"] == $user_id ? "" : "<a href='javascript:' onclick='post_options({$post_id},this,'follow_post');' data-post-id='930'><i class='ps-icon-eye'></i><span>follow this post</span>
 </a>";
 		
-	    $link_user_string =  $_SESSION["id"] == $user_id ? "" :"<a href='javascript:' onclick='post_option_link({$post_id},this);return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span>Link with {$firstname} {$lastname}</span>
+	    $link_user_string =  $_SESSION["id"] == $user_id ? "" :"<a href='javascript:' onclick='post_options({$post_id},this,'link_user');return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span>Link with {$firstname} {$lastname}</span>
 </a>
 ";
   $confirmation_option_string = "";
@@ -659,10 +665,10 @@ return json_encode($views);
     // post option with the link to confirm or reverse the confirmation 	
 	if($confirmation == 0){
 		
-		  $confirmation_option_string = "<a href='javascript:' onclick='post_option_confirm({$post_id},this);return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span title='You can confirm that this incident really happened'>Confirm  this post</span>
+		  $confirmation_option_string = "<a href='javascript:' onclick='post_options({$post_id},this)' data-post-id='930' title='You can confirm that this incident really took place' class='confirm_post'><i class='fal fa-check-circle' style='color:inherit;'></i><span  style='color:inherit;'>Confirm  this post</span>
 </a>";
 	}elseif(isset($confirmer) && $confirmer == $_SESSION["id"] && $confirmation == 1){
-	    $confirmation_option_string = "<a href='javascript:' onclick='post_option_confirm({$post_id},this,'reverse_confirmation');return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span title='You can reverse the the confirmation of this post'>Reverse Confirmation</span>
+	    $confirmation_option_string = "<a href='javascript:' onclick='post_options({$post_id},this,'reverse_confirmation')' data-post-id='930' title='You can reverse the the confirmation of this post' class='reverse_confirmation'><i class='fal fa-undo-alt' style='color:inherit !important'></i><span style='color:inherit;'>Reverse Confirmation</span>
 </a>";
    }
 
@@ -687,6 +693,10 @@ return json_encode($views);
 		
 		
 	}
+	
+	
+	
+	
 	public static function get_caption_template($caption = ""){
 		
 		if(!isset($caption) || trim($caption) == "" || empty($caption)){
@@ -790,7 +800,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 		return [];
 	}else{
 	// was the post giving out to the user	
-	  return self::get_full_post($returned_array,$comments,RECENT);
+	  return self::get_full_post($returned_array,$comments,[],RECENT);
 	
 	}
   
@@ -805,7 +815,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 
 	
 	//get the layout template for two images 
-public static function images_layout_template($post_id = 0,$images =[],$number_of_supports,$number_of_opposes,$caption = null){
+public static function images_layout_template($post_id = 0,$images =[],$number_of_supports = 0,$number_of_opposes = 0,$reactions_user_ids = [],$caption = null){
  
 	
 	  // veirfy the entire the images array
@@ -813,7 +823,7 @@ public static function images_layout_template($post_id = 0,$images =[],$number_o
 			return false;
 		}
 		
-		 $count = count($images);
+		$count = count($images);
 		
 		// verify the number of images
 		if($count < 1)
@@ -826,26 +836,65 @@ public static function images_layout_template($post_id = 0,$images =[],$number_o
 		return false;	
 		}
 
-		  $toggle_reactions_count = "";
 		  
+		  // check the number of reactions and show or hide the 
+		  // the reactions div accordingly
+		  $toggle_reactions_count = "";
 		  if($number_of_supports < 1 && $number_of_opposes < 1){
 			  $toggle_reactions_count = "style='display:none;'";
 		  }
 		  
-		/* $number_of_supports_string = $number_of_supports > 0 ? "<a title='Number of supports' href='javascript:void(0)' style='margin-left: 3.3em;'>
-		{$supports} supported</a>" : "<a title='Number of supports' href='javascript:void(0)' style ='display:none; margin-left:3.3em;'>
-</a>";
-		$number_of_opposess_string = $number_of_opposes > 0 ? "<a title='Number of opposes' href='javascript:void(0)' style='margin-left: 2em;'>
-		{$opposes} supported</a>" : "<a title='Number of opposes' href='javascript:void(0)' style ='display:none; margin-left: 2em;'>
-</a>";
-		 */
+		$number_of_supports_string = ""; 
+	    $number_of_opposes_string = "";
+		$support_selected = "";
+        $oppose_selected = "";
+		$support_deselected = "";
+        $oppose_deselected = "";
+		
+		$support_span_selected = "";
+        $oppose_span_selected = "";
+		$support_span_deselected = "";
+        $oppose_span_deselected = "";
+		
+		$support_check     = "";
+		$oppose_check      = "";
+		  
+		     
+		  if(($number_of_supports > 0 || $number_of_opposes > 0) && !empty($reactions_user_ids)){ 
 		 
-		 $number_of_supports_string = 
-		 "<a title='Number of supports' href='javascript:void(0)' style='margin-left: 3.3em;'>
+		   if(isset($_SESSION) && isset($_SESSION[user::$id]) && (int)$_SESSION[user::$id] > 0){
+  
+			   if(array_key_exists($_SESSION[user::$id],$reactions_user_ids)){
+				   if((int)$reactions_user_ids[$_SESSION[user::$id]] === 2){
+					   $support_selected  = "selected_reactions_count";
+					   $oppose_deselected = "deselected_reactions_count";
+					   $support_span_selected = "selected_support_span";
+					   $oppose_span_deselected = "deselected_oppose_span";
+					   $support_check     = "checked='checked'";
+					   
+		
+					   
+				   }elseif((int)$reactions_user_ids[$_SESSION[user::$id]] === 1){
+					   $support_deselected  = "deselected_reactions_count";
+					   $oppose_selected     = "selected_reactions_count";
+					   $support_span_deselected = "deselected_support_span";
+					   $oppose_span_selected = "selected_oppose_span";
+					   $oppose_check        = "checked='checked'";
+				   }
+				   
+				   
+			   }
+		   }
+		  }
+		
+		
+		
+		$number_of_supports_string = 
+		 "<a class='{$support_selected} {$support_deselected}' title='Number of supports'  href='' onclick='return'  style='margin-left: 3.3em; cursor:initial;'>
 		{$number_of_supports} supported</a>";
 		
-		$number_of_opposess_string ="<a title='Number of opposes' href='javascript:void(0)' style='margin-left: 2em;'>
-		{$number_of_opposes} supported</a>" ;
+		$number_of_opposes_string ="<a class='{$oppose_selected} {$oppose_deselected}' title='Number of opposes' href=''  onclick='return' style='margin-left: 2em; cursor:initial;'>
+		{$number_of_opposes} opposed</a>" ;
 		
  $images_string = "<div class='ps-stream-body'>
 		".self::get_caption_template($caption)."
@@ -956,18 +1005,18 @@ if($width >= 1000){
 
 	<div class='reactions'>
 
-    <input type='radio' name='reaction_{$post_id}' id='support_{$post_id}' oninput='reaction.addReaction({$post_id},2,this)'/>
+    <input type='radio' name='reaction_{$post_id}' id='support_{$post_id}' oninput='reaction.addReaction({$post_id},2,this)' {$support_check}/>
 	<label for='support_{$post_id}'  title='Support the above post' ></label>
-    <span class='support-span'>Support</span>
+    <span class='support_span {$support_span_deselected} {$support_span_selected}'>Support</span>
 	
-	<span class='oppose-span'>Oppose</span>
-	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)'/>
-	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em'></label>
+	<span class='oppose_span {$oppose_span_deselected} {$oppose_span_selected}'>Oppose</span>
+	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)' {$oppose_check}/>
+	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em;background:#dc756f;'></label>
  </div>
    
    <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' $toggle_reactions_count style='padding-left:0px;padding-right: 0px;'>
 							
-".$number_of_supports_string.$number_of_opposess_string." 
+".$number_of_supports_string.$number_of_opposes_string." 
 </div>
  
 
@@ -1109,17 +1158,7 @@ if(!file_exists(self::$images_dir_string.$image)){
 			}
 				}
 
-	
-/* 
-	 if($count == 2){
-		 
-	 }elseif($count == 3){
-		 
-	 }elseif($count == 4){
-		 
-	 }elseif($count > 4){
-		   
-	}	 */
+
 	
 $images_string .= "</div></div></div></div>
 <div class='ps-stream-actions stream-actions' data-type='stream-action'>
@@ -1130,18 +1169,18 @@ $images_string .= "</div></div></div></div>
        
 	<div class='reactions'>
 
-    <input type='radio' name='reaction_{$post_id}' id='support_{$post_id}' oninput='reaction.addReaction({$post_id},2,this)'/>
+    <input type='radio' name='reaction_{$post_id}' id='support_{$post_id}' oninput='reaction.addReaction({$post_id},2,this)' {$support_check}/>
 	<label for='support_{$post_id}'  title='Support the above post' ></label>
-    <span class='support-span'>Support</span>
+    <span class='support_span  {$support_span_deselected} {$support_span_selected}'>Support</span>
 	
-	<span class='oppose-span'>Oppose</span>
-	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)'/>
-	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em'></label>
+	<span class='oppose_span  {$oppose_span_deselected} {$oppose_span_selected}'>Oppose</span>
+	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)' {$oppose_check}/>
+	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em; background:#dc756f;'></label>
  </div>
    
    <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' $toggle_reactions_count style='padding-left:0px;padding-right: 0px;'>
 							
-".$number_of_supports_string.$number_of_opposess_string." 
+".$number_of_supports_string.$number_of_opposes_string." 
 </div>
  
 
@@ -1149,7 +1188,7 @@ $images_string .= "</div></div></div></div>
 	unset($dimen);
  return $images_string;
 		
-	}// two_images_layout_template();
+	}// images_layout_template();
 
 
 
@@ -1474,7 +1513,7 @@ $images_string .= "</div></div></div></div>
 
 // GET THE FULL HEADER
 // brings back the header of the post
-    public static function get_full_post($returned_array = [],$views = null,$flag = ""){
+    public static function get_full_post($returned_array = [],$views = null,$reactions_user_ids = [],$flag = ""){
 		
   
 	try{
@@ -1550,7 +1589,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
            // $full_header   .= self::get_caption_template($post_info["caption"]);			
 			// get the images and their arrangements
 			
-			$full_body     = self::images_layout_template($post_info["post_table_id"],$images,$post_info[PostImage::$support],$post_info[PostImage::$oppose],$post_info[PostImage::$caption]);
+			$full_body     = self::images_layout_template($post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reactions_user_ids[$post_info[PostImage::$alias_of_id]],$post_info[PostImage::$caption]);
 			 // get the reaction and comment box
 			  
 				  

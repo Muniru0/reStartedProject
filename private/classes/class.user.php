@@ -32,17 +32,24 @@ class user extends DatabaseObject{
     public static $profile_image     = "" ;
     public static $profile_image_time= "" ;
     public static $profession        = "" ;
-    public static $phone             = "" ;
-    public static $industry          = "" ;
-    public static $logo_time         = "" ;
-    public static $location          = "" ;
-    public static $description       = "" ;
-	public static $user_category     = "user_category";
+    public static $phone             	 = "" ;
+    public static $industry          	 = "" ;
+    public static $logo_time         	 = "" ;
+    public static $location          	 = "" ;
+    public static $description       	 = "" ;
+	public static $user_category     	 = "user_category";
+	public static $invalid_confirmations = "invalid_confirmations";
+
     public static $follow_query_type = "query_type";
 
    
-  
-
+    // aliases of database columns
+	 public static $alias_of_id                = "users_table_id" ;
+    public static $alias_of_firstname         = "users_table_firstname" ; 
+    public static $alias_of_lastname          = "users_table_lastname" ;
+    public static $alias_of_email             = "users_table_email" ;
+    public static $alias_of_user_category     	 = "users_table_user_category";
+	public static $alias_of_invalid_confirmations = "users_table_invalid_confirmations";
   
    // general insert function that enables you to
    

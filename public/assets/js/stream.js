@@ -12,7 +12,10 @@ $(window).scroll(function() {
 		 }).done(function(response){
 			console.log(response);
 			response = JSON.parse(response);
-			
+
+			  
+			   
+
 			if($.trim(response["pending"]) == "waiting"){
 				
 			$("#ps-activitystream-loading").show();
@@ -23,18 +26,21 @@ $(window).scroll(function() {
 					 	 return;
 						}else if($.trim(response["false"]) != ""){
 					 	 utility.showErrorDialogBox("Please it is our fault but please try again.");
+					 	  $("#ps-activitystream-loading").hide();
 						 return;
 					 }
 					 
-					 $("#ps-activitystream-loading").hide();
-					 $.each(response,function(index,value){
-					 if($.trim($("#ps-activitystream")) != "" && $("#ps-activitystream") != null && $("#ps-activitystream")){
-						 
-						$("#ps-activitystream").append(value); 
-					 }else{
+					 if($.trim($("#ps-activitystream")) != "" && $("#ps-activitystream") != null ){
+					$.each(response,function(index,value){
+					$("#ps-activitystream").append(value);
+				 });
+				
+				  
+				  }else{
 						 console.log("not found");
 					 }
-				 });
+					
+					  $("#ps-activitystream-loading").hide();
 			
 			 }
 				 

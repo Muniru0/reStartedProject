@@ -28,6 +28,20 @@ class PostImage extends FileUpload {
     public static $oppose       = "oppose";
     public static $confirmation = "confirmation";
     public static $confirmer    = "confirmer";
+	
+	//column aliases
+	 public static $alias_of_id          = "post_table_id";
+    public static $alias_of_uploader_id  = "post_table_uploader_id";
+    public static $alias_of_upload_time  = "post_table_upload_time";
+    public static $alias_of_title        = "post_table_title";
+    public static $alias_of_label        = "post_table_label";
+    public static $alias_of_caption      = "post_table_caption";
+	public static $alias_of_log          = "post_table_longitude";
+    public static $alias_of_lat          = "post_table_latitude";
+    public static $alias_of_support      = "post_table_support";
+    public static $alias_of_oppose       = "post_table_oppose";
+    public static $alias_of_confirmation = "post_table_confirmation";
+    public static $alias_of_confirmer    = "post_table_confirmer";
 
 
 
@@ -386,7 +400,11 @@ return;
 		   return;
 	   }
 	   
-	  if(isset($_SESSION) || (int)$_SESSION["id"] < 0){
+
+	  
+
+	  if(!isset($_SESSION) || (int)$_SESSION["id"] < 0){
+
       print j(["false"=>"login"]);
       return;
       }
@@ -408,45 +426,37 @@ $query = "CALL confirm_post($post_id,{$id},{$flag})";
 // perform the query on the database
 if($db->multi_query($query)){
 	 do{
-		  log_action(__CLASS__,"endr");
+		 
 		// store the result set
        	if($result = $db->store_result()){
 			if($row = $result->fetch_assoc()){
-                foreach($row As $value){
-                    log_action(__CLASS__,"value: ".$value." on line: ".__LINE__);
-                }
-				if(isset($row["result"]) && trim($db->error) != ""){
-					print j(["false" =>$row["result"]]);
+
+      if(isset($row["re_confirmation"])){
+					print j(["false" =>"Please this post has already being confirmed by someone else"]);
+
 					return;
-				}elseif($row["post_id"] && trim($db->error) != ""){
-					
-					print j(["true"]);
+				}elseif(isset($row["post_id"]) && (int)$row["post_id"] > 0 ){
+					  
+					print j(["true" => "done"]);
 					return;
 				}elseif(trim($db->error) != ""){
+					
 					 print j(["false"=>"Sorry server problem,please try again."]);
 					 return;
+				}elseif(isset($row["invalid_confirmer"])){
+					$_SESSION[user::$invalid_confirmation] = $_SESSION[user::$invalid_confirmation]++;
+					print j(["false"=>"Please you not eligible to confirm a post"]);
+					return;
 				}
-			}else{
-            log_action(__CLASS__, "{$db->error} ".__LINE__);
-        }   
-		}else{
-            log_action(__CLASS__, "{$db->error} ".__LINE__);
-        }	
-		 
-		
+			}
+		}
 	 }while($db->more_results() && $db->next_result());
 	
-	if($db->affected_rows  == 1){
-		print j(["true"]);
-		return;
-	}
-	
-	log_action(__CLASS__," Failure to confirm the post ");
-	print j(["false" =>"Invalid request,please try again."]);
-	
-}else{
-            log_action(__CLASS__, "{$db->error} ".__LINE__);
-        }	
+
+}
+
+print j(["false"=>"Please try again later, if the problem persists please refresh the page"]);
+return;	
 	   
 	   
    }//confirm_post();

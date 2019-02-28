@@ -13,25 +13,36 @@ class Views extends DatabaseObject{
    public static $commentor_id = "commentor_id";
    public static $comment_time = "comment_time";
    
+   //columns aliases in database
+   public static $alias_of_id           = "views_table_id";
+   public static $alias_of_post_id      = "views_table_post_id";
+   public static $alias_of_comment      = "views_table_comment";
+   public static $alias_of_commentor_id = "views_table_commentor_id";
+   public static $alias_of_comment_time = "views_table_comment_time";
+   
 
    // get all the views for some specific post_ids
    public static function get_views_with_replys($post_id , $views_with_replys) {
 	   
 	   if(empty($post_id)  || $post_id < 1 ){
 		   log_action(__CLASS__, " View with this post id is zero (".$post_id.") on line: ".__LINE__." in file: ".__FILE__);
+		   print j(["false" =>"Sorry server problem,please try again, if problem persists refresh the page."]);
+		   return;
 		 
 	   }
 	   
 	   if(!is_array($views_with_replys) || in_array(0,$views_with_replys)){
 		   log_action(__CLASS__, "on one the views with the post id as (".$post_id.") has an index as zero or the array of views and replys is not an array on line: ".__LINE__." in file: ".__FILE__);
+		   print j(["false" =>"Sorry server problem,please try again, if problem persists refresh the page."]);
+		   return;
 	}
 	   
      	 
 	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' >
 		<div class='ps-comment-container comment-container ps-js-comment-container'> ";
 		
-		if(empty($views_with_replys) || !is_array($views_with_replys) 
-			|| in_array(0,$views_with_replys) || empty($post_id)  || $post_id < 1 ){
+		if(!empty($views_with_replys) && is_array($views_with_replys) 
+			&&  (int)$post_id < 1 ){
 		
 	   foreach($views_with_replys As $view => $replys){
 		   $view_info = array_pop($view);
@@ -73,7 +84,8 @@ class Views extends DatabaseObject{
 	 
 }
 
- return $views_and_viewsbox_template_string .= " <div id='comment_area_wrapper_{$post_id}' onkeyup='autoGrow(this);' class='ps-comment-reply cstream-form stream-form wallform ps-js-comment-new'>
+
+  $views_and_viewsbox_template_string .= " <div id='comment_area_wrapper_{$post_id}'  class='ps-comment-reply cstream-form stream-form wallform ps-js-comment-new'>
 			
 			<div class='ps-textarea-wrapper cstream-form-input'>
 				<div class='ps-tagging-wrapper'><div class='ps-tagging-beautifier'></div><textarea id='comment_area_{$post_id}' class='ps-textarea cstream-form-text ps-tagging-textarea' name='comment'  oninput='utility.resizeTextarea(this);' onkeypress='comment.on_text_field_change(this);' maxlength='4000' placeholder='Write a comment...' style='overflow:hidden;'></textarea></div>
@@ -115,7 +127,9 @@ class Views extends DatabaseObject{
 				</div>
 			</div>
 		</div></div>";
-	   
+		
+		
+	   return $views_and_viewsbox_template_string;
    }// get_views_with_replys();
    
    

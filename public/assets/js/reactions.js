@@ -18,14 +18,14 @@ class reaction {
 	    reactionValue = reactionValue.valueOf();
        // toggle the colors of the label and reactions text
        if(reactionValue === 2){
-       	
+       	 $(targetElement).attr("checked","");
        	 // find the support span tag 
        	 let supportSpan =  $(parent).find("span")[0];
 		   if($(supportSpan) && $.trim(supportSpan) != ""){
 		//change it's html 
        	  $(supportSpan).html("Supported");
        	   // add the support span selected class
-       	   $(supportSpan).removeClass("deselected-support-span").addClass("selected-support-span");
+       	   $(supportSpan).removeClass("deselected_support_span").addClass("selected_support_span");
        	   
 		  }
 		 
@@ -34,12 +34,12 @@ class reaction {
           	// find the support count and add a selected reactions count class to it
           	  if($(supportCount) && $.trim($("#reactions_count_" + postID).find("a")[0]) != "" ){
           	  	  supportCount = $("#reactions_count_" + postID).find("a")[0];
-          	  	  $(supportCount).removeClass("deselected-reactions-count").addClass("selected-reactions-count");
+          	  	  $(supportCount).removeClass("deselected_reactions_count").addClass("selected_reactions_count");
           	  }
           	  // find the oppose count and add a deselected reactions count class to it
                  if($(opposeCount) && $.trim($("#reactions_count_" + postID).find("a")[1]) != ""){
           	  	  opposeCount = $("#reactions_count_" + postID).find("a")[1];
-          	  	  $(opposeCount).removeClass("selected-reactions-count").addClass("deselected-reactions-count");
+          	  	  $(opposeCount).removeClass("selected_reactions_count").addClass("deselected_reactions_count");
           	  }
 
           	
@@ -51,7 +51,7 @@ class reaction {
 		  // change the text inside the oppose span
           $(opposeSpan).html("oppose");
           // change it's color
-          $(opposeSpan).removeClass("selected-oppose-span").addClass("deselected-oppose-span");
+          $(opposeSpan).removeClass("selected_oppose_span").addClass("deselected_oppose_span");
 		  
 		  }
           // find the support label and set its background
@@ -72,6 +72,7 @@ class reaction {
     
        //if the the reaction is an oppose
        }else if(reactionValue === 1){
+       	$(targetElement).attr("checked","");
        	// find the support span
         let supportSpan =  $(parent).find("span")[0];
 		 if($(supportSpan) && $.trim(supportSpan) != ""){
@@ -80,7 +81,7 @@ class reaction {
         $(supportSpan).html("Support");
           // change the color of the support span 
           // to show a de-selected option
-       	 $(supportSpan).removeClass("selected-support-span").addClass("deselected-support-span");
+       	 $(supportSpan).removeClass("selected_support_span").addClass("deselected_support_span");
        	// find the support label
        	supportLabel = $(parent).find("label")[0];
         // change the background color of support lable
@@ -97,7 +98,7 @@ class reaction {
           // change its html
           $(opposeSpan).html("Opposed");
           // change the color of the oppose span
-          $(opposeSpan).removeClass("deselected-oppose-span").addClass("selected-oppose-span");
+          $(opposeSpan).removeClass("deselected_oppose_span").addClass("selected_oppose_span");
         
           // find the label of the oppose 
          opposeLabel = $(parent).find("label")[1];
@@ -110,12 +111,12 @@ class reaction {
           	// find the support count and add a selected reactions count class to it
           	  if($(supportCount) && $.trim($("#reactions_count_" + postID).find("a")[0]) != "" ){
           	  	  supportCount = $("#reactions_count_" + postID).find("a")[0];
-          	  	  $(supportCount).removeClass("selected-reactions-count").addClass("deselected-reactions-count");
+          	  	  $(supportCount).removeClass("selected_reactions_count").addClass("deselected_reactions_count");
           	  }
           	  // find the oppose count and add a deselected reactions count class to it
                  if($(opposeCount) && $.trim($("#reactions_count_" + postID).find("a")[1]) != ""){
           	  	  opposeCount = $("#reactions_count_" + postID).find("a")[1];
-          	  	  $(opposeCount).removeClass("deselected-reactions-count").addClass("selected-reactions-count");
+          	  	  $(opposeCount).removeClass("deselected_reactions_count").addClass("selected_reactions_count");
           	  }
 
           	
@@ -154,16 +155,7 @@ class reaction {
                     if( $("#reactions_count_" + response["post_id"]) && $("#reactions_count_" + response["post_id"]).find("a")[0]){
                     	  let supportChange = $("#reactions_count_" + response["post_id"]).find("a")[0];
                     	   if($(supportChange) && $(supportChange) != ""){
-                    	   	if(response["support"].valueOf() > 1){
-                    	   		console.log("greater than 1 in valueOf");
-                    	   	}else{
-                    	   		console.log("not greater than 1 in valueOf");
-                    	   	}
-                    	   	if(response["support"] > 1){
-                    	   		console.log("greater than 1 in other");
-                    	   	}else{
-                    	   		console.log("not greater than 1 in other");
-                    	   	}
+                    	   
                     	   let reactionString = response["support"] > 1 ? response["support"] + " supports" : response["support"] + " support";
                     	  $(supportChange).html(reactionString);
                     	   }

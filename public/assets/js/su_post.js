@@ -59,38 +59,112 @@ function post_option_link(post_id,element){
     
 }
 
-function post_option_confirm(postID = 0 , element = "",option = null){
+function post_options(postID = 0 , element = "",option = null){
  
     if(!utility.validate_presence(postID) || !utility.validate_presence(element)){
         return;
     }
   
-  let requestTypeValue = "confirm_post";
-    if($.trim(option) == "reverse_confirmation"){
-        requestTypeValue = "reverse_confirmation";
-     } 
+   let requestTypeValue        = "confirm_post";
+   let title                   = "";
+   let confirmationText        = "";
+   let elementUiAdditionClass  = "";
+   let elementUiRemoveClass    = "";
+   let iconAdditionClass       = "";
+   let iconRemovedClass        = "";
+   let elementOnclickAttr      = "";
+ 
+ 
 
+   requestTypeValue = (option == null || $.trim(option) == "") ? "comfirm_post" : option;
     
 
     $.ajax({
         url: "../private/neutral_ajax.php",
         type: "POST",
         data: {request_type: requestTypeValue,post_id: postID},
-        dataType: "json"
+        dataType: "html"
     }).done(function(response){
        console.log(response);
 try{
       response = JSON.parse(response);
-      
-      if($.trim(response[0]) == "true"){
+      let confirmationTextSpan = $(element).find("span")[0]; 
+      let confirmationIcon = $(element).find("i")[0];
+     
+      if(response["true"] == "done"){
+           if(option == "confirm_post" || option == null){
+                
+                 title = "Confirm that this incident really took place";
+                 confirmationText = "Reverse Confirmation";
+                 iconRemovedClass = "fal fa-check-circle";
+                 iconAdditionClass = "fal fa-undo-alt";
+                 elementUiRemoveClass = "confirm_post";
+                 elementUiAdditionClass = "reverse_confirmation";
+                 elementOnclickAttr = "post_option_confirm("+ postID +",this,'reverse_confirmation')";
+                 
+           }else
+          if(option == "reverse_confirmation"){
+                 title                  = "You have just confirmed that post really happened";
+                 confirmationText       = "Confirm this post";
+                 iconAdditionClass      = "fal fa-check-circle";
+                 iconRemovedClass       = "fal fa-undo-alt";
+                 elementUiAdditionClass = "confirm_post";
+                 elementUiRemoveClass   = "reverse_confirmation";
+                 elementOnclickAttr     = "post_option_confirm("+ postID +",this)";
+                 
+           }else if(option == "link_user" || option == "follow_post"){
+     
+                  title                  = (option == "linkage") ?  "You will start seeing incidents posted by this person" : "You will be notified about any updates on this incident";
+                  confirmationText       = (option == "linkage") ? "Unlink with this person" : "Unfollow this incident";
+                  elementUiRemoveClass   = (option == "linkage") ? "link_user": "follow_post";
+                  elementUiAdditionClass = (option == "linkage") ? "unlink_user": "unfollow_post";
+                  iconRemovedClass       = (option == "linkage") ? "fal fa-check-circle" : "fal fa-check-circle" ;
+                  iconAdditionClass      = (option == "linkage") ? "fal fa-undo-alt" : "fal fa-undo-alt";
+                  elementOnclickAttr     = (option == "linkage") ? "post_option_confirm("+ postID +",this,'unlink_user')": "post_option_confirm("+ postID +",this,'unfollow_post')";
+           
+           }else if(option == "unlink_user" || option == "unfollow_post"){
+                  title                  = (option == "linkage") ?  "You will start seeing incidents posted by this person" : "You will be notified about any updates on this incident";
+                  confirmationText       = (option == "linkage") ? "Unlink with this person" : "Unfollow this incident";
+                  elementUiRemoveClass   = (option == "linkage") ? "unlink_user": "unfollow_post";
+                  elementUiAdditionClass = (option == "linkage") ? "link_user": "follow_post";
+                  iconRemovedClass       = (option == "linkage") ? "fal fa-undo-alt" : "fal fa-undo-alt" ;
+                  iconAdditionClass      = (option == "linkage") ? "fal fa-check-circle" : "fal fa-check-circle";
+                  elementOnclickAttr     = (option == "linkage") ? "post_option_confirm("+ postID +",this,'link_user')": "post_option_confirm("+ postID +",this,'follow_post')";
+           
+           }else {
+               return;
+           }
+           }
 
-        console.log("post confirmed");
-      }else if($.trim(response["false"]) != ""){
-         console.log("failed");
+          else if($.trim(response["false"]) != ""){
+         utility.showErrorDialogBox(response["false"]);
+      }
+
+   console.log(title);
+   console.log(elementUiRemoveClass);
+   console.log(elementUiAdditionClass);
+   console.log(iconAdditionClass);
+   console.log(iconRemovedClass);
+   console.log(confirmationText);
+   console.log(elementOnclickAttr);
+  return;
+
+                 $(element).attr("title",title);
+                 $(element).removeClass(elementUiRemoveClass).addClass(elementUiAdditionClass);
+                 $(element).find("i").removeClass(iconRemovedClass).addClass(iconAdditionClass);
+                 $(confirmationTextSpan).html(confirmationText);
+                 $(element).attr("onclick",elementOnclickAttr);
+        
+  let mainParent = $(element).parentsUntil(".ps-stream");
+  
+  $(mainParent).find(".ps-stream__post-pin").find("span").css("background","#3cbdac");  
+  $(element).css("background","#3cbdac");
+
+
       }
       
-    }catch(e){
-        
+    catch(e){
+         console.log(e);
     utility.showErrorDialogBox(response["false"]);
                         
     }

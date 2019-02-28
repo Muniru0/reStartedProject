@@ -17,6 +17,14 @@ class ReplyViews  extends Views {
       public static $reply_text    =    "reply";
 	  public static $reply_time    = 	"reply_time";
 	  
+	  // aliases of database columns
+      public static $alias_of_id            =    "reply_views_id";
+      public static $alias_of_post_id       =    "reply_views_post_id";
+      public static $alias_of_comment_id    =    "reply_views_comment_id";
+      public static $alias_of_user_id       =    "reply_views_user_id";
+      public static $alias_of_reply_text    =    "reply_views_reply";
+	  public static $alias_of_reply_time    = 	 "reply_views_reply_time";
+	  
 
 	  
 	

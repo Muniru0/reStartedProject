@@ -175,7 +175,7 @@ class comment{
          response = JSON.parse(response);
         
             let comment_template = document.querySelector("#comment_template");
-               console.log(comment_template);
+               
                     comment_template = comment_template.cloneNode(true);
                         comment_template.id = response["comment_div_id"];
                          $(comment_template).hide();
@@ -225,7 +225,7 @@ class comment{
      // set up the entire reply wall template
       if(document.querySelector("#reply_wall_template")){
         reply_template = document.querySelector("#reply_wall_template");
-        console.log(reply_template);
+        
         // clone the reply template
               reply_template = reply_template.cloneNode(true);  
       // set the id of the reply wall template div        
