@@ -41,11 +41,14 @@ class Views extends DatabaseObject{
 	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' >
 		<div class='ps-comment-container comment-container ps-js-comment-container'> ";
 		
+		$views_with_replys = $views_with_replys["postID_{$post_id}"];
 		if(!empty($views_with_replys) && is_array($views_with_replys) 
-			&&  (int)$post_id < 1 && isset($views_with_replys["postID_{$post_id}"])){
-		
-	   foreach($views_with_replys As $view => $replys){
-		   $view_info = array_pop($view);
+			&&  (int)$post_id < 1 && isset($views_with_replys)){
+	   foreach($views_with_replys As $index => $views){
+	   if(!isset($index)){
+		   continue;
+	   }
+		   $view_info = array_pop($views);
 		   
 		 $views_and_viewsbox_template_string .= "<div id='new_comment_'{$post_id} class='ps-comment-item cstream-comment stream-comment'  style='display:none;'>
 	
@@ -87,6 +90,8 @@ class Views extends DatabaseObject{
 }
 
 
+
+// the commentbox(the comment text area);
   $views_and_viewsbox_template_string .= " <div id='comment_area_wrapper_{$post_id}'  class='ps-comment-reply cstream-form stream-form wallform ps-js-comment-new'>
 			
 			<div class='ps-textarea-wrapper cstream-form-input'>

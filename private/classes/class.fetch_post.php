@@ -6,6 +6,7 @@ class FetchPost extends DatabaseObject{
 
     //  table and column columns names
     public static $table_name = "normal_post_table";
+
     public static $id         = "id";
 	public static $post_id    = "post_id";
 	public static $filename  = "filename";
