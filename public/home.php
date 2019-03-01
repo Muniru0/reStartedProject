@@ -547,7 +547,7 @@ background: #f9f9f9;
 
 
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" async> 
+<link rel="stylesheet" href="assets/fonts/fontawesome5/all.min.css"> 
 	 </head>
   <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 logged-in plg-peepso" id="top">
   
