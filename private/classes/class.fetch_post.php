@@ -1011,7 +1011,7 @@ if($width >= 1000){
 	
 	<span class='oppose_span {$oppose_span_deselected} {$oppose_span_selected}'>Oppose</span>
 	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)' {$oppose_check}/>
-	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em;background:#dc756f;'></label>
+	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em;'></label>
  </div>
    
    <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' $toggle_reactions_count style='padding-left:0px;padding-right: 0px;'>
@@ -1175,7 +1175,7 @@ $images_string .= "</div></div></div></div>
 	
 	<span class='oppose_span  {$oppose_span_deselected} {$oppose_span_selected}'>Oppose</span>
 	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)' {$oppose_check}/>
-	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em; background:#dc756f;'></label>
+	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em; '></label>
  </div>
    
    <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' $toggle_reactions_count style='padding-left:0px;padding-right: 0px;'>
@@ -1592,8 +1592,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			$full_body     = self::images_layout_template($post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reactions_user_ids[$post_info[PostImage::$alias_of_id]],$post_info[PostImage::$caption]);
 			 // get the reaction and comment box
 			  
-				  
-		    $full_body     .= Views::get_views_with_replys($post_info["post_table_id"],$comments); 
+$full_body     .= Views::get_views_with_replys($post_info[PostImage::$alias_of_id],$comments); 
 			
 			
 		 // if the post body is false then uset the post table id since we no longer 

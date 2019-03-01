@@ -402,9 +402,7 @@ th, p, td {
 ?>
 
 <?php
-$string = "post_id = 351 || post_id=";
-
-echo substr_replace($string,'',-11, 11);
+ Pagination::get_infnite_scroll("mainstream");
 if(isset($_SESSION["id"])){
 	echo "set";
 }

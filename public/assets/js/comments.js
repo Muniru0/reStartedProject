@@ -65,7 +65,7 @@ class comment{
     returnedArray.push(textArea);
     // get the comment from the text area
    
-    let comment_value = textArea.value;
+    let comment_value = $(textArea).val();
      returnedArray.push(comment_value); 
    // return fast if the comment is an empty string 
   if($.trim(comment_value) === ""){ 
@@ -159,10 +159,11 @@ class comment{
 
   // post a comment
     static post_comment(postID,post_button){
-    
-    let     returnedArray =  comment.prepare_text(postID,post_button,"comment",true);
+	   let     returnedArray =  comment.prepare_text(postID,post_button,"comment",true);	
+      try{
+   
       let   comment_value = returnedArray[1];
-     
+    
         //  post a new comment
       $.ajax({
          url: "../private/neutral_ajax.php",
@@ -170,8 +171,8 @@ class comment{
       type: "POST",
         datatype:"html",
       }).done(function(response){ 
-         console.log(response);
-        try{
+      
+        
          response = JSON.parse(response);
         
             let comment_template = document.querySelector("#comment_template");
@@ -274,17 +275,22 @@ class comment{
         $(textAreaDiv).attr("id","reply_area_wrapper_" + response["comment_info"][0]);
                  // find the comments list
         let comments_container = document.querySelector("#comment_area_wrapper_" + postID); 
-//            comments_container = $(comments_container).parent()[0];
-//            console.log(comments_container);
+
     
             // append the comment to the comments_container 
       $(comments_container).before(comment_template);
             $(comments_container).before(reply_template);
       
        $(comment_template).fadeIn(680);
-            // hide the grandParent
+        
+         
+       }).fail(function (error){
+         alert(error);
+       });
+	   
+	       // hide the grandParent
       }catch(e){
-        console.log(e);
+        
         alert("Sorry it is our fault, but please try again.");
       }finally{
             //finally block
@@ -295,10 +301,6 @@ class comment{
       $(returnedArray[4]).hide();
       returnedArray[0].disabled = false;
       }
-         
-       }).fail(function (error){
-         alert(error);
-       });
 
   } 
   
@@ -506,7 +508,7 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
               setTimeout(function (){
                  alert(response["false"]);
               },1000);
-                             console.log("error from server");
+                            
               
                   }
 
@@ -702,7 +704,7 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
     data     : {post_id : postCommentID,comment_id :commentReplyID,comment : newComment,edit_comment : requestType},
     datatype : "html"
     }).done(function(response){
-      console.log(response);
+     
     try {
     response = JSON.parse(response);
     if(response["true"] && $.trim(response["true"] != "")){
@@ -1013,7 +1015,7 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
       type: "POST",
         datatype:"html",
       }).done(function(response){ 
-                   console.log(response);
+                  
         try{
       response = JSON.parse(response);
       

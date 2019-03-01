@@ -23,7 +23,7 @@ class Views extends DatabaseObject{
 
    // get all the views for some specific post_ids
    public static function get_views_with_replys($post_id , $views_with_replys) {
-	   
+	  
 	   if(empty($post_id)  || $post_id < 1 ){
 		   log_action(__CLASS__, " View with this post id is zero (".$post_id.") on line: ".__LINE__." in file: ".__FILE__);
 		   print j(["false" =>"Sorry server problem,please try again, if problem persists refresh the page."]);
@@ -42,7 +42,7 @@ class Views extends DatabaseObject{
 		<div class='ps-comment-container comment-container ps-js-comment-container'> ";
 		
 		if(!empty($views_with_replys) && is_array($views_with_replys) 
-			&&  (int)$post_id < 1 ){
+			&&  (int)$post_id < 1 && isset($views_with_replys["postID_{$post_id}"])){
 		
 	   foreach($views_with_replys As $view => $replys){
 		   $view_info = array_pop($view);
@@ -80,6 +80,8 @@ class Views extends DatabaseObject{
 	</div>
 </div>";
 	   }
+	   
+	   
 	   
 	 
 }
