@@ -1554,7 +1554,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 		 if($skip_post){
 			 continue;
 		 }
-		$comments = $views["postID_".$post_info["post_table_id"]] ?? [];
+		
 			  if(!isset($images) || empty($images)){
 				 log_action(__CLASS__,"No images in the post on line :".__LINE__." in file: ".__FILE__);
 				  continue;
@@ -1592,7 +1592,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			
 			$full_body     = self::images_layout_template($post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reactions_user_ids[$post_info[PostImage::$alias_of_id]],$post_info[PostImage::$caption]);
 			 // get the reaction and comment box
-			  
+			  $comments = $views["postID_".$post_info[PostImage::$alias_of_id]] ?? [];
 $full_body     .= Views::get_views_with_replys($post_info[PostImage::$alias_of_id],$comments); 
 			
 			

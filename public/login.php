@@ -135,14 +135,15 @@ img.emoji {
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">      
 <link rel="stylesheet" href="assets/css/speakup_minor.css">
 <link rel="stylesheet" href="assets/css/speakup_major.css">
-<link rel="stylesheet" href="assets/fonts/fontawesome/all.css">
+
           
+<!--
 <link rel="stylesheet" href="assets/tmp_folder_for_login_page/bootstrap.min.css">      
 <link rel="stylesheet" href="assets/tmp_folder_for_login_page/speakup_minor.css">
 <link rel="stylesheet" href="assets/tmp_folder_for_login_page/speakup_major.css">
-<link rel="stylesheet" href="assets/fonts/fontawesome/all.css">
 
-<!--<link rel="stylesheet" href="assets1/css/style.css" />-->
+
+<link rel="stylesheet" href="assets1/css/style.css" />-->
   
 
 <!--<script type="text/javascript" src="assets1/js/jquery-migrate.min.js" defer></script>-->
@@ -155,28 +156,7 @@ img.emoji {
 <script type="text/javascript" src="assets/js/fontawesome-all.min.js" defer=""></script>
 <!--  DO NOT DEFER jquery or else the script will not find it ---->        
 <script type="text/javascript" src="assets/js/jquery.js"></script>
-<!--        
-<script type="text/javascript">
-/* <![CDATA[ */
-var peepsovipdata = {"template":"<div class=\"ps-vip__dropdown\">\n\t{{ _.each( data, function( item ) { }}\n\t<div class=\"ps-vip-dropdown__item\">\n\t\t<img src=\"{{= item.icon_url }}\" alt=\"{{= item.title }}\" title=\"{{= item.title }}\" class=\"ps-img-vipicons\" \/>\n\t\t<div class=\"ps-vip-dropdown-item__content\">\n\t\t\t<strong>{{= item.title }}<\/strong>\n\t\t\t<span>{{= item.content }}<\/span>\n\t\t<\/div>\n\t<\/div>\n\t{{ }); }}\n<\/div>\n"};
-/* ]]> */
-</script>
-<script type="text/javascript" src="https://demo.peepso.com/wp-content/plugins/peepso-extras-vip/assets1/js/index.js?ver=4.9.6"></script>
-<link rel="https://api.w.org/" href="https://demo.peepso.com/wp-json/">
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://demo.peepso.com/xmlrpc.php?rsd">
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://demo.peepso.com/wp-includes/wlwmanifest.xml"> 
-<meta name="generator" content="WordPress 4.9.6">
-<link rel="canonical" href="https://demo.peepso.com/">
-<link rel="shortlink" href="https://demo.peepso.com/">
-<meta property="og:title" content="PeepSo Demo">
-<meta property="og:description" content="Come and join our community. Expand your network and get to know new people!">
-<meta property="og:image" content="">
-<meta property="og:url" content="https://demo.peepso.com/">
-<link rel="icon" href="https://demo.peepso.com/wp-content/uploads/2017/09/PeepSo_128.png" sizes="32x32">
-<link rel="icon" href="https://demo.peepso.com/wp-content/uploads/2017/09/PeepSo_128.png" sizes="192x192">
-<link rel="apple-touch-icon-precomposed" href="https://demo.peepso.com/wp-content/uploads/2017/09/PeepSo_128.png">
-<meta name="msapplication-TileImage" content="https://demo.peepso.com/wp-content/uploads/2017/09/PeepSo_128.png">
--->
+
 		<style type="text/css" id="wp-custom-css">
 			.mce-ico {
     font-family: 'tinymce', Arial  !important;
@@ -187,11 +167,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 }		</style>
 	  </head>
   <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 plg-peepso" id="top">
-     
-      
-
-      
-    <div class="top__button">
+   <div class="top__button">
       <a class="btn btn--red" href="#top"><svg class="svg-inline--fa fa-angle-up fa-w-10" aria-hidden="true" data-prefix="fas" data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"></path></svg><!-- <i class="fas fa-angle-up"></i> --></a>
     </div>
     <div class="page__wrapper">
@@ -274,7 +250,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <div id="registration" class="ps-landing-action">
 <div class="alert alert-danger" id="login_err" role="alert" style="display:none;">
  <button type="button" class="close" data-dismiss="alert" id="close" aria-label="Close">
-    <span aria-hidden="true">×</span>
+    <span aria-hidden="true" style="position: relative;
+    bottom: 0.1em;">×</span>
   </button>
 </div>
 <script>

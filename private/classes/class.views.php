@@ -40,17 +40,19 @@ class Views extends DatabaseObject{
      	 
 	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' >
 		<div class='ps-comment-container comment-container ps-js-comment-container'> ";
+	
+   
 		
-		$views_with_replys = $views_with_replys["postID_{$post_id}"];
-		if(!empty($views_with_replys) && is_array($views_with_replys) 
-			&&  (int)$post_id < 1 && isset($views_with_replys)){
+		if(isset($views_with_replys) && !empty($views_with_replys) && is_array($views_with_replys) 
+			&&  (int)$post_id > 0 ){
 	   foreach($views_with_replys As $index => $views){
 	   if(!isset($index)){
 		   continue;
 	   }
-		   $view_info = array_pop($views);
+	  
+		   $views_info = array_pop($views);
 		   
-		 $views_and_viewsbox_template_string .= "<div id='new_comment_'{$post_id} class='ps-comment-item cstream-comment stream-comment'  style='display:none;'>
+		 $views_and_viewsbox_template_string .= "<div id='new_comment_{$post_id}' class='ps-comment-item cstream-comment stream-comment'>
 	
 
 	<div class='ps-comment-body cstream-content'>
@@ -64,7 +66,7 @@ class Views extends DatabaseObject{
 		<div class='ps-comment-media cstream-attachments'></div>
 
 		<div class='ps-comment-time ps-shar-meta-date'>
-			<small class='activity-post-age' data-timestamp='1529076871'><span class='ps-js-autotime' data-timestamp='1529076871' title='".strftime("%B, %e    %G  %I:%M %p",$view_info["comment_time"])."'>".FetchPost::time_converter($view_info["comment_time"])."</span></small>
+			<small class='activity-post-age' data-timestamp='1529076871'><span class='ps-js-autotime' data-timestamp='1529076871' title='".strftime("%B, %e    %G  %I:%M %p",$views_info["comment_time"])."'>".FetchPost::time_converter($views_info["comment_time"])."</span></small>
 
 						<div id='act-like-497' class='ps-comment-links cstream-likes ps-js-act-like--497' data-count='1'>
 				<a onclick='' href='#showLikes'>1 person likes this</a>			</div>
@@ -73,9 +75,9 @@ class Views extends DatabaseObject{
 				<span class='ps-stream-status-action ps-stream-status-action'>
 					<nav class='ps-stream-status-action ps-stream-status-action'>
 <a  onclick='activity.comment_action_like(this, 497); return false;' href='#like' class='actaction-like ps-icon-thumbs-up'><span><span title='1 person likes this'>Like</span></span></a>
-<a  onclick='comment.showReplyBox({$view_info["comment_id"]}); return false;' href='#reply' class='actaction-reply ps-icon-plus'><span>Reply</span></a>
-<a  onclick='comment.prepare_edit_comment({$post_id},{$view_info["comment_id"]},this,'comment'}, this); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
-<a  onclick='comment.delete_comment({$post_id},{$view_info["comment_id"]}); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
+<a  onclick='comment.showReplyBox({$views_info["comment_id"]}); return false;' href='#reply' class='actaction-reply ps-icon-plus'><span>Reply</span></a>
+<a  onclick='comment.prepare_edit_comment({$post_id},{$views_info["comment_id"]},this,'comment'}, this); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
+<a  onclick='comment.delete_comment({$post_id},{$views_info["comment_id"]}); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
 </nav>
 				</span>
 			</div>
