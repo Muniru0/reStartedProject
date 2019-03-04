@@ -801,7 +801,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 		return [];
 	}else{
 	// was the post giving out to the user	
-	  return self::get_full_post($returned_array,$comments,[],RECENT);
+	  return self::get_full_post($returned_array,$comments,[],[],[],RECENT);
 	
 	}
   
@@ -1514,7 +1514,7 @@ $images_string .= "</div></div></div></div>
 
 // GET THE FULL HEADER
 // brings back the header of the post
-    public static function get_full_post($returned_array = [],$views = null,$reactions_user_ids = [],$flag = ""){
+    public static function get_full_post($returned_array = [],$views = null,$reactions_user_ids = [],$views_likes_user_ids,$reply_views_likes_user_ids,$flag = ""){
 		
   
 	try{
@@ -1594,7 +1594,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			 // get the reaction and comment box
 			  $comments = $views["postID_".$post_info[PostImage::$alias_of_id]] ?? [];
 
-			$comments_with_replys = Views::get_views_with_replys($post_info[PostImage::$alias_of_id],$comments); 
+			$comments_with_replys = Views::get_views_with_replys($post_info[PostImage::$alias_of_id],$comments,$views_likes_user_ids,$reply_views_likes_user_ids); 
 			if($comments_with_replys){
 				$full_body     .= $comments_with_replys;
 			}else{
@@ -2080,11 +2080,11 @@ public static function get_reaction_template($support = 0, $oppose = 0,$post_id)
 <!--<a data-stream-id=\"482\" onclick=\"return reactions.action_reactions(this, 482);\" href=\"javascript:\" class=\"ps-reaction-toggle--482 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction\"><span>Like</span></a>-->
 <!--</nav>-->
         <!--Reaction buttons(support)-->
-        <input type=\"radio\" name=\"reaction\" id=\"support_$post_id\" value=\"support\" class=\"reactionCheckboxRadio\">
-        <label for=\"support_$post_id\"> Suppport(".$support.")</label>
+        <input type=\"radio\" name=\"reaction\" id=\"support_{$post_id}\" value=\"support\" class=\"reactionCheckboxRadio\">
+        <label for=\"support_{$post_id}\"> Suppport(".$support.")</label>
         <!--Reaction buttons(oppose) -->
-        <input type=\"radio\" name=\"reaction\" id=\"oppose_$post_id\" value=\"oppose\" class=\"reactionCheckboxRadio\">
-        <label for=\"oppose_$post_id\"> Oppose (".$oppose.")</label>
+        <input type=\"radio\" name=\"reaction\" id=\"oppose_{$post_id}\" value=\"oppose\" class=\"reactionCheckboxRadio\">
+        <label for=\"oppose_{$post_id}\"> Oppose (".$oppose.")</label>
 
 </div>";
 }

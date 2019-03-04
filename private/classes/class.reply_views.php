@@ -161,13 +161,14 @@ return $record;
   }
 
 
-  public static function get_reply_template($post_id = 0,$comment_id = 0,$replys = [],$likes_user_ids = []){
+  public static function get_reply_template($post_id = 0,$comment_id = 0,$replys = [],$reply_views_likes_user_ids = []){
 	      
 	  if(!isset($replys) || !is_array($replys)){
 		 
 		  return "";
 	  }
 	  
+	  // pull out the replys of the comments 
 	  $replys = $replys["replys_{$comment_id}"];
 	
 	  $replys_string = "";
@@ -186,21 +187,31 @@ return $record;
 	  
 	   return false;
   }
-  
-   
+    
+	       $toggle_likes_count = "";
+           $number_of_likes_in_span = "";
 		   $likes_count_string = "";
 		   if(isset($reply[Views::$alias_of_likes]) && $reply[Views::$alias_of_likes] < 1 ){
-			   $likes_count_string .= "<span class='likes_count'></span></a>";
+			   
+			   $toggle_likes_count = "style = 'display:none;'";
+			   $likes_count_string = "<span class='likes_count'></span></a>";
 		   }
 		   
 		   if(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$likes_user_ids)){
-			   $likes_count_string .= "<span class='likes_count liked'>  </span>you liked this</a>";
-		   }elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[Views::$alias_of_likes] === 1 && !in_array($_SESSION[user::$id],$likes_user_ids)){
-			   $likes_count_string .= "<span class='likes_count liked'> 1 </span>person liked this</a>";
+			   $likes_count_string = "<span class='likes_count'></span>you liked this</a>";
+			    $number_of_likes_in_span = "you liked this";
+		   }elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 && !in_array($_SESSION[user::$id],$likes_user_ids)){
+			   $likes_count_string = "<span class='likes_count'>1</span>person liked this</a>";
+			    $number_of_likes_in_span = "1 person likes this";
 		   }
 		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] > 1){
-			   $likes_count_string .= "<span class='likes_count liked'> ".$reply[ReplyViews::$alias_of_likes]."  </span> people likes this</a>";
+			   
+			   $likes_count_string = "<span class='likes_count'>".$reply[ReplyViews::$alias_of_likes]."</span> people likes this</a>";
+			   
+			    $number_of_likes_in_span = $reply[ReplyViews::$alias_of_likes]." people likes this";
 		   }
+		   
+		  
     
   $replys_string .= "<div id='new_reply_".$reply[ReplyViews::$alias_of_id]."' class='ps-comment-item cstream-comment stream-comment'>
 	
@@ -216,16 +227,22 @@ return $record;
 		<div class='ps-comment-media cstream-attachments'></div>
 
 		<div class='ps-comment-time ps-shar-meta-date'>
-			<small ><span class='ps-js-autotime'  title=".strftime("%B, %e    %G  %I:%M %p",$reply["reply_time"]).">".FetchPost::time_converter($reply["reply_time"])."</span></small>
+			<small ><span class='ps-js-autotime'  title=".strftime("%B, %e    %G  %I:%M %p",$reply[ReplyViews::$reply_time]).">".FetchPost::time_converter($reply[ReplyViews::$reply_time])."</span></small>
+			
+			
+			   <div id='reply_like_count_".$reply[ReplyViews::$id]."'  class='ps-comment-links cstream-likes ' {$toggle_likes_count}>
+				<a onclick='reactions.like_reply({$post_id},{$comment_id},".$reply[ReplyViews::$id].",this)' href='#showLikesReply'>{$likes_count_string}</div>
+						
+			
     <div  class='ps-comment-links cstream-likes'  style='display:none'></div>
 			
 			<div class='ps-comment-links stream-actions' data-type='stream-action'>
 				<span class='ps-stream-status-action ps-stream-status-action'>
 					<nav class='ps-stream-status-action ps-stream-status-action'>
-<a  onclick='reactions.like({$post_id},{$comment_id},this,".$reply["id"]."); return false;' href='#like' class='actaction-like ps-icon-thumbs-up'><span>Like</span></a>
+<a  onclick='reactions.like({$post_id},{$comment_id},this,".$reply[ReplyViews::$id]."); return false;' href='#like' class='actaction-like ps-icon-thumbs-up'><span>Like</span></a>
 
-<a onclick='comment.prepare_edit_comment({$comment_id},".$reply["id"].",this,'reply'); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
-<a  onclick='comment.delete_comment({$comment_id},".$reply["id"].",'reply'); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
+<a onclick='comment.prepare_edit_comment({$comment_id},".$reply[ReplyViews::$id].",this,'reply'); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
+<a  onclick='comment.delete_comment({$comment_id},".$reply[ReplyViews::$id].",'reply'); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
 </nav>
 				</span>
 			</div>

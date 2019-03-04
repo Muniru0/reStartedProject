@@ -193,12 +193,85 @@ class reaction {
 
    
    // like a comment or reply 
-   static like(postID = 0, commentID = 0,target_element = "",replyID = null){
+   static like_comment(postID = 0, commentID = 0,target_element = "",replyID = null){
 	 
 	 
 	   if(!utility.validate_presence[postID,commentID,targetElemet,replyID]){
 		   return;
 	   }   
+	   
+	   
+	 
+	   
+	   
+	   
+   }
+    // like a comment or reply 
+   static like_reply(postID = 0, commentID = 0,replyID = 0,target_element = ""){
+	 
+	 
+	   if(!utility.validate_presence[postID,commentID,targetElemet,replyID]){
+		   return;
+	   }   
+	   
+	   let likesCount = $(targetElement).find("span")[0];
+	   likesCount = Number(likesCount);
+	   
+	   let likesCountString = "";
+	   
+	   if(likesCount === 0){
+		   likesCountString .="<span>1</spa> you just liked this";
+	   }elseif(likesCount > 0){
+		   likesCountString .="<span>"+ likesCount++ +"</spa> people likes this";
+	   }
+	    
+		if(!$(targetElement).hasClass("liked")){
+			
+	   $(targetElement).addClass("liked");
+		}
+		$(targetElemet).html(likesCountString);
+		
+		$.ajax({
+			url: "..private/neutral_ajax.php",
+			type: "POST",
+			data: {post_id: postID,comment_id: commentID,reply_id: replyID,request_type: "like_reply"},
+			dataType: "html"
+		}).done(function(response){
+			console.log(response);
+			
+		    try{
+				response = JSON.parse(response);
+				 if($.trim(response["false"]) != "" && $.trim(response["false"]) != undefined ){
+					 
+					 if($.trim(response["false"]) == "login" ){
+						 
+					 utility.toLoginPage();
+                 return;					 
+					 }
+					 
+					 if($.trim(response["false"]) != "login"){
+						 utility.showErrorDialogBox(response["false"]);
+						 return;
+					 }
+				 }
+				 
+				 if($.trim(response["likes"]) != "" && $.trim(response["likes"]) != undefined )){
+					
+					  if(likesCount === 0){
+		   likesCountString .="<span>1</spa> you just liked this";
+	   }elseif(likesCount > 0){
+		   likesCountString .="<span>"+ response["likes"] +"</spa> people likes this";
+	   }
+	    $(targetElemet).html(likesCountString);
+				 }
+				 
+				 
+			}catch(e){
+				utility.showErrorDialogBox("Sorry something Unexpectedly happened");
+			}finally{}	
+			
+		});
+	   
 	   
 	   
 	 

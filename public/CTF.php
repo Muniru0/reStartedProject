@@ -15,7 +15,13 @@ require_once("../private/initialize.php");
 </head>
  <body>
  <?php
-   Pagination::get_infinite_scroll("mainstream");
+ echo $_SESSION["id"];
+if(in_array($_SESSION["id"],[4])){
+	echo "us;";
+}else{
+	echo "e";
+}
+ Pagination::get_infinite_scroll("mainstream"); 
  ?>
  <i class="fal fa-check-circle"></i>
  </body>
