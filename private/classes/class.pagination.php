@@ -7,7 +7,7 @@ require_once("../private/initialize.php");
 class Pagination extends DatabaseObject {
 	
 // get infinite scroll	
-public static function get_infnite_scroll($stream_type = ""){
+public static function get_infinite_scroll($stream_type = ""){
 	
  global $db;
 
@@ -16,19 +16,26 @@ public static function get_infnite_scroll($stream_type = ""){
 		  return;
 	  }
 	  
-	
-   $_SESSION[$stream_type] = 220;
+	  if(!isset($_SESSION[$stream_type])){
+		 
+return;		 
+	  }
+
+	   $_SESSION[$stream_type] = 220;
 	$offset = (isset($_SESSION[$stream_type]) && isset($_SESSION[$stream_type]) && (int)$_SESSION[$stream_type] > 0) ? (int)$_SESSION[$stream_type] + 20 : (int)$_SESSION[$stream_type] = 220;
 	
 // $offset =(int)$_SESSION[$stream_type];
 
 
 
-$returned_array        = [];
-$reactions_user_ids	   = [];
-$comments              = [];
-
- $offset_upperbound = $offset + 10;
+$returned_array              = [];
+$reactions_user_ids	         = [];
+$views_likes_user_ids        = [];
+$reply_views_likes_user_ids  = [];
+$comments                    = [];
+$offset_upperbound           = $offset + 10;
+ 
+ 
 	$query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
 ".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE ".PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound}  LIMIT 200";
@@ -129,31 +136,30 @@ return;
   
   if(class_exists("ReplyViews") && class_exists("user") && class_exists("Views")){
 
-$query = "SELECT ".user::$table_name.".".user::$firstname." AS views_user_firstname,".user::$table_name.".".user::$lastname." AS views_user_lastname,".user::$table_name.".".user::$user_category.",".Views::$table_name.".*,".ReplyViews::$table_name.".*,".Views::$table_name.".".Views::$id." AS ".Views::$alias_of_id.",".ReplyViews::$table_name.".".ReplyViews::$id." AS ".ReplyViews::$alias_of_id.", reply_users.firstname AS reply_user_firstname ,reply_users.lastname AS reply_user_lastname,".Views::$table_name.".".Views::$post_id." AS ".Views::$alias_of_post_id." FROM  ".Views::$table_name." 
- LEFT JOIN ".user::$table_name." ON 
-".Views::$table_name.".".Views::$commentor_id." = ".user::$table_name.".".user::$id." LEFT JOIN ".ReplyViews::$table_name." ON ".ReplyViews::$table_name.".".ReplyViews::$comment_id." = ".Views::$table_name.".".Views::$id." LEFT JOIN ".user::$table_name." AS reply_users ON ".ReplyViews::$table_name.".".ReplyViews::$user_id." = ".user::$table_name.".".user::$id."  && ".Views::$table_name.".".Views::$post_id." >={$offset} && ".Views::$table_name.".".Views::$post_id." <= {$offset_upperbound} LIMIT 5000";
+$query = "SELECT ".Views::$table_name.".*,".ReplyViews::$table_name.".*,".Views::$table_name.".".Views::$id." AS ".Views::$alias_of_id.",".ReplyViews::$table_name.".".ReplyViews::$id." AS ".ReplyViews::$alias_of_id.", ".ReplyViews::$table_name.".".ReplyViews::$firstname." AS ".ReplyViews::$alias_of_firstname." ,".ReplyViews::$table_name.".".ReplyViews::$lastname." AS ".ReplyViews::$alias_of_lastname.",".Views::$table_name.".".Views::$firstname." AS ".Views::$alias_of_firstname.",".Views::$table_name.".".Views::$lastname." AS ".Views::$alias_of_lastname.",".Views::$table_name.".".Views::$post_id." AS ".Views::$alias_of_post_id." ,".ReplyViews::$table_name.".".ReplyViews::$post_id." AS ".ReplyViews::$alias_of_post_id." FROM  ".Views::$table_name." 
+ LEFT JOIN  ".ReplyViews::$table_name." ON ".ReplyViews::$table_name.".".ReplyViews::$comment_id." = ".Views::$table_name.".".Views::$id."  WHERE  ".Views::$table_name.".".Views::$post_id." >={$offset} && ".Views::$table_name.".".Views::$post_id." <= {$offset_upperbound} LIMIT 5000";
 
-
+ log_action("",$query);
   $results = $db->query($query);
   $row_count = $results->num_rows;
 	
 	
 	if($db->error){
 
-		log_action(__CLASS__,"Query: $db->error on line: ".__LINE__." in file: ".__FILE__);
+		log_action(__CLASS__,"Query: {$db->error} on line: ".__LINE__." in file: ".__FILE__);
 		echo $db->error;
 		Print j(["false"=>"Server Problem please try again later."]);
 		return;
 	}
-	
-$yes = [];
+
 	
 // validate the returning of results	
  if($results->num_rows > 0){
 	 
 
 	while($row = $results->fetch_assoc()){
-	$yes[] = $row;
+
+	
 	// if the post id has being set 
 if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]])){
 	
@@ -200,6 +206,41 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
 	 }
 	
  } 
+
+
+ 
+ 
+ $query = "SELECT ".ViewsLikes::$table_name.".".ViewsLikes::$id." AS ".ViewsLikes::$alias_of_id.",".ViewsLikes::$post_id." AS ".ViewsLikes::$alias_of_post_id.",".ViewsLikes::$table_name.".".ViewsLikes::$comment_id."    AS ".ViewsLikes::$alias_of_comment_id.",".ViewsLikes::$table_name.".".ViewsLikes::$user_id." AS ".ViewsLikes::$alias_of_user_id.",".ViewsLikes::$table_name.".".ViewsLikes::$alias_of_user_id.",".ViewsLikes::$table_name.".".ViewsLikes::$firstname." AS ".ViewsLikes::$alias_of_firstname.",".ViewsLikes::$table_name.".".ViewsLikes::$lastname." AS ".ViewsLikes::$alias_of_lastname.",".ViewsLikes::$table_name.".".ViewsLikes::$likes_time.".".ViewsLikes::$alias_of_likes_time." WHERE ".ViewsLikes::$post_id." >={$offset} && ".ViewsLikes::$post_id." <={$offset};"; 
+ 
+ $query  .= "SELECT ".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$id." AS ".ReplyViewsLikes::$alias_of_id.",".ReplyViewsLikes::$post_id." AS ".ReplyViewsLikes::$alias_of_post_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$comment_id."    AS ".ReplyViewsLikes::$alias_of_comment_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$user_id." AS ".ReplyViewsLikes::$alias_of_user_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$alias_of_user_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$firstname." AS ".ReplyViewsLikes::$alias_of_firstname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$lastname." AS ".ReplyViewsLikes::$alias_of_lastname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$likes_time.".".ReplyViewsLikes::$alias_of_likes_time." WHERE ".ReplyViewsLikes::$post_id." >={$offset} && ".ReplyViewsLikes::$post_id." <={$offset};"; 
+ 
+  if($db->multi_query($query)){
+	  
+	  do{
+		  
+		  if($row = $result->store_result()){
+			  
+			  if(isset($row[ViewsLikes::$alias_of_id]) && isset($row[ViewsLikes::$alias_of_user_id]) && $row[ViewsLikes::$alias_of_id] > 0 && $row[ViewsLikes::$alias_of_user_id] > 0){
+				  $views_likes_user_ids[ViewsLikes::$alias_of_id][] = ViewsLikes::$alias_of_user_id;
+			  }elseif(isset($row[ReplyViewsLikes::$alias_of_id]) && isset($row[ReplyViewsLikes::$alias_of_user_id]) && $row[ReplyViewsLikes::$alias_of_id] > 0 && $row[ReplyViewsLikes::$alias_of_user_id] > 0){
+				  $views_likes_user_ids[ReplyViewsLikes::$alias_of_id][] = ReplyViewsLikes::$alias_of_user_id;
+			  }elseif(trim($db->error) != ""){
+				   print j(["false" =>"Sorry please server problem"]);
+				   return;
+			  }else{
+				  return;
+			  }
+		  }
+		  
+	  }while($db->more_results() && $db->next_result());
+	  
+  }
+  
+ echo "<pre>";
+ print_r($views_likes_user_ids);
+ print_r($reply_views_likes_user_ids);
+ echo "</pre>";
+ return;
  
  
  /* 

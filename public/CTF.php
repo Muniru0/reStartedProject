@@ -1,5 +1,5 @@
 <?php 
-/* require_once("../private/initialize.php"); */
+require_once("../private/initialize.php"); 
 ?>
 <!DOCTYPE html>
   <html>
@@ -14,6 +14,9 @@
 
 </head>
  <body>
+ <?php
+   Pagination::get_infinite_scroll("mainstream");
+ ?>
  <i class="fal fa-check-circle"></i>
  </body>
   </html>

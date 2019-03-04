@@ -57,7 +57,7 @@ if(is_ajax()){
 // add the view 
 if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
 	    
-		$_POST["comment"] = h($_POST["comment"]);
+	$_POST["comment"] = h($_POST["comment"]);
 		
 	$_POST["comment"] = nl2br($_POST["comment"]);
 		
@@ -139,7 +139,7 @@ elseif(isset($_POST["delete_comment"]) && trim($_POST["delete_comment"]) === "co
 		 {
 			
 			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
-			
+			return;
 		 }
 		 
 	 // delete the view from the database			
@@ -203,8 +203,8 @@ elseif(isset($_POST["edit_comment"]) && $_POST["edit_comment"] === "true"){
 elseif(isset($_POST["reply_comment"])){
 	
 	global $db;
-	$post_id    = $db->real_escape_string($_POST["post_id"]);
-	$comment_id = $db->real_escape_string($_POST["comment_id"]);
+	$post_id    = (int)$db->real_escape_string($_POST["post_id"]);
+	$comment_id = (int)$db->real_escape_string($_POST["comment_id"]);
 	 
 	  $reply_comment_post_var = (boolean) $_POST["reply_comment"];
 	  
@@ -233,9 +233,7 @@ elseif(isset($_POST["reply_comment"])){
 		  return false;
 	  }
 	  
-	  // cast/convert the post_id into an integer
-	  $post_id = (int)$_POST["post_id"]; 
-	  $comment_id = (int)$_POST["comment_id"];
+	 
 	  
 	 // check if the comment is empty or set	  
 	  if(!isset($post_id)    || $post_id < 1    || !is_int($post_id) ||
@@ -244,17 +242,20 @@ elseif(isset($_POST["reply_comment"])){
 		  print j(["false" => "Please try again... if the problem persist refresh the page"]); 
 		  return false;
 	  }   
-	 
-	    
-		 
+	
 		  // check to see if the post_id is in the post_ids array
-		 if(!in_array($post_id,$_SESSION["post_ids"],true) || 
-		    !in_array($comment_id,$_SESSION["comment_ids"],true))
+		 if(!in_array($post_id,$_SESSION["post_ids"]) || 
+		    !in_array($comment_id,$_SESSION["comment_ids"]))
 		 {
 		    print j(["false" => "Please try again... if the problem persist refresh the page "]); 
+			
+			  print_r($_SESSION["comment_ids"]);
+	 log_action(__CLASS__,"post id is an integer: {$post_id}, comment id is an integer: {$comment_id}");
+	    
 			return false;
 		 }
 		 
+		
 		
 		  ReplyViews::reply_views($post_id,$comment_id,$_POST["reply"]);	
 	  
@@ -344,7 +345,60 @@ elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
 }
 
 
+elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_comment" || trim($_POST["request_type"]) === "like_reply") ){
+	
+	
+	 // cast the post and comment ids to integers  
+	$post_id    = (int) $_POST["post_id"];
+	$comment_id = (int) $_POST["comment_id"];
+	$reply      = null;
+	$flag       = "like_comment";
+	
+	// if the user is liking a reply then set the reply variables 
+	// and make the necessary checks
+	 if($_POST["request_type"] === "like_reply"){
+		 $reply_id = (int)$_POST["reply_id"];
+	     $flag     = "like_reply";
+		  
+	  // run this check only if the user is liking a reply 
+	  if((!isset($reply_id) || $reply_id < 1  || !is_int($reply_id)) && $flag = "like_reply"){
+		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
+		  return false;
+	  }  
 
+  // if the user is liking a reply check that the reply is present before
+		if(!in_array($reply_id,$_SESSION["reply_ids"],true) && $flag = "like_reply")
+		 {
+			
+			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
+		}
+		 	  
+	  
+	 }
+	
+	
+	 // check if the ids of the post and comment are integers and set	  
+	  if(
+		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
+		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
+		  return false;
+	  }  
+	  
+	 
+	 
+		 
+// check to see if the post id is in the post ids array	  
+        if(!in_array($comment_id,$_SESSION["comment_ids"],true))
+		 {
+			
+			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
+		}
+
+		
+	 // call the add likes method to add the like			
+	
+	  Likes::like($post_id,$comment_id,$flag,$reply_id);
+}
 // get the main stream infinite scroll
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "mainstream"){
 

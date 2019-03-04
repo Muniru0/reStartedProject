@@ -62,7 +62,7 @@ class utility {
    // auto resize all text areas
     static resizeTextarea(textArea = ""){
      
-	  console.log(textArea.scrollHeight);
+	  
  $(textArea).height(0).height(textArea.scrollHeight );
 
 $(textArea).change();

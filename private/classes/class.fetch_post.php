@@ -150,7 +150,7 @@ public static function top_trends($where_clause = ""){
 //// // // return the result
 //// // while($row = $result->fetch_array(MYSQLI_ASSOC)){
 //// //   // equate the posts to their individual captions
-//// //   $real_result[$row["post"]] = [$row["post_table_id"],$row["uploader_id"],$row["upload_time"],$row["caption"],$row["label"],$row["location"],$row["post_support"],$row["post_oppose"],$row["view_support"],$row["view_oppose"],$row["uploader_image"],$row["firstname"],$row["lastname"],$row["reactions_user_id"],$row["firstname"],$row["post_reaction"]];
+//// //   $real_result[$row["post"]] = [$row[PostImage::$alias_of_id],$row["uploader_id"],$row["upload_time"],$row["caption"],$row["label"],$row["location"],$row["post_support"],$row["post_oppose"],$row["view_support"],$row["view_oppose"],$row["uploader_image"],$row["firstname"],$row["lastname"],$row["reactions_user_id"],$row["firstname"],$row["post_reaction"]];
 //// //   // advance the array pointer of the real_result
 //// //   next($real_result);
 //// //   // store the entire row data in the $data array
@@ -1541,7 +1541,7 @@ $images_string .= "</div></div></div></div>
 foreach ($returned_array as $posts_info => $images_or_info){
 	    $skip_post = false;
 		$post_info = array_shift($images_or_info);
-		/* $post_ids [] = $post_info["post_table_id"]; */
+		/* $post_ids [] = $post_info[PostImage::$alias_of_id]; */
 		// pop the images from the trailing end of the array
 		$images      = array_pop($images_or_info);
 		 foreach($images AS $image){
@@ -1560,14 +1560,14 @@ foreach ($returned_array as $posts_info => $images_or_info){
 				  continue;
 			  }
 			  
-			  if(!isset($post_info["post_table_id"]) || $post_info["post_table_id"] < 1){
-				 log_action(__CLASS__,"The post id ( ".$post_info["post_table_id"].") is less than 1 in the post array  on line :".__LINE__." in file: ".__FILE__);
+			  if(!isset($post_info[PostImage::$alias_of_id]) || $post_info[PostImage::$alias_of_id] < 1){
+				 log_action(__CLASS__,"The post id ( ".$post_info[PostImage::$alias_of_id].") is less than 1 in the post array  on line :".__LINE__." in file: ".__FILE__);
 				  continue;
 			  }
 			  
 			 
 			// add the post to the array of post in the users session
-			$_SESSION["post_ids"][] = (int)$post_info["post_table_id"];
+			$_SESSION["post_ids"][] = (int)$post_info[PostImage::$alias_of_id];
             $full_header = "";
            // get the post confirmation template
             $full_header   = self::get_post_confirmation($post_info[PostImage::$confirmation]);
@@ -1584,7 +1584,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
             $full_header   .= self::get_time_template($post_info[PostImage::$upload_time]);
 			
 			// add the manipulation options to the post header
-			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info["post_table_id"],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[user::$user_category],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);
+			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[user::$user_category],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);
 			
 			// gets the caption of post
            // $full_header   .= self::get_caption_template($post_info["caption"]);			
@@ -1593,18 +1593,23 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			$full_body     = self::images_layout_template($post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reactions_user_ids[$post_info[PostImage::$alias_of_id]],$post_info[PostImage::$caption]);
 			 // get the reaction and comment box
 			  $comments = $views["postID_".$post_info[PostImage::$alias_of_id]] ?? [];
-$full_body     .= Views::get_views_with_replys($post_info[PostImage::$alias_of_id],$comments); 
-			
+
+			$comments_with_replys = Views::get_views_with_replys($post_info[PostImage::$alias_of_id],$comments); 
+			if($comments_with_replys){
+				$full_body     .= $comments_with_replys;
+			}else{
+				print j(["false" => "login"]);
+			}
 			
 		 // if the post body is false then uset the post table id since we no longer 
 		 // need it to reference any post
 		    if($full_body === false){
 				print j(["false" => "Sorry, something went wrong,Please try  again after some time"]);
-				 unset($headers[$post_info["post_table_id"]]);
+				 unset($headers[$post_info[PostImage::$alias_of_id]]);
 				continue;				
 			}
 		
-			$headers[$post_info["post_table_id"]] = $full_header.$full_body;
+			$headers[$post_info[PostImage::$alias_of_id]] = $full_header.$full_body;
         }
 		
 		

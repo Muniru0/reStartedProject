@@ -28,6 +28,7 @@ class PostImage extends FileUpload {
     public static $oppose       = "oppose";
     public static $confirmation = "confirmation";
     public static $confirmer    = "confirmer";
+	public static $likes        = "likes";
 	
 	//column aliases
 	 public static $alias_of_id          = "post_table_id";
@@ -42,7 +43,7 @@ class PostImage extends FileUpload {
     public static $alias_of_oppose       = "post_table_oppose";
     public static $alias_of_confirmation = "post_table_confirmation";
     public static $alias_of_confirmer    = "post_table_confirmer";
-
+    public static $alias_of_likes    = "post_table_likes";
 
 
 // overriden database object method just for 
@@ -725,7 +726,8 @@ if($db->multi_query($query)){
 
 
 
-
+	
+	
 
 }
 

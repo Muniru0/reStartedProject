@@ -4,6 +4,10 @@ class reaction {
     	this.reactionSupport = "support";
     	this.reactionOppose  = "oppoose";
     }
+   
+   
+   
+   
    // add a reaction
    static addReaction(postID = 0,reactionValue = null,targetElement){
      
@@ -188,6 +192,20 @@ class reaction {
    }
 
    
+   // like a comment or reply 
+   static like(postID = 0, commentID = 0,target_element = "",replyID = null){
+	 
+	 
+	   if(!utility.validate_presence[postID,commentID,targetElemet,replyID]){
+		   return;
+	   }   
+	   
+	   
+	 
+	   
+	   
+	   
+   }
    
 }
 

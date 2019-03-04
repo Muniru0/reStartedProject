@@ -7,22 +7,31 @@ class Views extends DatabaseObject{
    public static $table_name   = "views";
 
    //columns in database
-   public static $id           = "id";
-   public static $post_id      = "post_id";
-   public static $comment      = "comment";
-   public static $commentor_id = "commentor_id";
-   public static $comment_time = "comment_time";
-   
-   //columns aliases in database
-   public static $alias_of_id           = "views_table_id";
-   public static $alias_of_post_id      = "views_table_post_id";
-   public static $alias_of_comment      = "views_table_comment";
-   public static $alias_of_commentor_id = "views_table_commentor_id";
-   public static $alias_of_comment_time = "views_table_comment_time";
-   
+   public static $id            = "id";
+   public static $post_id       = "post_id";
+   public static $comment       = "comment";
+   public static $commentor_id  = "commentor_id";
+   public static $comment_time  = "comment_time";
+   public static $firstname     = "firstname";
+   public static $lastname      = "lastname";
+  
+   public static $likes         = "likes";
 
+
+   //columns aliases in database
+   public static $alias_of_id            = "views_table_id";
+   public static $alias_of_post_id       = "views_table_post_id";
+   public static $alias_of_comment       = "views_table_comment";
+   public static $alias_of_commentor_id  = "views_table_commentor_id";
+   public static $alias_of_comment_time  = "views_table_comment_time";
+   public static $alias_of_firstname     = "views_table_firstname";
+   public static $alias_of_lastname      = "views_table_lastname";
+   public static $alias_of_likes         = "views_table_likes";
+	  
+	  
+	  
    // get all the views for some specific post_ids
-   public static function get_views_with_replys($post_id , $views_with_replys) {
+   public static function get_views_with_replys($post_id = 0, $views_with_replys = 0,$likes_user_ids = []) {
 	  
 	   if(empty($post_id)  || $post_id < 1 ){
 		   log_action(__CLASS__, " View with this post id is zero (".$post_id.") on line: ".__LINE__." in file: ".__FILE__);
@@ -41,23 +50,42 @@ class Views extends DatabaseObject{
 	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' >
 		<div class='ps-comment-container comment-container ps-js-comment-container'> ";
 	
-   
-		
-		if(isset($views_with_replys) && !empty($views_with_replys) && is_array($views_with_replys) 
+   if(isset($views_with_replys) && !empty($views_with_replys) && is_array($views_with_replys) 
 			&&  (int)$post_id > 0 ){
 	   foreach($views_with_replys As $index => $views){
 	   if(!isset($index)){
 		   continue;
 	   }
-	  
+	       
 		   $views_info = array_pop($views);
+		   if(!isset($_SESSION) || !isset($_SESSION["comment_ids"]) || !isset($_SESSION[user::$id])){
+			   
+			     print j(["false"=>"login"]);
+				return false;
+		   }
 		   
-		 $views_and_viewsbox_template_string .= "<div id='new_comment_{$post_id}' class='ps-comment-item cstream-comment stream-comment'>
+		   $likes_count_string = "";
+		   if(isset($views_info[Views::$alias_of_likes]) && $views_info[Views::$alias_of_likes] < 1 ){
+			   $likes_count_string .= "<span class='likes_count'></span></a>";
+		   }
+		   
+		   if(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$likes_user_ids)){
+			   $likes_count_string .= "<span class='likes_count liked'>  </span>you liked this</a>";
+		   }elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && !in_array($_SESSION[user::$id],$likes_user_ids)){
+			   $likes_count_string .= "<span class='likes_count liked'> 1 </span>person liked this</a>";
+		   }
+		   elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] > 1){
+			   $likes_count_string .= "<span class='likes_count liked'> ".$views_info[Views::$alias_of_likes]."  </span> people likes this</a>";
+		   }
+		   
+		   $_SESSION["comment_ids"][] = $views_info[Views::$alias_of_id];
+		   
+		 $views_and_viewsbox_template_string .= "<div id='new_comment_".$views_info[Views::$alias_of_id]."' class='ps-comment-item cstream-comment stream-comment'>
 	
 
 	<div class='ps-comment-body cstream-content'>
 		<div class='ps-comment-message stream-comment-content'>
-			<a class='ps-comment-user cstream-author' href=' ://demo.peepso.com/profile/demo/'>Patricia Currie</a>
+			<a class='ps-comment-user cstream-author' href=' ://demo.peepso.com/profile/demo/'>".$views_info[Views::$alias_of_firstname]."  ".$views_info[Views::$alias_of_lastname]."</a>
 			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p>".$views_info["comment"]." </p></div></span>
 		</div>
 
@@ -68,22 +96,31 @@ class Views extends DatabaseObject{
 		<div class='ps-comment-time ps-shar-meta-date'>
 			<small class='activity-post-age' data-timestamp='1529076871'><span class='ps-js-autotime' data-timestamp='1529076871' title='".strftime("%B, %e    %G  %I:%M %p",$views_info["comment_time"])."'>".FetchPost::time_converter($views_info["comment_time"])."</span></small>
 
-						<div id='act-like-497' class='ps-comment-links cstream-likes ps-js-act-like--497' data-count='1'>
-				<a onclick='' href='#showLikes'>1 person likes this</a>			</div>
+						<div id='comment_like_{$comment_id}' class='ps-comment-links cstream-likes ps-js-act-like--497' data-count='1'>
+				<a onclick='reactions.like({$post_id},{$comment_id},this)' href='#showLikes'>{$likes_count_string}	</div>
 
 			<div class='ps-comment-links stream-actions' data-type='stream-action'>
 				<span class='ps-stream-status-action ps-stream-status-action'>
 					<nav class='ps-stream-status-action ps-stream-status-action'>
 <a  onclick='activity.comment_action_like(this, 497); return false;' href='#like' class='actaction-like ps-icon-thumbs-up'><span><span title='1 person likes this'>Like</span></span></a>
-<a  onclick='comment.showReplyBox({$views_info["comment_id"]}); return false;' href='#reply' class='actaction-reply ps-icon-plus'><span>Reply</span></a>
-<a  onclick='comment.prepare_edit_comment({$post_id},{$views_info["comment_id"]},this,'comment'}, this); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
-<a  onclick='comment.delete_comment({$post_id},{$views_info["comment_id"]}); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
+<a  onclick='comment.showReplyBox(".$views_info[Views::$alias_of_id]."); return false;' href='#reply' class='actaction-reply ps-icon-plus'><span>Reply</span></a>
+<a  onclick='comment.prepare_edit_comment({$post_id},".$views_info[Views::$alias_of_id]."},this,'comment'}, this); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
+<a  onclick='comment.delete_comment({$post_id},".$views_info[Views::$alias_of_id]."); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
 </nav>
 				</span>
 			</div>
 		</div>
 	</div>
 </div>";
+	  
+	 
+	  $replys_result = ReplyViews::get_reply_template($post_id,$views_info[Views::$alias_of_id],$views);
+	  if($replys_result){
+		  $views_and_viewsbox_template_string  .= $replys_result;
+	  }else{
+		  return false;
+	  }
+	  
 	   }
 	   
 	   
@@ -180,12 +217,13 @@ return $record;
 	$post_id = $db->real_escape_string($post_id);
 	
 	// the insert query for the new comment	
-	$query = "INSERT INTO ".self::$table_name." VALUES(?,?,?,?,?)";
+	$query = "INSERT INTO ".self::$table_name." VALUES(?,?,?,?,?,?,?)";
 	// prepare the new comment statement
 	if(!($stmt= $db->prepare($query))){
-		log_action(__CLASS__, " Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
+		log_action(__CLASS__, " Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
 		return false;
 	} 
+
 	
 	// assign the parameters
 	$id = NULL;
@@ -196,15 +234,23 @@ return $record;
 		 print j(["false" =>"Something Unexpectedly went wrong, please refresh the page and try again"]);
 		 
 	 }
+	 
+	 
+	  if(!isset($_SESSION) || !isset($_SESSION["firstname"]) || !isset($_SESSION["lastname"]) || empty(trim($_SESSION["firstname"])) || empty(trim($_SESSION["lastname"]))){
+		  
+		  print j(["false"=> "login"]);
+		  return false;
+	  }
+	  
 	
 	// bind the parameters
-	if(!$stmt->bind_param("iiisi",$id,$post_id,$_SESSION["id"],$comment,$time)){
-		log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
+	if(!$stmt->bind_param("iissisi",$id,$post_id,$_SESSION["firstname"],$_SESSION["lastname"],$_SESSION["id"],$comment,$time)){
+		log_action(__CLASS__," Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
          return false;
 		}
 	// execute the statement
 	if(!$stmt->execute()){
-		log_action(__CLASS__,"  Query failed {$db->error} on line ".__LINE." in file ".__FILE__);
+		log_action(__CLASS__,"  Query failed {$db->error} {$stmt->error} on line ".__LINE." in file ".__FILE__);
 		return false;
 	}
 	// return a new_comment_id  in case the id is to be used to delete the comment
@@ -218,7 +264,7 @@ return $record;
     $view_info[4] = FetchPost::time_converter($view_info[4]);
 	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
  }else{
-	 log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
+	 log_action(__CLASS__," Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
 	 print j(["false" => "Sorry please re-comment..."]);
 	 return false;
  }   

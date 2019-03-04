@@ -250,9 +250,10 @@ class comment{
        // find the text area associated with the reply template
           if($(reply_template).find("textarea")){
         textArea    = $(reply_template).find("textarea");
+        console.log();
         // set the id of reply textarea
       $(textArea).attr("id","reply_area_" + response["comment_info"][0]);
-      
+      $(textArea).attr("onkeydown","comment.reply_field_change("+ response["comment_info"][0] + ",this)");
         }
        
       }
@@ -402,9 +403,9 @@ class comment{
                 let hiddenComment;
                 let requestType;
                 let commentReplyAreaWrapper;
-                        
+                       
                 // initialize the various variables in the case of a comment
-                if($.trim(option) === "comment"){
+                if($.trim(option) === "comment" ){
                 
                 // hide the comment until the response from the server is positive
                                 
@@ -414,12 +415,13 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
                 $(hiddenComment).fadeOut(600);
                 
                 }
-                
+                 
                 // find the reply to be deleted and hide it
                 if(document.querySelector("#reply_wall_" + commentReplyID)  != null  && document.querySelector("#reply_wall_" + commentReplyID)){
                 hiddenReply = document.querySelector("#reply_wall_" + commentReplyID);
                 $(hiddenReply).fadeOut(600);
                 requestType = "comment";
+                consolel.log(requestType);
 
             
           // find and initialize the comment  text area wrapper and empty the text area if there are any text in it 
@@ -478,7 +480,7 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
           
                 }
                 }
-                
+              
                 
                 $.ajax({
                   url      : "../private/neutral_ajax.php",
@@ -1015,7 +1017,7 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
       type: "POST",
         datatype:"html",
       }).done(function(response){ 
-                  
+               
         try{
       response = JSON.parse(response);
       
