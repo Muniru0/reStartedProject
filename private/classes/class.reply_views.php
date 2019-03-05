@@ -189,26 +189,25 @@ return $record;
   }
     
 	       $toggle_likes_count = "";
-           $number_of_likes_in_span = "";
-		   $likes_count_string = "";
-		   if(isset($reply[Views::$alias_of_likes]) && $reply[Views::$alias_of_likes] < 1 ){
+           $likes_count_string = "";
+		   
+		   if(isset($reply[ReplyViews::$alias_of_likes]) && $reply[ReplyViews::$alias_of_likes] < 1 ){
 			   
 			   $toggle_likes_count = "style = 'display:none;'";
 			   $likes_count_string = "<span class='likes_count'></span></a>";
 		   }
-		   
-		   if(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$likes_user_ids)){
-			   $likes_count_string = "<span class='likes_count'></span>you liked this</a>";
-			    $number_of_likes_in_span = "you liked this";
+		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$likes_user_ids)){
+			   $likes_count_string = "<span class='likes_count' title='you liked this'> 1</span></a>";
+			    
 		   }elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 && !in_array($_SESSION[user::$id],$likes_user_ids)){
-			   $likes_count_string = "<span class='likes_count'>1</span>person liked this</a>";
-			    $number_of_likes_in_span = "1 person likes this";
+			   $likes_count_string = "<span class='likes_count' title= 'person liked this'>1</span></a>";
+			   
 		   }
 		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] > 1){
 			   
-			   $likes_count_string = "<span class='likes_count'>".$reply[ReplyViews::$alias_of_likes]."</span> people likes this</a>";
+			   $likes_count_string = "<span class='likes_count' title='".parent::convert_likes_number($reply[ReplyViews::$alias_of_likes])." people likes this'>".parent::convert_likes_number($reply[ReplyViews::$alias_of_likes])."</span></a>";
 			   
-			    $number_of_likes_in_span = $reply[ReplyViews::$alias_of_likes]." people likes this";
+			    
 		   }
 		   
 		  
@@ -231,7 +230,7 @@ return $record;
 			
 			
 			   <div id='reply_like_count_".$reply[ReplyViews::$id]."'  class='ps-comment-links cstream-likes ' {$toggle_likes_count}>
-				<a onclick='reactions.like_reply({$post_id},{$comment_id},".$reply[ReplyViews::$id].",this)' href='#showLikesReply'>{$likes_count_string}</div>
+				<a href='#showLikesReply'>{$likes_count_string}</div>
 						
 			
     <div  class='ps-comment-links cstream-likes'  style='display:none'></div>

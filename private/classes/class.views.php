@@ -50,8 +50,8 @@ class Views extends DatabaseObject{
 	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' >
 		<div class='ps-comment-container comment-container ps-js-comment-container'> ";
 	
-   if(isset($views_with_replys) && !empty($views_with_replys) && is_array($views_with_replys) 
-			&&  (int)$post_id > 0 ){
+   if(isset($views_with_replys) && !empty($views_with_replys) && is_array($views_with_replys) &&  (int)$post_id > 0 ){
+	   
 	   foreach($views_with_replys As $index => $views){
 	   if(!isset($index)){
 		   continue;
@@ -66,24 +66,27 @@ class Views extends DatabaseObject{
 		   
 		   $toggle_likes_count = "";
 		   $likes_count_string = "";
-		   $number_of_likes_in_span = "";
+		  
+		   //if there are no likes yet
 		   if(isset($views_info[Views::$alias_of_likes]) && $views_info[Views::$alias_of_likes] < 1 ){
 			    $toggle_likes_count = " style= 'display:none;'";
 			   $likes_count_string .= "<span class='likes_count'></span></a>";
-			   $number_of_likes_in_span = "";
+			 
 		   }
 		   
 		 
 		   if(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$likes_user_ids)){
-			   $likes_count_string .= "<span class='likes_count liked'>  </span>you liked this</a>";
-			   $number_of_likes_in_span = "you liked this";
+			   $likes_count_string .= "<span class='likes_count liked' title='you liked this'>1</span></a>";
+			   
+			  
+			   // if one not the one person that liked this
 		   }elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && !in_array((int)$_SESSION[user::$id],$views_likes_user_ids)){
-			   $likes_count_string .= "<span class='likes_count liked'> 1 </span>person liked this</a>";
-			   $number_of_likes_in_span = "1 person like this";
+			   $likes_count_string .= "<span class='likes_count liked' title='1 person like this'> 1 </span></a>";
+			  
 		   }
 		   elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] > 1){
-			   $likes_count_string .= "<span class='likes_count'> ".$views_info[Views::$alias_of_likes]."  </span> people likes this</a>";
-			   $number_of_likes_in_span = $views_info[Views::$alias_of_likes]." people like this";
+			   $likes_count_string .= "<span class='likes_count' title='".self::convert_likes_number($views_info[Views::$alias_of_likes])." people like this'> ".self::convert_likes_number($views_info[Views::$alias_of_likes])."  </span></a>";
+			  
 		   }
 		     
 			 $comment_id = $views_info[Views::$alias_of_id];
@@ -107,12 +110,12 @@ class Views extends DatabaseObject{
 
 						<div id='comment_like_count_{$comment_id}' class='ps-comment-links cstream-likes ' {$toggle_likes_count}>
 						
-				<a onclick='reactions.like({$post_id},{$comment_id},this)' href='#showLikes'>{$likes_count_string}	</div>
+				<a href='#showLikes'>{$likes_count_string}	</div>
 
 			<div class='ps-comment-links stream-actions' data-type='stream-action'>
 				<span class='ps-stream-status-action ps-stream-status-action'>
 					<nav class='ps-stream-status-action ps-stream-status-action'>
-<a onclick='reactions.like({$post_id},{$comment_id},this)'  href='#like' class='actaction-like ps-icon-thumbs-up'> <span><span title={$number_of_likes_in_span}'>Like</span>Like</span></a>
+<a onclick='reactions.like_comment({$post_id},{$comment_id},this)'  href='#like' class='actaction-like ps-icon-thumbs-up'> <span>Like</span></a>
 <a  onclick='comment.showReplyBox(".$views_info[Views::$alias_of_id]."); return false;' href='#reply' class='actaction-reply ps-icon-plus'><span>Reply</span></a>
 <a  onclick='comment.prepare_edit_comment({$post_id},".$views_info[Views::$alias_of_id]."},this,'comment'}, this); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
 <a  onclick='comment.delete_comment({$post_id},".$views_info[Views::$alias_of_id]."); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
@@ -472,7 +475,26 @@ public static function delete_view ($postCommentID = 0 ,$commentReplyID = 0,$fla
 
 
 
+ // convert the number of likes 
+   public static function convert_likes_number($likes = 0){
+	     $thousand = 1000;
+		 $million = 1000000;
+	   
+	    if(!isset($likes)  || $likes == 0){
+			return;
+		}elseif($likes < 1000){
+			
+			return $likes;
+		}elseif($likes >= $thousand && $likes < $million){
+		  return round($likes / $thousand,1,PHP_ROUND_HALF_UP)."k";
+			
+		}elseif($likes >= $million){
+			 return round($likes / $thousand,1,PHP_ROUND_HALF_UP)."m";
+		}
+			
+   
 
+   }//convert_likes_number();
 }
 
 

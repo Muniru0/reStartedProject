@@ -528,9 +528,21 @@ button:hover {
 	 opacity:0.9 !important;
 	 background-color: #3bcdac !important;
 	
+ 
+ 
 	}
-	
-	
+ span.likes_count {
+	 margin-left: 0.4em;
+ }	
+.ps-icon-thumbs-up:before {
+    margin-right: 0px;
+}
+
+.liked {
+	color: #412d13;
+    font-weight: 1000;
+    opacity: 0.75;
+}
 <!--colors:
  the confirm post hover link color
 background: #f9f9f9;

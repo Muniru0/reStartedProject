@@ -345,39 +345,14 @@ elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
 }
 
 
-elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_comment" || trim($_POST["request_type"]) === "like_reply") ){
+elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_comment" ) ){
 	
 	
 	 // cast the post and comment ids to integers  
 	$post_id    = (int) $_POST["post_id"];
 	$comment_id = (int) $_POST["comment_id"];
-	$reply      = null;
-	$flag       = "like_comment";
 	
-	// if the user is liking a reply then set the reply variables 
-	// and make the necessary checks
-	 if($_POST["request_type"] === "like_reply"){
-		 $reply_id = (int)$_POST["reply_id"];
-	     $flag     = "like_reply";
-		  
-	  // run this check only if the user is liking a reply 
-	  if((!isset($reply_id) || $reply_id < 1  || !is_int($reply_id)) && $flag = "like_reply"){
-		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
-		  return false;
-	  }  
-
-  // if the user is liking a reply check that the reply is present before
-		if(!in_array($reply_id,$_SESSION["reply_ids"],true) && $flag = "like_reply")
-		 {
-			
-			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
-		}
-		 	  
-	  
-	 }
-	
-	
-	 // check if the ids of the post and comment are integers and set	  
+	// check if the ids of the post and comment are integers and set	  
 	  if(
 		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
 		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
@@ -399,13 +374,61 @@ elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_
 	
 	  Likes::like($post_id,$comment_id,$flag,$reply_id);
 }
+
+
+elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_reply")){
+	
+	  $post_id = $_POST["post_id"];
+	  $comment_id = $_POST["comment_id"];
+	  $reply      = $_POST["reply_id"];
+	  
+	  // check if the ids of the post and comment are integers and set	  
+	  if(
+		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
+		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
+		  return false;
+	  }  
+	  
+	 
+	 
+		 
+// check to see if the post id is in the post ids array	  
+        if(!in_array($comment_id,$_SESSION["comment_ids"],true))
+		 {
+			
+			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
+		}
+
+	// if the user is liking a reply then set the reply variables 
+	// and make the necessary checks
+	 if($_POST["request_type"] === "like_reply"){
+		 $reply_id = (int)$_POST["reply_id"];
+	     $flag     = "like_reply";
+		  
+	  // run this check only if the user is liking a reply 
+	  if((!isset($reply_id) || $reply_id < 1  || !is_int($reply_id)) && $flag = "like_reply"){
+		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
+		  return false;
+	  }  
+
+  // if the user is liking a reply check that the reply is present before
+		if(!in_array($reply_id,$_SESSION["reply_ids"],true) && $flag = "like_reply")
+		 {
+			
+			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
+		}
+		 	  
+	  
+	 }
+}
+
 // get the main stream infinite scroll
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "mainstream"){
 
 	
 	  
 	// get the main infinite scroll for the sreaming of post
-	Pagination::get_infnite_scroll($_POST["request_type"]);
+	Pagination::get_infinite_scroll($_POST["request_type"]);
 	 $_SESSION["scroll_ready_state"] = false;
 }
 elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "confirm_post" || trim($_POST["request_type"]) === "reverse_confirmation")){

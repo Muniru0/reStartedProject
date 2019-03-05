@@ -32,9 +32,51 @@
 
 
   // like a comment or a reply
-    public static function like($post_id = 0,$comment_id = 0,$flag = "like_comment",$reply_id = null){
+    public static function like($post_id = 0,$comment_id = 0,$reply_id = null){
 		
-		parent::like($post_id,$comment_id,$flag,$reply_id);
+		
+		 if(!isset($post_id) || $post_id < 1 || !is_int($post_id)
+			 || !isset($_SESSION) || !isset($_SESSION["id"]) || !isset($_SESSION["firstname"]) || !isset($_SESSION["lastname"]) ){
+			 return;
+		 }
+		
+		global $db;
+		
+		// assign the reply or comment time
+		$time = time();
+		
+        // set the like comment or reply query		
+		 $query = "CALL like({$post_id},{$comment_id},{$reply_id},{$_SESSION["id"]},{$_SESSION["firstname"]},{$_SESSION["lastname"]},{$time},{$flag})";
+	
+		// perform the query	
+		if($db->multi_query($query)){
+			
+	// fetch the result
+	 do{
+		 
+		  if($row = $result->store_result()){
+		  if(isset($row["likes"]) && !empty($row["likes"]) ){
+			  $result = (int)$row["likes"];
+			   if(is_int($result)){
+				   print j(["likes" => $result]);
+			   }
+			  return;
+		  }
+		 elseif($db->error != ""){
+			   print j(["false" => "Sorry operation failed"]);
+			return;
+		 }else {
+			print j(["false" => "Sorry operation failed"]);
+			return;
+		 }
+	  }
+		 
+		 
+	 }while($db->more_results() && $db->next_result());
+	
+	 
+	
+}
 		
 	}// like();
 	

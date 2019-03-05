@@ -122,6 +122,8 @@ require_once(PRIVATE_DIR."initialize.php");
     $_SESSION['ip']          = $_SERVER['REMOTE_ADDR'];
     $_SESSION['user_agent']  = $_SERVER['HTTP_USER_AGENT'];
 	$_SESSION['last_login']  = time();
+	$_SESSION['mainstream']  = 0;
+	$_SESSION['community']   = 0;
 	$_SESSION["post_ids"]    = [];
 	$_SESSION["comment_ids"] = [];
 	$_SESSION["reply_ids"]   = [];

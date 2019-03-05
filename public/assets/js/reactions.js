@@ -213,17 +213,30 @@ class reaction {
 	   if(!utility.validate_presence[postID,commentID,targetElemet,replyID]){
 		   return;
 	   }   
-	   
-	   let likesCount = $(targetElement).find("span")[0];
-	   likesCount = Number(likesCount);
-	   
-	   let likesCountString = "";
-	   
-	   if(likesCount === 0){
-		   likesCountString .="<span>1</spa> you just liked this";
-	   }elseif(likesCount > 0){
-		   likesCountString .="<span>"+ likesCount++ +"</spa> people likes this";
-	   }
+	     let likesCount = $("comment_likes_count_" +commentID);
+	      likesCount    = $(likesCount).find("span");
+	    let  likesCountNumber   = $(likesCount).html();
+	         if($.trim(likesCountNumber) != ""){
+	         	let likesCountTitle = $(likesCount).attr("title");
+	         likesCountTitle  = likesCountTitle.split("p")[0];
+	        likesCountTitle = Number(likesCountTitle);
+	        if( typeof likesCountTitle == "number"){
+	       $(likesCount).attr("title",likesCountTitle++ +"people like this")
+	        } 	    
+	        $(likesCount).attr("title","you just like this");
+	      $(likesCountNumber).html("1");
+	         }
+	     
+	     $(targetElement).toggleClass("liked");
+	   let likesString = $(targetElement).find("span")[0];
+	     likesString =   $(likesString).html();
+	     if($.trim(likesString) == "Like"){
+	     	$(likesString).html("Liked");
+	     }else if($.trim(likesString) == "Liked"){
+	     	$(likesString).html("Like");
+	     }
+
+
 	    
 		if(!$(targetElement).hasClass("liked")){
 			

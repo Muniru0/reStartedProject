@@ -21,32 +21,24 @@
 
 
 // columns of the database 
-   public static $alias_of_id = "likes_table_id";
-   public static $alias_of_post_id = "likes_table_post_id";
-   public static  $alias_of_comment_id = "likes_table_comment_id";
-   public static $alias_of_user_id = "likes_table_user_id";
-   public static $alias_of_firstname = "likes_table_firstname";
-   public static $alias_of_lastname = "likes_table_lastname";
-   public static $alias_of_likes_time = "likes_table_likes_time";
+   public static $alias_of_id = "views_table_likes_table_id";
+   public static $alias_of_post_id = "views_table_likes_table_post_id";
+   public static  $alias_of_comment_id = "views_table_likes_table_comment_id";
+   public static $alias_of_user_id = "views_table_likes_table_user_id";
+   public static $alias_of_firstname = "views_table_likes_table_firstname";
+   public static $alias_of_lastname = "views_table_likes_table_lastname";
+   public static $alias_of_likes_time = "views_table_likes_table_likes_time";
 
 
   // like a comment or a reply
-    public static function like($post_id = 0,$comment_id = 0,$flag = "like_comment",$reply_id = null){
+    public static function like($post_id = 0,$comment_id = 0,$flag = "like_comment"){
 		
 		
 		 if(!isset($post_id) || $post_id < 1 || !is_int($post_id)
 			 || !isset($_SESSION) || !isset($_SESSION["id"]) || !isset($_SESSION["firstname"]) || !isset($_SESSION["lastname"]) ){
 			 return;
 		 }
-		
-		if($flag === "like_comment"){
-			$flag = 2;
-		}elseif($flag === "like_reply"){
-			$flag = 3;
-		}else{
-			 print j(["false" => "Please try again"]);
-			return;
-		}
+	
 		
 		global $db;
 		
