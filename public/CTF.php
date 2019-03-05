@@ -45,7 +45,16 @@ div {
 }
 
  </style>
+ <script>
  
+ let test = "154.5k";
+ 
+ if(test.split("k")){
+	 document.write(test.split("k")[0]);
+ }
+ 
+ 
+ </script>
  <?php
  $likes = 15125;
 

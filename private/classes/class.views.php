@@ -31,7 +31,7 @@ class Views extends DatabaseObject{
 	  
 	  
    // get all the views for some specific post_ids
-   public static function get_views_with_replys($post_id = 0, $views_with_replys = 0,$views_user_ids = 0,$reply_views_user_ids = 0,$likes_user_ids = []) {
+   public static function get_views_with_replys($post_id = 0, $views_with_replys = 0,$views_user_ids = 0,$reply_views_user_ids = 0,$views_likes_user_ids = []) {
 	  
 	   if(empty($post_id)  || $post_id < 1 ){
 		   log_action(__CLASS__, " View with this post id is zero (".$post_id.") on line: ".__LINE__." in file: ".__FILE__);
@@ -84,13 +84,19 @@ class Views extends DatabaseObject{
 			   $likes_count_string .= "<span class='likes_count liked' title='1 person like this'> 1 </span></a>";
 			  
 		   }
-		   elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] > 1){
+			elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] > 1 && !in_array($_SESSION[user::$id],$views_likes_user_ids)){
 			   $likes_count_string .= "<span class='likes_count' title='".self::convert_likes_number($views_info[Views::$alias_of_likes])." people like this'> ".self::convert_likes_number($views_info[Views::$alias_of_likes])."  </span></a>";
 			  
+		   }elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] > 1 && in_array($_SESSION[user::$id],$views_likes_user_ids)){
+			   
+			    $likes_count_string .= "<span class='likes_count liked' title='".self::convert_likes_number($views_info[Views::$alias_of_likes])." people like this'> ".self::convert_likes_number($views_info[Views::$alias_of_likes])."  </span></a>";
 		   }
 		     
 			 $comment_id = $views_info[Views::$alias_of_id];
-		   $_SESSION["comment_ids"][] = $comment_id;
+			 if(!in_array((int)$comment_id,$_SESSION["comment_ids"])){
+				 
+		   $_SESSION["comment_ids"][] =(int)$comment_id;
+			 }
 		   
 		 $views_and_viewsbox_template_string .= "<div id='new_comment_".$views_info[Views::$alias_of_id]."' class='ps-comment-item cstream-comment stream-comment'>
 	
@@ -108,14 +114,14 @@ class Views extends DatabaseObject{
 		<div class='ps-comment-time ps-shar-meta-date'>
 			<small class='activity-post-age' data-timestamp='1529076871'><span class='ps-js-autotime' data-timestamp='1529076871' title='".strftime("%B, %e    %G  %I:%M %p",$views_info["comment_time"])."'>".FetchPost::time_converter($views_info["comment_time"])."</span></small>
 
-						<div id='comment_like_count_{$comment_id}' class='ps-comment-links cstream-likes ' {$toggle_likes_count}>
+						<div id='comment_likes_count_{$comment_id}' class='ps-comment-links cstream-likes ' {$toggle_likes_count}>
 						
 				<a href='#showLikes'>{$likes_count_string}	</div>
 
 			<div class='ps-comment-links stream-actions' data-type='stream-action'>
 				<span class='ps-stream-status-action ps-stream-status-action'>
 					<nav class='ps-stream-status-action ps-stream-status-action'>
-<a onclick='reactions.like_comment({$post_id},{$comment_id},this)'  href='#like' class='actaction-like ps-icon-thumbs-up'> <span>Like</span></a>
+<a onclick='reaction.like({$post_id},{$comment_id},0,this,\"comment\");'  href='#like' class='actaction-like ps-icon-thumbs-up'> <span>Like</span></a>
 <a  onclick='comment.showReplyBox(".$views_info[Views::$alias_of_id]."); return false;' href='#reply' class='actaction-reply ps-icon-plus'><span>Reply</span></a>
 <a  onclick='comment.prepare_edit_comment({$post_id},".$views_info[Views::$alias_of_id]."},this,'comment'}, this); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
 <a  onclick='comment.delete_comment({$post_id},".$views_info[Views::$alias_of_id]."); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>

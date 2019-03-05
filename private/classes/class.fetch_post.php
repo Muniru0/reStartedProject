@@ -618,16 +618,17 @@ return json_encode($views);
 
         $photos_string = (int)$count === 1 ? "a photo" : "{$count} photos";
 		
-        return "<span class=\"ps-stream-action-title\"> uploaded {$photos_string} about a  <a href=\"https://demo.peepso.com/profile/demo/photos/album/37\">".h($label)."  issue</a></span>";
+        return "<span class=\"ps-stream-action-title\"> uploaded {$photos_string} about a  <a href=\"https://demo.peepso.com/profile/demo/photos/album/37\" title='This incident is about {$label}. (See more {$label} based incidents)'>".h($label)."  issue</a></span>";
     }
 
     public static function get_location_template($longitude = 0,$latitude = 0){
           $locations = ["Wa","Tamale","Kumasi","Accra","Koforidua","Cape Coast","Tema","Bolgatanga","Winneba","Saudi Arabia"];
+		   $location = $locations[array_rand($locations)];
         return trim("<span class=\"ps-js-activity-extras\">         <span>
-                <a href=\"#\" title=\"Siem Reap Province\" onclick=\"pslocation.show_map(13.6915377, 104.10013260000005, 'Siem Reap Province'); return false;\">
+                <a href=\"#\" title=\" follow and find the locatioin ".$location."\" onclick=\"pslocation.show_map(13.6915377, 104.10013260000005, 'Siem Reap Province'); return false;\">
 
                     <span class=\"at-location ps-js-autotime\">
-					</span> <i class=\"ps-icon-map-marker\"></i>".$locations[array_rand($locations)]."</a>
+					</span> <i class=\"ps-icon-map-marker\"></i>".$location."</a>
 
             </span>
             </span></div>");
@@ -1565,9 +1566,11 @@ foreach ($returned_array as $posts_info => $images_or_info){
 				  continue;
 			  }
 			  
-			 
+			 if(!in_array((int)$post_info[PostImage::$alias_of_id],$_SESSION["post_ids"])){
+				 $_SESSION["post_ids"][] = (int)$post_info[PostImage::$alias_of_id];
+			 }
 			// add the post to the array of post in the users session
-			$_SESSION["post_ids"][] = (int)$post_info[PostImage::$alias_of_id];
+			
             $full_header = "";
            // get the post confirmation template
             $full_header   = self::get_post_confirmation($post_info[PostImage::$confirmation]);

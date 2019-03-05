@@ -345,13 +345,14 @@ elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
 }
 
 
-elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_comment" ) ){
+elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_comment" || trim($_POST["request_type"]) === "like_reply") ){
 	
 	
 	 // cast the post and comment ids to integers  
 	$post_id    = (int) $_POST["post_id"];
 	$comment_id = (int) $_POST["comment_id"];
-	
+	$reply_id   = (int) $_POST["reply_id"];
+
 	// check if the ids of the post and comment are integers and set	  
 	  if(
 		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
@@ -359,20 +360,43 @@ elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_
 		  return false;
 	  }  
 	  
-	 
-	 
-		 
+	  		 
 // check to see if the post id is in the post ids array	  
         if(!in_array($comment_id,$_SESSION["comment_ids"],true))
 		 {
+			 echo $comment_id;
+			 print_r($_SESSION["comment_ids"]);
 			
 			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
+			return;
 		}
 
+	   if($_POST["request_type"] === "like_reply"){
+		     // check if the ids of the post and comment are integers and set	  
+	  if(!isset($reply_id)    || $reply_id < 1       || !is_int($reply_id)){
+		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
+		  return false;
+	  }   
+	 
+		 
+	// check to see if the post id is in the post ids array	  
+			if(!in_array($reply_id,$_SESSION["reply_ids"],true) )
+			 {
+				print j(["false" => "Please try again...if problem persist please refresh the page"]); 
+				return false;
+			 }
+			 
+	   }elseif($reply_id > 0){
+		    print j(["false" =>"Please refresh the page and try again"]);
+			return;
+	   }
+	 
+	 
+
 		
-	 // call the add likes method to add the like			
+	 // call the add likes method to add the like for both the comment and the reply			
 	
-	  Likes::like($post_id,$comment_id,$flag,$reply_id);
+	  ViewsLikes::like($post_id,$comment_id,$reply_id,$_POST["request_type"]);
 }
 
 

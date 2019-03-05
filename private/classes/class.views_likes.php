@@ -31,7 +31,7 @@
 
 
   // like a comment or a reply
-    public static function like($post_id = 0,$comment_id = 0,$flag = "like_comment"){
+    public static function like($post_id = 0,$comment_id = 0,$reply_id = 0,$flag = "like_comment"){
 		
 		
 		 if(!isset($post_id) || $post_id < 1 || !is_int($post_id)
@@ -41,7 +41,14 @@
 	
 		
 		global $db;
-		
+		   
+		   if($flag = "like_comment"){
+			   $flag = 2;
+		   }elseif($flag = "like_reply"){
+			   $flag = 3;
+		   }else{
+			   return;
+		   }
 		// assign the reply or comment time
 		$time = time();
 		

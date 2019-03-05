@@ -206,52 +206,123 @@ class reaction {
 	   
 	   
    }
+
+
     // like a comment or reply 
-   static like_reply(postID = 0, commentID = 0,replyID = 0,target_element = ""){
+   static like(postID = 0, commentID = 0,replyID = 0,targetElement = "",option = ""){
+	   
 	 
-	 
-	   if(!utility.validate_presence[postID,commentID,targetElemet,replyID]){
+	   if($.trim(postID) == "" || $.trim(postID) == undefined || Number($.trim(postID)) == 0
+	   || $.trim(commentID) == "" || $.trim(commentID) == undefined || Number($.trim(commentID)) == 0
+	   || $.trim(targetElement) == "" || $.trim(targetElement) == undefined 
+	   || $.trim(option) == "" || $.trim(option) == undefined){
 		   return;
-	   }   
-	     let likesCount = $("comment_likes_count_" +commentID);
-	      likesCount    = $(likesCount).find("span");
-	    let  likesCountNumber   = $(likesCount).html();
-	         if($.trim(likesCountNumber) != ""){
-	         	let likesCountTitle = $(likesCount).attr("title");
-	         likesCountTitle  = likesCountTitle.split("p")[0];
-	        likesCountTitle = Number(likesCountTitle);
-	        if( typeof likesCountTitle == "number"){
-	       $(likesCount).attr("title",likesCountTitle++ +"people like this")
-	        } 	    
-	        $(likesCount).attr("title","you just like this");
-	      $(likesCountNumber).html("1");
-	         }
-	     
-	     $(targetElement).toggleClass("liked");
-	   let likesString = $(targetElement).find("span")[0];
-	     likesString =   $(likesString).html();
-	     if($.trim(likesString) == "Like"){
-	     	$(likesString).html("Liked");
-	     }else if($.trim(likesString) == "Liked"){
-	     	$(likesString).html("Like");
-	     }
+	   }  
 
+	   let likesCountSpan;
+	   let likesCount;
+	   let likesCountSpanTitle;
+	   let likesCountTitleString;
+	   let likesString;
+	   let request_type;
+        
+        if($.trim(option) == "comment" && Number(replyID) == 0){
+    
+       likesCount = document.querySelector("#comment_likes_count_" + commentID);
+       request_type = "like_comment";
+        }else if($.trim(option) == "reply" && Number(replyID) > 0){
+        	  likesCount = document.querySelector("#reply_likes_count_" + replyID);
+       request_type = "like_reply";
+        }else{
+           return;
+        }
 
-	    
-		if(!$(targetElement).hasClass("liked")){
-			
-	   $(targetElement).addClass("liked");
-		}
-		$(targetElemet).html(likesCountString);
+       
+          
 		
+	      likesCountSpan    = $(likesCount).find("span");
+		  likesCount        = $(likesCountSpan).html();
+		  
+		  
+		   if($.trim(likesCount) == ""){
+			likesCountTitleString = "you just liked this";
+          $(likesCountSpan).attr("title",likesCountTitleString);
+	      $(likesCountSpan).html("1");	
+		  
+		   }else
+	         if(Number(likesCount) > 0){
+	         	   // change the like to liked or liked to like
+	      likesString = $(targetElement).find("span")[0];
+	     likesCount = Number(likesCount)
+
+		 
+				   if(likesCount.split("k").length === 1 && likesCount.split("m").length === 1){
+				   	 if($(targetElement).hasClass("liked")){
+				   	 	 $(likesString).html("Like");
+						likesCount = likesCount - 1;
+				   	 }else if(!$(targetElement).hasClass("liked")){
+				   	 	$(likesString).html("Liked");
+				   	 	likesCount = likesCount + 1;
+				   	 }
+				   	 
+					  if(likesCount == 0){
+                      $(likesCountSpan).hide();
+					  }
+
+					$(likesCountSpan).html(likesCount);
+				   }
+				  
+				    
+			//initialize the likesCountSpanTitle variable 			
+	         likesCountSpanTitle = $(likesCountSpan).attr("title");
+			// get the number of likes from the string of the title attribute	
+	         likesCountSpanTitle  = likesCountSpanTitle.split("p")[0];
+			// cast the likes count span attribute to a number 
+	        likesCountSpanTitle = Number(likesCountSpanTitle);
+	     
+			// check to see if the likes count in the span 
+			// title attribute is a number
+	        if(typeof likesCountSpanTitle == "number"){
+	        	if($(targetElement).hasClass("liked")){
+ 					likesCountSpanTitle - 1; 
+	        	}else if(!$(targetElement).hasClass("liked")){
+	        		 likesCountSpanTitle + 1 ;
+	        	}
+                  
+                  // if the number of likes is less than 1
+	        	  if(likesCountSpanTitle < 1){
+                     likesCountTitleString = "";
+                     // if the number of likes is equal to 1
+	        	  }else if(likesCountSpanTitle == 1){
+	        	  	  likesCountTitleString = "1 person likes this";
+	        	  	  // if the number of likes is greater than 1
+	        	  }else if(likesCountSpanTitle > 1){
+	        	  	likesCountTitleString = likesCountSpanTitle +" people like this";
+	        	  }
+				
+		 // update the number of likes on the client side		
+	       $(likesCountSpan).attr("title",likesCountTitleString);
+	        } 	    
+	       
+	         }
+			 
+			
+	     
+    
+		 
+	     
+  $(targetElement).toggleClass("liked");
+  return;
+
+	   
 		$.ajax({
-			url: "..private/neutral_ajax.php",
+			url: "../private/neutral_ajax.php",
 			type: "POST",
-			data: {post_id: postID,comment_id: commentID,reply_id: replyID,request_type: "like_reply"},
+			data: {post_id: postID,comment_id: commentID,reply_id: replyID,request_type: request_type},
 			dataType: "html"
 		}).done(function(response){
 			console.log(response);
-			
+			 return;
 		    try{
 				response = JSON.parse(response);
 				 if($.trim(response["false"]) != "" && $.trim(response["false"]) != undefined ){
@@ -268,14 +339,14 @@ class reaction {
 					 }
 				 }
 				 
-				 if($.trim(response["likes"]) != "" && $.trim(response["likes"]) != undefined )){
+				 if($.trim(response["likes"]) != "" && $.trim(response["likes"]) != undefined ){
 					
-					  if(likesCount === 0){
-		   likesCountString .="<span>1</spa> you just liked this";
-	   }elseif(likesCount > 0){
-		   likesCountString .="<span>"+ response["likes"] +"</spa> people likes this";
+					  if(likesCountNumber === 0){
+		        $(likesCountNumber).html(response["likes"]);
+	   }else if(likesCountNumber > 0){
+		  
 	   }
-	    $(targetElemet).html(likesCountString);
+	    $(targetElemet).html();
 				 }
 				 
 				 
