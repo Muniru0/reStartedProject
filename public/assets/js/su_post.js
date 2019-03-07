@@ -59,7 +59,7 @@ function post_option_link(post_id,element){
     
 }
 
-function post_options(postID = 0 , element = "",option = null){
+function post_options(userID = 0,postID = 0 , element = "",option = null){
  
     if(!utility.validate_presence(postID) || !utility.validate_presence(element)){
         return;
@@ -78,20 +78,21 @@ function post_options(postID = 0 , element = "",option = null){
 
    requestTypeValue = (option == null || $.trim(option) == "") ? "comfirm_post" : option;
     
-
+ 
     $.ajax({
         url: "../private/neutral_ajax.php",
         type: "POST",
-        data: {request_type: requestTypeValue,post_id: postID},
+        data: {user_id: userID,request_type: requestTypeValue,post_id: postID},
         dataType: "html"
     }).done(function(response){
        console.log(response);
+       return;
 try{
       response = JSON.parse(response);
       let confirmationTextSpan = $(element).find("span")[0]; 
       let confirmationIcon = $(element).find("i")[0];
      
-      if(response["true"] == "done"){
+      if(response["true"] == "success"){
            if(option == "confirm_post" || option == null){
                 
                  title = "Confirm that this incident really took place";

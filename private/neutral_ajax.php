@@ -117,7 +117,25 @@ PostImage::delete_post($user_id,$post_id);
 	
 }// delete the post
 
-
+ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "link_user" &&
+        isset($_POST["post_id"]) && $_POST["post_id"] > 0 && isset($_POST["user_id"]) > 0){
+			
+			$post_id = (int)$_POST["post_id"];
+			$user_id = (int)$_POST["user_id"];
+			
+			if(!in_array($post_id,$_SESSION["post_ids"])){
+				return;
+			}
+			
+			if(!in_array($user_id,$_SESSION["posts_user_ids"])){
+				return;
+			}
+			
+			// link with this user
+			LinkUsers::link_user( $user_id , $post_id );
+			
+	 
+ }
 // delete the view
 elseif(isset($_POST["delete_comment"]) && trim($_POST["delete_comment"]) === "comment"){
 

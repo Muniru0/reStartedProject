@@ -81,10 +81,11 @@ class Views extends DatabaseObject{
 		   if(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$views_likes_user_ids[$views_info[Views::$alias_of_id]])){
 			   $likes_count_string .= "<span class='likes_count liked' title='you liked this'>1</span></a>";
 			   $user_like_status = "liked";
+			   
 			  
 			   // if you are not the one person that liked this
 		   }elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && !in_array($_SESSION[user::$id],$views_likes_user_ids[$views_info[Views::$alias_of_id]])){
-			   $likes_count_string .= "<span class='likes_count liked' title='1 person like this'> 1 </span></a>";
+			   $likes_count_string .= "<span class='likes_count' title='1 person like this'> 1 </span></a>";
 			  
 		   }
 		  
@@ -101,7 +102,7 @@ class Views extends DatabaseObject{
 			   
 			    $likes_count_string .= "<span class='likes_count  liked' title='".self::convert_likes_number($views_info[Views::$alias_of_likes])." people like this'> ".self::convert_likes_number($views_info[Views::$alias_of_likes])."  </span></a>";
 				$user_like_status = "liked";
-			
+			 
 		   }
 		     
 			 $comment_id = $views_info[Views::$alias_of_id];

@@ -344,13 +344,14 @@ class reaction {
 				 }
 				 
 				 if($.trim(response["likes"]) != "" && $.trim(response["likes"]) != undefined ){
+					  response["likes"] = Number(response["likes"]);
+					   if(response["likes"] != likesCount){
+                       $(targetElement).toggleClass("liked",1000,"easeOutBounce");
+                       $(likesCountSpan).toggleClass("liked",1000,"easeOutBounce");
+                       $(likesCountSpan).html(response["likes"]);
+					   }
 					
-					  if(likesCountNumber === 0){
-		        $(likesCountNumber).html(response["likes"]);
-	   }else if(likesCountNumber > 0){
-		  
-	   }
-	    $(targetElemet).html();
+	   
 				 }
 				 
 				 

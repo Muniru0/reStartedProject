@@ -10,7 +10,7 @@
 //
 //
 //
-//defined("PROFILE_IMAGES") ? null    : define("PROFILE_IMAGES","IPmHxc3tDbNYWfiGz6FB5LHml2RJNTykk6uxED1bLs");
+
 //
 //defined("POST_IMAGES")    ? null    : define("POST_IMAGES","r8NFcV3V75k4WISV0V8rrp4FmwUTr6Km9tQ1b9sSquA");
 //
@@ -47,6 +47,8 @@
 //defined('PRIVATE_ROOT') ? null:
 //define ('PRIVATE_DIR','C:'.DS.'wamp64'.DS.'www'.DS.'sample_app'.DS.'lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk');
 
+// pages constants
+defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","IPmHxcktDbNYWfiGzwFBkLHmlRJNTykkdduxED1bLs");
 
 //logic CONSTANTS
 !defined("RECENT")  ? define("RECENT","recent")              : null;
@@ -105,7 +107,7 @@ require_once(PRIVATE_DIR . "classes/class.pagination.php");
 require_once(PRIVATE_DIR . "classes/class.notifications.php");
 require_once(PRIVATE_DIR . "classes/class.post_templates.php");
 require_once(PRIVATE_DIR . "classes/class.views_likes.php");
-require_once(PRIVATE_DIR . "classes/class.reply_views_likes.php");
+require_once(PRIVATE_DIR . "classes/class.reply_views_likes.php");require_once(PRIVATE_DIR . "classes/class.link_users.php");
 
 block_blacklisted_ips();
 

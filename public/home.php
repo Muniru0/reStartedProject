@@ -57,6 +57,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <link rel="stylesheet" href="assets/css/dropzone.min.css">
 <link rel="stylesheet" href="assets/css/jquery-ui.css">
 <script  type="text/javascript"  src="assets/js/jquery.js"></script>
+<link rel="stylesheet" href="assets/fonts/fontawesome5/css/all.css" />
 <script   type="text/javascript"  src="assets/js/comments.js">  </script> 
 	
 <style>
@@ -576,13 +577,18 @@ background: #f9f9f9;
             </a>
           </div>
           <ul class="header__menu">
-            <li id="menu-item-149" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149"><a href=" ://demo.peepso.com/">Community</a></li>
-<li id="menu-item-148" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a href=" ://demo.peepso.com/profile/">Profile</a></li>
-<li id="menu-item-663" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-663"><a href=" ://demo.peepso.com/members/">Members</a></li>
-<li id="menu-item-664" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-664"><a href=" ://demo.peepso.com/classifieds/">Classifieds</a></li>
-<li id="menu-item-150" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-150"><a target="_blank" href="/wp-admin/">Login to Admin</a></li>
+            <li id="menu-item-149" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149"><a href=" ://demo.peepso.com/">Transport</a></li>
+			<li id="menu-item-149" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149"><a href=" ://demo.peepso.com/">Health</a></li>
+			<li id="menu-item-149" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149"><a href=" ://demo.peepso.com/">Work</a></li>
+			<li id="menu-item-149" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149"><a href=" ://demo.peepso.com/">Sanitation</a></li>
+<li id="menu-item-148" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a href=" ://demo.peepso.com/profile/">S.O.L</a></li>
+<li id="menu-item-663" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-663"><a href=" ://demo.peepso.com/members/">Security</a></li>
+<li id="menu-item-664" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-664"><a href=" ://demo.peepso.com/classifieds/">Sanitation</a></li>
+<li id="menu-item-150" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-150"><a target="_blank" href="/wp-admin/">Corruption</a></li>
+</li>
+<li id="menu-item-150" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-150"><a target="_blank" href="/wp-admin/">Other</a></li>
             <li class="menu-item menu-item--myacccount">
-              <a href=" ://www.peepso.com/my-account/">My Downloads</a>
+              <a href=" ://www.peepso.com/my-account/">Other</a>
             </li>
           </ul>
 

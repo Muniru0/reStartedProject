@@ -609,9 +609,9 @@ return json_encode($views);
                         </div>";
     }
 
-    public static function get_fullname($firstname,$lastname){
-
-        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap\"><a class=\"ps-stream-user\" href=\"https://demo.peepso.com/profile/demo/\">". $firstname." ".$lastname."</a>";
+    public static function get_fullname($id = 0,$firstname,$lastname){
+           
+        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap\"><a class=\"ps-stream-user\" href=\"../".PROFILE_PAGE."/{$id}\">". $firstname." ".$lastname."</a>";
     }
 
     public static function get_post_title($count,$label){
@@ -650,15 +650,20 @@ return json_encode($views);
 			print j(["false" => "Routine Security checks, please refresh the page and try again."]);
 			 return;
 		 }
+		 
+		 $link_user_string = "link_user";
+		 $follow_post_string = "follow_post";
+		 
 		$edit_post_string =  $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_edit({$_SESSION["id"]}, {$post_id},this); return false' data-post-id='930'><i class='ps-icon-edit'></i><span>Edit Post</span>
 </a>";
 		$delete_post_string = $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_delete({$_SESSION["id"]}, {$post_id},this);' data-post-id='930'><i class='ps-icon-trash'></i><span>Delete Post</span>
 </a> ";
 		
-		$follow_post_string =  $_SESSION["id"] == $user_id ? "" : "<a href='javascript:' onclick='post_options({$post_id},this,'follow_post');' data-post-id='930'><i class='ps-icon-eye'></i><span>follow this post</span>
+		$follow_post_string =  $_SESSION["id"] == $user_id ? "" : "<a href='javascript:' onclick='post_options({$post_id},this,\"".$follow_post_string."\");' data-post-id='930'><i class='ps-icon-eye'></i><span>follow this post</span>
 </a>";
+      
 		
-	    $link_user_string =  $_SESSION["id"] == $user_id ? "" :"<a href='javascript:' onclick='post_options({$post_id},this,'link_user');return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span>Link with {$firstname} {$lastname}</span>
+	    $link_user_string =  $_SESSION["id"] == $user_id ? "" :"<a href='javascript:' onclick='post_options({$user_id},{$post_id},this,\"".$link_user_string."\");return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span>Link with {$firstname} {$lastname}</span>
 </a>
 ";
   $confirmation_option_string = "";
@@ -667,10 +672,11 @@ return json_encode($views);
     // post option with the link to confirm or reverse the confirmation 	
 	if($confirmation == 0){
 		
-		  $confirmation_option_string = "<a href='javascript:' onclick='post_options({$post_id},this)' data-post-id='930' title='You can confirm that this incident really took place' class='confirm_post'><i class='fal fa-check-circle' style='color:inherit;'></i><span  style='color:inherit;'>Confirm  this post</span>
+		  $confirmation_option_string = "<a href='javascript:' onclick='post_options(0,{$post_id},this)' data-post-id='930' title='You can confirm that this incident really took place' class='confirm_post'><i class='fal fa-check-circle' style='color:inherit;'></i><span  style='color:inherit; margin-left:0.4em'>Confirm  this post</span>
 </a>";
+
 	}elseif(isset($confirmer) && $confirmer == $_SESSION["id"] && $confirmation == 1){
-	    $confirmation_option_string = "<a href='javascript:' onclick='post_options({$post_id},this,'reverse_confirmation')' data-post-id='930' title='You can reverse the the confirmation of this post' class='reverse_confirmation'><i class='fal fa-undo-alt' style='color:inherit !important'></i><span style='color:inherit;'>Reverse Confirmation</span>
+	    $confirmation_option_string = "<a href='javascript:' onclick='post_options(0,{$post_id},this,'reverse_confirmation')' data-post-id='930' title='You can reverse the the confirmation of this post' class='reverse_confirmation'><i class='fal fa-undo-alt' style='color:inherit !important'></i><span style='color:inherit; margin-left:0.4em'>Reverse Confirmation</span>
 </a>";
    }
 
@@ -1566,6 +1572,10 @@ foreach ($returned_array as $posts_info => $images_or_info){
 				  continue;
 			  }
 			  
+			  if(!in_array((int)$post_info[PostImage::$alias_of_uploader_id],$_SESSION[PostImage::$alias_of_uploader_id])){
+				  $_SESSION[PostImage::$alias_of_uploader_id][] = (int)$post_inof[PostImage::$lias_of_id];
+			  }
+			  
 			 if(!in_array((int)$post_info[PostImage::$alias_of_id],$_SESSION["post_ids"])){
 				 $_SESSION["post_ids"][] = (int)$post_info[PostImage::$alias_of_id];
 			 }
@@ -1576,7 +1586,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
             $full_header   = self::get_post_confirmation($post_info[PostImage::$confirmation]);
 			
             // gets the full name
-            $full_header   .= self::get_fullname($post_info[user::$firstname],$post_info[user::$lastname]);
+            $full_header   .= self::get_fullname($post_info[user::$id],$post_info[user::$firstname],$post_info[user::$lastname]);
             // gets the number of files uploaded and label of the issue
             $full_header   .= self::get_post_title(count($images),$post_info[PostImage::$label]);
             // gets the mood of the post

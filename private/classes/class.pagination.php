@@ -310,8 +310,19 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
   $r = [];
    while($row = $result->fetch_assoc()){
 	  
-				
+				  if(isset($reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]])){
+				 if(isset($row[ReplyViewsLikes::$alias_of_user_id]) && !in_array($row[ReplyViewsLikes::$alias_of_user_id],$reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]])){
+					 
+				  $reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
+	   
+			  }
+		}else{
+			// if the reply id for a reply is not set then set else
 			 $reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
+		}
+			
+			/* 	
+			 $reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]][] = $row[ReplyViewsLikes::$alias_of_user_id]; */
 			
    }
    

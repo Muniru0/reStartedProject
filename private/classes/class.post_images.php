@@ -438,7 +438,7 @@ if($db->multi_query($query)){
 					return;
 				}elseif(isset($row["post_id"]) && (int)$row["post_id"] > 0 ){
 					  
-					print j(["true" => "done"]);
+					print j(["true" => "success"]);
 					return;
 				}elseif(trim($db->error) != ""){
 					
@@ -724,13 +724,9 @@ if($db->multi_query($query)){
 
 
 
-
-
-	
-	
-
 }
 
+  
 
 
 

@@ -121,6 +121,8 @@ require_once(PRIVATE_DIR."initialize.php");
 	// Save these values in the session, even when checks aren't enabled 
     $_SESSION['ip']          = $_SERVER['REMOTE_ADDR'];
     $_SESSION['user_agent']  = $_SERVER['HTTP_USER_AGENT'];
+	$_SESSION["linked_users"]  = [];
+	$_SESSION["post_users_ids"] = [];
 	$_SESSION['last_login']  = time();
 	$_SESSION['mainstream']  = 0;
 	$_SESSION['community']   = 0;
