@@ -219,6 +219,7 @@ class reaction {
 		   return;
 	   }  
 
+       let likesCountDiv;
 	   let likesCountSpan;
 	   let likesCount;
 	   let likesCountSpanTitle;
@@ -228,10 +229,10 @@ class reaction {
         
         if($.trim(option) == "comment" && Number(replyID) == 0){
     
-       likesCount = document.querySelector("#comment_likes_count_" + commentID);
+       likesCountDiv = document.querySelector("#comment_likes_count_" + commentID);
        request_type = "like_comment";
         }else if($.trim(option) == "reply" && Number(replyID) > 0){
-        	  likesCount = document.querySelector("#reply_likes_count_" + replyID);
+        	  likesCountDiv = document.querySelector("#reply_likes_count_" + replyID);
        request_type = "like_reply";
         }else{
            return;
@@ -240,23 +241,26 @@ class reaction {
        
           
 		
-	      likesCountSpan    = $(likesCount).find("span");
+	      likesCountSpan    = $(likesCountDiv).find("span");
 		  likesCount        = $(likesCountSpan).html();
-		  
-		  
+		    
+		     
 		   if($.trim(likesCount) == ""){
 			likesCountTitleString = "you just liked this";
           $(likesCountSpan).attr("title",likesCountTitleString);
 	      $(likesCountSpan).html("1");	
+	      $(likesCountDiv).show();
 		  
 		   }else
-	         if(Number(likesCount) > 0){
+	         if(Number(likesCount) >= 0){
 	         	   // change the like to liked or liked to like
 	      likesString = $(targetElement).find("span")[0];
-	     likesCount = Number(likesCount)
-
+	         $(likesCountDiv).show();
+           
+          
 		 
 				   if(likesCount.split("k").length === 1 && likesCount.split("m").length === 1){
+				   	  likesCount = Number(likesCount);
 				   	 if($(targetElement).hasClass("liked")){
 				   	 	 $(likesString).html("Like");
 						likesCount = likesCount - 1;
@@ -266,9 +270,9 @@ class reaction {
 				   	 }
 				   	 
 					  if(likesCount == 0){
-                      $(likesCountSpan).hide();
+                      $(likesCountDiv).hide();
 					  }
-
+                           
 					$(likesCountSpan).html(likesCount);
 				   }
 				  
@@ -279,14 +283,14 @@ class reaction {
 	         likesCountSpanTitle  = likesCountSpanTitle.split("p")[0];
 			// cast the likes count span attribute to a number 
 	        likesCountSpanTitle = Number(likesCountSpanTitle);
-	     
+	   
 			// check to see if the likes count in the span 
 			// title attribute is a number
 	        if(typeof likesCountSpanTitle == "number"){
 	        	if($(targetElement).hasClass("liked")){
- 					likesCountSpanTitle - 1; 
+ 					likesCountSpanTitle = likesCountSpanTitle - 1; 
 	        	}else if(!$(targetElement).hasClass("liked")){
-	        		 likesCountSpanTitle + 1 ;
+	        		likesCountSpanTitle = likesCountSpanTitle + 1 ;
 	        	}
                   
                   // if the number of likes is less than 1
@@ -311,8 +315,8 @@ class reaction {
     
 		 
 	     
-  $(targetElement).toggleClass("liked");
-  return;
+  $(targetElement).toggleClass("liked",1000,"easeOutBounce");
+  $(likesCountSpan).toggleClass("liked",1000,"easeOutBounce");
 
 	   
 		$.ajax({

@@ -1,5 +1,4 @@
-<?php 
-// require_once("../private/initialize.php"); 
+<?php require_once("../private/initialize.php"); 
 ?>
 <!DOCTYPE html>
   <html>
@@ -10,6 +9,8 @@
 		<script src = "assets/js/jquery-ui.min.js" ></script> 
 		<link rel="stylesheet" href= "assets/css/bootstrap.css" />
 		-->
+		<script src = "assets/js/jquery.js" ></script> 
+		<script src = "assets/js/jquery-ui.min.js" ></script> 
 		<link rel="stylesheet" href="assets/fonts/fontawesome5/css/all.css" />
 
 </head>
@@ -32,33 +33,25 @@ div {
   width: 140px;
   height: 60px;
 }
-div {
+.div {
   width: 60px;
   height: 60px;
   background-color: skyblue;
+  zoom: 10%;
 }
 
 .moved {
   /* Equivalent to perspective(500px) translateX(10px) */
   transform: perspective(5px) translate3d(10px, 0, 0px);
   background-color: pink;
+  transition: all .5;
 }
 
  </style>
- <script>
- 
- let test = "154.5k";
- 
- if(test.split("k")){
-	 document.write(test.split("k")[0]);
- }
- 
- 
- </script>
- <?php
- $likes = 15125;
 
- echo round( $likes / 1000,1,PHP_ROUND_HALF_UP);
+ <?php
+ 
+ print_r(Pagination::get_reply_likes_user_ids(220,250));
 /*  echo $_SESSION["id"];
 if(in_array($_SESSION["id"],[4])){
 	echo "us;";

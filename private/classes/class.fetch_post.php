@@ -1517,7 +1517,7 @@ $images_string .= "</div></div></div></div>
 // brings back the header of the post
     public static function get_full_post($returned_array = [],$views = null,$reactions_user_ids = [],$views_likes_user_ids,$reply_views_likes_user_ids,$flag = ""){
 		
-  
+ 
 	try{
 		
 	if(empty($returned_array) || !is_array($returned_array) && !isset($views)){

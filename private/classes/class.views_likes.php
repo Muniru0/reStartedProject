@@ -39,7 +39,7 @@
 			 return;
 		 }
 	
-		
+				
 		global $db;
 		   
 		   if($flag = "like_comment"){
@@ -49,39 +49,51 @@
 		   }else{
 			   return;
 		   }
+		   
+		   		
 		// assign the reply or comment time
 		$time = time();
 		
         // set the like comment or reply query		
-		 $query = "CALL like({$post_id},{$comment_id},{$reply_id},{$_SESSION["id"]},{$_SESSION["firstname"]},{$_SESSION["lastname"]},{$time},{$flag})";
-	
+		 $query = "CALL like_comment_replys({$post_id},{$comment_id},{$reply_id},{$_SESSION["id"]},'{$_SESSION["firstname"]}','{$_SESSION["lastname"]}',{$time},{$flag})";
+
 		// perform the query	
 		if($db->multi_query($query)){
 			
 	// fetch the result
 	 do{
 		 
-		  if($row = $result->store_result()){
+		  if($result = $db->store_result()){
+			    
+			 while($row = $result->fetch_assoc()){
+				   
 		  if(isset($row["likes"]) && !empty($row["likes"]) ){
+			  		
 			  $result = (int)$row["likes"];
 			   if(is_int($result)){
+				   		 
 				   print j(["likes" => $result]);
 			   }
 			  return;
 		  }
-		 elseif($db->error != ""){
-			   print j(["false" => "Sorry operation failed"]);
-			return;
-		 }else {
-			print j(["false" => "Sorry operation failed"]);
+			 }
+			 
+			 $result->free();
+		
+	  }elseif($db->error != ""){
+		  log_action(__CLASS__,$db->error);
+			 
 			return;
 		 }
-	  }
 		 
 		 
 	 }while($db->more_results() && $db->next_result());
 	
 	 
+	
+}else{
+	
+	print j(["false"=>"Please try again later"]);	
 	
 }
 	}// like();

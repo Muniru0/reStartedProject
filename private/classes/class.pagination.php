@@ -42,7 +42,7 @@ return;
   
  
  // get the views user_ids
- $views_likes_user_ids = self::get_reply_likes_user_ids($offset,$offset_upperbound);
+ $views_likes_user_ids = self::get_comments_likes_user_ids($offset,$offset_upperbound);
  
  
  // get the views user_ids
@@ -248,17 +248,17 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
  $views_likes_user_ids  = [];
  
  $query = "SELECT ".ViewsLikes::$table_name.".".ViewsLikes::$id." AS ".ViewsLikes::$alias_of_id.",".ViewsLikes::$post_id." AS ".ViewsLikes::$alias_of_post_id.",".ViewsLikes::$table_name.".".ViewsLikes::$comment_id."    AS ".ViewsLikes::$alias_of_comment_id.",".ViewsLikes::$table_name.".".ViewsLikes::$user_id." AS ".ViewsLikes::$alias_of_user_id.",".ViewsLikes::$table_name.".".ViewsLikes::$firstname." AS ".ViewsLikes::$alias_of_firstname.",".ViewsLikes::$table_name.".".ViewsLikes::$lastname." AS ".ViewsLikes::$alias_of_lastname.",".ViewsLikes::$table_name.".".ViewsLikes::$likes_time." AS ".ViewsLikes::$alias_of_likes_time." FROM ".ViewsLikes::$table_name." WHERE ".ViewsLikes::$post_id." >={$offset} && ".ViewsLikes::$post_id." <={$offset_upperbound};"; 
- 
+
  $result = $db->query($query);
    while($row = $result->fetch_assoc()){
 	    
-				  if(isset($views_likes_user_ids[$row[ViewsLikes::$alias_of_id]])){
-				 if(isset($row[ViewsLikes::$alias_of_user_id]) && isset($row[ViewsLikes::$alias_of_user_id]) && !in_array($row[ViewsLikes::$alias_of_user_id],$views_likes_user_ids[$row[ViewsLikes::$alias_of_id]])){
-				  $views_likes_user_ids[$row[ViewsLikes::$alias_of_id]][] = $row[ViewsLikes::$alias_of_user_id];
+				  if(isset($views_likes_user_ids[$row[ViewsLikes::$alias_of_comment_id]])){
+				 if(isset($row[ViewsLikes::$alias_of_user_id]) && isset($row[ViewsLikes::$alias_of_user_id]) && !in_array($row[ViewsLikes::$alias_of_user_id],$views_likes_user_ids[$row[ViewsLikes::$alias_of_comment_id]])){
+				  $views_likes_user_ids[$row[ViewsLikes::$alias_of_comment_id]][] = $row[ViewsLikes::$alias_of_user_id];
 	   
 			  }
 		}else{
-			 $views_likes_user_ids[$row[ViewsLikes::$alias_of_id]][] = $row[ViewsLikes::$alias_of_user_id];
+			 $views_likes_user_ids[$row[ViewsLikes::$alias_of_comment_id]][] = $row[ViewsLikes::$alias_of_user_id];
 		}
    }
    
@@ -274,7 +274,7 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
 		
 	 $reply_views_likes_user_ids  = [];	 
 	 
- $query  = "SELECT ".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$id." AS ".ReplyViewsLikes::$alias_of_id.",".ReplyViewsLikes::$post_id." AS ".ReplyViewsLikes::$alias_of_post_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$comment_id."    AS ".ReplyViewsLikes::$alias_of_comment_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$user_id." AS ".ReplyViewsLikes::$alias_of_user_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$firstname." AS ".ReplyViewsLikes::$alias_of_firstname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$lastname." AS ".ReplyViewsLikes::$alias_of_lastname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$likes_time."  AS ".ReplyViewsLikes::$alias_of_likes_time." FROM ".ReplyViewsLikes::$table_name." WHERE ".ReplyViewsLikes::$post_id." >={$offset} && ".ReplyViewsLikes::$post_id." <={$offset_upperbound}"; 
+ $query  = "SELECT ".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$id." AS ".ReplyViewsLikes::$alias_of_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$reply_id." AS ".ReplyViewsLikes::$alias_of_reply_id.",".ReplyViewsLikes::$post_id." AS ".ReplyViewsLikes::$alias_of_post_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$comment_id."    AS ".ReplyViewsLikes::$alias_of_comment_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$user_id." AS ".ReplyViewsLikes::$alias_of_user_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$firstname." AS ".ReplyViewsLikes::$alias_of_firstname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$lastname." AS ".ReplyViewsLikes::$alias_of_lastname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$likes_time."  AS ".ReplyViewsLikes::$alias_of_likes_time." FROM ".ReplyViewsLikes::$table_name." WHERE ".ReplyViewsLikes::$post_id." >={$offset} && ".ReplyViewsLikes::$post_id." <={$offset_upperbound}"; 
 
   /* if($db->multi_query($query)){
 	  
@@ -311,13 +311,12 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
    while($row = $result->fetch_assoc()){
 	  
 				
-				
-			
-			 $reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
-		
+			 $reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
 			
    }
    
+   
+ 
    $result->free();
   
     return $reply_views_likes_user_ids ;

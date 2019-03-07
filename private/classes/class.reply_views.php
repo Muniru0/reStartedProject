@@ -190,29 +190,43 @@ return $record;
     
 	       $toggle_likes_count = "";
            $likes_count_string = "";
+		   $user_like_status   = "";
 		   
+		   
+		   // if there are no reply likes
 		   if(isset($reply[ReplyViews::$alias_of_likes]) && $reply[ReplyViews::$alias_of_likes] < 1 ){
 			   
 			   $toggle_likes_count = "style = 'display:none;'";
 			   $likes_count_string = "<span class='likes_count'></span></a>";
 		   }
+		   // if user is the only one who liked the reply
 		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$likes_user_ids)){
-			   $likes_count_string = "<span class='likes_count' title='you liked this'> 1</span></a>";
+			   $likes_count_string = "<span class='likes_count liked' title='you liked this'> 1</span></a>";
+			   $user_like_status = "liked";
 			    
-		   }elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 && !in_array($_SESSION[user::$id],$likes_user_ids)){
+		   }
+		   // if another user is the only one who liked the reply
+		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 && !in_array($_SESSION[user::$id],$likes_user_ids[$reply[ReplyViews::$alias_of_id]])){
 			   $likes_count_string = "<span class='likes_count' title= 'person liked this'>1</span></a>";
 			   
 		   }
-		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] > 1 && !in_array($_SESSION[user::$id],$likes_user_ids)){
+		   //if the user is not  among the multi users that liked the reply
+		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] > 1 && !in_array($_SESSION[user::$id],$likes_user_ids[$reply[ReplyViews::$alias_of_id]])){
 			   
 			   $likes_count_string = "<span class='likes_count' title='".parent::convert_likes_number($reply[ReplyViews::$alias_of_likes])." people likes this'>".parent::convert_likes_number($reply[ReplyViews::$alias_of_likes])."</span></a>";
 			   
-			    
-		   }elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] > 1 && !in_array($_SESSION[user::$id],$likes_user_ids)){
+			   
+			     
+		   } 
+		    // if user is among the multi users that liked the reply
+ 		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] > 1 && in_array($_SESSION[user::$id],$likes_user_ids[$reply[ReplyViews::$alias_of_id]])){
 			   
 			   $likes_count_string = "<span class='likes_count liked' title='".parent::convert_likes_number($reply[ReplyViews::$alias_of_likes])." people likes this'>".parent::convert_likes_number($reply[ReplyViews::$alias_of_likes])."</span></a>";
+			   $user_like_status = "liked";
+			   
+			     
 		   }
-		   
+		  
 		      
 		   $reply_id = $reply[ReplyViews::$id];
 		  
@@ -249,7 +263,7 @@ return $record;
 			<div class='ps-comment-links stream-actions' data-type='stream-action'>
 				<span class='ps-stream-status-action ps-stream-status-action'>
 					<nav class='ps-stream-status-action ps-stream-status-action'>
-<a  onclick='reaction.like({$post_id},{$comment_id},".$reply_id.",this,\"reply\"); return false;' href='#like' class='actaction-like ps-icon-thumbs-up'><span>Like</span></a>
+<a  onclick='reaction.like({$post_id},{$comment_id},".$reply_id.",this,\"reply\"); return false;' href='#like' class='actaction-like ps-icon-thumbs-up {$user_like_status}'><span>Like</span></a>
 
 <a onclick='comment.prepare_edit_comment({$comment_id},".$reply_id.",this,'reply'); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
 <a  onclick='comment.delete_comment({$comment_id},".$reply_id.",'reply'); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>

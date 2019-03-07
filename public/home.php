@@ -542,6 +542,7 @@ button:hover {
 	color: #412d13;
     font-weight: 1000;
     opacity: 0.75;
+	transition: all .5;
 }
 <!--colors:
  the confirm post hover link color

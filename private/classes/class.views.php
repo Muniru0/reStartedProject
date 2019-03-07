@@ -31,8 +31,9 @@ class Views extends DatabaseObject{
 	  
 	  
    // get all the views for some specific post_ids
-   public static function get_views_with_replys($post_id = 0, $views_with_replys = 0,$views_user_ids = 0,$reply_views_user_ids = 0,$views_likes_user_ids = []) {
-	  
+   public static function get_views_with_replys($post_id = 0, $views_with_replys = "",$views_likes_user_ids = [],$reply_views_user_ids = []) {
+	   
+      
 	   if(empty($post_id)  || $post_id < 1 ){
 		   log_action(__CLASS__, " View with this post id is zero (".$post_id.") on line: ".__LINE__." in file: ".__FILE__);
 		   print j(["false" =>"Sorry server problem,please try again, if problem persists refresh the page."]);
@@ -64,9 +65,11 @@ class Views extends DatabaseObject{
 				return false;
 		   }
 		   
+		   
 		   $toggle_likes_count = "";
 		   $likes_count_string = "";
-		  
+		   $user_like_status   = "";
+		   
 		   //if there are no likes yet
 		   if(isset($views_info[Views::$alias_of_likes]) && $views_info[Views::$alias_of_likes] < 1 ){
 			    $toggle_likes_count = " style= 'display:none;'";
@@ -74,22 +77,31 @@ class Views extends DatabaseObject{
 			 
 		   }
 		   
-		 
-		   if(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$likes_user_ids)){
+		 // if there is only one like an dyou are the one who liked it
+		   if(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$views_likes_user_ids[$views_info[Views::$alias_of_id]])){
 			   $likes_count_string .= "<span class='likes_count liked' title='you liked this'>1</span></a>";
-			   
+			   $user_like_status = "liked";
 			  
-			   // if one not the one person that liked this
-		   }elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && !in_array((int)$_SESSION[user::$id],$views_likes_user_ids)){
+			   // if you are not the one person that liked this
+		   }elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && !in_array($_SESSION[user::$id],$views_likes_user_ids[$views_info[Views::$alias_of_id]])){
 			   $likes_count_string .= "<span class='likes_count liked' title='1 person like this'> 1 </span></a>";
 			  
 		   }
-			elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] > 1 && !in_array($_SESSION[user::$id],$views_likes_user_ids)){
+		  
+		   // if there are many likes but the user is not part of 
+		   // those who liked that comment
+			elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] > 1 && !in_array((int)$_SESSION[user::$id],$views_likes_user_ids[$views_info[Views::$alias_of_id]])){
 			   $likes_count_string .= "<span class='likes_count' title='".self::convert_likes_number($views_info[Views::$alias_of_likes])." people like this'> ".self::convert_likes_number($views_info[Views::$alias_of_likes])."  </span></a>";
 			  
-		   }elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] > 1 && in_array($_SESSION[user::$id],$views_likes_user_ids)){
+			
+		   }
+		   
+		   // many likes with the user as part of the likers
+		   elseif(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] > 1 && in_array((int)$_SESSION[user::$id],$views_likes_user_ids[$views_info[Views::$alias_of_id]])){
 			   
-			    $likes_count_string .= "<span class='likes_count liked' title='".self::convert_likes_number($views_info[Views::$alias_of_likes])." people like this'> ".self::convert_likes_number($views_info[Views::$alias_of_likes])."  </span></a>";
+			    $likes_count_string .= "<span class='likes_count  liked' title='".self::convert_likes_number($views_info[Views::$alias_of_likes])." people like this'> ".self::convert_likes_number($views_info[Views::$alias_of_likes])."  </span></a>";
+				$user_like_status = "liked";
+			
 		   }
 		     
 			 $comment_id = $views_info[Views::$alias_of_id];
@@ -121,7 +133,7 @@ class Views extends DatabaseObject{
 			<div class='ps-comment-links stream-actions' data-type='stream-action'>
 				<span class='ps-stream-status-action ps-stream-status-action'>
 					<nav class='ps-stream-status-action ps-stream-status-action'>
-<a onclick='reaction.like({$post_id},{$comment_id},0,this,\"comment\");'  href='#like' class='actaction-like ps-icon-thumbs-up'> <span>Like</span></a>
+<a onclick='reaction.like({$post_id},{$comment_id},0,this,\"comment\");'  href='#like' class='actaction-like ps-icon-thumbs-up {$user_like_status}'> <span>Like</span></a>
 <a  onclick='comment.showReplyBox(".$views_info[Views::$alias_of_id]."); return false;' href='#reply' class='actaction-reply ps-icon-plus'><span>Reply</span></a>
 <a  onclick='comment.prepare_edit_comment({$post_id},".$views_info[Views::$alias_of_id]."},this,'comment'}, this); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
 <a  onclick='comment.delete_comment({$post_id},".$views_info[Views::$alias_of_id]."); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
