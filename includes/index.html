@@ -1,0 +1,34 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="utf-8"> 
+<title>User interface for Ajax, PHP, MySQL demo</title> 
+<meta name="description" content="HTML code for user interface for Ajax, PHP and MySQL demo."> 
+<link href="css/bootstrap.css" rel="stylesheet">
+<style type="text/css">
+body {padding-top: 40px; padding-left: 25%}
+li {list-style: none; margin:5px 0 5px 0; color:#FF0000}
+</style>
+<script src="jquery.js"></script>
+<script src="script.js"></script>
+</head>
+<body>
+<form class="well-home span6 form-horizontal" name="ajax-demo" id="ajax-demo">
+<div class="control-group">
+              <label class="control-label" for="name">Book</label>
+              <div class="controls">
+                <input type="text" id="name" onKeyup = "name_suggestion()"/>
+			  </div>
+ </div>
+ <div class="control-group">
+              <div class="controls">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+
+       <p>Suggestion: <span id="suggestion"></span></p>
+ </div>
+
+ <button id="button"> CLICK ME</button>
+</form>
+</body>
+</html>

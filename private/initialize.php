@@ -107,7 +107,8 @@ require_once(PRIVATE_DIR . "classes/class.pagination.php");
 require_once(PRIVATE_DIR . "classes/class.notifications.php");
 require_once(PRIVATE_DIR . "classes/class.post_templates.php");
 require_once(PRIVATE_DIR . "classes/class.views_likes.php");
-require_once(PRIVATE_DIR . "classes/class.reply_views_likes.php");require_once(PRIVATE_DIR . "classes/class.link_users.php");
+require_once(PRIVATE_DIR . "classes/class.reply_views_likes.php");
+require_once(PRIVATE_DIR . "classes/class.link_users.php");
 
 block_blacklisted_ips();
 

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<title>Modal Popup Box</title>
+<style>
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.1em;
+}
+
+/* Full-width input fields */
+
+input[type=text], input[type=password] {
+    width: 30%;
+    padding: 10px 3px;
+    margin: 8px 2px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 16px;
+    border-color: #e1e5aa;
+    background: #faffbd;
+    border-radius: 5px;
+    outline: none;
+    font-size: 0.5em;
+}
+
+/* Set a style for all buttons */
+
+
+button {
+    background-color: #00b0ff;
+    color: white;
+    padding: 10px 2px;
+    margin: 8px 3px;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    font-size: 16px;
+    border-radius: 5px;
+	
+	
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Center the image and position the close button */
+
+.imgcontainer {
+   margin: 0px 0 9px 0;
+    position: relative;
+    padding: 1.2em 0px;
+    padding-left: 1.2em;
+    background: black;
+    color: #fff;
+    font-size: 0.8em !important;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.avatar {
+    width: 200px;
+	height:200px;
+    border-radius: 50%;
+}
+
+/* The Modal (background) */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+
+}
+
+/* Modal Content Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 4% auto 15% auto;
+    border: 1px solid #888;
+    width: 40%;
+    padding-bottom: 30px;
+    border-radius: 5px 5px 5px 6px;
+}
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0.6em;
+    color: #fff;
+    font-size: 30px;
+    font-weight: normal;
+}
+.close:hover,.close:focus {
+    color: #a64444;
+    cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+    animation: zoom 0.6s
+}
+@keyframes zoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+.password-recover {
+   font-size: 0.6em;
+    color: #a64444;
+    margin-left: 1.2em;
+    margin-bottom: 0.8em;
+    position: relative;
+    bottom: 5px;
+	}
+</style>
+
+
+<body background="../background1.png">
+
+<h1 style="text-align:center; font-size:50px; color:#fff">Modal Popup Box Login Form</h1>
+
+<button onclick="document.getElementById('modal-wrapper').style.display='block';" style="width:200px; margin-top:200px; margin-left:160px;">
+Open Popup</button>
+
+<div id="modal-wrapper" class="modal" style="display: none;">
+  
+  <form class="modal-content animate" action="/action_page.php" style="
+    padding-bottom: 5px;
+">
+        
+    <div class="imgcontainer" >
+      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">×</span>
+      
+      <h1 >Please complete this and proceed</h1>
+    </div>
+
+    <div class="container" style="margin: 0px 5px 0px 5px;border-radius: 5px;
+">
+      <input type="text" placeholder="Enter Username" name="uname" style="
+    margin-left: 1.5em;
+">
+      <input type="password" placeholder="Enter Password" name="psw">        
+      <button type="submit">Login</button>
+      <span class="password-recover">Forgot Password</span>     
+      
+    </div>
+    
+  </form>
+  
+</div>
+
+<script>
+// If user clicks anywhere outside of the modal, Modal will close
+
+var modal = document.getElementById('modal-wrapper');
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+
+
+</body>
+</html>
+

@@ -55,7 +55,28 @@ function post_option_follow(post_id,element){
     
 }
 
-function post_option_link(post_id,element){
+function post_option_link_user(info = "" ,postID = 0,element = ""){
+  
+  if($.trim(info) == "" || Number(postID) < 1 || $.trim(element) == "" ){
+    return;
+  }
+
+  
+  info = JSON.stringify(info);
+  info = JSON.parse(info);
+   let requestTypeValue = "link_user";
+
+    $.ajax({
+    url: "../private/neutral_ajax.php",
+    type: "POST",
+    data:{firstname: info["firstname"],lastname: info["lastname"],id: info["id"],post_id: postID,request_type: requestTypeValue},
+    dataType: "html"
+  }).done(function(response){
+      console.log(response);
+  }); 
+  
+  
+  
     
 }
 
@@ -86,7 +107,7 @@ function post_options(userID = 0,postID = 0 , element = "",option = null){
         dataType: "html"
     }).done(function(response){
        console.log(response);
-       return;
+    
 try{
       response = JSON.parse(response);
       let confirmationTextSpan = $(element).find("span")[0]; 
@@ -115,22 +136,22 @@ try{
                  
            }else if(option == "link_user" || option == "follow_post"){
      
-                  title                  = (option == "linkage") ?  "You will start seeing incidents posted by this person" : "You will be notified about any updates on this incident";
-                  confirmationText       = (option == "linkage") ? "Unlink with this person" : "Unfollow this incident";
-                  elementUiRemoveClass   = (option == "linkage") ? "link_user": "follow_post";
-                  elementUiAdditionClass = (option == "linkage") ? "unlink_user": "unfollow_post";
-                  iconRemovedClass       = (option == "linkage") ? "fal fa-check-circle" : "fal fa-check-circle" ;
-                  iconAdditionClass      = (option == "linkage") ? "fal fa-undo-alt" : "fal fa-undo-alt";
-                  elementOnclickAttr     = (option == "linkage") ? "post_option_confirm("+ postID +",this,'unlink_user')": "post_option_confirm("+ postID +",this,'unfollow_post')";
+                  title                  = (option == "link_user") ?  "You will start seeing incidents posted by this person" : "You will be notified about any updates on this incident";
+                  confirmationText       = (option == "link_user") ? "Unlink with this person" : "Unfollow this incident";
+                  elementUiRemoveClass   = (option == "link_user") ? "link_user": "follow_post";
+                  elementUiAdditionClass = (option == "link_user") ? "unlink_user": "unfollow_post";
+                  iconRemovedClass       = (option == "link_user") ? "fal fa-check-circle" : "fal fa-check-circle" ;
+                  iconAdditionClass      = (option == "link_user") ? "fal fa-undo-alt" : "fal fa-undo-alt";
+                  elementOnclickAttr     = (option == "link_user") ? "post_option("+ postID +",this,'unlink_user')": "post_option("+ postID +",this,'unfollow_post')";
            
            }else if(option == "unlink_user" || option == "unfollow_post"){
-                  title                  = (option == "linkage") ?  "You will start seeing incidents posted by this person" : "You will be notified about any updates on this incident";
-                  confirmationText       = (option == "linkage") ? "Unlink with this person" : "Unfollow this incident";
-                  elementUiRemoveClass   = (option == "linkage") ? "unlink_user": "unfollow_post";
-                  elementUiAdditionClass = (option == "linkage") ? "link_user": "follow_post";
-                  iconRemovedClass       = (option == "linkage") ? "fal fa-undo-alt" : "fal fa-undo-alt" ;
-                  iconAdditionClass      = (option == "linkage") ? "fal fa-check-circle" : "fal fa-check-circle";
-                  elementOnclickAttr     = (option == "linkage") ? "post_option_confirm("+ postID +",this,'link_user')": "post_option_confirm("+ postID +",this,'follow_post')";
+                  title                  = (option == "link_user") ?  "You will start seeing incidents posted by this person" : "You will be notified about any updates on this incident";
+                  confirmationText       = (option == "link_user") ? "Unlink with this person" : "Unfollow this incident";
+                  elementUiRemoveClass   = (option == "link_user") ? "unlink_user": "unfollow_post";
+                  elementUiAdditionClass = (option == "link_user") ? "link_user": "follow_post";
+                  iconRemovedClass       = (option == "link_user") ? "fal fa-undo-alt" : "fal fa-undo-alt" ;
+                  iconAdditionClass      = (option == "link_user") ? "fal fa-check-circle" : "fal fa-check-circle";
+                  elementOnclickAttr     = (option == "link_user") ? "post_option_confirm("+ postID +",this,'link_user')": "post_option_confirm("+ postID +",this,'follow_post')";
            
            }else {
                return;
@@ -148,7 +169,7 @@ try{
    console.log(iconRemovedClass);
    console.log(confirmationText);
    console.log(elementOnclickAttr);
-  return;
+
 
                  $(element).attr("title",title);
                  $(element).removeClass(elementUiRemoveClass).addClass(elementUiAdditionClass);

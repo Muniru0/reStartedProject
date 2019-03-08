@@ -1,0 +1,11 @@
+RewriteEngine on
+
+
+RewriteRule ^user home.php [NC,L]
+RewriteRule ^login login.php [NC,L]
+RewriteRule ^profile profile.php [NC,L]
+RewriteRule ^login login.php [NC,L]
+RewriteRule ^user home.php [NC,L]
+RewriteRule ^login login.php [NC,L]
+RewriteRule ^user home.php [NC,L]
+RewriteRule ^login login.php [NC,L]

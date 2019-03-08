@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+</head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="img/favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+<title>BigPicture Example Page</title>
+<link href="http://overpass-30e2.kxcdn.com/overpass.css" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<body>
+
+<div id="image_container">
+    <img src="hotel_feture_1.jpg" data-bp="hotel_feture_1.jpg" data-open>
+    <img src="hotel_feture_2.jpg" data-bp="hotel_feture_2.jpg">
+    <img src="hotel_feture_3.jpg" data-bp="hotel_feture_3.jpg" data-open>
+
+</div>
+
+<div class="flex">
+    <div class="vid htmlvid" style="background-image:url(img/vid_towers.jpg)" vidSrc="videos/towers.mp4"></div>
+
+</div>
+
+
+<script src="../../../includes/assets/js/jquery-2.1.4.min.js"></script>
+<script src="js/BigPicture.js"></script>
+<script>
+
+    $(".flex").click(function(e){
+
+        BigPicture({
+            el: e.target,
+            vidSrc: e.target.getAttribute("vidSrc")
+        });
+    });
+        $("#image_container").click(function(e){
+            console.log($( e.target).attr("src"));
+            BigPicture({
+                el: e.target,
+                gallery: '#image_container'
+            });
+
+        });
+    
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<?php require_once("../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/initialize.php");before_every_protected_page(); ?>
+
+
+
+
+
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="utf-8"> 
+<title>User interface for Ajax, PHP, MySQL demo</title> 
+<meta name="description" content="HTML code for user interface for Ajax, PHP and MySQL demo."> 
+<link href="../includes/css/bootstrap.css" rel="stylesheet">
+<style type="text/css">
+body {padding-top: 40px; padding-left: 25%}
+li {list-style: none; margin:5px 0 5px 0; color:#FF0000}
+</style>
+<script src="../includes/jquery.js"></script>
+<script src="../includes/script.js"></script>
+</head>
+<body>
+
+
+<?php 
+
+echo h($_SESSION["firstname"]." ". $_SESSION["lastname"]); 
+
+
+ $profile_image = ($_SESSION["file_name"]) ?? : "../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/FnjP4kkPmLiF3lAq1nHx7AnbiBTogWwfhvTI/r8NFcV3V75k4WISV0V8rrp4FmwUTr6Km9tQ1b9sSquA/5abf125cdd6941.02188807.png";
+
+
+if(isset($_POST["name"])){
+
+  // $file_upload = new FileUpload();
+
+
+  // if($file_upload->upload_file("post_image","post_image")){
+
+
+   
+  // }
+
+  echo "it is ready";
+
+}
+
+
+// if there was an upload then use the new image 
+// 	else use the default
+
+echo "<img src=\"$profile_image\" alt=\"profile_image\" width=\"50px\" height=\"50px\" />
+
+  <form action=\"home.html\" method=\"POST\" enctype=\"multipart/form-data\" class=\"well-home span6 form-horizontal\" name=\"ajax-demo\" id =\"ajax-demo\">
+  
+    <div class = \"control-group\">
+              <label class = \"control-label\" for=\"name\">Book</label>
+              <div class = \"controls\">
+                <input type=\"text\" id = \"name\" name=\"name\" onKeyup = \"name_suggestion()\"/>
+        </div>
+ </div>
+ <div class = \"control-group\">
+              <div class = \"controls\">
+                <button type = \"submit\" class = \"btn btn-success \">Submit</button>
+              </div>
+
+       <p>Suggestion: <span id = \"suggestion\"></span></p>
+ </div>
+
+  <input type = \"file\" name = \"post_image\" />
+  
+  <input type = \"file\" name = \"post_image\" />
+  <input type = \"submit\" name = \"submit\" value = \"post\"/>
+    
+ <textarea cols=\"100px\" width = \"100px\" placeholder=\"text\" name = \"post_text\"></textarea>
+ 
+
+</form>
+"
+?>
+</body>
+</html>

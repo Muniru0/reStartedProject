@@ -659,11 +659,11 @@ return json_encode($views);
 		$delete_post_string = $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_delete({$_SESSION["id"]}, {$post_id},this);' data-post-id='930'><i class='ps-icon-trash'></i><span>Delete Post</span>
 </a> ";
 		
-		$follow_post_string =  $_SESSION["id"] == $user_id ? "" : "<a href='javascript:' onclick='post_options({$post_id},this,\"".$follow_post_string."\");' data-post-id='930'><i class='ps-icon-eye'></i><span>follow this post</span>
+		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' onclick='post_options({$post_id},this,\"".$follow_post_string."\");' data-post-id='930'><i class='ps-icon-eye'></i><span>follow this post</span>
 </a>";
       
 		
-	    $link_user_string =  $_SESSION["id"] == $user_id ? "" :"<a href='javascript:' onclick='post_options({$user_id},{$post_id},this,\"".$link_user_string."\");return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span>Link with {$firstname} {$lastname}</span>
+	    $link_user_string =  $_SESSION[user::$id] == $user_id ? "" :"<a href='javascript:' onclick='post_options({$user_id},{$post_id},this,\"".$link_user_string."\");return false' data-post-id='930'><i class='ps-icon-info-circled'></i><span>Link with {$firstname} {$lastname}</span>
 </a>
 ";
   $confirmation_option_string = "";
@@ -1571,9 +1571,9 @@ foreach ($returned_array as $posts_info => $images_or_info){
 				 log_action(__CLASS__,"The post id ( ".$post_info[PostImage::$alias_of_id].") is less than 1 in the post array  on line :".__LINE__." in file: ".__FILE__);
 				  continue;
 			  }
-			  
-			  if(!in_array((int)$post_info[PostImage::$alias_of_uploader_id],$_SESSION[PostImage::$alias_of_uploader_id])){
-				  $_SESSION[PostImage::$alias_of_uploader_id][] = (int)$post_inof[PostImage::$lias_of_id];
+
+			  if(!in_array((int)$post_info[PostImage::$uploader_id],$_SESSION[PostImage::$uploader_id])){
+				  $_SESSION[PostImage::$uploader_id][] = (int)$post_info[PostImage::$uploader_id];
 			  }
 			  
 			 if(!in_array((int)$post_info[PostImage::$alias_of_id],$_SESSION["post_ids"])){
