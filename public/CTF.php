@@ -50,34 +50,15 @@ div {
  </style>
 
  <?php
+ echo "<i class='fal fa-undo-alt'></i>";
  
+ echo "<button id='button'>Click Me</button>";
  
- $my_query = "SELECT id,firstname,lastname, IF(firstname = 'Yussif' && lastname = 'Muniru','correct','wrong') AS correct FROM users WHERE id = 1";
- 
- 
- 
- if($db->multi_query($my_query)){
-	 
-	 
-	 do{
-		 if($results = $db->store_result()){
-		 if($results->num_rows >0){
-			while($row = $results->fetch_assoc()){
-				print_r($row);
-			} 
-				 
-			 }
-			 
-		 }
-	 }while($db->more_results() && $db->next_result());
-	 
- }else{
-	 echo $db->error;
- }
- 
- 
- 
- 
+ echo "<script>
+$(\"#button\").click(function(){
+ $(\"i\").removeClass(\"\").addClass(\"fa-check-circle\");
+});
+</script>";
  die();
  $offset = 220;
  $offset_upperbound = 250;

@@ -545,6 +545,22 @@ button:hover {
     opacity: 0.75;
 	transition: all .5;
 }
+
+
+.fal,.far,.fas{
+	margin-right: 0.4em;
+}
+
+.reverse_post_action{
+	color: #525964;
+    text-align: left;
+}
+
+.reverse_post_action:hover{
+	color: #525964 !important;
+}
+
+
 <!--colors:
  the confirm post hover link color
 background: #f9f9f9;
@@ -564,6 +580,8 @@ background: #f9f9f9;
 <link rel="stylesheet" href="assets/fonts/fontawesome5/all.min.css"> 
 	 </head>
 <!--<i class="fas fa-link"></i><i class="fas fa-infinity"></i><i class="fas fa-unlink"></i><i class="fab fa-fedora"></i><i class="fas fa-eye-slash"></i>
+<i class="far fa-eye-slash"></i>
+<i class="far fa-eye-slash"></i>
 <i class="far fa-eye-slash"></i> -->	 
   <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 logged-in plg-peepso" id="top">
   

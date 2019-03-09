@@ -41,20 +41,28 @@ class LinkUsers Extends DatabaseObject{
 			
 			do{
 			if($result = $db->store_result()){
+				
 				 if($result->num_rows > 0){
 			  if($row = $result->fetch_assoc()){
-				  if(isset($row) && $row["LAST_INSERT_ID()"] > 0){
+				  if(isset($row) && $row["result"] > 0){
 					  print j(["true" =>"success"]);
 					  return;
-				  }elseif($result->affected_rows > 1 && $result->affected_rows == 1){
-					  print j(["true" => "success"]);
+				  }elseif(isset($row) && $row["result"] == 0){
+					  
+					  print j(["unlink" => "success"]);
+					  return;
 				  }elseif(trim($db->error) != ""){
+				  log_action(__CLASS__,$db->error);
 					  print j(["false" => "Sorry please refresh the page and try again"]);
 					  return;
 				  }
 			  }	
 			
 			}
+				 }else{
+					 log_action(__CLASS__,$db->error);
+					 print j(["false" => "Please refresh the page and try again."]);
+					 return;
 				 }
 			}while($db->more_results() && $db->next_result());
 				  

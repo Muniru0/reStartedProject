@@ -86,14 +86,15 @@ function post_options(userID = 0,postID = 0 , element = "",option = null){
         return;
     }
   
+   let mainParent = $(element).parentsUntil(".ps-stream");
    let requestTypeValue        = "confirm_post";
    let title                   = "";
    let confirmationText        = "";
-   let elementUiAdditionClass  = "";
-   let elementUiRemoveClass    = "";
-   let iconAdditionClass       = "";
-   let iconRemovedClass        = "";
-   let elementOnclickAttr      = "";
+   let addElementClass         = "";
+   let removeElementClass      = "";
+   let addIconClass            = "";
+   let removeIconClass         = "";
+  
  
  
 
@@ -113,77 +114,55 @@ try{
       let confirmationTextSpan = $(element).find("span")[0]; 
       let confirmationIcon = $(element).find("i")[0];
      
-      if(response["true"] == "success"){
+      if(response["true"] == "success" || response["unlink"] == "success"){
            if(option == "confirm_post" || option == null){
                 
-                 title = "Confirm that this incident really took place";
-                 confirmationText = "Reverse Confirmation";
-                 iconRemovedClass = "fal fa-check-circle";
-                 iconAdditionClass = "fal fa-undo-alt";
-                 elementUiRemoveClass = "confirm_post";
-                 elementUiAdditionClass = "reverse_confirmation";
-                 elementOnclickAttr = "post_option_confirm("+ postID +",this,'reverse_confirmation')";
-                 
-           }else
-          if(option == "reverse_confirmation"){
-                 title                  = "You have just confirmed that post really happened";
-                 confirmationText       = "Confirm this post";
-                 iconAdditionClass      = "fal fa-check-circle";
-                 iconRemovedClass       = "fal fa-undo-alt";
-                 elementUiAdditionClass = "confirm_post";
-                 elementUiRemoveClass   = "reverse_confirmation";
-                 elementOnclickAttr     = "post_option_confirm("+ postID +",this)";
-                 
-           }else if(option == "link_user" || option == "follow_post"){
+                 title              = ($(element).hasClass("confirm_post")) ? "Confirm that this incident really took place" : "Reverse the confirmation of this incident";
+                 confirmationText   = ($(element).hasClass("confirm_post")) ? "Confirm this post" : "Reverse Confirmation";
+                 addElementClass    = ($(element).hasClass("confirm_post")) ? "confirm_post" : "reverse_post_action";
+                 removeElementClass = ($(element).hasClass("confirm_post")) ? "reverse_post_action" : "confirm_post";
+                 addIconClass       = ($(element).hasClass("confirm_post")) ?  "fal fa-check-circle" : "fal fa-undo-alt";
+                 removeIconClass    = ($(element).hasClass("confirm_post")) ?  "fal fa-undo-alt" : "fal fa-check-circle";
+                     
+            }else if(option == "link_user" ){
      
-                  title                  = (option == "link_user") ?  "You will start seeing incidents posted by this person" : "You will be notified about any updates on this incident";
-                  confirmationText       = (option == "link_user") ? "Unlink with this person" : "Unfollow this incident";
-                  elementUiRemoveClass   = (option == "link_user") ? "link_user": "follow_post";
-                  elementUiAdditionClass = (option == "link_user") ? "unlink_user": "unfollow_post";
-                  iconRemovedClass       = (option == "link_user") ? "fal fa-check-circle" : "fal fa-check-circle" ;
-                  iconAdditionClass      = (option == "link_user") ? "fal fa-undo-alt" : "fal fa-undo-alt";
-                  elementOnclickAttr     = (option == "link_user") ? "post_option("+ postID +",this,'unlink_user')": "post_option("+ postID +",this,'unfollow_post')";
-           
-           }else if(option == "unlink_user" || option == "unfollow_post"){
-                  title                  = (option == "link_user") ?  "You will start seeing incidents posted by this person" : "You will be notified about any updates on this incident";
-                  confirmationText       = (option == "link_user") ? "Unlink with this person" : "Unfollow this incident";
-                  elementUiRemoveClass   = (option == "link_user") ? "unlink_user": "unfollow_post";
-                  elementUiAdditionClass = (option == "link_user") ? "link_user": "follow_post";
-                  iconRemovedClass       = (option == "link_user") ? "fal fa-undo-alt" : "fal fa-undo-alt" ;
-                  iconAdditionClass      = (option == "link_user") ? "fal fa-check-circle" : "fal fa-check-circle";
-                  elementOnclickAttr     = (option == "link_user") ? "post_option_confirm("+ postID +",this,'link_user')": "post_option_confirm("+ postID +",this,'follow_post')";
-           
-           }else {
-               return;
+                  title                  =  ($(element).hasClass("reverse_post_action")) ?  "linking with a user will get you notified of all future incidents posted by that user." : "You will be notified of incidents posted by this person.";
+                  confirmationText       =  $(mainParent).find(".ps-stream-user").html();
+                  confirmationText       =  ($(element).hasClass("reverse_post_action"))  ?  "link with " + confirmationText : "unlink with " + confirmationText;
+                  addElementClass        =  ($(element).hasClass("reverse_post_action"))    ?  "link_user" : "reverse_post_action";
+                  removeElementClass     =  ($(element).hasClass("reverse_post_action")) ? "reverse_post_action" : "link_user";
+                  addIconClass           =  ($(element).hasClass("reverse_post_action"))  ? "fal fa-link" :  "fal fa-unlink";
+                  removeIconClass        =  ($(element).hasClass("reverse_post_action"))  ? "fal fa-unlink" :  "fal fa-link";
+                       
+                }else if(option == "follow_post"){
+                 title                  =  ($(element).hasClass("reverse_post_action"))   ?  "if you follow this incident you will be notified about every development of it." : "Get notified about every development of this incident.";
+                 confirmationText       =  $(mainParent).find(".ps-stream-user").html();
+                 confirmationText       =  ($(element).hasClass("reverse_post_action"))    ?  "stop follow this incident" : "follow this incident";
+                 addElementClass        =  ($(element).hasClass("reverse_post_action"))    ?  "follow_post" : "reverse_post_action";
+                 removeElementClass     =  ($(element).hasClass("reverse_post_action"))    ?  "reverse_post_action" : "follow_post";
+                 addIconClass            =  ($(element).hasClass("reverse_post_action"))    ?  "far fa-eye" : "far fa-eye-slash";
+                 removeIconClass         =  ($(element).hasClass("reverse_post_action"))    ?  "far fa-eye-slash" : "far fa-eye";
            }
-           }
+
+           console.log(title);
+           console.log(confirmationText);
+           console.log(addElementClass);
+           console.log(removeElementClass);
+           console.log(removeIconClass);
+           console.log(addIconClass);
+
+                 $(element).attr("title",title);
+                 $(element).removeClass(removeElementClass).addClass(addElementClass);
+                 $(confirmationIcon).removeClass(removeIconClass);
+                 $(confirmationIcon).addClass(addIconClass);
+                 $(confirmationTextSpan).html(confirmationText);
+                 
+        }
 
           else if($.trim(response["false"]) != ""){
          utility.showErrorDialogBox(response["false"]);
       }
-
-   console.log(title);
-   console.log(elementUiRemoveClass);
-   console.log(elementUiAdditionClass);
-   console.log(iconAdditionClass);
-   console.log(iconRemovedClass);
-   console.log(confirmationText);
-   console.log(elementOnclickAttr);
-
-
-                 $(element).attr("title",title);
-                 $(element).removeClass(elementUiRemoveClass).addClass(elementUiAdditionClass);
-                 $(element).find("i").removeClass(iconRemovedClass).addClass(iconAdditionClass);
-                 $(confirmationTextSpan).html(confirmationText);
-                 $(element).attr("onclick",elementOnclickAttr);
-        
-  let mainParent = $(element).parentsUntil(".ps-stream");
-  
-  $(mainParent).find(".ps-stream__post-pin").find("span").css("background","#3cbdac");  
-  $(element).css("background","#3cbdac");
-
-
-      }
+ }
       
     catch(e){
          console.log(e);
