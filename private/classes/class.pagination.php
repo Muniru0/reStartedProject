@@ -37,6 +37,10 @@ return;
  $comments  = self::get_post_comments($offset,$offset_upperbound,$stream_type);
  
  
+ $activities_user_ids = self::get_activities_user_ids($offset,$offset_upperbound);
+ 
+ 
+ /* 
    // get the reactions user ids
   $reactions_user_ids = self::get_reactions_user_ids($offset,$offset_upperbound);
   
@@ -46,16 +50,18 @@ return;
  
  
  // get the views user_ids
-$reply_views_likes_user_ids = self::get_reply_likes_user_ids($offset,$offset_upperbound);
+$reply_views_likes_user_ids = self::get_reply_likes_user_ids($offset,$offset_upperbound); */
+/* 
+echo "<pre>";
+echo "views";
+ print_r($posts);
+ print_r($activities_user_ids["views"]);
+echo "</pre>";
+ 
+  return;  */
 
-   
-
- FetchPost::get_full_post($posts,$comments,$reactions_user_ids,$views_likes_user_ids,$reply_views_likes_user_ids,STREAM);
-   $returned_array     = null;
-   $comments           = null;
-   $post_ids_array     = null;
-   $reactions_user_ids = null;
-	
+ FetchPost::get_full_post($posts,$comments,$activities_user_ids["reactions"],$activities_user_ids["views"],$activities_user_ids["replys"],STREAM);
+    $activities_user_ids = null;
 	
 	
 	
@@ -118,6 +124,10 @@ $row_count = $results->num_rows;
 		// with the post_table_id as the key
 		$returned_array[$row[FetchPost::$post_id]][] = $row;
 		$returned_array[$row[FetchPost::$post_id]]["filenames_".$row[FetchPost::$post_id]][$row[FetchPost::$alias_of_id]] = $row[FetchPost::$filename];
+		
+		 if(!in_array((int)$row[PostImage::$uploader_id],$_SESSION[PostImage::$uploader_id])){
+				  $_SESSION[PostImage::$uploader_id][] = (int)$row[PostImage::$uploader_id];
+			  }
 		
 }
 	}
@@ -239,58 +249,86 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
 	}//get_the_comments
 	
 
+	
+	
   // get the comments likes user ids 
-   public static function get_comments_likes_user_ids($offset = 0,$offset_upperbound = 0){
+   public static function get_activities_user_ids($offset = 0,$offset_upperbound = 0){
 	    global $db;
 		
-		
- 
- $views_likes_user_ids  = [];
- 
- $query = "SELECT ".ViewsLikes::$table_name.".".ViewsLikes::$id." AS ".ViewsLikes::$alias_of_id.",".ViewsLikes::$post_id." AS ".ViewsLikes::$alias_of_post_id.",".ViewsLikes::$table_name.".".ViewsLikes::$comment_id."    AS ".ViewsLikes::$alias_of_comment_id.",".ViewsLikes::$table_name.".".ViewsLikes::$user_id." AS ".ViewsLikes::$alias_of_user_id.",".ViewsLikes::$table_name.".".ViewsLikes::$firstname." AS ".ViewsLikes::$alias_of_firstname.",".ViewsLikes::$table_name.".".ViewsLikes::$lastname." AS ".ViewsLikes::$alias_of_lastname.",".ViewsLikes::$table_name.".".ViewsLikes::$likes_time." AS ".ViewsLikes::$alias_of_likes_time." FROM ".ViewsLikes::$table_name." WHERE ".ViewsLikes::$post_id." >={$offset} && ".ViewsLikes::$post_id." <={$offset_upperbound};"; 
-
- $result = $db->query($query);
-   while($row = $result->fetch_assoc()){
-	    
-				  if(isset($views_likes_user_ids[$row[ViewsLikes::$alias_of_comment_id]])){
-				 if(isset($row[ViewsLikes::$alias_of_user_id]) && isset($row[ViewsLikes::$alias_of_user_id]) && !in_array($row[ViewsLikes::$alias_of_user_id],$views_likes_user_ids[$row[ViewsLikes::$alias_of_comment_id]])){
-				  $views_likes_user_ids[$row[ViewsLikes::$alias_of_comment_id]][] = $row[ViewsLikes::$alias_of_user_id];
-	   
-			  }
-		}else{
-			 $views_likes_user_ids[$row[ViewsLikes::$alias_of_comment_id]][] = $row[ViewsLikes::$alias_of_user_id];
-		}
-   }
-   
-   $result->free();
-		return $views_likes_user_ids;
-   }   
 	
-	
-	// get the replys likes user ids
-	public static function get_reply_likes_user_ids($offset = 0,$offset_upperbound = 0){
-		
-		global $db;
-		
-	 $reply_views_likes_user_ids  = [];	 
-	 
- $query  = "SELECT ".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$id." AS ".ReplyViewsLikes::$alias_of_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$reply_id." AS ".ReplyViewsLikes::$alias_of_reply_id.",".ReplyViewsLikes::$post_id." AS ".ReplyViewsLikes::$alias_of_post_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$comment_id."    AS ".ReplyViewsLikes::$alias_of_comment_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$user_id." AS ".ReplyViewsLikes::$alias_of_user_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$firstname." AS ".ReplyViewsLikes::$alias_of_firstname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$lastname." AS ".ReplyViewsLikes::$alias_of_lastname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$likes_time."  AS ".ReplyViewsLikes::$alias_of_likes_time." FROM ".ReplyViewsLikes::$table_name." WHERE ".ReplyViewsLikes::$post_id." >={$offset} && ".ReplyViewsLikes::$post_id." <={$offset_upperbound}"; 
 
-  /* if($db->multi_query($query)){
+ $query = "SELECT ".ViewsLikes::$table_name.".".ViewsLikes::$id." AS ".ViewsLikes::$alias_of_id.",".ViewsLikes::$post_id." AS ".ViewsLikes::$alias_of_post_id.",".ViewsLikes::$table_name.".".ViewsLikes::$comment_id."    AS ".ViewsLikes::$alias_of_comment_id.",".ViewsLikes::$table_name.".".ViewsLikes::$user_id." AS ".ViewsLikes::$alias_of_user_id.",".ViewsLikes::$table_name.".".ViewsLikes::$firstname." AS ".ViewsLikes::$alias_of_firstname.",".ViewsLikes::$table_name.".".ViewsLikes::$lastname." AS ".ViewsLikes::$alias_of_lastname.",".ViewsLikes::$table_name.".".ViewsLikes::$likes_time." AS ".ViewsLikes::$alias_of_likes_time." FROM ".ViewsLikes::$table_name." WHERE ".ViewsLikes::$post_id." >={$offset} && ".ViewsLikes::$post_id." <={$offset_upperbound};";
+ 
+ 
+ $query  .= "SELECT ".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$id." AS ".ReplyViewsLikes::$alias_of_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$reply_id." AS ".ReplyViewsLikes::$alias_of_reply_id.",".ReplyViewsLikes::$post_id." AS ".ReplyViewsLikes::$alias_of_post_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$comment_id."    AS ".ReplyViewsLikes::$alias_of_comment_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$user_id." AS ".ReplyViewsLikes::$alias_of_user_id.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$firstname." AS ".ReplyViewsLikes::$alias_of_firstname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$lastname." AS ".ReplyViewsLikes::$alias_of_lastname.",".ReplyViewsLikes::$table_name.".".ReplyViewsLikes::$likes_time."  AS ".ReplyViewsLikes::$alias_of_likes_time." FROM ".ReplyViewsLikes::$table_name." WHERE ".ReplyViewsLikes::$post_id." >={$offset} && ".ReplyViewsLikes::$post_id." <={$offset_upperbound};"; 
+ 
+ 
+  
+ $query .= "SELECT * FROM ".Reaction::$table_name." WHERE ".Reaction::$post_id." >= {$offset} && ".Reaction::$post_id."<= {$offset_upperbound}";
+  
+ if(isset($_SESSION) && isset($_SESSION[user::$id])){
+ $query .= " SELECT * FROM ".LinkUsers::$table_name." WHERE ".LinkUsers::$linker_id."
+=".$_SESSION[user::$id]." || ".LinkUsers::$link." = ".$_SESSION[user::$id].";";
+
+
+$query .= " SELECT * FROM ".FollowPosts::$table_name." WHERE ".FollowPosts::$follower_id." = ".$_SESSION[user::$id];
+ 
+ }
+
+ 
+
+
+$views	    = [];
+$replys     = [];
+$reactions  = [];
+
+  if($db->multi_query($query)){
 	  
 	  do{
 		  
 		  if($result = $db->store_result()){
-			  if($row = $result->fetch_assoc()){
-				 $array[] = $row;
+			  if($result->num_rows > 0){
+			  while($row = $result->fetch_assoc()){
+				 $array[] = $row; 
 			  if(isset($row[ViewsLikes::$alias_of_id]) && isset($row[ViewsLikes::$alias_of_user_id]) && $row[ViewsLikes::$alias_of_id] > 0 && $row[ViewsLikes::$alias_of_user_id] > 0){
 				  
 				 
-				  $views_likes_user_ids[$row[ViewsLikes::$alias_of_id]][] = $row[ViewsLikes::$alias_of_user_id];
-			  }elseif(isset($row[ReplyViewsLikes::$alias_of_id]) && isset($row[ReplyViewsLikes::$alias_of_user_id]) && $row[ReplyViewsLikes::$alias_of_id] > 0 && $row[ReplyViewsLikes::$alias_of_user_id] > 0){
+				  $views[$row[ViewsLikes::$alias_of_comment_id]][] = $row[ViewsLikes::$alias_of_user_id];
+			  }
+			  elseif(isset($row[ReplyViewsLikes::$alias_of_id]) && isset($row[ReplyViewsLikes::$alias_of_user_id]) && $row[ReplyViewsLikes::$alias_of_id] > 0 && $row[ReplyViewsLikes::$alias_of_user_id] > 0){
 				  
-				  $views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
-			  }elseif(trim($db->error) != ""){
+				  $replys[$row[ReplyViewsLikes::$alias_of_reply_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
+			  }elseif(isset($row[LinkUsers::$linker_id])){
+				    
+	if(isset($_SESSION) && isset($_SESSION[LinkUsers::$session_string])){
+		if(!in_array((int)$row[LinkUsers::$linker_id],$_SESSION[LinkUsers::$session_string]) || !in_array((int)$row[LinkUsers::$link],$_SESSION[LinkUsers::$session_string])){
+			
+			
+			   
+			  if($row[LinkUsers::$link] != (int)$_SESSION[user::$id] && !in_array((int)$row[LinkUsers::$link],$_SESSION[LinkUsers::$session_string])){
+				  
+				  $_SESSION[LinkUsers::$session_string][] = (int)$row[LinkUsers::$link];
+			  }elseif($row[LinkUsers::$linker_id] != (int)$_SESSION[user::$id] && !in_array((int)$row[LinkUsers::$linker_id],$_SESSION[LinkUsers::$session_string])){
+				  
+			$_SESSION[LinkUsers::$session_string] [] =(int)$row[LinkUsers::$linker_id];
+			  }
+						  
+					  }
+				  }
+				  
+			  }elseif(isset($row[Reaction::$reaction_type])){
+				
+				  $reactions[$row[Reaction::$post_id]][$row[Reaction::$user_id]] = $row[Reaction::$reaction_type];
+			  }elseif(isset($row[FollowPosts::$follower_id])){
+				  
+				  if(isset($_SESSION) && isset($_SESSION[FollowPosts::$session_string])){
+		
+				  if(!in_array($row[FollowPosts::$post_id],$_SESSION[FollowPosts::$session_string])){
+					   $_SESSION[FollowPosts::$session_string][] = (int)$row[FollowPosts::$post_id];
+				  }
+			  }
+			  }
+			  elseif(trim($db->error) != ""){
 				  
 				   print j(["false" =>"Sorry please server problem"]);
 				   return;
@@ -300,68 +338,18 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
 			  }
 			  
 		  }
-		  }
+	  }
+	  }
 		  
 	  }while($db->more_results() && $db->next_result());
 	  
-  } */
-  
-  $result = $db->query($query);
-  $r = [];
-   while($row = $result->fetch_assoc()){
-	  
-				  if(isset($reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]])){
-				 if(isset($row[ReplyViewsLikes::$alias_of_user_id]) && !in_array($row[ReplyViewsLikes::$alias_of_user_id],$reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]])){
-					 
-				  $reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
-	   
-			  }
-		}else{
-			// if the reply id for a reply is not set then set else
-			 $reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
-		}
-			
-			/* 	
-			 $reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_reply_id]][] = $row[ReplyViewsLikes::$alias_of_user_id]; */
-			
-   }
-   
-   
+  } 
+  	
  
-   $result->free();
-  
-    return $reply_views_likes_user_ids ;
-	}//get_reply_views_likes();
-	
-	
-	// get the reactions user ids 
-	public static function get_reactions_user_ids($offset = 0,$offset_upperbound =0){
-		 global $db;
-		   
-		   
-  // Get the reactions user ids to the incidents
-  $query = "SELECT * FROM ".Reaction::$table_name." WHERE ".Reaction::$post_id." >= {$offset} && ".Reaction::$post_id."<= {$offset_upperbound}";
-  
-    $reactions_user_ids = [];
-  $result = $db->query($query);
-  
-  if($db->error != ""){
-	  print j(["false"=>"Server problem please refresh the page and try again"]);
-	  return;
-  }
-  
-  while($row = $result->fetch_assoc()){
-	  $reactions_user_ids[$row[Reaction::$post_id]][$row[Reaction::$user_id]] = $row[Reaction::$reaction_type];
-  }
-  
-  
-  
-  $result->free();
-  
-   return $reactions_user_ids;
-
-	}
-	
+ 
+ 
+ return ["views" =>$views,"replys"=>$replys,"reactions"=>$reactions];
+   }
 	
 	
 

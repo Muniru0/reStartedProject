@@ -50,16 +50,11 @@ div {
  </style>
 
  <?php
- echo "<i class='fal fa-undo-alt'></i>";
  
- echo "<button id='button'>Click Me</button>";
+Pagination::get_infinite_scroll("mainstream"); 
  
- echo "<script>
-$(\"#button\").click(function(){
- $(\"i\").removeClass(\"\").addClass(\"fa-check-circle\");
-});
-</script>";
  die();
+ 
  $offset = 220;
  $offset_upperbound = 250;
  
@@ -71,13 +66,14 @@ $(\"#button\").click(function(){
  $query .= " SELECT * FROM ".LinkUsers::$table_name." WHERE ".LinkUsers::$linker_id."
 =4";
 
+ $query .= "SELECT * FROM ".Reaction::$table_name." WHERE ".Reaction::$post_id." >= {$offset} && ".Reaction::$post_id."<= {$offset_upperbound}";
 
 
-
-$views_likes_user_ids = [];
+$views_likes_user_ids	     = [];
 $reply_views_likes_user_ids  = [];
-$linked_users          = [];
-$array = [];
+$linked_users         		 = [];
+$reactions_user_ids    		 = [];
+
   if($db->multi_query($query)){
 	  
 	  do{
@@ -90,11 +86,14 @@ $array = [];
 				  
 				 
 				  $views_likes_user_ids[$row[ViewsLikes::$alias_of_id]][] = $row[ViewsLikes::$alias_of_user_id];
-			  }elseif(isset($row[ReplyViewsLikes::$alias_of_id]) && isset($row[ReplyViewsLikes::$alias_of_user_id]) && $row[ReplyViewsLikes::$alias_of_id] > 0 && $row[ReplyViewsLikes::$alias_of_user_id] > 0){
+			  }
+			  elseif(isset($row[ReplyViewsLikes::$alias_of_id]) && isset($row[ReplyViewsLikes::$alias_of_user_id]) && $row[ReplyViewsLikes::$alias_of_id] > 0 && $row[ReplyViewsLikes::$alias_of_user_id] > 0){
 				  
 				  $reply_views_likes_user_ids[$row[ReplyViewsLikes::$alias_of_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
 			  }elseif(isset($row[LinkUsers::$linker_id])){
-				  $linked_users[] = $row;
+				  $linked_users[$row[LinkUsers::$linker_id]] = $row;
+			  }elseif(isset($row[Reaction::$reaction_type])){
+				  $reactions_user_ids[$row[Reaction::$post_id]][$row[Reaction::$user_id]] = $row[Reaction::$reaction_type];
 			  }
 			  elseif(trim($db->error) != ""){
 				  

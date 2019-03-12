@@ -6,20 +6,26 @@ require_once("../private/initialize.php");
 class LinkUsers Extends DatabaseObject{
 	
 
-  public static $table_name = "link_users";
+  public static $table_name = "follow_posts";
 
 
-  public static $id         = "id";
-  public static $link      = "link";
-  public static $linker_id  = "linker_id";
-  public static $firstname  = "firstname";
-  public static $lastname   = "lastname";
-  public static $time       = "time";
+  public static $id           = "id";
+  public static $post_id      = "post_id";
+  public static $follower_id  = "follower_id";
+  public static $firstname    = "firstname";
+  public static $lastname     = "lastname";
+  public static $time         = "time";
 
+  public static $alias_of_id           = "follow_posts_id";
+  public static $alias_of_post_id      = "follow_posts_post_id";
+  public static $alias_of_follower_id  = "follow_posts_follower_id";
+  public static $alias_of_firstname    = "follow_posts_firstname";
+  public static $alias_of_lastname     = "follow_posts_lastname";
+  public static $alias_of_time         = "follow_posts_time";
 
-  public static $session_string = "linked_users_ids";
+  public static $session_string = "follow_posts_user_ids";
 
-  public static function link_user($user_id  = 0, $post_id = 0){
+  public static function link_user($follower_id  = 0, $post_id = 0){
 	   
 	   global $db;
 	   
@@ -32,7 +38,7 @@ class LinkUsers Extends DatabaseObject{
 		  $post_id = $db->real_escape_string($post_id);
 		  
 		  
-	   $query = "CALL link_user({$user_id},".$_SESSION[user::$id].",".time().")";
+	   $query = "CALL follow_posts({$post_id},".$_SESSION[user::$id].",".$_SESSION[user::$firstname].",".$_SESSION[user::$lastname].",".time().")";
       
 
 

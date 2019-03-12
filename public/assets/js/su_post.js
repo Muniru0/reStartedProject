@@ -127,8 +127,11 @@ try{
             }else if(option == "link_user" ){
      
                   title                  =  ($(element).hasClass("reverse_post_action")) ?  "linking with a user will get you notified of all future incidents posted by that user." : "You will be notified of incidents posted by this person.";
-                  confirmationText       =  $(mainParent).find(".ps-stream-user").html();
-                  confirmationText       =  ($(element).hasClass("reverse_post_action"))  ?  "link with " + confirmationText : "unlink with " + confirmationText;
+                  let user               =   $(mainParent).find(".ps-stream-user");
+                   $(user).toggleClass("link_user",1000,"easeOutBounce");
+                   $(user).find("small").toggle();
+                  let userFullname       =  $(user).html();
+                  confirmationText       =  ($(element).hasClass("reverse_post_action"))  ?  "link with " + userFullname : "unlink with " + userFullname;
                   addElementClass        =  ($(element).hasClass("reverse_post_action"))    ?  "link_user" : "reverse_post_action";
                   removeElementClass     =  ($(element).hasClass("reverse_post_action")) ? "reverse_post_action" : "link_user";
                   addIconClass           =  ($(element).hasClass("reverse_post_action"))  ? "fal fa-link" :  "fal fa-unlink";

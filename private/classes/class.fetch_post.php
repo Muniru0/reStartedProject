@@ -610,9 +610,22 @@ return json_encode($views);
     }
 
     public static function get_fullname($id = 0,$firstname,$lastname){
-           
-        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap\"><a class=\"ps-stream-user\" href=\"../".PROFILE_PAGE."/{$id}\">". $firstname." ".$lastname."</a>";
-    }
+         
+		 $linked_user_class = "";
+		 $toggle_string     = "display:none;";
+		 $link_title_string = "";
+		if(isset($_SESSION) && isset($_SESSION[LinkUsers::$session_string]) && !empty($_SESSION[LinkUsers::$session_string]) && in_array($id,$_SESSION[LinkUsers::$session_string])){
+			
+		 $linked_user_class = "link_user";
+		 $toggle_string     = "display:inline;";
+		 $link_title_string = "You are linked to this User.You will be notified of all of his posted incidents.";
+		 
+		}
+		  
+		   
+        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap\"><a class=\"ps-stream-user  {$linked_user_class}\" href=\"../".PROFILE_PAGE."/{$id}\">". $firstname." ".$lastname."<small style='{$toggle_string}'><i class ='fal fa-link'></i></small></a>";
+		
+    }//get_fullname();
 
     public static function get_post_title($count,$label){
 
@@ -643,7 +656,7 @@ return json_encode($views);
     }
 
 	// get the post options template
-	public static function get_post_options($user_id = 0,$post_id = 0,$firstname = "",$lastname = "",$confirmation_eligibility = 0 ,$confirmation = 0,$confirmer = 0){
+	public static function get_post_options($user_id = 0,$post_id = 0,$firstname = "",$lastname = "",$links_array = [],$following_array = [],$confirmation_eligibility = 0 ,$confirmation = 0,$confirmer = 0){
 		
 		 if($_SESSION["id"] < 1){
 			 
@@ -653,18 +666,26 @@ return json_encode($views);
 		 
 		 $link_user_string = "link_user";
 		 $follow_post_string = "follow_post";
+		 $toggle_link_icon   = "fal fa-link";
+		 $toggle_link_class  = "";
+		 $toggle_link_string  = "link with ";
+		  if(in_array($user_id,$_SESSION[LinkUsers::$session_string])){
+			 $toggle_link_icon = "fal fa-unlink";
+			 $toggle_link_class = "reverse_post_action";
+			 $toggle_link_string = "unlink with ";
+		  }
 		 
 		$edit_post_string =  $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_edit({$_SESSION["id"]}, {$post_id},this); return false' ><i class='ps-icon-edit'></i><span>Edit Post</span>
 </a>";
 		$delete_post_string = $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_delete({$_SESSION["id"]}, {$post_id},this);' ><i class='ps-icon-trash'></i><span>Delete Post</span>
 </a> ";
 		
-		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' onclick='post_options({$post_id},this,\"".$follow_post_string."\");' data-post-id='930'>
+		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' onclick='post_options({$post_id},this,\"".$follow_post_string."\");' >
 		<i class='far fa-eye'></i><span>follow this post</span>
 </a>";
       
 		
-	    $link_user_string =  $_SESSION[user::$id] == $user_id ? "" :"<a href='javascript:' onclick='post_options({$user_id},{$post_id},this,\"".$link_user_string."\");return false' data-post-id='930'><i class='fal fa-link'></i><span>Link with {$firstname} {$lastname}</span>
+	    $link_user_string =  $_SESSION[user::$id] == $user_id ? "" :"<a href='javascript:' class='{$toggle_link_class}' onclick='post_options({$user_id},{$post_id},this,\"".$link_user_string."\");return false' ><i class='{$toggle_link_icon}'></i><span>{$toggle_link_string}  {$firstname} {$lastname}</span>
 </a>
 ";
   $confirmation_option_string = "";
@@ -809,7 +830,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 		return [];
 	}else{
 	// was the post giving out to the user	
-	  return self::get_full_post($returned_array,$comments,[],[],[],RECENT);
+	  return self::get_full_post($returned_array,$comments,[],[],[],[],RECENT);
 	
 	}
   
@@ -1522,7 +1543,7 @@ $images_string .= "</div></div></div></div>
 
 // GET THE FULL HEADER
 // brings back the header of the post
-    public static function get_full_post($returned_array = [],$views = null,$reactions_user_ids = [],$views_likes_user_ids,$reply_views_likes_user_ids,$flag = ""){
+    public static function get_full_post($returned_array = [],$views = null,$reactions_user_ids = [],$views_likes_user_ids = [],$reply_views_likes_user_ids = [],$linked_users_ids = [],$flag = ""){
 		
  
 	try{
@@ -1580,6 +1601,8 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			 if(!in_array((int)$post_info[PostImage::$alias_of_id],$_SESSION["post_ids"])){
 				 $_SESSION["post_ids"][] = (int)$post_info[PostImage::$alias_of_id];
 			 }
+			 
+			 $reaction_user_ids = (empty($reactions_user_ids[$post_info[PostImage::$alias_of_id]]) && isset($reactions_user_ids[$post_info[PostImage::$alias_of_id]])) ? [] : $reactions_user_ids[$post_info[PostImage::$alias_of_id]];
 			// add the post to the array of post in the users session
 			
             $full_header = "";
@@ -1587,7 +1610,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
             $full_header   = self::get_post_confirmation($post_info[PostImage::$confirmation]);
 			
             // gets the full name
-            $full_header   .= self::get_fullname($post_info[user::$id],$post_info[user::$firstname],$post_info[user::$lastname]);
+            $full_header   .= self::get_fullname($post_info[PostImage::$uploader_id],$post_info[user::$firstname],$post_info[user::$lastname],$linked_users_ids);
             // gets the number of files uploaded and label of the issue
             $full_header   .= self::get_post_title(count($images),$post_info[PostImage::$label]);
             // gets the mood of the post
@@ -1604,7 +1627,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
            // $full_header   .= self::get_caption_template($post_info["caption"]);			
 			// get the images and their arrangements
 			
-			$full_body     = self::images_layout_template($post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reactions_user_ids[$post_info[PostImage::$alias_of_id]],$post_info[PostImage::$caption]);
+			$full_body     = self::images_layout_template($post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reaction_user_ids,$post_info[PostImage::$caption]);
 			 // get the reaction and comment box
 			  $comments = $views["postID_".$post_info[PostImage::$alias_of_id]] ?? [];
 

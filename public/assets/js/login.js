@@ -39,8 +39,10 @@ $("#button_login").on("click",function(e){
             type:"POST",
             data:$("#form").serialize(),
             dataType:"html"
-  }).done(function(response,status){
-	  
+  }).
+  done(function(response,status){
+	
+	try{
     response = JSON.parse(response);
 	
 if(status  === "success"){
@@ -68,10 +70,16 @@ if(status  === "success"){
 }
            
 });
+}
+	}catch(e){
+		utility.showErrorDialogBox("Sorry Invalid request please refresh the page and try again.");
 	}
 
        
 });
+
+
+
 e.preventDefault();
 //
 $(element).attr("disabled","disabled");        
