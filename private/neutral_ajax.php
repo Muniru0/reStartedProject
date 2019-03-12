@@ -121,7 +121,7 @@ PostImage::delete_post($user_id,$post_id);
 
  elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) == "link_user" &&
         isset($_POST["post_id"]) && $_POST["post_id"] > 0 && isset($_POST["user_id"]) > 0){
-			
+			log_action("passed 1");
 			$post_id = (int)$_POST["post_id"];
 			$user_id = (int)$_POST["user_id"];
 			
@@ -138,6 +138,24 @@ PostImage::delete_post($user_id,$post_id);
 			
 			// link with this user
 			LinkUsers::link_user( $user_id , $post_id );
+			
+	 
+ }
+ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) == "follow_post" &&
+        isset($_POST["post_id"]) && $_POST["post_id"] > 0 ){
+			
+			$post_id = (int)$_POST["post_id"];
+			
+		
+			
+			if(!in_array($user_id,$_SESSION[PostImage::$uploader_id])){
+				
+				print j(["false"=>"Sorry please refresh the page and try again"]);
+				return;
+			}
+			
+			// link with this user
+			FollowPost::follow_post($post_id );
 			
 	 
  }

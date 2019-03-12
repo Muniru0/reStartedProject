@@ -131,9 +131,11 @@ try{
                    $(user).toggleClass("link_user",1000,"easeOutBounce");
                    $(user).find("small").toggle();
                   let userFullname       =  $(user).html();
+                  userFullname           = userFullname.split("<small")[0];
+                  console.log(userFullname);
                   confirmationText       =  ($(element).hasClass("reverse_post_action"))  ?  "link with " + userFullname : "unlink with " + userFullname;
-                  addElementClass        =  ($(element).hasClass("reverse_post_action"))    ?  "link_user" : "reverse_post_action";
-                  removeElementClass     =  ($(element).hasClass("reverse_post_action")) ? "reverse_post_action" : "link_user";
+                  addElementClass        =  ($(element).hasClass("reverse_post_action"))    ?  "" : "reverse_post_action";
+                  removeElementClass     =  ($(element).hasClass("reverse_post_action")) ? "reverse_post_action" : "";
                   addIconClass           =  ($(element).hasClass("reverse_post_action"))  ? "fal fa-link" :  "fal fa-unlink";
                   removeIconClass        =  ($(element).hasClass("reverse_post_action"))  ? "fal fa-unlink" :  "fal fa-link";
                        
@@ -145,6 +147,7 @@ try{
                  removeElementClass     =  ($(element).hasClass("reverse_post_action"))    ?  "reverse_post_action" : "follow_post";
                  addIconClass            =  ($(element).hasClass("reverse_post_action"))    ?  "far fa-eye" : "far fa-eye-slash";
                  removeIconClass         =  ($(element).hasClass("reverse_post_action"))    ?  "far fa-eye-slash" : "far fa-eye";
+                 let uiFollowing         = $(mainParent).find("ps-stream-meta").find("ps-stream-time").toggle("fade",400);
            }
 
            console.log(title);
@@ -159,6 +162,8 @@ try{
                  $(confirmationIcon).removeClass(removeIconClass);
                  $(confirmationIcon).addClass(addIconClass);
                  $(confirmationTextSpan).html(confirmationText);
+                 
+               
                  
         }
 

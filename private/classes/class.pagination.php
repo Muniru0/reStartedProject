@@ -264,14 +264,14 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
  
  
   
- $query .= "SELECT * FROM ".Reaction::$table_name." WHERE ".Reaction::$post_id." >= {$offset} && ".Reaction::$post_id."<= {$offset_upperbound}";
+ $query .= "SELECT * FROM ".Reaction::$table_name." WHERE ".Reaction::$post_id." >= {$offset} && ".Reaction::$post_id."<= {$offset_upperbound};";
   
  if(isset($_SESSION) && isset($_SESSION[user::$id])){
  $query .= " SELECT * FROM ".LinkUsers::$table_name." WHERE ".LinkUsers::$linker_id."
 =".$_SESSION[user::$id]." || ".LinkUsers::$link." = ".$_SESSION[user::$id].";";
 
 
-$query .= " SELECT * FROM ".FollowPosts::$table_name." WHERE ".FollowPosts::$follower_id." = ".$_SESSION[user::$id];
+$query .= " SELECT * FROM ".FollowPost::$table_name." WHERE ".FollowPost::$follower_id." = ".$_SESSION[user::$id];
  
  }
 
@@ -285,11 +285,12 @@ $reactions  = [];
   if($db->multi_query($query)){
 	  
 	  do{
-		  
+		
 		  if($result = $db->store_result()){
 			  if($result->num_rows > 0){
 			  while($row = $result->fetch_assoc()){
-				 $array[] = $row; 
+				  
+				
 			  if(isset($row[ViewsLikes::$alias_of_id]) && isset($row[ViewsLikes::$alias_of_user_id]) && $row[ViewsLikes::$alias_of_id] > 0 && $row[ViewsLikes::$alias_of_user_id] > 0){
 				  
 				 
@@ -319,12 +320,12 @@ $reactions  = [];
 			  }elseif(isset($row[Reaction::$reaction_type])){
 				
 				  $reactions[$row[Reaction::$post_id]][$row[Reaction::$user_id]] = $row[Reaction::$reaction_type];
-			  }elseif(isset($row[FollowPosts::$follower_id])){
-				  
-				  if(isset($_SESSION) && isset($_SESSION[FollowPosts::$session_string])){
+			  }elseif(isset($row[FollowPost::$follower_id])){
+				   
+				  if(isset($_SESSION) && isset($_SESSION[FollowPost::$session_string])){
 		
-				  if(!in_array($row[FollowPosts::$post_id],$_SESSION[FollowPosts::$session_string])){
-					   $_SESSION[FollowPosts::$session_string][] = (int)$row[FollowPosts::$post_id];
+				  if(!in_array($row[FollowPost::$post_id],$_SESSION[FollowPost::$session_string])){
+					   $_SESSION[FollowPost::$session_string][] = (int)$row[FollowPost::$post_id];
 				  }
 			  }
 			  }
@@ -345,7 +346,6 @@ $reactions  = [];
 	  
   } 
   	
- 
  
  
  return ["views" =>$views,"replys"=>$replys,"reactions"=>$reactions];

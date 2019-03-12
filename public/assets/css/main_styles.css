@@ -521,3 +521,11 @@ button:hover {
     color: #333;
     opacity: 0.85;
 }
+
+.following_span{
+	background: #e3e2e2;
+    font-size: 1.1em;
+    border-radius: 0.6em;
+    padding: 0.4em;
+    margin-left: 1em;
+}

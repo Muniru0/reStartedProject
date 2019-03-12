@@ -22,7 +22,6 @@ class LinkUsers Extends DatabaseObject{
   public static function link_user($user_id  = 0, $post_id = 0){
 	   
 	   global $db;
-	   
 
       if(isset($_SESSION[user::$id]) && $_SESSION[user::$id] > 0 && trim($_SESSION[user::$firstname]) != "" && trim($_SESSION[user::$lastname]) != "" ){
 
@@ -38,13 +37,15 @@ class LinkUsers Extends DatabaseObject{
 
 	   if($db->multi_query($query)){
           
-       
+       log_action(__CLASS__,"passed 3".__LINE__);
 			
 			do{
+        log_action(__CLASS__,"passed 2".__LINE__);
 			if($result = $db->store_result()){
 				
 				 if($result->num_rows > 0){
 			  if($row = $result->fetch_assoc()){
+          log_action(__CLASS__,"passed 2".__LINE__);
 				  if(isset($row) && $row["result"] > 0){
 					  print j(["true" =>"success"]);
 					  return;
@@ -67,7 +68,9 @@ class LinkUsers Extends DatabaseObject{
 				 }
 			}while($db->more_results() && $db->next_result());
 				  
-	   }
+	   }else{
+      echo $db->error;
+     }
    
    }// link_user();
 	

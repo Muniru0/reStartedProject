@@ -614,16 +614,18 @@ return json_encode($views);
 		 $linked_user_class = "";
 		 $toggle_string     = "display:none;";
 		 $link_title_string = "";
+		 $user_parent_element = "";
 		if(isset($_SESSION) && isset($_SESSION[LinkUsers::$session_string]) && !empty($_SESSION[LinkUsers::$session_string]) && in_array($id,$_SESSION[LinkUsers::$session_string])){
 			
 		 $linked_user_class = "link_user";
 		 $toggle_string     = "display:inline;";
+		 $user_parent_element = "margin-bottom: 0.4em !important;";
 		 $link_title_string = "You are linked to this User.You will be notified of all of his posted incidents.";
 		 
 		}
 		  
 		   
-        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap\"><a class=\"ps-stream-user  {$linked_user_class}\" href=\"../".PROFILE_PAGE."/{$id}\">". $firstname." ".$lastname."<small style='{$toggle_string}'><i class ='fal fa-link'></i></small></a>";
+        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap\" style='{$user_parent_element}'><a class=\"ps-stream-user  {$linked_user_class}\" href=\"../".PROFILE_PAGE."/{$id}\">". $firstname." ".$lastname."<small style='{$toggle_string}'><i class ='fal fa-link'></i></small></a>";
 		
     }//get_fullname();
 
@@ -647,12 +649,17 @@ return json_encode($views);
             </span></div>");
     }
 
-    public static function get_time_template($time){
+    public static function get_time_template($post_id = 0,$time = 0){
 
+	    $toggle_follow_icon = "";
+	   if(in_array($post_id,$_SESSION[FollowPost::$session_string])){
+		   $toggle_follow_icon = "<span class='following_span'>following<i class='far fa-eye' style='margin-left: 0.2em !important;' title='you are following this post'></i>  </span>";
+	   }
+	   
         return "<small class=\"ps-stream-time\" data-timestamp=\"1528749581\">
                 <a href=\"https://demo.peepso.com/activity/?status/2-2-1528720781/\">
                     <span class=\"ps-js-autotime\" data-timestamp=\"1528749581\" title=\"June 11, 2018 8:39 pm\">".self::time_converter($time)."</span>             </a>
-            </small></div>";
+					{$toggle_follow_icon}</small></div>";
     }
 
 	// get the post options template
@@ -664,30 +671,61 @@ return json_encode($views);
 			 return;
 		 }
 		 
+		 // initialize the necessary variables
+		 // link user variables
 		 $link_user_string = "link_user";
-		 $follow_post_string = "follow_post";
 		 $toggle_link_icon   = "fal fa-link";
 		 $toggle_link_class  = "";
 		 $toggle_link_string  = "link with ";
+		 $toggle_link_title  = "linking with a user will get you notified of all future incidents posted by that user.";
+		 
+		 // follow post variables
+		 $follow_post_string = "follow_post";
+		 $toggle_follow_post_icon = "far fa-eye";
+		 $toggle_follow_post_html_string = "follow this post";
+		 $toggle_follow_post_class = "";
+		  $toggle_follow_title  = "if you follow this incident you will be notified about every development of it.";
+		 
+		 
+		 // adjust the link user variables if the two 
+		 //users are linked
 		  if(in_array($user_id,$_SESSION[LinkUsers::$session_string])){
 			 $toggle_link_icon = "fal fa-unlink";
 			 $toggle_link_class = "reverse_post_action";
 			 $toggle_link_string = "unlink with ";
+			 $toggle_link_title  = "You are linked to {$firstname} {$lastname}";
 		  }
 		 
+		
+		 // adjust the link user variables if the two 
+		 //users are linked
+		 if(in_array($post_id,$_SESSION[FollowPost::$session_string])){
+			 
+			 $toggle_follow_post_icon = "far fa-eye-slash";
+			 $toggle_follow_post_html_string = "unfollow this post";
+			 $toggle_follow_post_class = "reverse_post_action";
+			  $toggle_follow_title  = "You are following this incident";
+			 
+		 }
+		 
+		 // edit post html link 
 		$edit_post_string =  $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_edit({$_SESSION["id"]}, {$post_id},this); return false' ><i class='ps-icon-edit'></i><span>Edit Post</span>
 </a>";
+        // delete post html link 
 		$delete_post_string = $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_delete({$_SESSION["id"]}, {$post_id},this);' ><i class='ps-icon-trash'></i><span>Delete Post</span>
 </a> ";
 		
-		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' onclick='post_options({$post_id},this,\"".$follow_post_string."\");' >
-		<i class='far fa-eye'></i><span>follow this post</span>
+		 // follow post html link 
+		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' title='{$toggle_link_title}' class='{$toggle_follow_post_class}' onclick='post_options({$post_id},this,\"".$follow_post_string."\");' >
+		<i class='{$toggle_follow_post_icon}'></i><span>{$toggle_follow_post_html_string}</span>
 </a>";
       
-		
-	    $link_user_string =  $_SESSION[user::$id] == $user_id ? "" :"<a href='javascript:' class='{$toggle_link_class}' onclick='post_options({$user_id},{$post_id},this,\"".$link_user_string."\");return false' ><i class='{$toggle_link_icon}'></i><span>{$toggle_link_string}  {$firstname} {$lastname}</span>
+		 // link user html link 
+	    $link_user_string =  $_SESSION[user::$id] == $user_id ? "" :"<a href='javascript:' title='{$toggle_link_title}' class='{$toggle_link_class}' onclick='post_options({$user_id},{$post_id},this,\"".$link_user_string."\");return false' ><i class='{$toggle_link_icon}'></i><span>{$toggle_link_string}  {$firstname} {$lastname}</span>
 </a>
 ";
+
+  // declare and initialize the confirmation option string
   $confirmation_option_string = "";
  if((int)$_SESSION[user::$user_category] === 2 || (int)$_SESSION[user::$user_category] === 3){
 	
@@ -1602,10 +1640,11 @@ foreach ($returned_array as $posts_info => $images_or_info){
 				 $_SESSION["post_ids"][] = (int)$post_info[PostImage::$alias_of_id];
 			 }
 			 
-			 $reaction_user_ids = (empty($reactions_user_ids[$post_info[PostImage::$alias_of_id]]) && isset($reactions_user_ids[$post_info[PostImage::$alias_of_id]])) ? [] : $reactions_user_ids[$post_info[PostImage::$alias_of_id]];
+			 $reaction_user_ids = (empty($reactions_user_ids[$post_info[PostImage::$alias_of_id]]) || !isset($reactions_user_ids[$post_info[PostImage::$alias_of_id]])) ? [] : $reactions_user_ids[$post_info[PostImage::$alias_of_id]];
+			 
 			// add the post to the array of post in the users session
+			$full_header = "";
 			
-            $full_header = "";
            // get the post confirmation template
             $full_header   = self::get_post_confirmation($post_info[PostImage::$confirmation]);
 			
@@ -1618,7 +1657,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
             // gets the location of the post
             $full_header   .= self::get_location_template($post_info[PostImage::$log],$post_info[PostImage::$lat]);
             // gets the time the post was uploaded
-            $full_header   .= self::get_time_template($post_info[PostImage::$upload_time]);
+            $full_header   .= self::get_time_template($post_info[PostImage::$alias_of_id],$post_info[PostImage::$upload_time]);
 			
 			// add the manipulation options to the post header
 			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[user::$user_category],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);

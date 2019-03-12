@@ -3,7 +3,7 @@
 require_once("../private/initialize.php");
 
 
-class LinkUsers Extends DatabaseObject{
+class FollowPost Extends DatabaseObject{
 	
 
   public static $table_name = "follow_posts";
@@ -25,7 +25,7 @@ class LinkUsers Extends DatabaseObject{
 
   public static $session_string = "follow_posts_user_ids";
 
-  public static function link_user($follower_id  = 0, $post_id = 0){
+  public static function follow_post($post_id = 0){
 	   
 	   global $db;
 	   

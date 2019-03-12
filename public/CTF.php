@@ -51,6 +51,7 @@ div {
 
  <?php
  
+ 
 Pagination::get_infinite_scroll("mainstream"); 
  
  die();
