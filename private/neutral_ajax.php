@@ -125,7 +125,7 @@ PostImage::delete_post($user_id,$post_id);
 			$post_id = (int)$_POST["post_id"];
 			$user_id = (int)$_POST["user_id"];
 			
-			if(!in_array($post_id,$_SESSION["post_ids"])){
+			if(!in_array($post_id,$_SESSION[PostImage::$alias_of_id])){
 				print j(["false"=>"Sorry please refresh the page and try again"]);
 				return;
 			}
@@ -142,13 +142,11 @@ PostImage::delete_post($user_id,$post_id);
 	 
  }
  elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) == "follow_post" &&
-        isset($_POST["post_id"]) && $_POST["post_id"] > 0 ){
+        isset($_POST["post_id"]) && $_POST["post_id"] > 0 && (int)$_POST["user_id"] === 0 ){
 			
 			$post_id = (int)$_POST["post_id"];
 			
-		
-			
-			if(!in_array($user_id,$_SESSION[PostImage::$uploader_id])){
+		if(!in_array($post_id,$_SESSION[PostImage::$alias_of_id])){
 				
 				print j(["false"=>"Sorry please refresh the page and try again"]);
 				return;

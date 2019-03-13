@@ -48,7 +48,7 @@
 //define ('PRIVATE_DIR','C:'.DS.'wamp64'.DS.'www'.DS.'sample_app'.DS.'lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk');
 
 // pages constants
-defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","IPmHxcktDbNYWfiGzwFBkLHmlRJNTykkdduxED1bLs");
+defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 //logic CONSTANTS
 !defined("RECENT")  ? define("RECENT","recent")              : null;
@@ -80,6 +80,8 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","IPmHxcktDbNYWfiGzwFBk
 
 session_start();
 
+// headers file
+require_once("headers.php");
 // Database connection files
 require_once(PRIVATE_DIR.SHARED_DIR."config.php");
 require_once(PRIVATE_DIR. "classes/class.database_object.php");

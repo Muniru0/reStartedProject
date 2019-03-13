@@ -124,6 +124,7 @@ require_once(PRIVATE_DIR."initialize.php");
 	$_SESSION[FollowPost::$session_string] = [];
 	$_SESSION[LinkUsers::$session_string]  = [];
 	$_SESSION[PostImage::$uploader_id] = [];
+	$_SESSION[PostImage::$alias_of_id] = [];
 	$_SESSION['last_login']  = time();
 	$_SESSION['mainstream']  = 0;
 	$_SESSION['community']   = 0;

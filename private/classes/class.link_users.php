@@ -55,7 +55,7 @@ class LinkUsers Extends DatabaseObject{
 					  return;
 				  }elseif(trim($db->error) != ""){
 				  log_action(__CLASS__,$db->error);
-					  print j(["false" => "Sorry please refresh the page and try again"]);
+					  print j(["false" => "Sorry please refresh the page and try again there"]);
 					  return;
 				  }
 			  }	
@@ -63,7 +63,7 @@ class LinkUsers Extends DatabaseObject{
 			}
 				 }else{
 					 log_action(__CLASS__,$db->error);
-					 print j(["false" => "Please refresh the page and try again."]);
+					 print j(["false" => "Please refresh the page and try again. here"]);
 					 return;
 				 }
 			}while($db->more_results() && $db->next_result());

@@ -114,7 +114,7 @@ try{
       let confirmationTextSpan = $(element).find("span")[0]; 
       let confirmationIcon = $(element).find("i")[0];
      
-      if(response["true"] == "success" || response["unlink"] == "success"){
+      if(response["true"] == "success" || response["unlink"] == "success" || response["unfollow"]){
            if(option == "confirm_post" || option == null){
                 
                  title              = ($(element).hasClass("confirm_post")) ? "Confirm that this incident really took place" : "Reverse the confirmation of this incident";
@@ -128,6 +128,7 @@ try{
      
                   title                  =  ($(element).hasClass("reverse_post_action")) ?  "linking with a user will get you notified of all future incidents posted by that user." : "You will be notified of incidents posted by this person.";
                   let user               =   $(mainParent).find(".ps-stream-user");
+                  $(user).parent().toggleClass("breathing_space");
                    $(user).toggleClass("link_user",1000,"easeOutBounce");
                    $(user).find("small").toggle();
                   let userFullname       =  $(user).html();
@@ -142,7 +143,8 @@ try{
                 }else if(option == "follow_post"){
                  title                  =  ($(element).hasClass("reverse_post_action"))   ?  "if you follow this incident you will be notified about every development of it." : "Get notified about every development of this incident.";
                  confirmationText       =  $(mainParent).find(".ps-stream-user").html();
-                 confirmationText       =  ($(element).hasClass("reverse_post_action"))    ?  "stop follow this incident" : "follow this incident";
+                 $(mainParent).find(".following_span").toggle("slide");
+                 confirmationText       =  ($(element).hasClass("reverse_post_action"))    ?  "follow this incident" : "unfollow this incident";
                  addElementClass        =  ($(element).hasClass("reverse_post_action"))    ?  "follow_post" : "reverse_post_action";
                  removeElementClass     =  ($(element).hasClass("reverse_post_action"))    ?  "reverse_post_action" : "follow_post";
                  addIconClass            =  ($(element).hasClass("reverse_post_action"))    ?  "far fa-eye" : "far fa-eye-slash";

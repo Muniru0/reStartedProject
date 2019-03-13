@@ -51,8 +51,10 @@ div {
 
  <?php
  
+ echo "<i class='fal fa-user'></i>";
  
-Pagination::get_infinite_scroll("mainstream"); 
+ echo "<a href=\"test_page.php?id=2&username='Yussif'&wrong_param='some_code'\">Link to test.php</a>";
+//Pagination::get_infinite_scroll("mainstream"); 
  
  die();
  

@@ -39,7 +39,7 @@ public static function find_all ($query = "" ,$table = "",$condition =""){
 
      }//find_all();
     
-public static function find_one($id = 0){
+public static function find_one($id = 0,$table_name = ""){
 
        global $db;
 

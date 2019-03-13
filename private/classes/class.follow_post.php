@@ -34,11 +34,11 @@ class FollowPost Extends DatabaseObject{
 
       }
 
-	      $user_id = $db->real_escape_string($user_id);
+	      
 		  $post_id = $db->real_escape_string($post_id);
 		  
 		  
-	   $query = "CALL follow_posts({$post_id},".$_SESSION[user::$id].",".$_SESSION[user::$firstname].",".$_SESSION[user::$lastname].",".time().")";
+	   $query = "CALL follow_posts({$post_id},".$_SESSION[user::$id].",'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."',".time().")";
       
 
 
@@ -56,7 +56,7 @@ class FollowPost Extends DatabaseObject{
 					  return;
 				  }elseif(isset($row) && $row["result"] == 0){
 					  
-					  print j(["unlink" => "success"]);
+					  print j(["unfollow" => "success"]);
 					  return;
 				  }elseif(trim($db->error) != ""){
 				  log_action(__CLASS__,$db->error);
@@ -73,7 +73,9 @@ class FollowPost Extends DatabaseObject{
 				 }
 			}while($db->more_results() && $db->next_result());
 				  
-	   }
+  }else{
+	 
+  }
    
    }// link_user();
 	

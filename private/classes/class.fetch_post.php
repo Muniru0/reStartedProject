@@ -614,18 +614,18 @@ return json_encode($views);
 		 $linked_user_class = "";
 		 $toggle_string     = "display:none;";
 		 $link_title_string = "";
-		 $user_parent_element = "";
+		 $user_parent_breathing_space = "";
 		if(isset($_SESSION) && isset($_SESSION[LinkUsers::$session_string]) && !empty($_SESSION[LinkUsers::$session_string]) && in_array($id,$_SESSION[LinkUsers::$session_string])){
 			
 		 $linked_user_class = "link_user";
 		 $toggle_string     = "display:inline;";
-		 $user_parent_element = "margin-bottom: 0.4em !important;";
+		 $user_parent_breathing_space = "breathing_space";
 		 $link_title_string = "You are linked to this User.You will be notified of all of his posted incidents.";
 		 
 		}
 		  
 		   
-        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap\" style='{$user_parent_element}'><a class=\"ps-stream-user  {$linked_user_class}\" href=\"../".PROFILE_PAGE."/{$id}\">". $firstname." ".$lastname."<small style='{$toggle_string}'><i class ='fal fa-link'></i></small></a>";
+        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap {$user_parent_breathing_space}\" ><a class=\"ps-stream-user  {$linked_user_class}\" href=\"../".PROFILE_PAGE."/?id='{$id}'\">". $firstname." ".$lastname."<small style='{$toggle_string}'><i class ='fal fa-link'></i></small></a>";
 		
     }//get_fullname();
 
@@ -653,7 +653,7 @@ return json_encode($views);
 
 	    $toggle_follow_icon = "";
 	   if(in_array($post_id,$_SESSION[FollowPost::$session_string])){
-		   $toggle_follow_icon = "<span class='following_span'>following<i class='far fa-eye' style='margin-left: 0.2em !important;' title='you are following this post'></i>  </span>";
+		   $toggle_follow_icon = "<i class='far fa-eye following_span' style='margin-left: 0.2em !important;' title='you are following this post'></i>  ";
 	   }
 	   
         return "<small class=\"ps-stream-time\" data-timestamp=\"1528749581\">
@@ -716,7 +716,7 @@ return json_encode($views);
 </a> ";
 		
 		 // follow post html link 
-		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' title='{$toggle_link_title}' class='{$toggle_follow_post_class}' onclick='post_options({$post_id},this,\"".$follow_post_string."\");' >
+		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' title='{$toggle_link_title}' class='{$toggle_follow_post_class}' onclick='post_options(0,{$post_id},this,\"".$follow_post_string."\");' >
 		<i class='{$toggle_follow_post_icon}'></i><span>{$toggle_follow_post_html_string}</span>
 </a>";
       
@@ -1637,7 +1637,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			  }
 			  
 			 if(!in_array((int)$post_info[PostImage::$alias_of_id],$_SESSION["post_ids"])){
-				 $_SESSION["post_ids"][] = (int)$post_info[PostImage::$alias_of_id];
+				 $_SESSION[PostImage::$alias_of_id][] = (int)$post_info[PostImage::$alias_of_id];
 			 }
 			 
 			 $reaction_user_ids = (empty($reactions_user_ids[$post_info[PostImage::$alias_of_id]]) || !isset($reactions_user_ids[$post_info[PostImage::$alias_of_id]])) ? [] : $reactions_user_ids[$post_info[PostImage::$alias_of_id]];

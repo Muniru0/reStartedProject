@@ -523,9 +523,11 @@ button:hover {
 }
 
 .following_span{
-	background: #e3e2e2;
-    font-size: 1.1em;
-    border-radius: 0.6em;
-    padding: 0.4em;
-    margin-left: 1em;
+	margin-left: 0.5em !important;
+    font-size: 1.4em;
+    color: #d24942;
+}
+
+.breathing_space{
+	margin-bottom: 0.4em !important;
 }

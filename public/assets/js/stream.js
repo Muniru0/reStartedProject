@@ -1,13 +1,24 @@
 
+  class stream {
 
 
-$(window).scroll(function() {
-    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-     $("#ps-activitystream-loading").show();
-  $.ajax({
+
+
+
+
+
+  static get_stream($stream_type = ""){
+
+
+  if($.trim($stream_type) == ""){
+  return;
+  }
+
+
+  	 $.ajax({
 			 url:"../private/neutral_ajax.php",
 			 type: "POST",
-			 data: {request_type: "mainstream"},
+			 data: {request_type: $stream_type},
 			 datatype: "html"
 		 }).done(function(response){
 			console.log(response);
@@ -44,13 +55,21 @@ $(window).scroll(function() {
 			
 			 }
 				 
-				  
-			/* $("body").append('<div class="big-box"><h1>Page ' + response + '</h1></div>'); 
-			*/	
+				 	
 	}).fail(function(error){
 			 alert(error);
-		 });  
-      
+		 }); 
+  }
+
+
+  }
+
+
+$(window).scroll(function() {
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+     $("#ps-activitystream-loading").show();
+  
+        stream.get_stream("mainstream");
     }
 });
 
