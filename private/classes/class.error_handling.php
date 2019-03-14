@@ -20,6 +20,9 @@ return;
   	case RETRY:
   		print j(["false"=>"Please refresh the page and try again"]);
   		break;
+		case INVALID_SESSION:
+  		print j(["false"=>"login"]);
+  		break;
   	
   	default:
   		# code...

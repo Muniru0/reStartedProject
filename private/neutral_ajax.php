@@ -487,14 +487,31 @@ elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_
 
 // get the main stream infinite scroll
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll"){
-	
+	  
 	$allowed_scroll_parameters = [STREAM_HOME,STREAM_PROFILE,STREAM_COMMUNITY,STREAM_SELF];
         
 	  $stream_type = explode("_",trim($_POST["stream_type"]));
-	  $stream = $stream_type[0];
+	 
 	  $id      = 0;
 	  
-  if(count($stream_type) != 2 && count($stream_type) != 1){
+	  switch(trim($stream_type[0])){
+		  case STREAM_HOME:
+		  $stream = STREAM_HOME;
+		  break; 
+		  case STREAM_SELF:
+		  $stream = STREAM_SELF;
+		  break; 
+		  case STREAM_PROFILE:
+		  $stream = STREAM_PROFILE;
+		  break; 
+		  case STREAM_COMMUNITY:
+		  $stream = STREAM_COMMUNITY;
+		  break;
+		  default:$stream = INVALID_STREAM_OPTION; return;
+	  }
+	  
+	
+  if((count($stream_type) != 2 && count($stream_type) != 1) || $stream == INVALID_STREAM_OPTION){
 	    Errors::trigger_error(RETRY);
 	  return;
   }
@@ -503,19 +520,24 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
 	  
       $id = (int)$stream_type[1];
   }
+  
+    
+  
      
 	  if(is_string($stream) && $id > 0 && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != "home" && trim($stream) != "community" && trim($stream) != "self"){
 		 
     // get the main infinite scroll for the sreaming of post
 	Pagination::get_infinite_scroll($stream,$id);
-	  }
+echo "done with the most part of the entire works";	 
+	 }
 	  elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters)){
 		
 	// get the main infinite scroll for the sreaming of post
 	Pagination::get_infinite_scroll(trim($stream));
+	
 	  }
 	  else{
-		 // Errors::trigger_error(RETRY);
+		  Errors::trigger_error(RETRY);
 		  return;
 	  }  
 	  

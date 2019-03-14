@@ -2,7 +2,6 @@
 
 require_once("../private/initialize.php");
 
-
 class LinkUsers Extends DatabaseObject{
 	
 

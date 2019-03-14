@@ -81,6 +81,9 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 !defined("RETRY")               ?  define("RETRY","re_try")                : null;
 
+!defined("INVALID_STREAM_OPTION")               ?  define("INVALID_STREAM_OPTION","invalid")                : null;
+!defined("INVALID_SESSION")               ?  define("INVALID_SESSION","invalid_session")                : null;
+
 
 
 

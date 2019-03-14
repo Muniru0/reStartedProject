@@ -13,36 +13,43 @@ class Pagination extends DatabaseObject {
 	// get infinite scroll	
 public static function get_infinite_scroll($stream_type = "",$stream_type_id = null){
 	
+	
+	
+	
  global $db;
 
 	  if(!isset($_SESSION)){
-		  print j(["false"=>"login"]);
+		 Errors::trigger_error(INVALID_SESSION);
 		  return;
 	  }
-	  
-	  if(!isset($_SESSION[$stream_type])){
-		
-return;		 
-	  }
-	  
-	  
+	  	  
 	
-	$offset = (isset($_SESSION[$stream_type]) && isset($_SESSION[$stream_type]) && (int)$_SESSION[$stream_type] > 0) ? (int)$_SESSION[$stream_type] + 20 : (int)$_SESSION[$stream_type] = 240;
 	
-  
-
+	 $offset		    = 0;
+	 $offset_upperbound = 0;
+	  
+	  if(isset($_SESSION) && isset($_SESSION[$stream_type])
+		  && (int)$_SESSION[$stream_type] > 0){
+			  $offset = $_SESSION[$stream_type] + 20;
+		  }elseif(!isset($_SESSION[$stream_type])){
+			   $_SESSION[$stream_type] = 1;
+			   $offset = 1;
+		  }
+		  
   $offset            = $_SESSION[$stream_type];
-  $offset_upperbound = $offset + 10;
+  $offset = 240;
+  $offset_upperbound = $offset + 20;
   
   $where_clause = "";
-  
+  $posts        = "";
   
   
 	// provide a different where clause for each of the different
 	//   types of streams
   if($stream_type == STREAM_HOME){
 	  
-	  $where_clause = PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound} ORDER BY ".PostImage::$upload_time." DESC LIMIT 200";
+	 
+	   $posts = self::home_posts($offset,$offset_upperbound);
 	  
   }elseif($stream_type == STREAM_PROFILE){
 	   if($offset == 1){
@@ -53,35 +60,32 @@ return;
 		    $where_clause = PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound} && ".PostImage::$table_name.".".PostImage::$uploader_id." = {$stream_type_id} ORDER BY ".PostImage::$upload_time." DESC LIMIT 200"; 
 	   }
 	   
-	
+	 $posts = self::profile_posts($where_clause);
   }elseif($stream_type == STREAM_SELF){
 	  
-	  $where_clause = PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound}";
-	  
+	 
+	  $posts = self::self_posts($offset,$offset_upperbound);
   }elseif($stream_type == STREAM_COMMUNITY){
-	  
-	  $where_clause = PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound}";
+	  $posts = self::community_posts($offset,$offset_upperbound);
   }
   
   
-  $offset = 240;
-  $offset_upperbound= 250;
-	
-	
-	
-   $posts = self::get_the_posts($where_clause);	
-    
-   // incase the $offset is 1
+  /* 
+	// incase the $offset is 1
    if($offset == 1 && ($stream_type == STREAM_PROFILE || $stream_type == STREAM_SELF)){ 
 	   $offset = $_SESSION[$stream_type];
 	   $offset_upperbound = $offset + 100;
 	   
-   }
+   } */
+   
    
     if(!$posts){
 		   return;
 	   }
-// get the post comments
+	   
+	   
+	   
+ // get the post comments
  $comments  = self::get_post_comments($offset,$offset_upperbound,$stream_type);
  
  
@@ -128,7 +132,7 @@ JOIN ".user::$table_name." ON
 $results = $db->query($query);
 	
 
-echo $row_count = $results->num_rows;
+$row_count = $results->num_rows;
 	  
 	if($db->error){
 		
@@ -246,7 +250,7 @@ $query = "SELECT ".Views::$table_name.".*,".ReplyViews::$table_name.".*,".Views:
 	if($db->error){
 
 		log_action(__CLASS__,"Query: {$db->error} on line: ".__LINE__." in file: ".__FILE__);
-		echo $db->error;
+		Errors::trigger_error(RETRY);
 		Print j(["false"=>"Server Problem please try again later."]);
 		return;
 	}
@@ -394,10 +398,10 @@ $reactions  = [];
 			  }
 			  elseif(trim($db->error) != ""){
 				  
-				   print j(["false" =>"Sorry please server problem"]);
+				 Errors::trigger_error(RETRY);
 				   return;
 			  }else{
-				  echo "entered here";
+
 				  return;
 			  }
 			  
@@ -417,9 +421,127 @@ $reactions  = [];
 	
 
   // get users own uploaed incidents	
- public static function self_posts($where_clause = ""){
+ public static function self_posts($offset = 0,$offset_upperbound = 0){
 	 	global $db;
 		
+		
+		
+		 $where_clause = ($offset == 0) ?
+		 PostImage::$table_name.".".PostImage::$uploader_id."=".$_SESSION[user::$id]." ORDER BY ".PostImage::$upload_time." DESC LIMIT 200"
+		 :
+		 PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound}  && ".PostImage::$uploader_id."=".$_SESSION[user::$id]." ORDER BY ".PostImage::$upload_time." DESC LIMIT 200" ;
+		
+	
+		  
+  $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
+JOIN ".user::$table_name." ON 
+".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE {$where_clause} ";
+
+$results = $db->query($query);
+	
+
+echo $row_count = $results->num_rows;
+	  
+	if($db->error){
+		
+		Errors:;trigger_error(RETRY);
+		return;
+	}
+	
+	
+// validate the returning of results	
+ if($row_count > 0){
+	 
+	 $post_ids_array = [];
+	while($row = $results->fetch_assoc()){
+		// get all the post ids to be sorted and the least one
+		// to be set to the session variable of the stream type
+		if($offset == 1){
+		 $post_ids_array[] = $row[PostImage::$alias_of_id];
+		}
+	if(isset($reactions_user_ids) && array_key_exists($row[FetchPost::$post_id],$reactions_user_ids)){
+		    if(isset($reactions_user_ids) && isset($reactions_user_ids[$row[FetchPost::$post_id]]) && !in_array($row[Reaction::$alias_of_user_id],$reactions_user_ids[$row[FetchPost::$post_id]])){
+				$reactions_user_ids[$row[FetchPost::$post_id]][$row[Reaction::$alias_of_user_id]] = $row[ Reaction::$reaction_type];
+			}
+		
+	}else{
+		$reactions_user_ids[$row[FetchPost::$post_id]][$row[Reaction::$alias_of_user_id]] = $row[ Reaction::$reaction_type];
+	}
+	
+	
+	// accumulate and re-structure all the post and their respective files
+	if(isset($returned_array) && array_key_exists($row[FetchPost::$post_id],$returned_array)){
+	 
+	if(isset($returned_array[$row[FetchPost::$post_id]]) &&
+	array_key_exists("filenames_".$row[FetchPost::$post_id],
+	$returned_array[$row[FetchPost::$post_id]])){
+	 
+				
+ $returned_array[$row[FetchPost::$post_id]]["filenames_".$row[FetchPost::$post_id]][$row[FetchPost::$alias_of_id]] = $row[FetchPost::$filename];
+	
+	}
+	
+	
+	
+	// else add the incident to the incidents array 	
+}else{
+	
+		// with the post_table_id as the key
+		$returned_array[$row[FetchPost::$post_id]][] = $row;
+		$returned_array[$row[FetchPost::$post_id]]["filenames_".$row[FetchPost::$post_id]][$row[FetchPost::$alias_of_id]] = $row[FetchPost::$filename];
+		
+		 if(!in_array((int)$row[PostImage::$uploader_id],$_SESSION[PostImage::$uploader_id])){
+				  $_SESSION[PostImage::$uploader_id][] = (int)$row[PostImage::$uploader_id];
+			  }
+		
+}
+	}
+	
+	
+	 $_SESSION[STREAM_SELF] = array_shift(sort($post_ids_array));
+	
+ }else{
+	
+	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[$stream_type]);
+	 $result = $db->query($query); 
+	 
+	 if($result->num_rows > 0 && $row = $result->fetch_assoc()){
+		    $offset_upperbound = $_SESSION[STREAM_SELF] = $row["min_id"] + 20;
+		  
+		   self::self_posts($offset_upperbound - 20,$offset_upperbound); 
+		   $result->free();
+	 }else{
+		$_SESSION[STREAM_SELF] = 0;
+		
+		print j(["pending"=>"shortage"]);
+		$result->free();
+        	return;	
+	 }
+	
+ } 
+  // check if the returned post is empty
+  if(empty($returned_array)){
+	print j(["pending"=>"waiting"]);
+	
+return false;	 
+  }
+  
+  
+ 
+ 
+
+ return $returned_array;
+ }//self_posts();
+
+ 
+ 
+ 
+ // get users own uploaed incidents	
+ public static function community_posts($offset = 0 ,$offset_upperbound = 0){
+	 	
+		global $db;
+		
+		  $where_clause = PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound}";
 		
   $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
@@ -525,9 +647,8 @@ return false;
  return $returned_array;
  }
 
- 
  // get users own uploaed incidents	
- public static function community_incidents($where_clause = ""){
+ public static function profile_posts($where_clause = ""){
 	 	global $db;
 		
 		
@@ -538,116 +659,7 @@ JOIN ".user::$table_name." ON
 $results = $db->query($query);
 	
 
-echo $row_count = $results->num_rows;
-	  
-	if($db->error){
-		
-		Errors:;trigger_error(RETRY);
-		return;
-	}
-	
-	
-// validate the returning of results	
- if($row_count > 0){
-	 // initialize the post ids array variable to be used
-	 // in the while loop
-	 if($offset == 1){
-	 $post_ids_array = [];
- }
-	while($row = $results->fetch_assoc()){
-		// get all the post ids to be sorted and the least one
-		// to be set to the session variable of the stream type
-		if($offset == 1){
-		 $post_ids_array[] = $row[PostImage::$alias_of_id];
-		}
-	if(isset($reactions_user_ids) && array_key_exists($row[FetchPost::$post_id],$reactions_user_ids)){
-		    if(isset($reactions_user_ids) && isset($reactions_user_ids[$row[FetchPost::$post_id]]) && !in_array($row[Reaction::$alias_of_user_id],$reactions_user_ids[$row[FetchPost::$post_id]])){
-				$reactions_user_ids[$row[FetchPost::$post_id]][$row[Reaction::$alias_of_user_id]] = $row[ Reaction::$reaction_type];
-			}
-		
-	}else{
-		$reactions_user_ids[$row[FetchPost::$post_id]][$row[Reaction::$alias_of_user_id]] = $row[ Reaction::$reaction_type];
-	}
-	
-	
-	// accumulate and re-structure all the post and their respective files
-	if(isset($returned_array) && array_key_exists($row[FetchPost::$post_id],$returned_array)){
-	 
-	if(isset($returned_array[$row[FetchPost::$post_id]]) &&
-	array_key_exists("filenames_".$row[FetchPost::$post_id],
-	$returned_array[$row[FetchPost::$post_id]])){
-	 
-				
- $returned_array[$row[FetchPost::$post_id]]["filenames_".$row[FetchPost::$post_id]][$row[FetchPost::$alias_of_id]] = $row[FetchPost::$filename];
-	
-	}
-	
-	
-	
-	// else add the incident to the incidents array 	
-}else{
-	
-		// with the post_table_id as the key
-		$returned_array[$row[FetchPost::$post_id]][] = $row;
-		$returned_array[$row[FetchPost::$post_id]]["filenames_".$row[FetchPost::$post_id]][$row[FetchPost::$alias_of_id]] = $row[FetchPost::$filename];
-		
-		 if(!in_array((int)$row[PostImage::$uploader_id],$_SESSION[PostImage::$uploader_id])){
-				  $_SESSION[PostImage::$uploader_id][] = (int)$row[PostImage::$uploader_id];
-			  }
-		
-}
-	}
-	
-	
-	//get the least post id and set it to the session stream type 
-	//variable to be used by the comments and activities_user_ids queries
-	if($offset == 1){
-	$_SESSION[$stream_type] = array_shift(sort($post_ids_array));
-	}
- }else{
-	
-	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[$stream_type]." LIMIT 1000");
-	 $result = $db->query($query); 
-	 
-	 if($result->num_rows > 0 && $row = $result->fetch_assoc()){
-		  $_SESSION[$stream_type] = $row["min_id"];
-		   $result->free();
-	 }else{
-		$_SESSION[$stream_type] = 0;
-		
-		print j(["pending"=>"waiting"]);
-		$result->free();
-        	return;	
-	 }
-	
- } 
-  // check if the returned post is empty
-  if(empty($returned_array)){
-	print j(["pending"=>"waiting"]);
-	
-return false;	 
-  }
-  
-  
- 
- 
-
- return $returned_array;
- }
-
- // get users own uploaed incidents	
- public static function profile_incidents($where_clause = ""){
-	 	global $db;
-		
-		
-  $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
-JOIN ".user::$table_name." ON 
-".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE {$where_clause} ";
-
-$results = $db->query($query);
-	
-
-echo $row_count = $results->num_rows;
+$row_count = $results->num_rows;
 	  
 	if($db->error){
 		
@@ -746,45 +758,33 @@ return false;
  
  
  // get users own uploaed incidents	
- public static function home_incidents($where_clause = ""){
+ public static function home_posts($offset = 0,$offset_upperbound = 0){
 	 
 	 	global $db;
 		
-		if(trim($where_clause) == ""){
-			
-			return false;
-		}
 		
 		
   $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
-".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE ";
-
+".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE ".PostImage::$table_name.".".PostImage::$id.">={$offset} && ".PostImage::$table_name.".".PostImage::$id." <={$offset_upperbound}";
+ 
 $results = $db->query($query);
 	
 
-echo $row_count = $results->num_rows;
+$row_count = $results->num_rows;
 	  
 	if($db->error){
 		
-		Errors:;trigger_error(RETRY);
+		Errors::trigger_error(RETRY);
 		return;
 	}
 	
 	
 // validate the returning of results	
  if($row_count > 0){
-	 // initialize the post ids array variable to be used
-	 // in the while loop
-	 if($offset == 1){
-	 $post_ids_array = [];
- }
+	
 	while($row = $results->fetch_assoc()){
-		// get all the post ids to be sorted and the least one
-		// to be set to the session variable of the stream type
-		if($offset == 1){
-		 $post_ids_array[] = $row[PostImage::$alias_of_id];
-		}
+		
 	if(isset($reactions_user_ids) && array_key_exists($row[FetchPost::$post_id],$reactions_user_ids)){
 		    if(isset($reactions_user_ids) && isset($reactions_user_ids[$row[FetchPost::$post_id]]) && !in_array($row[Reaction::$alias_of_user_id],$reactions_user_ids[$row[FetchPost::$post_id]])){
 				$reactions_user_ids[$row[FetchPost::$post_id]][$row[Reaction::$alias_of_user_id]] = $row[ Reaction::$reaction_type];
@@ -824,21 +824,20 @@ echo $row_count = $results->num_rows;
 	}
 	
 	
-	//get the least post id and set it to the session stream type 
-	//variable to be used by the comments and activities_user_ids queries
-	if($offset == 1){
-	$_SESSION[$stream_type] = array_shift(sort($post_ids_array));
-	}
- }else{
 	
-	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[$stream_type]." LIMIT 1000");
+ }else{
+	 echo "entered here";
+	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[STREAM_HOME]." LIMIT 1000");
 	 $result = $db->query($query); 
 	 
 	 if($result->num_rows > 0 && $row = $result->fetch_assoc()){
-		  $_SESSION[$stream_type] = $row["min_id"];
+		$offset_upperbound =  $_SESSION[STREAM_HOME] = $row["min_id"];
+		  
+		  self::home_posts($offset_upperbound - 20,$offset_upperbound);
+		  return;
 		   $result->free();
 	 }else{
-		$_SESSION[$stream_type] = 0;
+		$_SESSION[STREAM_HOME] = 0;
 		
 		print j(["pending"=>"waiting"]);
 		$result->free();
@@ -854,11 +853,8 @@ return false;
   }
   
   
- 
- 
-
  return $returned_array;
- }	 
+ }//home_posts();	 
 	
 }
 
