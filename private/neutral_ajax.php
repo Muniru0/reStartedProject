@@ -486,12 +486,42 @@ elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_
 }
 
 // get the main stream infinite scroll
-elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "mainstream"){
-
+elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll"){
 	
+	$allowed_scroll_parameters = [STREAM_HOME,STREAM_PROFILE,STREAM_COMMUNITY,STREAM_SELF];
+        
+	  $stream_type = explode("_",trim($_POST["stream_type"]));
+	  $stream = $stream_type[0];
+	  $id      = 0;
 	  
+  if(count($stream_type) != 2 && count($stream_type) != 1){
+	    Errors::trigger_error(RETRY);
+	  return;
+  }
+  
+  if(count($stream_type)== 2 ){
+	  
+      $id = (int)$stream_type[1];
+  }
+     
+	  if(is_string($stream) && $id > 0 && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != "home" && trim($stream) != "community" && trim($stream) != "self"){
+		 
+    // get the main infinite scroll for the sreaming of post
+	Pagination::get_infinite_scroll($stream,$id);
+	  }
+	  elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters)){
+		
 	// get the main infinite scroll for the sreaming of post
-	Pagination::get_infinite_scroll($_POST["request_type"]);
+	Pagination::get_infinite_scroll(trim($stream));
+	  }
+	  else{
+		 // Errors::trigger_error(RETRY);
+		  return;
+	  }  
+	  
+	
+
+	$allowed_scroll_parameters = null;
 	 $_SESSION["scroll_ready_state"] = false;
 }
 elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "confirm_post" || trim($_POST["request_type"]) === "reverse_confirmation")){

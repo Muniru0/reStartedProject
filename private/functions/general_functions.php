@@ -9,30 +9,38 @@ function redirect_to($new_location) {
   exit;
 }
 
+
 function allowed_get_params($acceptable_params = []){
 
   if(empty($acceptable_params)){
 	  return false;
   }	
   
-  $count = count($acceptable_params);
+ $count = (int)count($acceptable_params);
   
-  $get_params_count = count($_GET);
-  if($count === $get_params_count){
+$get_params_count = (int)count($_GET);
+  if($count !== $get_params_count){
+	
 	  return false;
   }
   
   foreach($_GET As $get_param => $value){
 	  
 	if(!in_array($get_param,$acceptable_params)){
+		
 	 return false;
  } 
  
  
   }
-  
+    
+	
+	return true;
   
 }// allowed_params();
+
+
+
 
  // Sanitize functions
 // Make sanitizing easy and you will do it often

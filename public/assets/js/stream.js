@@ -7,10 +7,10 @@
 
 
 
-  static get_stream($stream_type = ""){
+  static get_stream(streamType = ""){
 
 
-  if($.trim($stream_type) == ""){
+  if($.trim(streamType) == ""){
   return;
   }
 
@@ -18,7 +18,7 @@
   	 $.ajax({
 			 url:"../private/neutral_ajax.php",
 			 type: "POST",
-			 data: {request_type: $stream_type},
+			 data: {request_type: "scroll",stream_type:streamType},
 			 datatype: "html"
 		 }).done(function(response){
 			console.log(response);
@@ -66,10 +66,11 @@
 
 
 $(window).scroll(function() {
+	  
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
      $("#ps-activitystream-loading").show();
   
-        stream.get_stream("mainstream");
+        stream.get_stream($("#request_type").val());
     }
 });
 

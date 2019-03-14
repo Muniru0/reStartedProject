@@ -49,8 +49,43 @@ div {
 
  </style>
 
+ 
+ <script>
+   let newUrl = window.location.href;
+   newUrl  = newUrl.split("/");
+   
+     newUrl = newUrl[5];
+	  let stream_type = newUrl.split(".php")[0].toLowerCase();
+	  console.log(stream_type);
+	 
+	  
+      
+ 
+ </script>
  <?php
  
+ function test_calling_functions($id = 10000){global $db;
+	 $result = $db->query("SELECT * FROM test WHERE id >$id");
+	 
+	 if($result->num_rows > 0){
+		 echo "yeah";
+	 }else{
+		 echo "entered here";
+		 test_calling_functions(1);
+		 
+	 }
+ }
+ 
+ test_calling_functions();
+ 
+ die();
+  $a = explode("?","hello");
+  if(count($a) > 1){
+	echo "how to make things move";  
+  }else{
+	  echo "how to make";
+  }
+ die();
  echo "<i class='fal fa-user'></i>";
  
  echo "<a href=\"test_page.php?id=2&username='Yussif'&wrong_param='some_code'\">Link to test.php</a>";

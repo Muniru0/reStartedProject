@@ -625,7 +625,7 @@ return json_encode($views);
 		}
 		  
 		   
-        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap {$user_parent_breathing_space}\" ><a class=\"ps-stream-user  {$linked_user_class}\" href=\"../".PROFILE_PAGE."/?id='{$id}'\">". $firstname." ".$lastname."<small style='{$toggle_string}'><i class ='fal fa-link'></i></small></a>";
+        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap {$user_parent_breathing_space}\" ><a class=\"ps-stream-user  {$linked_user_class}\" href=\"../public/".PROFILE_PAGE."?id=".$id."\">". $firstname." ".$lastname."<small style='{$toggle_string}'><i class ='fal fa-link'></i></small></a>";
 		
     }//get_fullname();
 

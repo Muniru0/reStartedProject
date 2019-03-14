@@ -269,9 +269,7 @@ function profile_header($firstname = "" ,$lastname = ""){
 </div>          </div>";
 		
 	}// community_side__left();
-	function home_header(){
-	
-}
+
 
 // communities toolbar
   function communties_toolbar(){
@@ -1238,7 +1236,7 @@ function notifications_toolbar(){
 
 
 // main header
-  function main_header($page_header = ""){
+  function main_header($page_header = "",$request_type = ""){
 
   	return "
      <!DOCTYPE html>
@@ -1250,15 +1248,15 @@ function notifications_toolbar(){
  
     <title>My Project</title>
 
-<link rel='stylesheet' id='peepso-css' href='assets/css/speakup_major.css' type='text/css' media='all' async=''>
+<link rel='stylesheet' href='../public/assets/css/speakup_major.css' type='text/css' media='all' async>
 
 
-<link rel='stylesheet' id='peepso-site-css-04-06-css' href='assets/css/speakup_minor.css' type='text/css' media='all' async=''>
+<link rel='stylesheet' id='peepso-site-css-04-06-css' href='../public/assets/css/speakup_minor.css' type='text/css' media='all' async>
 
 <meta name='description' content='File Upload widget with multiple file selection, drag &amp;drop support, progress bars, validation and preview images, audio and video for jQuery. Supports cross-domain, chunked and resumable file uploads and client-side image resizing. Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
-<link rel='stylesheet' href='assets/css/style.css' async=''>
+<link rel='stylesheet' href='../public/assets/css/style.css' async>
 
 <noscript></noscript>
 <noscript></noscript>
@@ -1278,47 +1276,25 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
     font: 400 20px/1 dashicons !important;
 }		</style>
 
-<!--        <script type='text/javascript' src='assets/js/script.js' defer></script>-->
+<!--        <script type='text/javascript' src='../public/assets/js/script.js' defer></script>-->
 
-<link rel='stylesheet' href='assets/css/dropzone.min.css'>
-<link rel='stylesheet' href='assets/css/jquery-ui.css'>
-<link rel='stylesheet' href='assets/css/main_styles.css'>
-<script type='text/javascript' src='assets/js/jquery.js'></script>
-<link rel='stylesheet' href='assets/fonts/fontawesome5/css/all.css'>
-<script type='text/javascript' src='assets/js/comments.js'>  </script> 
+<link rel='stylesheet' href='../public/assets/css/dropzone.min.css'>
+<link rel='stylesheet' href='../public/assets/css/jquery-ui.css'>
+<link rel='stylesheet' href='../public/assets/css/main_styles.css'>
+<script type='text/javascript' src='../public/assets/js/jquery.js'></script>
+<link rel='stylesheet' href='../public/assets/fonts/fontawesome5/css/all.css'>
+<script type='text/javascript' src='../public/assets/js/comments.js'>  </script> 
 	
-<style>
-       
 
 
-<!--colors:
- the confirm post hover link color
-background: #f9f9f9;
-    color: #a89ec3e3; or 
-	    background-color: rgba(0,0,0,0.025);
-		text-decoration: none !important;
-    outline: none;
-	color: #9298A0;
+<link rel='stylesheet' href='../public/assets/fonts/fontawesome5/all.min.css'> 
 	
-	color: #3bcdac;
-    background: aquamarine;
--->	
-</style>
-
-
-
-<link rel='stylesheet' href='assets/fonts/fontawesome5/all.min.css'> 
-	 <script type='text/javascript' charset='UTF-8' src='https://maps.googleapis.com/maps-api-v3/api/js/36/5/common.js'></script><script type='text/javascript' charset='UTF-8' src='https://maps.googleapis.com/maps-api-v3/api/js/36/5/util.js'></script><script type='text/javascript' charset='UTF-8' src='https://maps.googleapis.com/maps-api-v3/api/js/36/5/map.js'></script><style type='text/css'>.gm-style {
-        font: 400 11px Roboto, Arial, sans-serif;
-        text-decoration: none;
-      }
-      .gm-style img { max-width: none; }</style><script type='text/javascript' charset='UTF-8' src='https://maps.googleapis.com/maps-api-v3/api/js/36/5/onion.js'></script></head>
-<!--<i class='fas fa-link'></i><i class='fas fa-infinity'></i><i class='fas fa-unlink'></i><i class='fab fa-fedora'></i><i class='fas fa-eye-slash'></i>
-<i class='far fa-eye-slash'></i>
-<i class='far fa-eye-slash'></i>
-<i class='far fa-eye-slash'></i> -->	 
+      
+	  
+	  </head>
+	 
   <body class='home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 logged-in plg-peepso' id='top' data-gr-c-s-loaded='true'>
-  
+  {$request_type}
     <div class='top__button' style='display: none;'>
       <a class='btn btn--red' href='#top'><svg class='svg-inline--fa fa-angle-up fa-w-10' aria-hidden='true' data-prefix='fas' data-icon='angle-up' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 512' data-fa-i2svg=''><path fill='currentColor' d='M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z'></path></svg><!-- <i class='fas fa-angle-up'></i> --></a>
     </div>

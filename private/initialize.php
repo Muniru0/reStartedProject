@@ -73,13 +73,20 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 !defined("VID_THUMBS_DIR")   ?  define("VID_THUMBS_DIR","vid_thumbs/")          : null;
 !defined("SHARED_DIR")       ?  define("SHARED_DIR","shared/")                  : null;
 !defined("DS")               ?  define("DS",DIRECTORY_SEPARATOR)                : null;
+!defined("STREAM_PROFILE")               ?  define("STREAM_PROFILE","profile")                : null;
+!defined("STREAM_COMMUNITY")               ?  define("STREAM_COMMUNITY","community")                : null;
+!defined("STREAM_SELF")               ?  define("STREAM_SELF","self")                : null;
+!defined("STREAM_HOME")               ?  define("STREAM_HOME","mainstream")                : null;
 
+
+!defined("RETRY")               ?  define("RETRY","re_try")                : null;
 
 
 
 
 session_start();
 
+require_once(PRIVATE_DIR. "classes/class.error_handling.php");
 // headers file
 require_once("headers.php");
 // Database connection files

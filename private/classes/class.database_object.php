@@ -39,12 +39,16 @@ public static function find_all ($query = "" ,$table = "",$condition =""){
 
      }//find_all();
     
-public static function find_one($id = 0,$table_name = ""){
+public static function find_one($id = 0,$table_name = null){
 
        global $db;
+	   
+	   if($table_name == null){
+		   $table_name = self::$table_name;
+		}
 
     if(isset($id) && is_integer($id) && !is_null($id) ){
-        $query = "SELECT * FROM ".self::$table_name." WHERE id = {$id}";
+	$query = "SELECT * FROM {$table_name} WHERE id = {$id} LIMIT 1";
 
         return $db->query($query);
     }else{
