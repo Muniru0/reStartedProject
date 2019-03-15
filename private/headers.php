@@ -1904,45 +1904,13 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	</nav>
 </div>
 <div class='ps-stream__filters'>
-    <input type='hidden' id='peepso_stream_id' value='core_community'>
-
-    <span class='ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter' data-id='peepso_stream_id'>
-      <button class='ps-btn ps-btn--small ps-js-dropdown-toggle' aria-haspopup='true'>
-        <i class='ps-icon-group'></i>
-        <span>Community</span>
-      </button>
-      <div role='menu' class='ps-dropdown__menu ps-js-dropdown-menu'>
-                <a role='menuitem' class='ps-dropdown__group' data-option-value='core_community'>
-          <div class='ps-checkbox ps-dropdown__group-title'>
-            <input type='radio' name='peepso_stream_id' id='peepso_stream_id_opt_core_community' value='core_community' checked=''>
-            <label for='peepso_stream_id_opt_core_community'>
-              <span>Community</span>
-            </label>
-            <i class='ps-icon-group'></i>
-          </div>
-          <div class='ps-dropdown__group-desc'>Posts from the entire Community</div>
-        </a>
-                <a role='menuitem' class='ps-dropdown__group' data-option-value='core_following'>
-          <div class='ps-checkbox ps-dropdown__group-title'>
-            <input type='radio' name='peepso_stream_id' id='peepso_stream_id_opt_core_following' value='core_following'>
-            <label for='peepso_stream_id_opt_core_following'>
-              <span>Following</span>
-            </label>
-            <i class='ps-icon-eye'></i>
-          </div>
-          <div class='ps-dropdown__group-desc'>Posts only from members &amp;  groups you follow</div>
-        </a>
-                <div class='ps-dropdown__actions'>
-          <button class='ps-btn ps-btn--small ps-js-cancel'>Cancel</button>
-          <button class='ps-btn ps-btn--small ps-btn-primary ps-js-apply'>Apply</button>
-        </div>
-      </div>
-    </span>
-
-<input type='hidden' id='peepso_stream_filter_show_my_posts' value='1'>
+    
+    <input type='hidden' id='deactivate_scroll' value='activate' />
+  
 <span class='ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter' data-id='peepso_stream_filter_show_my_posts'>
-	<button class='ps-btn ps-btn--small ps-js-dropdown-toggle' aria-haspopup='true'>
+	<button class='ps-btn ps-btn--small ps-js-dropdown-toggle' aria-haspopup='true' onclick='stream.getSelfStream(\"self\",this);'>
 		<span>Show my posts</span>
+		<img class='buttons_loader' src='assets/images/ajax-loader.gif' alt='' />
 	</button>
 	<div role='menu' class='ps-dropdown__menu ps-js-dropdown-menu'>
 				<a role='menuitem' class='ps-dropdown__group' data-option-value='1'>

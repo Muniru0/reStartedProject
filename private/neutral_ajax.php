@@ -546,6 +546,22 @@ echo "done with the most part of the entire works";
 	$allowed_scroll_parameters = null;
 	 $_SESSION["scroll_ready_state"] = false;
 }
+
+elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === RESET_POST){
+	
+	  switch($_POST["param"]){
+		  case PERSONAL:
+	  if(isset($_SESSION) && isset($_SESSION[STREAM_SELF]) && $_SESSION[STREAM_SELF] > 0 || $_SESSION[STREAM_SELF] == 1){
+		  $_SESSION[STREAM_SELF] = 1;
+		  print j(["true" => "success"]);
+	  }else{
+		  Errors::trigger_error(RETRY);
+	  }
+	break;
+	default: ;
+	  }
+	
+}
 elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "confirm_post" || trim($_POST["request_type"]) === "reverse_confirmation")){
 	
 	//check the validity of the session

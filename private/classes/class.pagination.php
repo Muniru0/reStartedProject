@@ -30,17 +30,14 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
 	  
 	  if(isset($_SESSION) && isset($_SESSION[$stream_type])
 		  && (int)$_SESSION[$stream_type] > 0){
-			  $offset = $_SESSION[$stream_type] + 20;
+			  $offset = $_SESSION[$stream_type] += 10;
+			  $offset_upperbound = $offset + 10;
 		  }elseif(!isset($_SESSION[$stream_type])){
-			   $_SESSION[$stream_type] = 1;
-			   $offset = 1;
+			   $_SESSION[$stream_type] = 240;
+			   $offset = 240;
 		  }
 		  
-  $offset            = $_SESSION[$stream_type];
-  $offset = 240;
-  $offset_upperbound = $offset + 20;
-  
-  $where_clause = "";
+ $where_clause = "";
   $posts        = "";
   
   
@@ -53,11 +50,11 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
 	  
   }elseif($stream_type == STREAM_PROFILE){
 	   if($offset == 1){
-		$where_clause = PostImage::$table_name.".".PostImage::$uploader_id." = {$stream_type_id} ORDER BY ".PostImage::$upload_time." DESC LIMIT 200";
+		$where_clause = PostImage::$table_name.".".PostImage::$uploader_id." = {$stream_type_id} ORDER BY ".PostImage::$upload_time." DESC LIMIT 100";
 		
 	   }elseif($offsest > 1){
 		   
-		    $where_clause = PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound} && ".PostImage::$table_name.".".PostImage::$uploader_id." = {$stream_type_id} ORDER BY ".PostImage::$upload_time." DESC LIMIT 200"; 
+		    $where_clause = PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound} && ".PostImage::$table_name.".".PostImage::$uploader_id." = {$stream_type_id} ORDER BY ".PostImage::$upload_time." DESC LIMIT 100"; 
 	   }
 	   
 	 $posts = self::profile_posts($where_clause);
@@ -69,17 +66,8 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
 	  $posts = self::community_posts($offset,$offset_upperbound);
   }
   
-  
-  /* 
-	// incase the $offset is 1
-   if($offset == 1 && ($stream_type == STREAM_PROFILE || $stream_type == STREAM_SELF)){ 
-	   $offset = $_SESSION[$stream_type];
-	   $offset_upperbound = $offset + 100;
-	   
-   } */
-   
-   
-    if(!$posts){
+ if(!$posts){
+	 
 		   return;
 	   }
 	   
@@ -92,26 +80,9 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
  $activities_user_ids = self::get_activities_user_ids($offset,$offset_upperbound);
  
  
- /* 
-   // get the reactions user ids
-  $reactions_user_ids = self::get_reactions_user_ids($offset,$offset_upperbound);
-  
- 
- // get the views user_ids
- $views_likes_user_ids = self::get_comments_likes_user_ids($offset,$offset_upperbound);
  
  
- // get the views user_ids
-$reply_views_likes_user_ids = self::get_reply_likes_user_ids($offset,$offset_upperbound); */
-/* 
-echo "<pre>";
-echo "views";
- print_r($posts);
- print_r($activities_user_ids["views"]);
-echo "</pre>";
- 
-  return;  */
-
+ // now output the post that you just queried
  FetchPost::get_full_post($posts,$comments,$activities_user_ids["reactions"],$activities_user_ids["views"],$activities_user_ids["replys"],STREAM);
     $activities_user_ids = null;
 	
@@ -426,21 +397,20 @@ $reactions  = [];
 		
 		
 		
-		 $where_clause = ($offset == 0) ?
-		 PostImage::$table_name.".".PostImage::$uploader_id."=".$_SESSION[user::$id]." ORDER BY ".PostImage::$upload_time." DESC LIMIT 200"
+		 $where_clause = ($offset == 1) ?
+		 PostImage::$table_name.".".PostImage::$uploader_id."=".$_SESSION[user::$id]." ORDER BY ".PostImage::$upload_time." DESC LIMIT 100"
 		 :
-		 PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound}  && ".PostImage::$uploader_id."=".$_SESSION[user::$id]." ORDER BY ".PostImage::$upload_time." DESC LIMIT 200" ;
-		
+		 PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound}  && ".PostImage::$uploader_id."=".$_SESSION[user::$id]." ORDER BY ".PostImage::$upload_time." DESC LIMIT 100" ;
 	
 		  
   $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
-".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE {$where_clause} ";
-
+".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE {$where_clause}";
+  $post_ids_array = [];
 $results = $db->query($query);
 	
 
-echo $row_count = $results->num_rows;
+$row_count = $results->num_rows;
 	  
 	if($db->error){
 		
@@ -452,7 +422,7 @@ echo $row_count = $results->num_rows;
 // validate the returning of results	
  if($row_count > 0){
 	 
-	 $post_ids_array = [];
+	
 	while($row = $results->fetch_assoc()){
 		// get all the post ids to be sorted and the least one
 		// to be set to the session variable of the stream type
@@ -496,19 +466,28 @@ echo $row_count = $results->num_rows;
 		
 }
 	}
-	
-	
-	 $_SESSION[STREAM_SELF] = array_shift(sort($post_ids_array));
-	
+	  
+	 
+	 if($offset == 1){
+	 $_SESSION[STREAM_SELF] = array_pop(sort($post_ids_array));
+	 }
  }else{
 	
-	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[$stream_type]);
+	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE uploader_id > ".((int)$_SESSION[user::$id]);
 	 $result = $db->query($query); 
+	
 	 
-	 if($result->num_rows > 0 && $row = $result->fetch_assoc()){
-		    $offset_upperbound = $_SESSION[STREAM_SELF] = $row["min_id"] + 20;
+	 if( $row = $result->fetch_assoc()){
+		 
+		 if( $row["min_id"] == null){
+		
+		 print j(["true" =>"upclose_empty"]);
+		  return false;
+	 }
+	
+		    $offset_upperbound = $_SESSION[STREAM_SELF] = $row["min_id"] + 10;
 		  
-		   self::self_posts($offset_upperbound - 20,$offset_upperbound); 
+		   self::self_posts($offset_upperbound - 10,$offset_upperbound); 
 		   $result->free();
 	 }else{
 		$_SESSION[STREAM_SELF] = 0;
@@ -527,9 +506,6 @@ return false;
   }
   
   
- 
- 
-
  return $returned_array;
  }//self_posts();
 
@@ -766,7 +742,7 @@ return false;
 		
   $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
-".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE ".PostImage::$table_name.".".PostImage::$id.">={$offset} && ".PostImage::$table_name.".".PostImage::$id." <={$offset_upperbound}";
+".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE ".PostImage::$table_name.".".PostImage::$id.">={$offset} && ".PostImage::$table_name.".".PostImage::$id." <={$offset_upperbound} ORDER BY ".PostImage::$upload_time." DESC LIMIT 100";
  
 $results = $db->query($query);
 	
@@ -826,14 +802,14 @@ $row_count = $results->num_rows;
 	
 	
  }else{
-	 echo "entered here";
+	 
 	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[STREAM_HOME]." LIMIT 1000");
 	 $result = $db->query($query); 
 	 
 	 if($result->num_rows > 0 && $row = $result->fetch_assoc()){
 		$offset_upperbound =  $_SESSION[STREAM_HOME] = $row["min_id"];
 		  
-		  self::home_posts($offset_upperbound - 20,$offset_upperbound);
+		  self::home_posts($offset_upperbound - 10,$offset_upperbound);
 		  return;
 		   $result->free();
 	 }else{
@@ -855,7 +831,8 @@ return false;
   
  return $returned_array;
  }//home_posts();	 
-	
+
+
 }
 
 ?>

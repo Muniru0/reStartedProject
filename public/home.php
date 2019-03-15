@@ -83,12 +83,9 @@ background: #f9f9f9;
 
 <link rel="stylesheet" href="assets/fonts/fontawesome5/all.min.css"> 
 	 </head>
-<!--<i class="fas fa-link"></i><i class="fas fa-infinity"></i><i class="fas fa-unlink"></i><i class="fab fa-fedora"></i><i class="fas fa-eye-slash"></i>
-<i class="far fa-eye-slash"></i>
-<i class="far fa-eye-slash"></i>
-<i class="far fa-eye-slash"></i> -->	 
+	 
   <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 logged-in plg-peepso" id="top">
-  <input type="hidden" id="request_type" value="mainstream" />
+  <input type="hidden" id="stream_type" value="mainstream" />
     <div class="top__button" style="display: none;">
       <a class="btn btn--red" href="#top"><svg class="svg-inline--fa fa-angle-up fa-w-10" aria-hidden="true" data-prefix="fas" data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"></path></svg><!-- <i class="fas fa-angle-up"></i> --></a>
     </div>
@@ -1412,45 +1409,13 @@ background: #f9f9f9;
 	</nav>
 </div>
 <div class="ps-stream__filters">
-    <input type="hidden" id="peepso_stream_id" value="core_community">
-
-    <span class="ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter" data-id="peepso_stream_id">
-      <button class="ps-btn ps-btn--small ps-js-dropdown-toggle" aria-haspopup="true">
-        <i class="ps-icon-group"></i>
-        <span>Community</span>
-      </button>
-      <div role="menu" class="ps-dropdown__menu ps-js-dropdown-menu">
-                <a role="menuitem" class="ps-dropdown__group" data-option-value="core_community">
-          <div class="ps-checkbox ps-dropdown__group-title">
-            <input type="radio" name="peepso_stream_id" id="peepso_stream_id_opt_core_community" value="core_community" checked="">
-            <label for="peepso_stream_id_opt_core_community">
-              <span>Community</span>
-            </label>
-            <i class="ps-icon-group"></i>
-          </div>
-          <div class="ps-dropdown__group-desc">Posts from the entire Community</div>
-        </a>
-                <a role="menuitem" class="ps-dropdown__group" data-option-value="core_following">
-          <div class="ps-checkbox ps-dropdown__group-title">
-            <input type="radio" name="peepso_stream_id" id="peepso_stream_id_opt_core_following" value="core_following">
-            <label for="peepso_stream_id_opt_core_following">
-              <span>Following</span>
-            </label>
-            <i class="ps-icon-eye"></i>
-          </div>
-          <div class="ps-dropdown__group-desc">Posts only from members &amp;  groups you follow</div>
-        </a>
-                <div class="ps-dropdown__actions">
-          <button class="ps-btn ps-btn--small ps-js-cancel">Cancel</button>
-          <button class="ps-btn ps-btn--small ps-btn-primary ps-js-apply">Apply</button>
-        </div>
-      </div>
-    </span>
-
+    <input type='hidden' id='deactivate_scroll' value='active' />
+  
 <input type="hidden" id="peepso_stream_filter_show_my_posts" value="1">
 <span class="ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter" data-id="peepso_stream_filter_show_my_posts">
-	<button class="ps-btn ps-btn--small ps-js-dropdown-toggle" aria-haspopup="true">
+	<button class='ps-btn ps-btn--small ps-js-dropdown-toggle' aria-haspopup='true' onclick="stream.getSelfStream('self',this);">
 		<span>Show my posts</span>
+		<img class='buttons_loader' src='assets/images/ajax-loader.gif' alt='Personal posts' />
 	</button>
 	<div role="menu" class="ps-dropdown__menu ps-js-dropdown-menu">
 				<a role="menuitem" class="ps-dropdown__group" data-option-value="1">
@@ -1510,10 +1475,12 @@ background: #f9f9f9;
 </span>
 
 <input type="hidden" id="peepso_search_hashtag" value="">
-<span class="ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter" data-id="peepso_search_hashtag">
+<span class="ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter" id="reset_posts_personal" style="display:none;">
 	<a class="ps-btn ps-btn--small ps-js-dropdown-toggle" aria-haspopup="true" style="vertical-align:top">
-		<span data-empty="#" data-keyword="#">#</span>
+		<span data-empty="#" data-keyword="#">Reset My Posts Result</span>
+		<img src='assets/images/ajax-loader.gif' alt='ajax-loader' style="display:none;" />
 	</a>
+	
 	<div role="menu" class="ps-dropdown__menu ps-js-dropdown-menu">
 		<div class="ps-dropdown__actions">
 			#<input maxlength="16" type="text" class="ps-input ps-input--small ps-full" placeholder="Type to search" value="">

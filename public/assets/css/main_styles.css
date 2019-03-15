@@ -531,3 +531,12 @@ button:hover {
 .breathing_space{
 	margin-bottom: 0.4em !important;
 }
+
+
+.buttons_loader{
+	display:none;
+    position: relative;
+    bottom: 0.1em;
+    margin-left: 0.5em;
+
+}
