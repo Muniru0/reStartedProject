@@ -1475,7 +1475,7 @@ background: #f9f9f9;
 </span>
 
 <input type="hidden" id="peepso_search_hashtag" value="">
-<span class="ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter" id="reset_posts_personal" style="display:none;">
+<span class="ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter" id="reset_posts_personal" style="display:none;" title="Reset my posts result to begin with my latest post">
 	<a class="ps-btn ps-btn--small ps-js-dropdown-toggle" aria-haspopup="true" style="vertical-align:top">
 		<span data-empty="#" data-keyword="#">Reset My Posts Result</span>
 		<img src='assets/images/ajax-loader.gif' alt='ajax-loader' style="display:none;" />

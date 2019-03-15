@@ -1000,7 +1000,7 @@ if($width >= 1000){
 		  $width = rand(97,100);
 		  
           $height = rand(85,89);	
-			 log_action(__CLASS__,"methodtop 1 ".__LINE__);
+			
 	}elseif($width < $height){
     log_action(__CLASS__,"method2 ".__LINE__);
 	
@@ -1642,6 +1642,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			 
 			 $reaction_user_ids = (empty($reactions_user_ids[$post_info[PostImage::$alias_of_id]]) || !isset($reactions_user_ids[$post_info[PostImage::$alias_of_id]])) ? [] : $reactions_user_ids[$post_info[PostImage::$alias_of_id]];
 			 
+			
 			// add the post to the array of post in the users session
 			$full_header = "";
 			

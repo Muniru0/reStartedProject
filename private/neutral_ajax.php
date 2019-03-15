@@ -531,7 +531,17 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
 echo "done with the most part of the entire works";	 
 	 }
 	  elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters)){
-		
+// reset the personal posts		  
+if(isset($_POST["reset"]) && trim($_POST["reset"]) === RESET_POST){
+	
+	  if(isset($_SESSION) && isset($_SESSION[STREAM_SELF]) && $_SESSION[STREAM_SELF] > 0 || $_SESSION[STREAM_SELF] != 1){
+		  $_SESSION[STREAM_SELF] = 1;
+		}else{
+		  Errors::trigger_error(RETRY);
+		  return;
+	  }
+}
+	
 	// get the main infinite scroll for the sreaming of post
 	Pagination::get_infinite_scroll(trim($stream));
 	
@@ -549,17 +559,6 @@ echo "done with the most part of the entire works";
 
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === RESET_POST){
 	
-	  switch($_POST["param"]){
-		  case PERSONAL:
-	  if(isset($_SESSION) && isset($_SESSION[STREAM_SELF]) && $_SESSION[STREAM_SELF] > 0 || $_SESSION[STREAM_SELF] == 1){
-		  $_SESSION[STREAM_SELF] = 1;
-		  print j(["true" => "success"]);
-	  }else{
-		  Errors::trigger_error(RETRY);
-	  }
-	break;
-	default: ;
-	  }
 	
 }
 elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "confirm_post" || trim($_POST["request_type"]) === "reverse_confirmation")){

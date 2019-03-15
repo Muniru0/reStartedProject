@@ -2,7 +2,15 @@
   class stream {
 
 
-
+  static adjustPageScroll(){
+  	if($("#ps-no-posts-match").css("display") == "block" || $("#ps-no-posts").css("display") == "block" 
+	|| $("#ps-no-more-posts").css("display")== "block"){
+  $("body").css("overflow","hidden");
+	}else if($("#ps-no-posts-match").css("display") == "none" &&  $("#ps-no-posts").css("display") == "none" 
+	|| $("#ps-no-more-posts").css("display") == "none"){
+		$("body").css("overflow-y","scroll"); 
+	}
+  }
 
   static getMainStream(streamType = "", targetElement = null){
  
@@ -47,18 +55,21 @@ else if(response["false"] != undefined && response["false"] == "login"){
 					 	  $("#ps-activitystream-loading").hide();
 						 return;
 					 
-	}else  if($.trim(response["true"]) && response["true"] == "empty"){
-					     	$("#ps-no-posts").show();
+	}else  if($.trim(response["true"])){
+		   if($.trim(response["true"]) == "no_posts"){
+		   	$("#ps-no-posts").show();
+			 
+		   }else if($.trim(response["true"]) == "no_more_posts"){
+		   	$("#ps-no-more-posts").show();
+		   }
+			
+			 stream.adjustPageScroll();		     	
 	}else if($.trim(response) != ""){
 		$.each(response,function(index,value){
 			$("#ps-activitystream").append(value);
 		});
 	}
-					  
-					    
-			}catch(e){
-            utility.showErrorDialogBox("Sorry request failed,please refresh the page and try again.");
-            console.log(e);
+		}catch(e){
 			}finally{
 				 $("#ps-activitystream-loading").hide();
 					
@@ -74,9 +85,9 @@ else if(response["false"] != undefined && response["false"] == "login"){
 
 
   // get your own stream( posts that you posted) 
-  static getSelfStream(streamType = "",targetElement = null){
+  static getSelfStream(streamType = "",targetElement = null,reset = null){
 
-  
+    
   // validate the stream type presence
   if($.trim(streamType) == ""){
   return;
@@ -112,10 +123,16 @@ else if(response["false"] != undefined && response["false"] == "login"){
 					  	
    }
 
+
+  let resetValue = "false";
+   if($.trim(reset) != "" || reset == null){
+   	resetValue = "reset_post";
+   }
+
   	 $.ajax({
 			 url:"../private/neutral_ajax.php",
 			 type: "POST",
-			 data: {request_type: "scroll",stream_type:streamType},
+			 data: {request_type: "scroll",stream_type:streamType,reset:resetValue},
 			 datatype: "html"
 		 }).done(function(response){
 			console.log(response);
@@ -145,7 +162,7 @@ location.href="login.php";
 					  	
  if($("#ps-no-posts-match").css("display") == "none"){
 		   $("#ps-no-posts-match").show();
-            $(document).css("overflow","hidden");		   
+           	   
 		 }
 		}
     // if the request was successful 
@@ -313,12 +330,16 @@ if(response["false"] != undefined && response["false"] == "login"){
 
   }
 
+// if the reset personal post button has being clicked
+
 $("#reset_posts_personal").click(function(e){
 	
+	// find the loading gif and toggle the display
 let gif = $("#reset_posts_personal").find("img");	 
 	 if($(gif).css("display") == "none"){
 		$(gif).show(); 
 	 }
+
 $.ajax({
 	url:"../private/neutral_ajax.php",
 	type: "POST",
@@ -364,5 +385,4 @@ $(window).scroll(function() {
        
     }
 });
-
 

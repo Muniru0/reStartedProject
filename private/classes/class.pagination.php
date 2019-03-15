@@ -30,8 +30,8 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
 	  
 	  if(isset($_SESSION) && isset($_SESSION[$stream_type])
 		  && (int)$_SESSION[$stream_type] > 0){
-			  $offset = $_SESSION[$stream_type] += 10;
-			  $offset_upperbound = $offset + 10;
+			  $offset = $_SESSION[$stream_type] += 11;
+			  $offset_upperbound = $offset + 11;
 		  }elseif(!isset($_SESSION[$stream_type])){
 			   $_SESSION[$stream_type] = 240;
 			   $offset = 240;
@@ -485,9 +485,9 @@ $row_count = $results->num_rows;
 		  return false;
 	 }
 	
-		    $offset_upperbound = $_SESSION[STREAM_SELF] = $row["min_id"] + 10;
+		    $offset_upperbound = $_SESSION[STREAM_SELF] = $row["min_id"] + 11;
 		  
-		   self::self_posts($offset_upperbound - 10,$offset_upperbound); 
+		   self::self_posts($offset_upperbound - 11,$offset_upperbound); 
 		   $result->free();
 	 }else{
 		$_SESSION[STREAM_SELF] = 0;
@@ -803,17 +803,27 @@ $row_count = $results->num_rows;
 	
  }else{
 	 
-	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[STREAM_HOME]." LIMIT 1000");
+	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[STREAM_HOME]);
 	 $result = $db->query($query); 
-	 
-	 if($result->num_rows > 0 && $row = $result->fetch_assoc()){
+	  
+	 if($row = $result->fetch_assoc()){
+		 if($row["min_id"] == null && $_SESSION[STREAM_HOME == 1]){
+			 
+			 print j(["true" =>"no_posts"]);
+			 return;
+		 }elseif($row["min_id"] == null && $_SESSION[STREAM_HOME] > 1){
+			 
+			  print j(["true" => "no_more_posts"]);return;
+		 }
 		$offset_upperbound =  $_SESSION[STREAM_HOME] = $row["min_id"];
 		  
-		  self::home_posts($offset_upperbound - 10,$offset_upperbound);
+		  self::home_posts($offset_upperbound - 11,$offset_upperbound);
 		  return;
 		   $result->free();
-	 }else{
-		$_SESSION[STREAM_HOME] = 0;
+	 }
+	 
+	 else{
+		$_SESSION[STREAM_HOME] = 1;
 		
 		print j(["pending"=>"waiting"]);
 		$result->free();

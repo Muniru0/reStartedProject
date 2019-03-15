@@ -51,19 +51,23 @@ div {
 
  
  <script>
-   let newUrl = window.location.href;
-   newUrl  = newUrl.split("/");
-   
-     newUrl = newUrl[5];
-	  let stream_type = newUrl.split(".php")[0].toLowerCase();
-	  console.log(stream_type);
-	 
-	  
+   mutationObserver.observe(document.documentElement, {
+  attributes: true,
+  characterData: true,
+  childList: true,
+  subtree: true,
+  attributeOldValue: true,
+  characterDataOldValue: true
+});
+
+	$("#sample-div").removeAttr("class");  
       
  
  </script>
- <?php
  
+ <div id="sample-div" class="test"> Simple div </div>
+ <?php
+ die();
  function test_calling_functions($id = 10000){global $db;
 	 $result = $db->query("SELECT * FROM test WHERE id >$id");
 	 
