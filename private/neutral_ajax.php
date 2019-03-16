@@ -493,7 +493,7 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
 	  $stream_type = explode("_",trim($_POST["stream_type"]));
 	 
 	  $id      = 0;
-	  
+	   
 	  switch(trim($stream_type[0])){
 		  case STREAM_HOME:
 		  $stream = STREAM_HOME;
@@ -510,30 +510,30 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
 		  default:$stream = INVALID_STREAM_OPTION; return;
 	  }
 	  
-	
+	// if after splitting the stream type array the result is not 1 or two
   if((count($stream_type) != 2 && count($stream_type) != 1) || $stream == INVALID_STREAM_OPTION){
 	    Errors::trigger_error(RETRY);
 	  return;
   }
   
+  
+  // if the result is two
   if(count($stream_type)== 2 ){
 	  
       $id = (int)$stream_type[1];
   }
   
     
-  
-     
-	  if(is_string($stream) && $id > 0 && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != "home" && trim($stream) != "community" && trim($stream) != "self"){
+  if(is_string($stream) && $id > 0 && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != "home" && trim($stream) != "community" && trim($stream) != "self"){
 		 
     // get the main infinite scroll for the sreaming of post
 	Pagination::get_infinite_scroll($stream,$id);
-echo "done with the most part of the entire works";	 
+
 	 }
-	  elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters)){
+elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters)){
 // reset the personal posts		  
 if(isset($_POST["reset"]) && trim($_POST["reset"]) === RESET_POST){
-	
+	 
 	  if(isset($_SESSION) && isset($_SESSION[STREAM_SELF]) && $_SESSION[STREAM_SELF] > 0 || $_SESSION[STREAM_SELF] != 1){
 		  $_SESSION[STREAM_SELF] = 1;
 		}else{
@@ -557,10 +557,6 @@ if(isset($_POST["reset"]) && trim($_POST["reset"]) === RESET_POST){
 	 $_SESSION["scroll_ready_state"] = false;
 }
 
-elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === RESET_POST){
-	
-	
-}
 elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "confirm_post" || trim($_POST["request_type"]) === "reverse_confirmation")){
 	
 	//check the validity of the session

@@ -28,13 +28,12 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
 	 $offset		    = 0;
 	 $offset_upperbound = 0;
 	  
-	  if(isset($_SESSION) && isset($_SESSION[$stream_type])
-		  && (int)$_SESSION[$stream_type] > 0){
-			  $offset = $_SESSION[$stream_type] += 11;
+	  if(isset($_SESSION) && isset($_SESSION[$stream_type])){
+		 $offset = $_SESSION[$stream_type] += 11;
 			  $offset_upperbound = $offset + 11;
 		  }elseif(!isset($_SESSION[$stream_type])){
-			   $_SESSION[$stream_type] = 240;
-			   $offset = 240;
+			   $_SESSION[$stream_type] = 1;
+			   $offset = 1;
 		  }
 		  
  $where_clause = "";
@@ -171,7 +170,7 @@ $row_count = $results->num_rows;
 	}
  }else{
 	
-	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[$stream_type]." LIMIT 1000");
+	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[$stream_type]);
 	 $result = $db->query($query); 
 	 
 	 if($result->num_rows > 0 && $row = $result->fetch_assoc()){
@@ -401,8 +400,8 @@ $reactions  = [];
 		 PostImage::$table_name.".".PostImage::$uploader_id."=".$_SESSION[user::$id]." ORDER BY ".PostImage::$upload_time." DESC LIMIT 100"
 		 :
 		 PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound}  && ".PostImage::$uploader_id."=".$_SESSION[user::$id]." ORDER BY ".PostImage::$upload_time." DESC LIMIT 100" ;
-	
-		  
+	  
+		  log_action(__CLASS__,$where_clause ." lINE : ".__LINE__);
   $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
 ".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE {$where_clause}";
@@ -422,7 +421,6 @@ $row_count = $results->num_rows;
 // validate the returning of results	
  if($row_count > 0){
 	 
-	
 	while($row = $results->fetch_assoc()){
 		// get all the post ids to be sorted and the least one
 		// to be set to the session variable of the stream type
@@ -467,32 +465,42 @@ $row_count = $results->num_rows;
 }
 	}
 	  
-	 
+	 // if the offset is 1 then equate the offset to
+    //	 the highest id of the latest self query
 	 if($offset == 1){
 	 $_SESSION[STREAM_SELF] = array_pop(sort($post_ids_array));
 	 }
+	 
  }else{
-	
-	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE uploader_id > ".((int)$_SESSION[user::$id]);
+	 $where_clause = "";
+	  if($offset != 1){
+		  $where_clause = " && ".PostImage::$id." >={$offset}";
+	  }
+	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE uploader_id = ".((int)$_SESSION[user::$id]).$where_clause;
 	 $result = $db->query($query); 
 	
-	 
-	 if( $row = $result->fetch_assoc()){
-		 
-		 if( $row["min_id"] == null){
-		
-		 print j(["true" =>"upclose_empty"]);
-		  return false;
-	 }
-	
-		    $offset_upperbound = $_SESSION[STREAM_SELF] = $row["min_id"] + 11;
+	if( $row = $result->fetch_assoc()){
 		  
-		   self::self_posts($offset_upperbound - 11,$offset_upperbound); 
+		if($row["min_id"] == null && $_SESSION[STREAM_SELF] == 1){
+			
+			 print j(["true" =>"no_posts"]);
+			 return;
+		 }elseif($row["min_id"] == null && $_SESSION[STREAM_SELF] > 1){
+			log_action(__CLASS__,$offset." session: ".$_SESSION[user::$id]);
+			  print j(["true" => "no_more_posts"]);
+			  return;
+		 }
+		 
+		$offset_upperbound =  $_SESSION[STREAM_HOME] = $row["min_id"];
+		  
+		  self::self_posts($offset_upperbound - 11,$offset_upperbound);
+		  
 		   $result->free();
+		   return;
 	 }else{
-		$_SESSION[STREAM_SELF] = 0;
+		$_SESSION[STREAM_SELF] = 1;
 		
-		print j(["true"=>"shortage"]);
+		print j(["true"=>"waiting"]);
 		$result->free();
         	return;	
 	 }
