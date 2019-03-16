@@ -492,7 +492,7 @@ $row_count = $results->num_rows;
 		 }
 		 
 		$offset_upperbound =  $_SESSION[STREAM_HOME] = $row["min_id"];
-		  
+		    
 		  self::self_posts($offset_upperbound - 11,$offset_upperbound);
 		  
 		   $result->free();
