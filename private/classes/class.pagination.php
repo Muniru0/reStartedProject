@@ -180,7 +180,7 @@ $row_count = $results->num_rows;
 	 }else{
 		$_SESSION[$stream_type] = 0;
 		
-		print j(["pending"=>"waiting"]);
+		print j(["true"=>"waiting"]);
 		$result->free();
         	return;	
 	 }
@@ -188,7 +188,7 @@ $row_count = $results->num_rows;
  } 
   // check if the returned post is empty
   if(empty($returned_array)){
-	print j(["pending"=>"waiting"]);
+	print j(["true"=>"waiting"]);
 	
 return false;	 
   }
@@ -274,7 +274,7 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
 		   $result->free();
 	 }else{
 		$_SESSION[$stream_type] = 0;
-		print j(["pending" => "waiting"]);
+		print j(["true" => "waiting"]);
 		$result->free();
         	return;	
 	 }
@@ -492,7 +492,7 @@ $row_count = $results->num_rows;
 	 }else{
 		$_SESSION[STREAM_SELF] = 0;
 		
-		print j(["pending"=>"shortage"]);
+		print j(["true"=>"shortage"]);
 		$result->free();
         	return;	
 	 }
@@ -500,7 +500,7 @@ $row_count = $results->num_rows;
  } 
   // check if the returned post is empty
   if(empty($returned_array)){
-	print j(["pending"=>"waiting"]);
+	print j(["true"=>"waiting"]);
 	
 return false;	 
   }
@@ -603,7 +603,7 @@ echo $row_count = $results->num_rows;
 	 }else{
 		$_SESSION[$stream_type] = 0;
 		
-		print j(["pending"=>"waiting"]);
+		print j(["true"=>"waiting"]);
 		$result->free();
         	return;	
 	 }
@@ -611,7 +611,7 @@ echo $row_count = $results->num_rows;
  } 
   // check if the returned post is empty
   if(empty($returned_array)){
-	print j(["pending"=>"waiting"]);
+	print j(["true"=>"waiting"]);
 	
 return false;	 
   }
@@ -712,7 +712,7 @@ $row_count = $results->num_rows;
 	 }else{
 		$_SESSION[$stream_type] = 0;
 		
-		print j(["pending"=>"waiting"]);
+		print j(["true"=>"waiting"]);
 		$result->free();
         	return;	
 	 }
@@ -720,7 +720,7 @@ $row_count = $results->num_rows;
  } 
   // check if the returned post is empty
   if(empty($returned_array)){
-	print j(["pending"=>"waiting"]);
+	print j(["true"=>"waiting"]);
 	
 return false;	 
   }
@@ -807,7 +807,7 @@ $row_count = $results->num_rows;
 	 $result = $db->query($query); 
 	  
 	 if($row = $result->fetch_assoc()){
-		 if($row["min_id"] == null && $_SESSION[STREAM_HOME == 1]){
+		 if($row["min_id"] == null && $_SESSION[STREAM_HOME] == 1){
 			 
 			 print j(["true" =>"no_posts"]);
 			 return;
@@ -825,7 +825,7 @@ $row_count = $results->num_rows;
 	 else{
 		$_SESSION[STREAM_HOME] = 1;
 		
-		print j(["pending"=>"waiting"]);
+		print j(["true"=>"waiting"]);
 		$result->free();
         	return;	
 	 }
@@ -833,7 +833,7 @@ $row_count = $results->num_rows;
  } 
   // check if the returned post is empty
   if(empty($returned_array)){
-	print j(["pending"=>"waiting"]);
+	print j(["true"=>"waiting"]);
 	
 return false;	 
   }

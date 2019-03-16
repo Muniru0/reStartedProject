@@ -2,23 +2,37 @@
   class stream {
 
 
-  static adjustPageScroll(){
-  	if($("#ps-no-posts-match").css("display") == "block" || $("#ps-no-posts").css("display") == "block" 
-	|| $("#ps-no-more-posts").css("display")== "block"){
-  $("body").css("overflow","hidden");
-	}else if($("#ps-no-posts-match").css("display") == "none" &&  $("#ps-no-posts").css("display") == "none" 
-	|| $("#ps-no-more-posts").css("display") == "none"){
-		$("body").css("overflow-y","scroll"); 
-	}
+  static togglePageScroll(toggle = ""){
+	  if($.trim(toggle) == ""){
+		  return false;
+	  }
+	  
+	  let toggleElement = $("#page_scroll");
+	if($.trim(toggle) == "active" && $(toggleElement).val() == "inactive"){
+		
+   $(toggleElement).val("active"); return true;
+		  
+	  }else if($.trim(toggle) == "inactive" && $(toggleElement).val() == "active"){
+		 $(toggleElement).val("inactive"); return true;
+	  }else{
+		  return false;
+	  }
   }
+  
+  
 
   static getMainStream(streamType = "", targetElement = null){
  
+   
   if($.trim(streamType) == "" || $.trim(streamType) != "mainstream"){
   return;
   }
-
- 
+  
+  // activate the scrolling of the page
+    if($("#page_scroll").val() == "inactive"){
+			  stream.togglePageScroll("active");
+	}
+  
  if($("#ps-activitystream-loading").css("display") == "none"){
  	 $("#ps-activitystream-loading").show();
  }
@@ -56,14 +70,21 @@ else if(response["false"] != undefined && response["false"] == "login"){
 						 return;
 					 
 	}else  if($.trim(response["true"])){
-		   if($.trim(response["true"]) == "no_posts"){
+		// if the posts are still pending
+		if($.trim(response["true"]) == "waiting"){
+			stream.getMainStream("mainstream");
+			return;
+			// if there are no posts
+		}else if($.trim(response["true"]) == "no_posts"){
 		   	$("#ps-no-posts").show();
-			 
+			  stream.togglePageScroll("inactive");
+			 // if there are no more posts
 		   }else if($.trim(response["true"]) == "no_more_posts"){
 		   	$("#ps-no-more-posts").show();
+			stream.togglePageScroll("inactive");
 		   }
-			
-			 stream.adjustPageScroll();		     	
+		// prevent the request of more data
+		stream.togglePageScroll("inactive");	     	
 	}else if($.trim(response) != ""){
 		$.each(response,function(index,value){
 			$("#ps-activitystream").append(value);
@@ -129,6 +150,10 @@ else if(response["false"] != undefined && response["false"] == "login"){
    	resetValue = "reset_post";
    }
 
+   // activate the scrolling of the page
+    if($("#page_scroll").val() == "inactive"){
+			  stream.togglePageScroll("active");
+	}
   	 $.ajax({
 			 url:"../private/neutral_ajax.php",
 			 type: "POST",
@@ -157,13 +182,24 @@ location.href="login.php";
 	$("#ps-activitystream-loading").hide();
 	return;
 	}
+	
 	// incase the user hasn't posted anything yet
- else if(response["true"] == "upclose_empty"){
-					  	
- if($("#ps-no-posts-match").css("display") == "none"){
-		   $("#ps-no-posts-match").show();
-           	   
-		 }
+ else if(response["true"]){
+	// if the posts are still pending
+		if($.trim(response["true"]) == "waiting"){
+			stream.getSelfStream("mainstream");
+			return;
+			// if there are no posts
+		}else if($.trim(response["true"]) == "no_posts"){
+		   	$("#ps-no-posts").show();
+			  stream.togglePageScroll("inactive");
+			 // if there are no more posts
+		   }else if($.trim(response["true"]) == "no_more_posts"){
+		   	$("#ps-no-more-posts").show();
+			stream.togglePageScroll("inactive");
+		   }
+		// prevent the request of more data
+		stream.togglePageScroll("inactive");
 		}
     // if the request was successful 
 	// and the results is not empty
@@ -375,10 +411,13 @@ $.ajax({
 	
 });
 $(window).scroll(function() {
-	  
+	   if($("#page_scroll").val() == "inactive"){
+			   return;
+		   }
+		   
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
     
-        
+          
          	 stream.getCallMethod($("#stream_type").val());
         
         

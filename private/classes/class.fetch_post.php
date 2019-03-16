@@ -1695,7 +1695,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			 $_SESSION["scroll_ready_state"] = true;
         return true; 
 		 }else{
-		print j(["pending"=>"waiting"]);
+		print j(["true"=>"waiting"]);
 		
 		$_SESSION["scroll_ready_state"] = true;
         return true; 

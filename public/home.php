@@ -6,7 +6,7 @@ Session::before_every_protected_page("home");
 
 $label   = "";
 $message = "";
-
+$_SESSION[STREAM_HOME] = 1;
 
 //$user = new user();
 
@@ -1409,7 +1409,7 @@ background: #f9f9f9;
 	</nav>
 </div>
 <div class="ps-stream__filters">
-    <input type='hidden' id='deactivate_scroll' value='active' />
+    <input type='hidden' id='page_scroll' value='active' />
   
 <input type="hidden" id="peepso_stream_filter_show_my_posts" value="1">
 <span class="ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter" data-id="peepso_stream_filter_show_my_posts">

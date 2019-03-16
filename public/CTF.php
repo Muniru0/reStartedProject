@@ -67,6 +67,7 @@ div {
  
  <div id="sample-div" class="test"> Simple div </div>
  <?php
+ echo $_SESSION[STREAM_HOME] 
  die();
  function test_calling_functions($id = 10000){global $db;
 	 $result = $db->query("SELECT * FROM test WHERE id >$id");
