@@ -7,6 +7,7 @@ Session::before_every_protected_page("home");
 $label   = "";
 $message = "";
 $_SESSION[STREAM_HOME] = 1;
+$_SESSION[STREAM_SELF] = 1;
 
 //$user = new user();
 

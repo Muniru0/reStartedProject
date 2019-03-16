@@ -92,6 +92,9 @@ else if(response["false"] != undefined && response["false"] == "login"){
 	}
 		}catch(e){
 			}finally{
+				if($.trim(response) == "" &&  $("#ps-activitystream-loading").css("display") == "block"){
+				 return;	
+				}
 				 $("#ps-activitystream-loading").hide();
 					
 			}	 	
@@ -146,9 +149,10 @@ else if(response["false"] != undefined && response["false"] == "login"){
 
 
   let resetValue = "false";
-   if($.trim(reset) != "" || reset == null){
+   if($.trim(reset) != "" && reset != null){
    	resetValue = "reset_post";
    }
+ 
 
    // activate the scrolling of the page
     if($("#page_scroll").val() == "inactive"){

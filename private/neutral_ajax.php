@@ -525,23 +525,23 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
   
     
   if(is_string($stream) && $id > 0 && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != "home" && trim($stream) != "community" && trim($stream) != "self"){
-		 
+		
     // get the main infinite scroll for the sreaming of post
 	Pagination::get_infinite_scroll($stream,$id);
 
 	 }
 elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters)){
-// reset the personal posts		  
-if(isset($_POST["reset"]) && trim($_POST["reset"]) === RESET_POST){
-	 
-	  if(isset($_SESSION) && isset($_SESSION[STREAM_SELF]) && $_SESSION[STREAM_SELF] > 0 || $_SESSION[STREAM_SELF] != 1){
-		  $_SESSION[STREAM_SELF] = 1;
-		}else{
-		  Errors::trigger_error(RETRY);
-		  return;
-	  }
-}
-	
+	// reset the personal posts		  
+			if(isset($_POST["reset"]) && trim($_POST["reset"]) === RESET_POST){
+			 
+			  if(isset($_SESSION) && isset($_SESSION[STREAM_SELF]) && $_SESSION[STREAM_SELF] > 0 || $_SESSION[STREAM_SELF] != 1){
+				  $_SESSION[STREAM_SELF] = 1;
+				}else{
+				  Errors::trigger_error(RETRY);
+				  return;
+			  }
+		}
+			
 	// get the main infinite scroll for the sreaming of post
 	Pagination::get_infinite_scroll(trim($stream));
 	
