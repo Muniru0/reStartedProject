@@ -117,10 +117,24 @@ else if(response["false"] != undefined && response["false"] == "login"){
   return;
   }
   
+  if($("#page_scroll").val() == "inactive"){
+  	if($("#ps-no-more-posts").css("display") != "none"){
+  		$("#ps-no-more-posts").effect("shake");
+  		
+  	}else if($("#ps-no-posts").css("display") != "none"){
+  		$("#ps-no-posts").effect("shake");
+  	}else if($("#ps-no-posts-match").css("display") != "none"){
+  		$("#ps-no-posts-match").effect("shake");
+  	}
+
+  	return;
+  }
   // toggle the display of the reset post button
   if($("#reset_posts_personal").css("display") == "none"){
 	$("#reset_posts_personal").show();  
   }
+
+ 
 
 
   // show the post loading gif
@@ -166,7 +180,7 @@ else if(response["false"] != undefined && response["false"] == "login"){
 		 }).done(function(response){
 			console.log(response);
 
-
+   let emptyResponseGif =false;
 			try{
 			response = JSON.parse(response);
 
@@ -182,7 +196,7 @@ location.href="login.php";
    }
 		// incase of an error
 		else if($.trim(response["false"]) != ""){
-	utility.showErrorDialogBox("Please it is our fault but please try again.");
+	utility.showErrorDialogBox(response["false"]);
 	$("#ps-activitystream-loading").hide();
 	return;
 	}
@@ -191,7 +205,8 @@ location.href="login.php";
  else if(response["true"]){
 	// if the posts are still pending
 		if($.trim(response["true"]) == "waiting"){
-			stream.getSelfStream("mainstream");
+		utility.showErrorDialogBox("Please be patient,we are loading the posts...");
+		  emptyResponseGif  = true;
 			return;
 			// if there are no posts
 		}else if($.trim(response["true"]) == "no_posts"){
@@ -215,12 +230,17 @@ else if($.trim($("#ps-activitystream")) != "" && $("#ps-activitystream") != null
 		}
 					
 		}catch(e){
-            utility.showErrorDialogBox("Sorry request failed,please refresh the page and try again.");
+            if($.trim(response) == ""){
+            utility.showErrorDialogBox("Please be patient, we are loading your posts...");
+
+           }
+          emptyResponseGif = true;
+            $(window).scroll();
            
 			}finally{
 			$(targetElement).attr("disabled",false);
 			$(targetElement).find("img").hide();
-			if($("#ps-activitystream-loading") && $("#ps-activitystream-loading").css("display") == "block" ){
+			if($("#ps-activitystream-loading") && $("#ps-activitystream-loading").css("display") == "block" && emptyResponseGif === false){
 			 $("#ps-activitystream-loading").hide();
 			}
 			

@@ -410,15 +410,13 @@ $reactions  = [];
 
   $post_ids_array = [];
 $results = $db->query($query);
-	
-
-$row_count = $results->num_rows;
-	  
-	if($db->error){
-		
-		Errors:;trigger_error(RETRY);
+	if(trim($db->error) != ""){
+		 
+		Errors::trigger_error(RETRY);
 		return;
 	}
+	
+	$row_count = $results->num_rows;
 	
 	
 // validate the returning of results	
@@ -504,18 +502,13 @@ $row_count = $results->num_rows;
 	 }else{
 		 
 		$_SESSION[STREAM_SELF] = 1;
-		print j(["true"=>"waiting"]);
+		Errors::trigger_error(RETRY);
 		$result->free();
         	return;	
 	 }
 	
  } 
-  // check if the returned post is empty
-  if(empty($returned_array)){
-	print j(["true"=>"waiting"]);
-	
-return false;	 
-  }
+ 
   
   
  return $returned_array;
