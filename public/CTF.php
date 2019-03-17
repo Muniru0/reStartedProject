@@ -67,18 +67,15 @@ div {
  
  <div id="sample-div" class="test"> Simple div </div>
  <?php
- echo $_SESSION[STREAM_HOME] 
- die();
+
  function test_calling_functions($id = 10000){global $db;
-	 $result = $db->query("SELECT * FROM test WHERE id >$id");
+	 $result = $db->query("SELECT * FROM test LIMIT 2,2");
 	 
 	 if($result->num_rows > 0){
-		 echo "yeah";
-	 }else{
-		 echo "entered here";
-		 test_calling_functions(1);
-		 
+	 if($row = $result->fetch_assoc()){
+		 echo $row["id"];
 	 }
+	 }else{echo $db->error;}
  }
  
  test_calling_functions();

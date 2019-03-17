@@ -3930,12 +3930,12 @@ window.onclick = function(event) {
    });
    
    </script>
-   -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrhBOort1omiPN4Vbqzm53abzTZSswtio&callback=initMap"
+            async defer></script> -->
     <script  type="text/javascript"  src="assets/js/bootstrap.bundle.min.js">  </script>
     <script  type="text/javascript"  src="assets/js/dropzone.js">  </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrhBOort1omiPN4Vbqzm53abzTZSswtio&callback=initMap"
-            async defer></script>
+   
     <script   type="text/javascript"  src="assets/js/jquery-ui.min.js">  </script>
 	<script   type="text/javascript"  src="assets/js/utility.js">  </script>
 	<script   type="text/javascript"  src="assets/js/reactions.js">  </script>

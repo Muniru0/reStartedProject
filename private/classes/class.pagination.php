@@ -67,6 +67,7 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
 	  $posts = self::community_posts($offset,$offset_upperbound);
   }
   
+  
  if(!$posts){
 	 
 		   return;
@@ -398,6 +399,7 @@ $reactions  = [];
 		
 		
 		
+		
 		 $where_clause = ($offset == 1) ?
 		 PostImage::$table_name.".".PostImage::$uploader_id."=".$_SESSION[user::$id]." ORDER BY ".PostImage::$upload_time." DESC LIMIT 100"
 		 :
@@ -494,11 +496,11 @@ $results = $db->query($query);
 		 }
 		 
 		$offset_upperbound =  $_SESSION[STREAM_SELF] = $row["min_id"];
-		    
+		   log_action(__CLASS__,$_SESSION[STREAM_SELF]);
 		  self::self_posts($offset_upperbound - 11,$offset_upperbound);
 		  
 		   $result->free();
-		   return;
+		   exit;
 	 }else{
 		 
 		$_SESSION[STREAM_SELF] = 1;
