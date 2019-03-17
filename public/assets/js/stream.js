@@ -54,34 +54,23 @@
 			try{
 			response = JSON.parse(response);
 
-			// if there are no post for now
-			if($.trim(response["pending"]) == "waiting" && $("#ps-activitystream-loading").css("display") == "none" ){
-			$("#ps-activitystream-loading").show();
-			    	
-			}
-			// incase of a redirect		
-else if(response["false"] != undefined && response["false"] == "login"){
+		 if(response["false"] != undefined && response["false"] == "login"){
  location.href="login.php";
 		}
 		// incase of an error
 		else if($.trim(response["false"]) != ""){
-					 	 utility.showErrorDialogBox("Please it is our fault but please try again.");
+					 	 utility.showErrorDialogBox(response["false"]);
 					 	  $("#ps-activitystream-loading").hide();
 						 return;
 					 
-	}else  if($.trim(response["true"])){
-		// if the posts are still pending
-		if($.trim(response["true"]) == "waiting"){
-			stream.getMainStream("mainstream");
-			return;
-			// if there are no posts
-		}else if($.trim(response["true"]) == "no_posts"){
+	}else if($.trim(response["true"]) != ""){
+	 if($.trim(response["true"]) == "no_posts"){
 		   	$("#ps-no-posts").show();
-			  stream.togglePageScroll("inactive");
+			
 			 // if there are no more posts
 		   }else if($.trim(response["true"]) == "no_more_posts"){
 		   	$("#ps-no-more-posts").show();
-			stream.togglePageScroll("inactive");
+			
 		   }
 		// prevent the request of more data
 		stream.togglePageScroll("inactive");	     	
@@ -92,9 +81,7 @@ else if(response["false"] != undefined && response["false"] == "login"){
 	}
 		}catch(e){
 			}finally{
-				if($.trim(response) == "" &&  $("#ps-activitystream-loading").css("display") == "block"){
-				 return;	
-				}
+				
 				 $("#ps-activitystream-loading").hide();
 					
 			}	 	

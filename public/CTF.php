@@ -47,6 +47,10 @@ div {
   transition: all .5;
 }
 
+div{
+	display:none;
+}
+
  </style>
 
  
@@ -67,20 +71,24 @@ div {
  
  <div id="sample-div" class="test"> Simple div </div>
  <?php
+  
+ 
+Pagination::home_posts();
 
+   
  function test_calling_functions($id = 10000){global $db;
-	 $result = $db->query("SELECT * FROM test LIMIT 2,2");
+	 $result = $db->query("SELECT * FROM test LIMIT 1,2");
 	 
 	 if($result->num_rows > 0){
-	 if($row = $result->fetch_assoc()){
-		 echo $row["id"];
+	 while($row = $result->fetch_assoc()){
+		 echo $row["id"]."<br />";
 	 }
 	 }else{echo $db->error;}
  }
  
- test_calling_functions();
  
  die();
+ test_calling_functions();
   $a = explode("?","hello");
   if(count($a) > 1){
 	echo "how to make things move";  

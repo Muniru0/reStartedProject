@@ -24,11 +24,13 @@ class PostImage extends FileUpload {
     public static $caption      = "caption";
 	public static $log          = "longitude";
     public static $lat          = "latitude";
+	public static $files_count  = "files_count";
     public static $support      = "support";
     public static $oppose       = "oppose";
     public static $confirmation = "confirmation";
     public static $confirmer    = "confirmer";
 	public static $likes        = "likes";
+
 	
 	//column aliases
 	 public static $alias_of_id          = "post_table_id";
@@ -39,6 +41,7 @@ class PostImage extends FileUpload {
     public static $alias_of_caption      = "post_table_caption";
 	public static $alias_of_log          = "post_table_longitude";
     public static $alias_of_lat          = "post_table_latitude";
+	public static $alias_of_files_count  = "post_table_files_count";
     public static $alias_of_support      = "post_table_support";
     public static $alias_of_oppose       = "post_table_oppose";
     public static $alias_of_confirmation = "post_table_confirmation";
@@ -228,8 +231,8 @@ $filenames = FileUpload::upload_file($file_destination, $files,$count);
 // database query parameters
     $uploader_id = $_SESSION["id"];
     $upload_time = time();
-    
-$query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$lat]);
+    $count       = count($filenames);
+$query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$lat,$count]);
 
 
     $query = "CALL post_image('".$query_parameters."')";

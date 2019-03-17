@@ -44,438 +44,7 @@ class FetchPost extends DatabaseObject{
 
 
 
-
-    function __construct(){
-    return self::top_trends();
-}
-
- public static function post_with_views($post = "",$data = ""){
-
-$array = array_unique($post);
-foreach ($array as $array_value) {
-  echo " <hr /> <hr /><br />".$array_value;
-foreach ($data as $key => $value) {
-
-  if($value["post"] == $array_value){
-   echo $value["view"]." ".$value["view_time"]." ".$value["view_type"].$value["view_post_id"]."<br />";
-  }
- }
-  
-}
- }
-
-
-// the top trends for a specific interest...or label.
-
-public static function top_specific_trends($interest = ""){
-
-	global $db;
-
-	$query = " SELECT post_table.* ,firstname,lastname,profile_image,user_id,reaction, FROM post_table LEFT JOIN users ON post_table.uploader_id = users.id LEFT JOIN reactions ON reactions.post_id = post_table.id WHERE label = ? GROUP BY post_table.id ORDER BY (post_table.support + post_table.oppose) DESC ";
-
-
-$stmt = self::S_query($query);
-
-if(!$stmt){
-
-	die("Prepare failed: top_trends() || show_post_class.php ".$db->error);
-}
-
-if(!$stmt->bind_param("s",$interest)){
- 
- die("Binding failed: top_trends() || show_post_class.php".$db->error);
-}
-
-if(!$stmt->execute()){
-
-
-die("Execution failed: top_trends() || show_post_class.php ".$db->error);
-}
-
-
-// store the result
-$result = $stmt->get_result();
-
-//free the resources
-self::free_resources($stmt,$db);
-
-// return the result
-return $result;
-
-}//top_interest_trends()
-
-// shows the top trending news accross the globe uploaded by people
-public static function top_trends($where_clause = ""){
-
-	global $db;
-//
-//$query = " SELECT ".self::$post_table.".*,firstname,lastname,profile_image,reaction,reactions.user_id AS user_id,trybe.user_id AS trybe_user_id,trybe.uploader_id AS member_id,time_trybed,follow.user_id AS follow_user_id,follow.post_id AS follow_post_id,time_followed   FROM ".self::$post_table." LEFT JOIN ".users$S_table_name." ON ".users$S_table_name.".id = ".self::$post_table.".uploader_id LEFT JOIN ".Reaction::$table_name." ON ".Reaction::$table_name.".post_id = ".self::$post_table.".id LEFT JOIN trybe ON trybe.post_id = post_table.id OR trybe.user_id = users.id LEFT JOIN follow ON follow.post_id = post_table.id  {$where_clause} GROUP BY post_table.id ORDER BY (support+oppose) DESC LIMIT 10 ";
-//
-////
-//  //$query = "SELECT * FROM test";
-//// $query = "SELECT post_table.* ,post_table.support AS post_support,post_table.oppose AS post_oppose,firstname,lastname,users.profile_image AS uploader_image,reactions.user_id AS reactions_user_id,views.*,post_table.id AS post_table_id,reactions.reaction AS post_reaction FROM post_table LEFT JOIN users ON post_table.uploader_id = users.id LEFT JOIN reactions ON reactions.post_id = post_table.id LEFT JOIN views ON views.post_id = post_table.id GROUP BY views.id  ";
-//
-//
-//// $query = "SELECT post_table.* ,post_table.support AS post_support,post_table.oppose AS post_oppose,firstname,lastname,users.profile_image AS uploader_image,reactions.user_id AS reactions_user_id,views.*,post_table.id AS post_table_id,reactions.reaction AS post_reaction FROM post_table LEFT JOIN users ON post_table.uploader_id = users.id LEFT JOIN reactions ON reactions.post_id = post_table.id LEFT JOIN views ON views.post_id <= post_table.id OR views.post_id >= post_table.id GROUP BY views.id";
-//
-//// $stmt = self::S_query($query);
-//
-//// if(!$stmt){
-//// 	//$id,$real_filename,$upload_time,$caption,$label,$location
-//
-//// 	die("Prepare failed: top_trends() || show_post_class.php ".$db->error);
-//// }
-//
-//// $interest = "'' OR 1 = 1";
-//// // if(!$stmt->bind_param("s",$interest)){
-//
-//// //  die("Binding failed: top_trends() || show_post_class.php".$db->error);
-//// // }
-//
-//// if(!$stmt->execute()){
-//
-//
-//// die("Execution failed: top_trends() || show_post_class.php ".$db->error);
-//// }
-//
-//
-//// // store the result
-//// $result = $stmt->get_result();
-//
-//// //free the resources
-//// self::free_resources($stmt,$db);
-//
-//// // $real_result = [];
-//// // $data = [];
-//// // // return the result
-//// // while($row = $result->fetch_array(MYSQLI_ASSOC)){
-//// //   // equate the posts to their individual captions
-//// //   $real_result[$row["post"]] = [$row[PostImage::$alias_of_id],$row["uploader_id"],$row["upload_time"],$row["caption"],$row["label"],$row["location"],$row["post_support"],$row["post_oppose"],$row["view_support"],$row["view_oppose"],$row["uploader_image"],$row["firstname"],$row["lastname"],$row["reactions_user_id"],$row["firstname"],$row["post_reaction"]];
-//// //   // advance the array pointer of the real_result
-//// //   next($real_result);
-//// //   // store the entire row data in the $data array
-//// //   $data [] = $row;
-//
-//// // }
-////  // SELECT post_table.* ,firstname,lastname,users.profile_image AS uploader_image,reactions.user_id,views.*,post_table.id AS post_table_id FROM post_table LEFT JOIN users ON post_table.uploader_id = users.id LEFT JOIN reactions ON reactions.post_id = post_table.id RIGHT JOIN views ON views.post_id = post_table.id GROUP BY views.id
-//// // return [$real_result,$data];
-  $query = " SELECT firstname,lastname,post_table.* FROM post_table JOIN users ON users.id = uploader_id
-   WHERE post_table.id >= ((SELECT MAX(id) FROM post_table) - 3) LIMIT 10";
-
-  $query = $db->query($query);
-if(!$query){ 
-   printf("Errormessage: %s\n", $db->error);
-}else{
-  $result_array = [];
-    while($row = $query->fetch_array(MYSQLI_ASSOC)){
-
-     $result_array[] = $row;
-    }
-//    print_r($result_array);
-    return $result_array;
-//$post_path = "../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/FnjP4kkPmLiF3lAq1nHx7AnbiBTogWwfhvTI/";
-$post_path = "../".PRIVATE_DIR."/".PRIVATE_MEDIA."/";
-$interest = "";
- 
-  echo "<form></form>";
- $checked = Reaction::$checked;
- $not_checked = Reaction::$not_checked;
-
- $post_ids = [];
- $user_ids = [];
- 
- echo "<a href=\"#\" role='button' id=\"link\">LInk</a>";
-while ($row = $query->fetch_assoc()){
-    
-    $post_ids[] = $row["id"];
-    $user_ids[] = $row["uploader_id"];
-    
-
-
-  // check the post type for each row to determine
-  // where to use an image,video or <p> tags accordingly
-  if($row["caption"] != PostImage::$post_text_unique_string){
-  
-  //get the individual filenames from the post
-  $exploded_filenames = explode(",",$row["post"]);
-
- // remove the last element from the array since 
- // this will be null 
- array_pop($exploded_filenames);
-
-
-echo  "<figure class=\" figure\">
-<div class=\"text-center\">
-
- <a href=\"profile.php?user_id=".u($row["uploader_id"])."\" class=\"profile_image\"><img src=$post_path".$row["profile_image"]." class=\"figure-img img-fluid rounded-circle\" width = \"60px\" height = \"60px\" alt=\"profile_image\"></a></div>";
-
- echo "<div id='display_post'>";
-
- foreach ($exploded_filenames as $value) {
-
-   $extension =  trim(substr_replace(strrchr($value,"."),"",0,1));
- if(in_array($extension,FileUpload::$allowed_extensions_images)){
-  
-  echo "<a href=\"post.php?id=".u($row["id"])."\"><img src=$post_path".$value." class=\"figure-img img-fluid round \" width = \"60px\" height = \"60px\" alt=\"image\" /></a>";
-
-   }elseif(in_array($extension,FileUpload::$allowed_extensions_videos)){
-  echo "<video src=\"".$post_path.$value."\"   width=\"480px\" controls>
-Sorry, your browser doesn't support embedded videos, 
-but don't worry, you can <a href=\"videofile.webm\">download it</a>
-and watch it with your favorite video player!
-</video>";
-   }
-
-}
-
- echo "</div>";
-// if(is_null($row["trybe_user_id"])){
-
-  // echo "yes it is null";
-// }
- 
- echo $row["follow_user_id"];
-// check if the the person who uploaded the file it's
-// not the person who  is viewing it 
-// to prevent the user from trybe or following himself
-if($row["uploader_id"] != $_SESSION["id"]){
-  
-   if($_SESSION["id"] != $row["trybe_user_id"]) {
-     
-   // either show the trybe link or untrybe link
-echo "<a href=\"#\" role=\"button\" class=\"trybe_member\" name=\"trybe_member\" id=\"trybe_".u($row["uploader_id"])."_".u($row["id"])."\" >trybe</a>&nbsp&nbsp".$row["trybe_user_id"];
- }elseif($_SESSION["id"] == $row["trybe_user_id"]){
-  
- echo "<a href=\"#\" role=\"button\" class=\"trybe_member\" name=\"trybe_member\" id=\"trybe_".u($row["uploader_id"])."\" >Untrybe</a>&nbsp&nbsp";
-}
-
-
-// either show the unfollow link or the follow link
-if($_SESSION["id"] != $row["follow_user_id"]){
- echo "<a href=\"#\" role=\"button\" class=\"follow_post\" name=\"follow_post\" id=\"follow_".u($row["id"])."\" >follow</a>";
-}else{
-
-  echo "<a href=\"#\" role=\"button\" class=\"follow_post\" name=\"follow_post\" id=\"follow_".u($row["id"])."\" >Unfollow Up</a>";
-}
-
-
-}
- echo "<figcaption class=\"figure-caption text-justify\">".$row["firstname"]." ".$row["lastname"]."     A ".$row["label"]."  issue @ ".$row["location"]."  --".$row['caption']."--".upload_time($row["upload_time"])."--
-
-  <p  id= \"".Reaction::$support.$row["id"]."\" >".$row["support"]."</p> 
-
-  <p id= \"".Reaction::$oppose.$row["id"]."\" >".$row["oppose"]."</p></figcaption>
-
-</figure><br />
-
-   <form  action= \"home.php\" method = \"POST\" enctype= \"text/plain\">
-  Support <input type=\"radio\" name= \"reaction\" id=\"sup".$row["id"]."\" value =\"".(isset($row["reaction"]) && $row["user_id"] == $_SESSION["id"] ? "{$checked}": "{$not_checked}")."/".$row["id"]."/1\" ".(isset($row["reaction"])  && $row["reaction"] == 1 && $row["user_id"] == $_SESSION["id"] ? "checked = 'checked'" : "")."
-/>
-
-  Oppose  <input type= \"radio\" name =\"reaction\" id=\"opp".$row["id"]."\" value =\"".(isset($row["reaction"]) && $row["user_id"] == $_SESSION["id"] ? "{$checked}": "{$not_checked}")."/".$row["id"]."/0\" 
-
-  ".(isset($row["reaction"]) && $row["reaction"] == 0 && $row["user_id"] == $_SESSION["id"] ? "checked='checked'": "")."/>
-
- <div class='support_div'>
-   <div class=\"display_reaction\" id =\"views_".$row["id"]."\">
- </div>
-<button id=\"support_button\">Support View</button>
-  <textarea cols=\"50px\" width = \"50px\" id=\"t/1/".$row["id"]."/1\" class= \"view support\" placeholder=\"support\" name = \"reaction_view\" >".(isset($text_area) && !empty(trim($text_area)) ? $text_area : "")."</textarea>
-
-
-<button id=\"oppose_button\">Oppose View</button>
-<textarea cols=\"50px\" width = \"50px\" id=\"t/0/".$row["id"]."/0\" class= \"view oppose\"placeholder=\"oppose\" name = \"reaction_view\" >".(isset($text_area) && !empty(trim($text_area)) ? $text_area : "")."</textarea>
-</div>
-  </form>
-
-
-";
-
-}else{
-
-
-
-  echo "<p>".$row["post"]."--</p>";
-
-  echo "<p  id= \"".Reaction::$support.$row["id"]."\" >".$row["support"]."</p> 
-
-  <p id= \"".Reaction::$oppose.$row["id"]."\" >".$row["oppose"]."</p>";
-      
-echo " <form  action= \"home.php\" method = \"POST\" enctype= \"text/plain\">
-  Support <input type=\"radio\" name= \"reaction\" id=\"sup".$row["id"]."\" value =\"".(isset($row["reaction"]) && $row["user_id"] == $_SESSION["id"] ? "{$checked}": "{$not_checked}")."/".$row["id"]."/1\" ".(isset($row["reaction"])  && $row["reaction"] == 1 && $row["user_id"] == $_SESSION["id"] ? "checked = 'checked'" : "")."
-/>
-
-  Oppose  <input type= \"radio\" name =\"reaction\" id=\"opp".$row["id"]."\" value =\"".(isset($row["reaction"]) && $row["user_id"] == $_SESSION["id"] ? "{$checked}": "{$not_checked}")."/".$row["id"]."/0\" 
-
-  ".(isset($row["reaction"]) && $row["reaction"] == 0 && $row["user_id"] == $_SESSION["id"] ? "checked='checked'": "")."/>
-
- <div class='support_div'>
-   <div class=\"display_reaction\" id=\"views_\"".$row["id"].">
- </div>
-<button id=\"support_button\">Support View</button>
-  <textarea cols=\"50px\" width = \"50px\" id=\"t/1/".$row["id"]."/1\" class= \"view support\" placeholder=\"support\" name = \"reaction_view\" >".(isset($text_area) && !empty(trim($text_area)) ? $text_area : "")."</textarea>
-
-
-<button id=\"oppose_button\">Oppose View</button>
-<textarea cols=\"50px\" width = \"50px\" id=\"t/0/".$row["id"]."/0\" class= \"view oppose\"placeholder=\"oppose\" name = \"reaction_view\" >".(isset($text_area) && !empty(trim($text_area)) ? $text_area : "")."</textarea>
-</div>
-  </form>
-
-";
-
-      
-
-}
-
- }
-
-$_SESSION["post_ids"] = $post_ids;
-$_SESSION["user_ids"] = $user_ids;
-$post_ids = json_encode($post_ids);
- echo "<input type=\"hidden\" value=".$post_ids." name=\"get_views\" class=\"dis\" id=\"post_ids\"/>";
-
-
-}
-}//top_trends()
-
-
-
-public static function get_user($id = null){
-
-  global $db;
-
-
-  $result= $db->query("SELECT * FROM post_table ");
-
-}
-
-
-
-
-
-
 public static function show_post(){
-
-
-$query = "SELECT * FROM ".self::$table_name;
-	return FetchPost::find_all($query);
-
-	
-}
-
-
-
-public static function get_views($id = ""){
-
-
-
-    global $db;
-
-    $query = "SELECT * FROM views WHERE id >= ((SELECT MAX(id) FROM views) - 6 ) LIMIT 10";
-
-  $result = $db->query($query);
-  $result_array = [];
-  while($row = $result->fetch_assoc()){
-      $result_array[$row["post_id"]] = $row;
-  }
-
- print j($result_array);
-    return;
-  $id = json_decode($id);
-
-  $id = (array)$id;
- //return print_r($id);
-  $query = "SELECT *,(SELECT COUNT(*) FROM views WHERE post_id = ?) AS num FROM views WHERE post_id = ? ORDER BY views.view_time DESC";
- 
- // $query = "SELECT * FROM views WHERE post_id = ?";
-
-  $stmt = self::S_query($query);
-  if(!$stmt){
-
- die("Preparation failed: ".$db->error." statement Error ".$stmt->error);
-  }
-
-$real_post_id = $id[0];
-
-  if(!$stmt->bind_param("ii",$real_post_id,$real_post_id)){
-
-    die("Binding failed: ".$stmt->error);
-
-  }
-
-
-$views = [];
-$views_values = [];
-
- if(!$stmt->execute()){
-
-
-  die("Execution failed: ".$stmt->error);
-  }
-
-
- $result =  $stmt->get_result();
-
-
-while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-  
-  // $views_values[] = "<p>".$row["post_id"]." ".$row["view"]." ".$row["view_time"]." ".$row["view_type"]." ".$row["num"]." ".$row["id"]."</p>";
-  $views_values[] = $row;
-}
-$views[$real_post_id] = $views_values;
-// return print_r($views_values);
-  
-//  $views[] = $views_values;
-// // $views[$real_post_id] = $views_values;
-//  return print_r($views);
-
-// //array_shift($post_id);
-
- 
-foreach($id AS $post_id){
-      
-     $real_post_id = $post_id;
-  if(!$stmt->execute()){
-
-
-  die("Execution failed: ".$stmt->error);
-  }
-
-
- $result =  $stmt->get_result();
-
-
-while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-  
-  $views_values[] = $row;
-}
- $views[$real_post_id] = $views_values;
-
-}
-
-//return print_r($views);
-return json_encode($views);
-
-  // global $db;
-
-  // $query = "SELECT * FROM post_table WHERE post_id ={$id}";
-
-  // $result = $db->query("SELECT * FROM views WHERE post_id ={$id}");
-  // while($row = $result->fetch_assoc()){
-  //  echo $row["view"]."<br />";
-  // }
-
-//   $result = $db->query("SELECT * FROM test");
-
-//   while($row = $result->fetch_assoc()){
-
-//   echo $row["value"]."<br />";
-// }
-
-}
-
-
-
 
 
 // helper method to get the appropriate mood
@@ -545,70 +114,10 @@ return json_encode($views);
 
 
     }
-    public function test(){
+ 
 
 
-
-        return "<div id=\"postbox-mood\" class=\"ps-dropdown__menu ps-dropdown__menu--moods ps-js-postbox-mood placeholder\" style=\"display: flex;\">
-                            
-                <a class=\"mood-list\" id=\"postbox-mood-1\" href=\"javascript:\" data-option-value=\"1\" data-option-display-value=\"joyful\">
-                    <i class=\"ps-emoticon ps-emo-1\"></i><span>joyful</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-2\" href=\"javascript:\" data-option-value=\"2\" data-option-display-value=\"meh\">
-                    <i class=\"ps-emoticon ps-emo-2\"></i><span>meh</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-3\" href=\"javascript:\" data-option-value=\"3\" data-option-display-value=\"love\">
-                    <i class=\"ps-emoticon ps-emo-3\"></i><span>love</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-4\" href=\"javascript:\" data-option-value=\"4\" data-option-display-value=\"flattered\">
-                    <i class=\"ps-emoticon ps-emo-4\"></i><span>flattered</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-5\" href=\"javascript:\" data-option-value=\"5\" data-option-display-value=\"crazy\">
-                    <i class=\"ps-emoticon ps-emo-5\"></i><span>crazy</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-6\" href=\"javascript:\" data-option-value=\"6\" data-option-display-value=\"cool\">
-                    <i class=\"ps-emoticon ps-emo-6\"></i><span>cool</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-7\" href=\"javascript:\" data-option-value=\"7\" data-option-display-value=\"tired\">
-                    <i class=\"ps-emoticon ps-emo-7\"></i><span>tired</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-8\" href=\"javascript:\" data-option-value=\"8\" data-option-display-value=\"confused\">
-                    <i class=\"ps-emoticon ps-emo-8\"></i><span>confused</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-9\" href=\"javascript:\" data-option-value=\"9\" data-option-display-value=\"speechless\">
-                    <i class=\"ps-emoticon ps-emo-9\"></i><span>speechless</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-10\" href=\"javascript:\" data-option-value=\"10\" data-option-display-value=\"confident\">
-                    <i class=\"ps-emoticon ps-emo-10\"></i><span>confident</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-11\" href=\"javascript:\" data-option-value=\"11\" data-option-display-value=\"relaxed\">
-                    <i class=\"ps-emoticon ps-emo-11\"></i><span>relaxed</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-12\" href=\"javascript:\" data-option-value=\"12\" data-option-display-value=\"strong\">
-                    <i class=\"ps-emoticon ps-emo-12\"></i><span>strong</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-13\" href=\"javascript:\" data-option-value=\"13\" data-option-display-value=\"happy\">
-                    <i class=\"ps-emoticon ps-emo-13\"></i><span>happy</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-14\" href=\"javascript:\" data-option-value=\"14\" data-option-display-value=\"angry\">
-                    <i class=\"ps-emoticon ps-emo-14\"></i><span>angry</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-15\" href=\"javascript:\" data-option-value=\"15\" data-option-display-value=\"scared\">
-                    <i class=\"ps-emoticon ps-emo-15\"></i><span>scared</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-16\" href=\"javascript:\" data-option-value=\"16\" data-option-display-value=\"sick\">
-                    <i class=\"ps-emoticon ps-emo-16\"></i><span>sick</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-17\" href=\"javascript:\" data-option-value=\"17\" data-option-display-value=\"sad\">
-                    <i class=\"ps-emoticon ps-emo-17\"></i><span>sad</span>
-                </a>
-                <a class=\"mood-list\" id=\"postbox-mood-18\" href=\"javascript:\" data-option-value=\"18\" data-option-display-value=\"blessed\">
-                    <i class=\"ps-emoticon ps-emo-18\"></i><span>blessed</span>
-                </a>
-                            <button id=\"postbox-mood-remove\" class=\"ps-btn ps-btn-danger ps-remove-location\" style=\"width:100%; display:none\"><i class=\"ps-icon-remove\"></i>Remove Mood</button>
-                        </div>";
-    }
-
+ 
     public static function get_fullname($id = 0,$firstname,$lastname){
          
 		 $linked_user_class = "";
@@ -883,15 +392,13 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 
 	
 	//get the layout template for two images 
-public static function images_layout_template($post_id = 0,$images =[],$number_of_supports = 0,$number_of_opposes = 0,$reactions_user_ids = [],$caption = null){
+public static function images_layout_template($post_id = 0,$images =[],$count = 0,$number_of_supports = 0,$number_of_opposes = 0,$reactions_user_ids = [],$caption = null){
  
 	
 	  // veirfy the entire the images array
 		if(!is_array($images) || !isset($images) || empty($images)){
 			return false;
 		}
-		
-		$count = count($images);
 		
 		// verify the number of images
 		if($count < 1)
@@ -1038,7 +545,7 @@ if($width >= 1000){
           $height = 41;	
 			
 	}elseif($width < $height){
-    log_action(__CLASS__,"method2 ".__LINE__);
+   
 	
 	 $width  = 65;
 	 $height = 83;	
@@ -1604,7 +1111,7 @@ $images_string .= "</div></div></div></div>
 	 }
 
 
-// for every single post,...
+     // for every single post,...
 foreach ($returned_array as $posts_info => $images_or_info){
 	    $skip_post = false;
 		$post_info = array_shift($images_or_info);
@@ -1667,7 +1174,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
            // $full_header   .= self::get_caption_template($post_info["caption"]);			
 			// get the images and their arrangements
 			
-			$full_body     = self::images_layout_template($post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reaction_user_ids,$post_info[PostImage::$caption]);
+			$full_body     = self::images_layout_template($post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$alias_of_files_count],$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reaction_user_ids,$post_info[PostImage::$caption]);
 			 // get the reaction and comment box
 			  $comments = $views["postID_".$post_info[PostImage::$alias_of_id]] ?? [];
 
@@ -1675,7 +1182,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			if($comments_with_replys){
 				$full_body     .= $comments_with_replys;
 			}else{
-				print j(["false" => "login"]);
+				Errors::trigger_error(INVALID_SESSION);
 			}
 			
 		 // if the post body is false then uset the post table id since we no longer 
@@ -2149,7 +1656,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
     }
 
 
-public static function get_reaction_template($support = 0, $oppose = 0,$post_id){
+    public static function get_reaction_template($support = 0, $oppose = 0,$post_id){
 
   return "	<!-- post actions -->
 <div class=\"ps-stream-actions stream-actions\" data-type=\"stream-action\" style=\"margin-top:0.5em\">

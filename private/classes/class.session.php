@@ -15,7 +15,9 @@ require_once(PRIVATE_DIR."initialize.php");
 // session_start();
 
  class Session extends DatabaseObject {
-
+    
+	public static $qr_lowerbound = "lowerbound";
+	public static $qr_upperbound = "upperbound";
 
 // Function to forcibly end the session
  public static function end_session() {
