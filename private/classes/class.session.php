@@ -1,6 +1,7 @@
 
 
 <?php
+
 require_once(PRIVATE_DIR."initialize.php");
 
 

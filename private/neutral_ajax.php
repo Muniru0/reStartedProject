@@ -488,7 +488,9 @@ elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_
 
 // get the main stream infinite scroll
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll"){
-	   
+	
+	
+	 
    
 	  
 	$allowed_scroll_parameters = [STREAM_HOME,STREAM_PROFILE,STREAM_COMMUNITY,STREAM_SELF];
@@ -527,7 +529,7 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
   }
    
     
-  if(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != "home"  && trim($stream) != "self"){
+  if(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != STREAM_HOME && trim($stream) != STREAM_HOME){
       // incase you are getting posts for a visited profile
       // some ones profile that the user visited
       if($id = is_int($community_or_id)){
@@ -550,12 +552,14 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
       
     // when the stream type is profile
 	Pagination::get_infinite_scroll($stream,$community_or_id);
+	
 
 	 }
 elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters)){
 			
 	// get the main infinite scroll for the sreaming of post
-	Pagination::get_infinite_scroll(trim($stream));
+	Pagination::get_infinite_scroll(trim($stream),null);
+	
 	
 	  }
 	  else{

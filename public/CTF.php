@@ -28,7 +28,7 @@
 }
 
 div {
-  border: 1 solid red;
+  border: 1px solid red;
   transform: translate3d(12px, 90%, 0.2em);
   width: 140px;
   height: 60px;
@@ -37,14 +37,14 @@ div {
   width: 60px;
   height: 60px;
   background-color: skyblue;
-  zoom: 10%;
+  
 }
 
 .moved {
   /* Equivalent to perspective(500px) translateX(10px) */
   transform: perspective(5px) translate3d(10px, 0, 0px);
   background-color: pink;
-  transition: all .5;
+  transition: all .5s;
 }
 
 div{
@@ -74,13 +74,6 @@ div{
   
  
  
- if(in_array("transport",COMMUNITIES)){
-	 echo "in it";
- }else{
-	 echo " not in it";
- }
-Pagination::community_posts("sol");
-
    
  function test_calling_functions($id = 10000){global $db;
 	 $result = $db->query("SELECT * FROM test LIMIT 1,2");

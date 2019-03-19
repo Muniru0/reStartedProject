@@ -12,10 +12,7 @@ class Pagination extends DatabaseObject {
 	
 	// get infinite scroll	
 public static function get_infinite_scroll($stream_type = "",$stream_type_id = null){
-	
-	
-	
-	
+     die("yes lets see");
  global $db;
 
 	  if(!isset($_SESSION)){
@@ -77,7 +74,7 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
  $activities_user_ids = self::get_activities_user_ids();
  
  
- 
+   
  
  // now output the post that you just queried
  FetchPost::get_full_post($posts,$comments,$activities_user_ids["reactions"],$activities_user_ids["views"],$activities_user_ids["replys"],STREAM);
@@ -88,6 +85,7 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
 }// get_infinite_scroll();
 	
 
+	
 	// get the posts 
 	public static function get_the_posts($where_clause = "",$offset = 0,$stream_type = null){
 		global $db;
@@ -197,6 +195,8 @@ return false;
  return $returned_array;
 	}
 	
+	
+	
 	// the comments 
 	public static function get_post_comments(){
 		global $db;
@@ -267,6 +267,8 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
 
 	
 	
+  
+  
   // get the comments likes user ids 
    public static function get_activities_user_ids(){
 	    global $db;
@@ -369,6 +371,8 @@ $reactions  = [];
 	
 	
 
+  
+  
   // get users own uploaed incidents	
  public static function self_posts(){
 	 	global $db;
@@ -561,7 +565,7 @@ $row_count = $results->num_rows;
       }
 	
  }else{
-      log_action(__CLASS__,"entered here {$db->error}".__LINE__);
+      
      Errors::trigger_error(RETRY);
      return false;
  } 
@@ -572,6 +576,8 @@ $row_count = $results->num_rows;
     
     
 
+ 
+ 
  // get users own uploaed incidents	
  public static function profile_posts($where_clause = ""){
 	 	global $db;
@@ -681,18 +687,25 @@ return false;
  return $returned_array;
  }	
  
+    
+  
+    
+    
+  
  
- // get users own uploaed incidents	
+ // get home posts
  public static function home_posts(){
 	 
 	 	global $db;
 		
 		
 		
-  $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".PostImage::$table_name.".".PostImage::$files_count." AS ".PostImage::$alias_of_files_count.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
+ $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".PostImage::$table_name.".".PostImage::$files_count." AS ".PostImage::$alias_of_files_count.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
 ".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." ORDER BY ".PostImage::$upload_time." DESC LIMIT ".$_SESSION[STREAM_HOME].",50";
- 
+     
+     
+  $returned_array = [];
   $post_ids_array = [];
 $results = $db->query($query);
 	
@@ -767,6 +780,8 @@ $row_count = $results->num_rows;
 	
  } 
  
+  print_r($returned_array);
+ return false;
  return $returned_array;
  }//home_posts();	 
 

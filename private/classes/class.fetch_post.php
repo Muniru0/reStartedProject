@@ -21,8 +21,8 @@ class FetchPost extends DatabaseObject{
 	public static $images_dir_string = "../private/".UPLOADS_DIR.IMGS_THUMBS_DIR;
 	
 	
-	
-	
+	// the mood variables
+	/*
 	public static $posts = "";
     public static $JOYFUL      = "joyful";
     public static $MEH         =  "meh";
@@ -41,10 +41,9 @@ class FetchPost extends DatabaseObject{
     public static $SAD         = "sad";
     public static $SICK        = "sick";
     public static $BLESSED     = "blessed";
+*/
 
-
-// helper method to get the appropriate mood
-//
+    // get the mood template
     public static function get_mood_template($mood){
         $mood = trim($mood);
         if(!isset($mood) || empty($mood)){
@@ -113,7 +112,7 @@ class FetchPost extends DatabaseObject{
  
 
 
- 
+    // get the fullname template
     public static function get_fullname($id = 0,$firstname,$lastname){
          
 		 $linked_user_class = "";
@@ -134,6 +133,7 @@ class FetchPost extends DatabaseObject{
 		
     }//get_fullname();
 
+    // get the post title template
     public static function get_post_title($count,$label){
 
         $photos_string = (int)$count === 1 ? "a photo" : "{$count} photos";
@@ -142,7 +142,7 @@ class FetchPost extends DatabaseObject{
     }
 	
 	
-
+    // get the location template
     public static function get_location_template($longitude = 0,$latitude = 0){
           $locations = ["Wa","Tamale","Kumasi","Accra","Koforidua","Cape Coast","Tema","Bolgatanga","Winneba","Saudi Arabia"];
 		   $location = $locations[array_rand($locations)];
@@ -156,6 +156,7 @@ class FetchPost extends DatabaseObject{
             </span></div>");
     }
 
+    // get the time template
     public static function get_time_template($post_id = 0,$time = 0){
 
 	    $toggle_follow_icon = "";
@@ -271,7 +272,7 @@ class FetchPost extends DatabaseObject{
 	
 	
 	
-	
+	// get the caption template
 	public static function get_caption_template($caption = ""){
 		
 		if(!isset($caption) || trim($caption) == "" || empty($caption)){
@@ -282,7 +283,9 @@ class FetchPost extends DatabaseObject{
 		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown' ><p>{$caption}</p></div></div>";
 	}// get_caption_template();
 	
-     public static function get_post_edit_template($caption = "",$title = "", $location = "",$post_id = 0){
+    
+     // get edit post template 
+     public static function get_edit_post_template($caption = "",$title = "", $location = "",$post_id = 0){
 		    
 		$caption_count = 4000 - count($caption);	  
 			  
@@ -352,10 +355,8 @@ class FetchPost extends DatabaseObject{
 	 
 	 
 	 
-	 
-	 
     // get the recently uploaded post
- public static function get_uploaded_post($post_id = 0){
+    public static function get_uploaded_post($post_id = 0){
         global $db;
 		
 	
@@ -436,11 +437,11 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 	}// get_uploaded_post();
     
 	
-
-	
 	//get the layout template for two images 
-public static function images_layout_template($post_id = 0,$images =[],$count = 0,$number_of_supports = 0,$number_of_opposes = 0,$reactions_user_ids = [],$caption = null){
+    public static function images_layout_template($uploader_id = 0,$post_id = 0,$images =[],$count = 0,$number_of_supports = 0,$number_of_opposes = 0,$reactions_user_ids = [],$location = "",$title = "",$caption = null){
  
+	log_action(__CLASS__,"how ");
+	  /* log_action(__CLASS__,$uploader_id." ".$edit_post_template." ".__LINE__); */
 	
 	  // veirfy the entire the images array
 		if(!is_array($images) || !isset($images) || empty($images)){
@@ -458,8 +459,8 @@ public static function images_layout_template($post_id = 0,$images =[],$count = 
 		return false;	
 		}
 		
-      $edit_post_template = $_SESSION[userr::$id]self::get_edit_post_template($caption,$title,$location,$post_id);
-		  
+      $edit_post_template = ((int)$uploader_id === (int)$_SESSION[user::$id]) ? self::get_edit_post_template($caption,$title,$location,$post_id) : "";
+		
 		  // check the number of reactions and show or hide the 
 		  // the reactions div accordingly
 		  $toggle_reactions_count = "";
@@ -524,7 +525,7 @@ public static function images_layout_template($post_id = 0,$images =[],$count = 
 		{$number_of_opposes} opposed</a>" ;
 		
  $images_string = "<div class='ps-stream-body'>
-		".self::get_caption_template($caption).."
+		".self::get_caption_template($caption)."{$edit_post_template}
 		<div class='ps-stream-attachments cstream-attachments'>
 		<div class='cstream-attachment photo-attachment'>
 		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
@@ -561,9 +562,7 @@ if($width >= 1000){
           $height = rand(85,89);	
 			
 	}elseif($width < $height){
-    log_action(__CLASS__,"method2 ".__LINE__);
-	
-	$width = rand(97,100);
+    $width = rand(97,100);
 	$height = rand(85,89);
 			  }
 }elseif($width < 1000 && $height > 300){
@@ -613,7 +612,7 @@ if($width >= 1000){
 		
 		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
 	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
+		<div class='ps-media-grid-fitwidth' style='border-radius: 3%;'>
 			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
 								</div>
 	</div>
@@ -680,7 +679,7 @@ if(krsort($images)){
 		
 		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
 	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
+		<div class='ps-media-grid-fitwidth' style='border-radius: 3%;'>
 			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
 								</div>
 	</div>
@@ -754,7 +753,7 @@ if(!file_exists(self::$images_dir_string.$image)){
 		
 		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%; margin-left: ".$margin."'>
 	<div class='ps-media-grid-padding'>
-<div class='ps-media-grid-fitwidth'>
+<div class='ps-media-grid-fitwidth' style='border-radius: 3%;'>
 <img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
 				{$overlay}
 								</div>
@@ -773,7 +772,7 @@ if(!file_exists(self::$images_dir_string.$image)){
 		
 		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
 	<div class='ps-media-grid-padding'>
-		<div class='ps-media-grid-fitwidth'>
+		<div class='ps-media-grid-fitwidth' style='border-radius: 3%;'>
 			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
 								</div>
 	</div>
@@ -818,165 +817,7 @@ $images_string .= "</div></div></div></div>
 	}// images_layout_template();
 
 
-
-
-	// get all comments from the database for a specific post 
-	public static function get_comments_with_template($post_ids = []){
-		if(!isset($post_id) || !is_array($post_id <= 0 ) || in_array(0,$post_ids,true))
-		{
-			return "";
-			
-		}
-		
-		return "<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--482\" data-act-id=\"482\">
-			<div id=\"comment-item-931\" class=\"ps-comment-item cstream-comment stream-comment\" data-comment-id=\"931\">
-	<div class=\"ps-comment-body cstream-content\">
-		<div class=\"ps-comment-message stream-comment-content\">
-			<a class=\"ps-comment-user cstream-author\" href=\" ://demo.peepso.com/profile/william/\">William Torres</a>
-			<span class=\"ps-comment__content\" data-type=\"stream-comment-content\"><div class=\"peepso-markdown\"><p>Fantastic! What a beautiful day to celebrate what i did yesterday</p></div></span>
-		</div>
-
-		<div data-type=\"stream-more\" class=\"cstream-more\" data-commentmore=\"true\"></div>
-
-		
-
-		<div class=\"ps-comment-time ps-shar-meta-date\">
-			<small class=\"activity-post-age\" data-timestamp=\"1529076577\"><span class=\"ps-js-autotime\" data-timestamp=\"1529076577\" title=\"June 15, 2018 3:29 pm\">".self::time_converter($comment_time)."</span></small>
-
-						<div id=\"act-like-493\" class=\"ps-comment-links cstream-likes ps-js-act-like--493\" data-count=\"2\">
-				<a onclick=\"return activity.show_likes(493);\" href=\"#showLikes\">2 people like this.</a>			</div>
-
-			<div class=\"ps-comment-links stream-actions\" data-type=\"stream-action\">
-				<span class=\"ps-stream-status-action ps-stream-status-action\">
-					<nav class=\"ps-stream-status-action ps-stream-status-action\">
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_like(this, 493); return false;\" href=\"#like\" class=\"actaction-like liked ps-icon-thumbs-up\"><span><span title=\"2 people like this\">Like</span></span></a>
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_report(493); return false;\" href=\"#report\" class=\"actaction-report ps-icon-warning-sign\"><span>Report</span></a>
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_reply(493, 931, this, { id: 6, name: 'William Torres' }); return false;\" href=\"#reply\" class=\"actaction-reply ps-icon-plus\"><span>Reply</span></a>
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_edit(931, this); return false;\" href=\"#edit\" class=\"actaction-edit ps-icon-pencil\"><span>Edit</span></a>
-<a data-stream-id=\"931\" onclick=\"activity.comment_action_delete(931); return false;\" href=\"#delete\" class=\"actaction-delete ps-icon-trash\"><span></span></a>
-</nav>
-				</span>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-		</div>";
-		
-		
-	}//get_comments();
-	
-
-	// get reaction and comment box
-	public static function get_reaction_and_commentbox($support = 0,$oppose = 0 ,$post_id = 0){
-		if((!isset($support) || !isset($oppose)) && (!isset($post_id) && $post_id < 0 ))
-		{
-			return "";
-		}
-		
-		return "<div class='ps-stream-actions stream-actions' data-type='stream-action'><nav class='ps-stream-status-action ps-stream-status-action'>
-<a data-stream-id='498' onclick='return reactions.action_reactions(this, 498);' href='javascript:' class='ps-reaction-toggle--498 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>
-<a data-stream-id='498' onclick='return activity.action_report(498);' href='#report' class='actaction-report ps-icon-warning-sign'><span>Report</span></a>
-</nav>
-</div>
-  <div class=\"ps-comment cstream-respond wall-cocs\" id=\"wall-cmt-498\" style='background:##e1dcd9; padding-left: 3px;'>
-		<div class=\"ps-comment-container comment-container ps-js-comment-container ps-js-comment-container--498\" data-act-id=\"498\" style='background:#f7f7f7'>
-					</div>
-
-						<div id=\"act-new-comment-498\" class=\"ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-498\" data-id=\"498\" data-type=\"stream-newcomment\" data-formblock=\"true\">
-			<a class=\"ps-avatar cstream-avatar cstream-author\" href=\" ://demo.peepso.com/profile/demo/\">
-				<img data-author=\"4\" src=\" ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg\" alt=\"\">
-			</a>
-			<div class=\"ps-textarea-wrapper cstream-form-input\">
-				<div class=\"ps-tagging-wrapper\"><div class=\"ps-tagging-beautifier\"></div><textarea data-act-id=\"498\" class=\"ps-textarea cstream-form-text ps-tagging-textarea\" name=\"comment\" oninput=\"return activity.on_commentbox_change(this);\" placeholder=\"Write a comment...\" style=\"height: 35px;\"></textarea><input type=\"hidden\" class=\"ps-tagging-hidden\"><div class=\"ps-tagging-dropdown\"></div></div>
-				<div class=\"ps-commentbox__addons ps-js-addons\">
-<div class=\"ps-commentbox__addon ps-js-addon-giphy\" style=\"display:none\">
-	<div class=\"ps-popover__arrow ps-popover__arrow--up\"></div>
-	<img class=\"ps-js-img\" alt=\"photo\" src=\"\">
-	<div class=\"ps-commentbox__addon-remove ps-js-remove\">
-		<i class=\"ps-icon-remove\"></i>
-	</div>
-</div>
-<div class=\"ps-commentbox__addon ps-js-addon-photo\" style=\"display:none\">
-	<div class=\"ps-popover__arrow ps-popover__arrow--up\"></div>
-
-	<img class=\"ps-js-img\" alt=\"photo\" src=\"\" data-id=\"\">
-
-	<div class=\"ps-loading ps-js-loading\">
-		<img src=\"assets/images/ajax-loader.gif\" alt=\"loading\">
-	</div>
-
-	<div class=\"ps-commentbox__addon-remove ps-js-remove\">
-		<input type=\"hidden\" id=\"_wpnonce_remove_temp_comment_photos\" name=\"_wpnonce_remove_temp_comment_photos\" value=\"3ca8a9ab47\"><input type=\"hidden\" name=\"_wp_http_referer\" value=\"/peepsoajax/activity.show_posts_per_page\">		<i class=\"ps-icon-remove\"></i>
-	</div>
-</div>
-</div>
-
-			</div>
-			<div class=\"ps-comment-send cstream-form-submit\" style=\"display:none;\">
-				<div class=\"ps-comment-loading\" style=\"display:block;\">
-					<img src=\"assets/images/ajax-loader.gif\" alt=\"\">
-					<div> </div>
-				</div>
-				<div class=\"ps-comment-actions\" style=\"display:block;\">
-					<button onclick=\"return activity.comment_cancel(498);\" class=\"ps-btn ps-button-cancel\">Clear</button>
-					<button onclick=\"return activity.comment_save(498, this);\" class=\"ps-btn ps-btn-primary ps-button-action\" disabled=\"\">Post</button>
-				</div>
-			</div>
-		</div>
-			</div>
-
-";
-	}
-	
-	
-    
-	// fetch filenames based on the post_ids
-	public static function fetch_images($post_ids = []){
-		global $db;
-		
-		$query = "SELECT * FROM ".self::$table_name." WHERE post_id = ? ";
-		
-		$stmt = $db->prepare($query);
-		
-		if(!$stmt)
-		{
-			log_action(__CLASS__,"Statement preparation failed on line ".__LINE__." in ".__FILE__);
-			
-		}
-		
-	   if(!$stmt->bind_param("i",$post_ids[0])){
-		   log_action(__CLASS__,"Statement binding failed on line ".__LINE__." in ".__FILE__);
-	   }	
-	   
-	   if(!$stmt->execute()){
-		   log_action(__CLASS__,"Statement execution failed on line ".__LINE__." in ".__FILE__);
-	   }
-	   
-	   if(is_array($post_ids)){
-		   foreach($post_ids as $post_id)
-		   {
-			   if(!$stmt->execute())
-			   {
-				   log_action(__CLASS__,"Statement execution of post_id {$post_id} failed on line ".__LINE__." in ".__FILE__);
-			   }
-		   }
-		   
-	   }
-	   
-	   $result = $stmt->get_result();
-	     $results_array = [];
-    while($row = $result->fetch_array(MYSQLI_ASSOC))
-    {
-      $results_array[] = $row ;
-    }
-	return $results_array;
-	}// fetch_images();
-	
-	
-	
-
+    // get the post confirmation option string
     public static function get_post_confirmation($confirmation = 0){
    
          $switch = "";
@@ -994,8 +835,9 @@ $images_string .= "</div></div></div></div>
      <div class=\"ps-stream__post-pin\" style=\"display:block\">
 	      {$switch}
             </div>";
-    }
+    } // get_post_confirmation();
 
+    // get time converter string
     public static function time_converter($upload_time){
 
         $upload_time = (integer)$upload_time;
@@ -1117,11 +959,9 @@ $images_string .= "</div></div></div></div>
         }
 
         return "some time ago" ;
-    }
+    }// time_converter();
 
-
-
-	
+    // get sub_time converter string 
     public static  function sub_time_converter($dividend = 0,$divisor = 0,$fallback = 0,$fallback_name = ""){
 
         if(isset($divisor) && !empty($divisor)
@@ -1136,10 +976,12 @@ $images_string .= "</div></div></div></div>
 
         }
 
-    }
+    } // sub_time_converter();
 
-// GET THE FULL HEADER
-// brings back the header of the post
+    
+
+    // gather all the post parts and print t out as 
+    // a single json output 
     public static function get_full_post($returned_array = [],$views = null,$reactions_user_ids = [],$views_likes_user_ids = [],$reply_views_likes_user_ids = [],$linked_users_ids = [],$flag = ""){
 		
  
@@ -1221,12 +1063,11 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			
 			// add the manipulation options to the post header
 			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[user::$user_category],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);
-			
-			// gets the caption of post
-           // $full_header   .= self::get_caption_template($post_info["caption"]);			
+				
 			// get the images and their arrangements
+			$full_body     = self::images_layout_template($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$alias_of_files_count],$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reaction_user_ids,,$post_info[PostImage::$location],$post_info[PostImage::$title],$post_info[PostImage::$caption]);
 			
-			$full_body     = self::images_layout_template($post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$alias_of_files_count],$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reaction_user_ids,$post_info[PostImage::$caption]);
+			
 			 // get the reaction and comment box
 			  $comments = $views["postID_".$post_info[PostImage::$alias_of_id]] ?? [];
 
@@ -1270,444 +1111,8 @@ foreach ($returned_array as $posts_info => $images_or_info){
     
 	}// get_full_post();
 
-    public static function get_post_files_display($files){
-
-        return "<div class=\"ps-stream-attachments cstream-attachments\"><div class=\"cstream-attachment photo-attachment\">
-	<div class=\"ps-media-photos ps-media-grid  ps-clearfix\" data-ps-grid=\"photos\" style=\"position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;\">
-		<a href=\" ://demo.peepso.com/activity/?status/2-2-1528720781/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(200, 'photo');\" style=\"float: left; width: 50%; padding-top: 50%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/FnjP4kkPmLiF3lAq1nHx7AnbiBTogWwfhvTI/IPmHxc3tDbNYWfiGz6FB5LHml2RJNTykk6uxED1bLs/5ae0d503466b11.15907101.png\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-<a href=\" ://demo.peepso.com/activity/?status/2-2-1528720781/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(201, 'photo');\" style=\"float: left; width: 50%; padding-top: 50%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/FnjP4kkPmLiF3lAq1nHx7AnbiBTogWwfhvTI/IPmHxc3tDbNYWfiGz6FB5LHml2RJNTykk6uxED1bLs/5ae0d503466b11.15907101.png\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-<a href=\" ://demo.peepso.com/activity/?status/2-2-1528720781/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(195, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/FnjP4kkPmLiF3lAq1nHx7AnbiBTogWwfhvTI/IPmHxc3tDbNYWfiGz6FB5LHml2RJNTykk6uxED1bLs/5ae0d503466b11.15907101.png\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-<a href=\" ://demo.peepso.com/activity/?status/2-2-1528720781/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(196, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/FnjP4kkPmLiF3lAq1nHx7AnbiBTogWwfhvTI/IPmHxc3tDbNYWfiGz6FB5LHml2RJNTykk6uxED1bLs/5ae0d503466b11.15907101.png\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-<a href=\" ://demo.peepso.com/activity/?status/2-2-1528720781/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(197, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../lqUgAuP7zZlempzC9gN9lIm8yiqnAYfExk/FnjP4kkPmLiF3lAq1nHx7AnbiBTogWwfhvTI/IPmHxc3tDbNYWfiGz6FB5LHml2RJNTykk6uxED1bLs/5ae0d503466b11.15907101.png\" class=\"ps-js-fitted\" style=\"width: 100%; height: auto;\">
-									<div class=\"ps-media-photo-counter\" style=\"top:0; left:0; right:0; bottom:0;\">
-				<span>+6</span>
-			</div>
-					</div>
-	</div>
-</a>
-		
-	</div>
-</div>
-</div>";
-    }
-
-
-// brings back the template of the the image file with the dackened overlay
-
-// brings back the dody of the post
-    public static function get_post_full_body(){
-
-
-        return "<div id=\"ps-activitystream-recent\" class=\"ps-stream-container\" style=\"\"><div class=\"ps-stream ps-js-activity  ps-js-activity--507\" data-id=\"507\" data-post-id=\"965\" style=\"\">
-
-	
-	<div class=\"ps-stream__post-pin\" style=\"\">
-		<span style=\"background-color: rgb(210, 73, 66);\">Pinned</span>
-        	</div>
-
-	<div class=\"ps-stream-header\">
-
-		<!-- post author avatar -->
-		
-		<!-- post meta -->
-		<div class=\"ps-stream-meta\">
-			<div class=\"reset-gap\">
-				<a class=\"ps-stream-user\" href=\"https://demo.peepso.com/profile/demo/\"> Patricia Currie</a> <span class=\"ps-stream-action-title\"> uploaded 6 photos</span> 				<span class=\"ps-js-activity-extras\">			<span>
-				<i class=\"ps-emoticon ps-emo-1\"></i>
-				<span> feeling Joyful</span>
-			</span>
-			 			<span>
-                <a href=\"#\" title=\"Black Park Ltd. (Tesano)\" onclick=\"pslocation.show_map(5.5984168, -0.22774119999996856, 'Black Park Ltd. (Tesano)'); return false;\">
-                    <i class=\"ps-icon-map-marker\"></i>Black Park Ltd. (Tesano)                </a>
-			</span>
-			</span>
-			</div>
-			<small class=\"ps-stream-time\" data-timestamp=\"1538524754\">
-				<a href=\"https://demo.peepso.com/activity/?status/2-2-1538495954/\">
-					<span class=\"ps-js-autotime\" data-timestamp=\"1538524754\" title=\"October 2, 2018 11:59 pm\">10 mins ago</span>				</a>
-			</small>
-						
-					</div>
-		<!-- post options -->
-		<div class=\"ps-stream-options\">
-			<div class=\"ps-dropdown ps-dropdown--stream ps-js-dropdown\">
-<a href=\"#\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\" data-value=\"\">
-<span class=\"dropdown-caret ps-icon-caret-down\"></span>
-</a>
-<div class=\"ps-dropdown__menu ps-js-dropdown-menu\" style=\"display: none;\">
-<a href=\"#\" onclick=\"activity.option_edit(965, 507); return false\" data-post-id=\"965\"><i class=\"ps-icon-edit\"></i><span>Edit Post</span>
-</a>
-<a href=\"#\" onclick=\"return activity.action_delete(965);\" data-post-id=\"965\"><i class=\"ps-icon-trash\"></i><span>Delete Post</span>
-</a>
-<a href=\"#\" onclick=\"return activity.action_pin(965, 1);\" data-post-id=\"965\"><i class=\"ps-icon-move-up\"></i><span>Pin to top</span>
-</a>
-</div>
-</div>
-		</div>
-	</div>
-
-	<!-- post body -->
-	<div class=\"ps-stream-body\">
-		<div class=\"ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--507\"><div class=\"peepso-markdown\"><p>Test post just now</p></div></div>
-		<div class=\"ps-js-activity-edit ps-js-activity-edit--507\" style=\"display:none\"></div>
-		<div class=\"ps-stream-attachments cstream-attachments\"><div class=\"cstream-attachment photo-attachment\">
-	<div class=\"ps-media-photos ps-media-grid  ps-clearfix\" data-ps-grid=\"photos\" style=\"position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;\">
-		<a href=\"https://demo.peepso.com/activity/?status/2-2-1538495954/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(202, 'photo');\" style=\"float: left; width: 50%; padding-top: 50%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"https://demo.peepso.com/wp-content/peepso/users/2/photos/PRIVATE_MEDIA."/"/31d0a1284e65a77d610f976e2d1cecf7_l.jpg\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-<a href=\"https://demo.peepso.com/activity/?status/2-2-1538495954/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(203, 'photo');\" style=\"float: left; width: 50%; padding-top: 50%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"https://demo.peepso.com/wp-content/peepso/users/2/photos/PRIVATE_MEDIA."/"/c02256ddf00f01ad010f80e7ddb399ce_l.jpg\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-<a href=\"https://demo.peepso.com/activity/?status/2-2-1538495954/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(204, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"https://demo.peepso.com/wp-content/peepso/users/2/photos/PRIVATE_MEDIA."/"/c5e99fcf8efd5547cf6c2efcc3eb82a3_l.jpg\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-<a href=\"https://demo.peepso.com/activity/?status/2-2-1538495954/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(205, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"https://demo.peepso.com/wp-content/peepso/users/2/photos/PRIVATE_MEDIA."/"/2394fed0c093c7451abf41fb64ca1780_l.jpg\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-<a href=\"https://demo.peepso.com/activity/?status/2-2-1538495954/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(206, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"https://demo.peepso.com/wp-content/peepso/users/2/photos/PRIVATE_MEDIA."/"/4198cdc6af05b8b0faef589d03a5346e_l.jpg\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-									<div class=\"ps-media-photo-counter\" style=\"top:0; left:0; right:0; bottom:0;\">
-				<span>+2</span>
-			</div>
-					</div>
-	</div>
-</a>
-		
-	</div>
-</div>
-</div>
-	</div>
-
-	<!-- post actions -->
-	<div class=\"ps-stream-actions stream-actions\" data-type=\"stream-action\"><nav class=\"ps-stream-status-action ps-stream-status-action\">
-<a data-stream-id=\"507\" onclick=\"reactions.action_reactions(this, 507); return false;\" href=\"#\" class=\"ps-reaction-toggle--507 ps-js-reaction-toggle ps-icon-reaction liked ps-reaction-emoticon-8\"><img src=\"https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif\"></a>
-</nav>
-</div>
-
-				<div id=\"act-reactions-507\" class=\"ps-reactions cstream-reactions-options ps-js-reaction-options ps-js-act-reactions-options--507\" data-count=\"\" style=\"display: none;\">
-			<ul class=\"ps-reaction-options\">
-									<li>
-						<a title=\"Like\" class=\"ps-reaction-emoticon-0 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-0--507\" href=\"#\" data-tooltip=\"Like\" onclick=\"reactions.action_react(this, 507, 965, 0); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Love\" class=\"ps-reaction-emoticon-1 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-1--507\" href=\"#\" data-tooltip=\"Love\" onclick=\"reactions.action_react(this, 507, 965, 1); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Haha\" class=\"ps-reaction-emoticon-2 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-2--507\" href=\"#\" data-tooltip=\"Haha\" onclick=\"reactions.action_react(this, 507, 965, 2); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Wink\" class=\"ps-reaction-emoticon-3 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-3--507\" href=\"#\" data-tooltip=\"Wink\" onclick=\"reactions.action_react(this, 507, 965, 3); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Wow\" class=\"ps-reaction-emoticon-4 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-4--507\" href=\"#\" data-tooltip=\"Wow\" onclick=\"reactions.action_react(this, 507, 965, 4); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Sad\" class=\"ps-reaction-emoticon-5 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-5--507\" href=\"#\" data-tooltip=\"Sad\" onclick=\"reactions.action_react(this, 507, 965, 5); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Angry\" class=\"ps-reaction-emoticon-6 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-6--507\" href=\"#\" data-tooltip=\"Angry\" onclick=\"reactions.action_react(this, 507, 965, 6); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Crazy\" class=\"ps-reaction-emoticon-7 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-7--507\" href=\"#\" data-tooltip=\"Crazy\" onclick=\"reactions.action_react(this, 507, 965, 7); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Speechless\" class=\"ps-reaction-emoticon-8 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-8--507\" href=\"#\" data-tooltip=\"Speechless\" onclick=\"reactions.action_react(this, 507, 965, 8); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Grateful\" class=\"ps-reaction-emoticon-9 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-9--507\" href=\"#\" data-tooltip=\"Grateful\" onclick=\"reactions.action_react(this, 507, 965, 9); return false;\">
-						</a>
-					</li>
-									<li>
-						<a title=\"Celebrate\" class=\"ps-reaction-emoticon-10 ps-tooltip ps-tooltip--reaction ps-reaction-option ps-reaction-option--507 ps-reaction-option-10--507\" href=\"#\" data-tooltip=\"Celebrate\" onclick=\"reactions.action_react(this, 507, 965, 10); return false;\">
-						</a>
-					</li>
-				
-				
-				<li class=\"ps-reaction-option-delete--507\" style=\"display: none;\">
-					<a class=\"ps-reaction-option ps-reaction-option-delete ps-reaction-option--507 ps-reaction-option-delete--507\" href=\"#\" data-tooltip=\"Remove\" onclick=\"reactions.action_react_delete(this, 507, 965); return false;\" style=\"display: none;\">
-					   <i class=\"ps-icon-remove\"></i>
-					</a>
-				</li>
-
-				</ul>
-			</div>
-						<div id=\"act-react-507\" class=\"ps-reaction-likes ps-stream-status cstream-reactions ps-js-act-reactions--507 ps-stream-reactions-hidden  \" data-count=\"\" style=\"opacity: 0.5;\">
-							</div>
-		
-		<div id=\"act-like-507\" class=\"ps-stream-status cstream-likes ps-js-act-like--507\" data-count=\"0\" style=\"display:none\"></div>
-			<div class=\"ps-comment cstream-respond wall-cocs\" id=\"wall-cmt-507\">
-		<div class=\"ps-comment-container comment-container ps-js-comment-container \" data-act-id=\"507\" style=\"display: none;\">
-					</div>
-
-						<div id=\"act-new-comment-507\" class=\"ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-507\" data-id=\"507\" data-type=\"stream-newcomment\" data-formblock=\"true\">
-			<a class=\"ps-avatar cstream-avatar cstream-author\" href=\"https://demo.peepso.com/profile/demo/\">
-				<img data-author=\"2\" src=\"https://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg\" alt=\"\">
-			</a>
-			<div class=\"ps-textarea-wrapper cstream-form-input\">
-				<div class=\"ps-tagging-wrapper\"><div class=\"ps-tagging-beautifier\"></div><textarea data-act-id=\"507\" class=\"ps-textarea cstream-form-text ps-tagging-textarea\" name=\"comment\" oninput=\"return activity.on_commentbox_change(this);\" placeholder=\"Write a comment...\"></textarea><input type=\"hidden\" class=\"ps-tagging-hidden\"><div class=\"ps-tagging-dropdown\"></div></div>
-				<div class=\"ps-commentbox__addons ps-js-addons\">
-<div class=\"ps-commentbox__addon ps-js-addon-giphy\" style=\"display:none\">
-	<div class=\"ps-popover__arrow ps-popover__arrow--up\"></div>
-	<img class=\"ps-js-img\" alt=\"photo\" src=\"\">
-	<div class=\"ps-commentbox__addon-remove ps-js-remove\">
-		<i class=\"ps-icon-remove\"></i>
-	</div>
-</div>
-<div class=\"ps-commentbox__addon ps-js-addon-photo\" style=\"display:none\">
-	<div class=\"ps-popover__arrow ps-popover__arrow--up\"></div>
-
-	<img class=\"ps-js-img\" alt=\"photo\" src=\"\" data-id=\"\">
-
-	<div class=\"ps-loading ps-js-loading\">
-		<img src=\"https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif\" alt=\"loading\">
-	</div>
-
-	<div class=\"ps-commentbox__addon-remove ps-js-remove\">
-		<input type=\"hidden\" id=\"_wpnonce_remove_temp_comment_photos\" name=\"_wpnonce_remove_temp_comment_photos\" value=\"a42df904ae\"><input type=\"hidden\" name=\"_wp_http_referer\" value=\"/peepsoajax/postbox.post\">		<i class=\"ps-icon-remove\"></i>
-	</div>
-</div>
-</div>
-<div class=\"ps-commentbox-actions\">
-<a onclick=\"peepso.photos.comment_attach_photo(this); return false;\" title=\"Upload photos\" href=\"#\" class=\"ps-postbox__menu-item ps-icon-camera\"><span></span></a>
-<a onclick=\"return false;\" title=\"Send gif\" href=\"#\" class=\"ps-list-item ps-js-comment-giphy ps-icon-giphy\"></a>
-</div>
-			</div>
-			<div class=\"ps-comment-send cstream-form-submit\" style=\"display:none;\">
-				<div class=\"ps-comment-loading\" style=\"display:none;\">
-					<img src=\"https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif\" alt=\"\">
-					<div> </div>
-				</div>
-				<div class=\"ps-comment-actions\" style=\"display:none;\">
-					<button onclick=\"return activity.comment_cancel(507);\" class=\"ps-btn ps-button-cancel\">Clear</button>
-					<button onclick=\"return activity.comment_save(507, this);\" class=\"ps-btn ps-btn-primary ps-button-action\" disabled=\"\">Post</button>
-				</div>
-			</div>
-		</div>
-			</div>
-</div></div>";
-    }
-
-    public static function get_full_image_post(){
-
-        return "<a href=\"https://demo.peepso.com/activity/?status/2-2-1538497253/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(203, 'photo');\" style=\"width: 100%; padding-top: 66.6%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"https://demo.peepso.com/wp-content/peepso/users/2/photos/PRIVATE_MEDIA."/"/4208a8ecc2060db20502f8f21870c7ea_l.jpg\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>";
-    }
-
-
-
-
-    public static function get_single_bottom_extra_small_image_template_last($file = "",$count = 0){
-
-        if(empty(trim($file) && is_int($count) && $count > 0 &&
-            !file_exists("../".UPLOAD_DIR."/".$file))){
-            return null;
-        }
-        $count = $count - 4;
-        return "<a href=\" ://demo.peepso.com/activity/?status/2-2-1528720781/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(197, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../".UPLOADS_DIR."/{$file} class=\"ps-js-fitted\" style=\"width: 100%; height: auto;\">
-									<div class=\"ps-media-photo-counter\" style=\"top:0; left:0; right:0; bottom:0;\">
-				<span>{$count}</span>
-			</div>
-					</div>
-	</div>
-</a>";
-    }
-    public static function get_post_body_wrapper($images = "", $caption = "", $count = 0,$id = 0,$support = 0,$oppose = 0){
-
-        if(!isset($images) || $count > 0 ){
-
-        }
-        $caption ? "<p>{$caption}</p>" : "" ;
-        return "<div class=\"ps-stream-body\" id=\"post_$id\">
-		<div class=\"ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--516\">
-		<div class=\"peepso-markdown\">{$caption}</div></div>
-		<div class=\"ps-js-activity-edit ps-js-activity-edit--516\" style=\"display:none\"></div>
-		<div class=\"ps-stream-attachments cstream-attachments\"><div class=\"cstream-attachment photo-attachment\">
-	<div class=\"ps-media-photos ps-media-grid  ps-clearfix\" data-ps-grid=\"photos\" style=\"position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;\">
-		
-		".self::get_images_arrangement_template($images,$caption,$id = 0,$count)."<!-- Post Actions -->
-		".self::get_reaction_template($support,$oppose,$id)."
-	</div></div></div>";
-    }
-
-    public static function get_single_top_images_template($image = ""){
-
-        return "<a href=\"https://demo.peepso.com/activity/?status/2-2-1538497582/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(207, 'photo');\" style=\"width: 100%; padding-top: 66.6%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../".UPLOAD_DIR."/".$image."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>";
-    }
-
-    public static function get_single_file_template($image = ""){
-
-        if(!isset($image) || empty($image)){
-
-            return "the photo {$image} does not exists ";
-        }
-        return "<a href=\"https://demo.peepso.com/activity/?status/2-2-1538497582/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(207, 'photo');\" style=\"width: 100%; padding-top: 66.6%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../".UPLOAD_DIR."/".$image."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>";
-    }
-
-    public static function get_single_bottom_extra_small_image_template($file = ""){
-
-        $file ?? "";
-        if(empty(trim($file)) && !file_exists($file)){
-            return null;
-        }
-
-        return "<a href=\"https://demo.peepso.com/activity/?status/2-2-1538497253/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(204, 'photo');\" style=\"float: left; width: 33.3%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../".UPLOAD_DIR."/".$file."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>";
-    }
-
-    public static function get_images_arrangement_template($images = "",$caption = "",$id = 0,$count = 0){
-
-
-//
-//    foreach($images as $image){
-//        //check the if they are really populated
-//        if(empty(trim($image)) || !is_int($count) || $count < 0 || !file_exists(PRIVATE_MEDIA."/"."/".$image)){
-//            return PRIVATE_MEDIA."/"."/".$image;
-//        }
-//        $image ?? "";
-//        $caption ?? "";
-//    }
-
-
-
-//  return "it processed here";
-// if there is only one file then make it fill the entire page
-        if((int)$count === 1){
-
-            return self::get_single_file_template($images[0]);
-
-        }
-
-        // declare the variable for the entire images string
-        $body_string = "";
-        for($x = 0; $x < $count ;$x++){
-            if($x < 2){
-                // give this to the first two files
-                $body_string .= self::get_single_top_images_template($images[$x]);
-                continue;
-            }
-
-            // this template for the subsequest ones
-            $body_string .= self::get_single_bottom_extra_small_image_template($images[$x]);
-
-        }
-        // this template for the fourth one then hide the rest to the ui
-        if($x == 4){
-           
-            $body_string .= self::get_single_bottom_extra_small_image_template_last($images[$x],$x);
-        }
-
-
-        return $body_string;
-    }
-
-    public static function get_full_image_post_body_display($image = ""){
-
-        if(!isset($image) || empty(trim($image)) || !file_exists("../".UPLOAD_DIR."/".$image)){
-            return null;
-        }
-
-        return "
-<a href=\"https://demo.peepso.com/activity/?status/2-2-1538497582/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(208, 'photo');\" style=\"float: left; width: 50%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"../".UPLOAD_DIR."/".$image."\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-<a href=\"https://demo.peepso.com/activity/?status/2-2-1538497582/\" class=\"ps-media-photo ps-media-grid-item \" data-ps-grid-item=\"\" onclick=\"return ps_comments.open(209, 'photo');\" style=\"float: left; width: 50%; padding-top: 33.3%;\">
-	<div class=\"ps-media-grid-padding\">
-		<div class=\"ps-media-grid-fitwidth\">
-			<img src=\"https://demo.peepso.com/wp-content/peepso/users/2/photos/PRIVATE_MEDIA."/"/2aa084ca66a5bd5f638bf2f6195de775_l.jpg\" class=\"ps-js-fitted\" style=\"width: auto; height: 100%;\">
-								</div>
-	</div>
-</a>
-		
-	</div>
-</div>
-</div>
-	</div>";
-    }
-
-
+  
+    // get the reaction template
     public static function get_reaction_template($support = 0, $oppose = 0,$post_id){
 
   return "	<!-- post actions -->
