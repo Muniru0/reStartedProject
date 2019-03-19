@@ -3,9 +3,64 @@ $(element).find(".ps-dropdown__menu").toggle("fade",100);
 
 }
 
-function post_option_edit(user_id,post_id,element){
+function post_option_edit(user_id = 0,post_id = 0,element = ""){
+
+    if(typeof user_id != "number" || typeof post_id != "number" || $.trim(element) == ""){
+        return;
+    }
+
+   let grParent =  $(element).parentsUntil("#ps-activitystream");
+   let title    =  $(grParent).find(".ps-stream-action-title");
+       title    =  title.split("<a")[0];
+   let caption  = $(grParent).find("peepso-markdown").find("p");
+       caption   = $.trim($(caption).html());
+
+   let editBox  =  $(grParent).find(".ps-js-activity-edit");   
+     // show the editBox
+     $(editBox).show();
+
+     console.log(editBox);
+     console.log(caption);   
+     console.log(title);  
+    console.log(grParent);
 
 }
+
+  function postEditedPost(post_id = 0,targetElement = ""){
+
+      if(typeof post_id != "number" || $.trim(targetElement) == ""){
+          return;
+      }
+
+      let grParent = $(targetElement).parentsUntil(".ps-postbox");
+      let title    = $(grParent).find("textarea")[0];
+          title     = $(title).html();
+      let caption   = $(grParent).find("textarea")[1];
+          caption   = $(caption).html();
+
+          console.log(grParent);  
+          console.log(title);  
+          console.log(caption);    
+  }
+
+
+
+  function cancelEditPost(targetElement = ""){
+      
+      if($.trim(targetElement) == ""){
+return;
+      }
+
+
+    let editBox = $(targetElement).parentsUntil(".ps-stream-body");
+         //hide the entire editbox
+         $(editBox);
+
+   
+
+  }
+
+
 
 function post_option_delete(userID,postID,element){
   

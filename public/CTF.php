@@ -72,7 +72,8 @@ div{
  <div id="sample-div" class="test"> Simple div </div>
  <?php
   
- 
+  echo strlen("helkfkajfkjakfjsalkfjsalkfjlsakjfl;ksajf;");
+ //Pagination::community_posts("sol");
  
    
  function test_calling_functions($id = 10000){global $db;

@@ -216,7 +216,8 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 ">
     
     <div class="community__main" style="
-    margin-left: 15em;
+   margin-left: 15%;
+    width: 65%;
 ">
             <div id="peepso-wrap" class="container-fluid"><div class="peepso ps-page--activity-post">
     <section id="mainbody" class="ps-wrapper ps-clearfix">

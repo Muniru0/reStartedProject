@@ -276,7 +276,7 @@ class FetchPost extends DatabaseObject{
 	public static function get_caption_template($caption = ""){
 		
 		if(!isset($caption) || trim($caption) == "" || empty($caption)){
-			return "";
+			$caption "";
 		}
 		
 		$caption = str_replace("\n","",$caption);
@@ -287,18 +287,25 @@ class FetchPost extends DatabaseObject{
      // get edit post template 
      public static function get_edit_post_template($caption = "",$title = "", $location = "",$post_id = 0){
 		    
-		$caption_count = 4000 - count($caption);	  
+		$caption_count = 4000 - strlen($caption);	  
 			  
-			return "<div class='ps-js-activity-edit ps-js-activity-edit--482' style=''><div class='ps-postbox ps-postbox--edit ps-sclearfix'>
+			return "<div class='ps-js-activity-edit ps-js-activity-edit--482' style='display:none;'><div class='ps-postbox ps-postbox--edit ps-sclearfix'>
 	<div class='ps-postbox-content'>
 		<div class='ps-postbox-status'>
 			<div style='position:relative'>
-				<div class='ps-postbox-input ps-inputbox'>
-<div class='ps-tagging-wrapper'><div class='ps-tagging-beautifier'></div><textarea class='ps-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Say what is on your mind...' spellcheck='false' style='height: 92px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;' ></textarea><input type='hidden' class='ps-tagging-hidden' value='' /><div class='ps-tagging-dropdown' style='display: none;'></div></div>
+				<div class='ps-postbox-input ps-inputbox' style=''>
+     <div class='ps-tagging-wrapper' style='
+    border-bottom: 1px solid #e1dede;
+    margin-bottom: 1%;
+'><div class='ps-tagging-beautifier'></div><textarea class='ps-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Please write the title here...(MAX-CHARACTERS: 100 )' spellcheck='false' style='height: 32px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'></textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
+ 
+<div class='ps-tagging-wrapper'>
+   
+    <div class='ps-tagging-beautifier'></div><textarea class='ps-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Say what is on your mind...' spellcheck='false' style='height: 92px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'></textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
 									</div>
 				<div class='ps-postbox-addons'>— <i class='ps-icon-map-marker'></i><b>{$location}</b></div>
 			</div>
-	 <div class='post-charcount charcount ps-postbox-charcount'>{$caption_count}</div>
+	 <div class='post-charcount charcount ps-postbox-charcount' style='top:24%'>{$caption_count}</div>
 		</div>
 	</div>
 	<div class='ps-postbox-tab ps-postbox-tab-root ps-sclearfix' style='display:none'>
@@ -339,8 +346,8 @@ class FetchPost extends DatabaseObject{
 </div>
 </div>		</div>
 		<div class='ps-postbox__action ps-postbox-action' style='display: flex;'>
-			<button type='button' onclick='cancelEditPost();' class='ps-btn ps-btn--postbox ps-button-cancel'>Cancel</button>
-			<button type='button' onclick ='submitEditedPost(post_id)' class='ps-btn ps-btn--postbox ps-button-action postbox-submit' style='display: inline-block;'>Post</button>
+	 <button type='button' onclick='cancelEditPost({$post_id});' class='ps-btn ps-btn--postbox ps-button-cancel'>Cancel</button>
+			<button type='button' onclick ='submitEditedPost({$post_id})' class='ps-btn ps-btn--postbox ps-button-action postbox-submit' style='display: inline-block;'>Post</button>
 		</div>
 		<div class='ps-postbox-loading' style='display: none;'>
 			<img src='https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif'>
@@ -440,8 +447,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 	//get the layout template for two images 
     public static function images_layout_template($uploader_id = 0,$post_id = 0,$images =[],$count = 0,$number_of_supports = 0,$number_of_opposes = 0,$reactions_user_ids = [],$location = "",$title = "",$caption = null){
  
-	log_action(__CLASS__,"how ");
-	  /* log_action(__CLASS__,$uploader_id." ".$edit_post_template." ".__LINE__); */
+	
 	
 	  // veirfy the entire the images array
 		if(!is_array($images) || !isset($images) || empty($images)){
@@ -1065,7 +1071,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[user::$user_category],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);
 				
 			// get the images and their arrangements
-			$full_body     = self::images_layout_template($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$alias_of_files_count],$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reaction_user_ids,,$post_info[PostImage::$location],$post_info[PostImage::$title],$post_info[PostImage::$caption]);
+			$full_body     = self::images_layout_template($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$alias_of_files_count],$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reaction_user_ids,$post_info[PostImage::$location],$post_info[PostImage::$title],$post_info[PostImage::$caption]);
 			
 			
 			 // get the reaction and comment box

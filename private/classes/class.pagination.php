@@ -12,7 +12,7 @@ class Pagination extends DatabaseObject {
 	
 	// get infinite scroll	
 public static function get_infinite_scroll($stream_type = "",$stream_type_id = null){
-     die("yes lets see");
+    
  global $db;
 
 	  if(!isset($_SESSION)){
@@ -477,6 +477,9 @@ $reactions  = [];
  
  public static function community_posts($community_type = ""){
 	 	 
+		 
+		 echo "how are you";
+		 return false;
 		global $db;
      
      if(!isset($community_type) || trim($community_type) == ""){
@@ -489,7 +492,8 @@ $reactions  = [];
   $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".PostImage::$table_name.".".PostImage::$files_count." AS ".PostImage::$alias_of_files_count.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
 ".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE label = '{$community_type}' LIMIT ".$_SESSION[STREAM_COMMUNITY].",50 ";
-  
+   echo $query;
+     return;
      $post_ids_array = [];
      $row_count = 0;
 $results = $db->query($query);
@@ -575,6 +579,13 @@ $row_count = $results->num_rows;
  }// community_posts();
     
     
+    
+    
+    
+    
+    public static function gest(){
+        echo "how to make things move fast";
+    }
 
  
  
@@ -780,8 +791,7 @@ $row_count = $results->num_rows;
 	
  } 
  
-  print_r($returned_array);
- return false;
+ 
  return $returned_array;
  }//home_posts();	 
 

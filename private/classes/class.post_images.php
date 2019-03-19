@@ -23,7 +23,8 @@ class PostImage extends FileUpload {
     public static $label        = "label";
     public static $caption      = "caption";
 	public static $log          = "longitude";
-    public static $lat          = "latitude";
+    public static $lat          = "latitude"; 
+	public static $location     = "location";
 	public static $files_count  = "files_count";
     public static $support      = "support";
     public static $oppose       = "oppose";
@@ -40,7 +41,8 @@ class PostImage extends FileUpload {
     public static $alias_of_label        = "post_table_label";
     public static $alias_of_caption      = "post_table_caption";
 	public static $alias_of_log          = "post_table_longitude";
-    public static $alias_of_lat          = "post_table_latitude";
+    public static $alias_of_lat          = "post_table_latitude"; 
+	public static $alias_of_location     = "post_table_location";
 	public static $alias_of_files_count  = "post_table_files_count";
     public static $alias_of_support      = "post_table_support";
     public static $alias_of_oppose       = "post_table_oppose";
@@ -232,7 +234,14 @@ $filenames = FileUpload::upload_file($file_destination, $files,$count);
     $uploader_id = $_SESSION["id"];
     $upload_time = time();
     $count       = count($filenames);
-$query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$lat,$count]);
+	
+	// this is for debugging purposes only
+	/***********************************/
+	$location = ["Wa","Tamale","Kumasi","Accra","Koforidua","Cape Coast","Tema","Bolgatanga","Winneba","Saudi Arabia"];
+		   $location = $locations[array_rand($locations)];
+    /***********************************/
+		   
+$query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$lat,$location,$count]);
 
 
     $query = "CALL post_image('".$query_parameters."')";
@@ -269,50 +278,6 @@ $query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$la
 }
 
 
-
-
-
-
-
-
- if(false){
-
-// prepare the statement
-$stmt = $db->prepare($query);
-
-if(!$stmt){
-	log_action(__CLASS__," Statement preparation failed: ".$stmt->error." with db error: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
-}
-
-
-
-  if(!isset($uploader_id) || $uploader_id < 1 ){
-	  print j(["false"=>"Routine security checks,Please refresh the page and continue"]);
-	  return;
-  }
-  
-  
-if(!$stmt->bind_param("iisssii",$uploader_id,$upload_time,$title,$label,$caption,$log,$lat)){
-	log_action(__CLASS__," Statement preparation failed: ".$stmt->error." with db error: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
-	 print j(["false"=>"Sorry,Please refresh the page and try again"]);
-	  return;
-}
-
-
-if(!$stmt->execute()){
-	log_action(__CLASS__," Statement preparation failed: ".$stmt->error." with db error: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
-}
-
-$post_id = 0;
-
-if($stmt->insert_id){
-	$post_id = $stmt->insert_id;
-	
-}
- 
-$stmt->close();
- }
- 
  
  
 $post_id = (int)$post_id;

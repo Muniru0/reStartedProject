@@ -1,7 +1,7 @@
 <?php
  require_once("../private/initialize.php");
 Session::before_every_protected_page("home");
-Session::after_successful_logout();
+//Session::after_successful_logout();
 
 
 $label   = "";
