@@ -100,6 +100,31 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
 
   
 }
+    elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "edit_post"){
+        
+        if(!isset($_SESSION) || !isset($_SESSION[user::$id])){
+           return; 
+        }
+        
+        $post_id = $_POST["post_id"];
+        $user_id = $_POST["user_id"];
+        
+        if($user_id != $_SESSION[user::$id]){
+            Errors::trigger_error(RETRY);
+            return;
+        }
+        
+        if(!in_array($post_id,$_SESSION["post_ids"])){
+            Errors::trigger_error(RETRY);
+            return;
+        }
+        
+        
+        
+        
+        
+        
+    }// edit_post();
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "delete_post"){
    $post_id = (int)$_POST["post_id"];
    $user_id = (int) $_POST["user_id"];

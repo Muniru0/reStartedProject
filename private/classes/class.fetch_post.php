@@ -301,7 +301,7 @@ class FetchPost extends DatabaseObject{
  
 <div class='ps-tagging-wrapper'>
    
-    <div class='ps-tagging-beautifier'></div><textarea class='ps-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Say what is on your mind...' spellcheck='false'  MAXLENGTH='100' style='height: 92px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'></textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
+    <div class='ps-tagging-beautifier'></div><textarea class='ps-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Say what is on your mind...' spellcheck='false'  MAXLENGTH='100' style='height: 92px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'>{$caption}</textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
 									</div>
 				<div class='ps-postbox-addons'>— <i class='ps-icon-map-marker'></i><b>{$location}</b></div>
 			</div>
@@ -314,7 +314,7 @@ class FetchPost extends DatabaseObject{
 	</div>
 	<nav class='ps-postbox__tabs ps-postbox-tab selected'>
 		<div class='ps-postbox__menu ps-postbox__menu--interactions'>
-			<div id='location-tab' class='ps-postbox__menu-item'><div class='interaction-icon-wrapper'><a class='pstd-secondary ps-tooltip ps-tooltip--postbox' data-tooltip='Location' onclick='return;'>
+			<div id='location_tab_{$post_id}' class='ps-postbox__menu-item'><div class='interaction-icon-wrapper'><a class='pstd-secondary ps-tooltip ps-tooltip--postbox' data-tooltip='Location' onclick='return;'>
 <i class='ps-icon-map-marker'></i>
 </a>
 </div><div id='pslocation' class='hidden ps-postbox-dropdown ps-js-postbox-location'><div class='ps-location-wrapper ps-js-location-wrapper' style='display:block'>
@@ -346,7 +346,8 @@ class FetchPost extends DatabaseObject{
 </div>
 </div>		</div>
 		<div class='ps-postbox__action ps-postbox-action' style='display: flex;'>
-	 <button type='button' onclick='cancelEditPost({$post_id});' class='ps-btn ps-btn--postbox ps-button-cancel'>Cancel</button>
+	 <button type='button' onclick='cancelEditPost({$post_id});' class='ps-btn ps-btn--postbox ps-button-cancel' style='position: relative;
+    right: 5%;'>Cancel</button>
 			<button type='button' onclick ='editPost({$post_id})' class='ps-btn ps-btn--postbox ps-button-action postbox-submit' style='display: inline-block;'>Post</button>
 		</div>
 		<div class='ps-postbox-loading' style='display: none;'>
