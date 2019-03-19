@@ -320,7 +320,41 @@ return;
     }//post();
 
 
+  // edit post 
+    
+ public static function edit_post($post_id = 0,$caption = "", $title = ""){
+     
+     global $db;
+    
+     if($post_id < 1){
+         return;
+     }
+     
+     $query = "CALL edit_post(".$_SESSION[user::$id].",{$post_id},{$caption},{$title},".time().")";
+     
+  
 
+    if($db->multi_query($query)){
+         
+        do{
+            
+            if($results = $db->store_result()){
+                 if($row = $results->fetch_assoc()){
+                      print j(["caption"=>$row[PostImage::$caption],"title"=>$row[PostImage::$title],"location"=>$row[PostImage::$location],"lat"=>$row[PostImage::$lat],"log"=>$row[PostImage::$log]]);
+                 }elseif(trim($db->error) != ""){
+                     Errors::trigger_error(RETRY);
+                     return;
+                 }elseif(trim($db->error) != ""){
+                      Errors::trigger_error(RETRY);
+                        return;
+                 }
+            }
+            
+        }while($db->more_results() && $db->next_results());
+        
+    }
+     
+ }    
 
 
     // validate the method to see if it has all the required fields populate

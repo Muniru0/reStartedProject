@@ -105,9 +105,10 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
         if(!isset($_SESSION) || !isset($_SESSION[user::$id])){
            return; 
         }
-        
-        $post_id = $_POST["post_id"];
-        $user_id = $_POST["user_id"];
+         $caption = h($_POST["caption"]);
+         $title   = $_POST["title"];
+         $post_id = $_POST["post_id"];
+         $user_id = $_POST["user_id"];
         
         if($user_id != $_SESSION[user::$id]){
             Errors::trigger_error(RETRY);
@@ -120,7 +121,24 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
         }
         
         
+        $caption = $db->real_escape_string(nl2br($caption));
+        $title = $db->real_escape_string(nl2br($title));
+		  
+	
+		// if(csrf_token_is_recent() && csrf_token_is_valid()){
+              // check the length of the caption string        
+        if(isset($caption) && !empty(trim($caption)) && strlen($caption > 4000){
+         print  j(["false" => "Please the maximum number of characters for the caption is <b>(4000)</b>"]);
+           return;
+        }
+        // check the length of the title string
+     if(!has_length("title",["max" => 100])){
+        print  j(["false" => "Please the maximum number of characters for the title is <b>(50)</b>"]);
+           return;
+        }
         
+        
+  PostImage::edit_post($post_id,$caption,$title);        
         
         
         
