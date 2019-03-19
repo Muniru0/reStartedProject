@@ -103,31 +103,35 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
     elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "edit_post"){
         
         if(!isset($_SESSION) || !isset($_SESSION[user::$id])){
+            Errors::trigger_error(INVALID_SESSION);
            return; 
         }
+      
          $caption = h($_POST["caption"]);
-         $title   = $_POST["title"];
+         $title   = h($_POST["title"]);
          $post_id = $_POST["post_id"];
          $user_id = $_POST["user_id"];
+         $log     = (float)$_POST["log"];
+         $lat     = (float) $_POST["lat"];
+         $location = h($_POST["location"]);
+         
         
-        if($user_id != $_SESSION[user::$id]){
-            Errors::trigger_error(RETRY);
+        if($user_id != $_SESSION[user::$id] || !in_array($post_id,$_SESSION[PostImage::$session_post_ids]) ||
+          !is_float($lat) || $lat < 0 || $log < 0 || !is_float($log) || !is_string($location)){
+          
+          Errors::trigger_error(RETRY);
             return;
         }
         
-        if(!in_array($post_id,$_SESSION["post_ids"])){
-            Errors::trigger_error(RETRY);
-            return;
-        }
-        
+      
         
         $caption = $db->real_escape_string(nl2br($caption));
         $title = $db->real_escape_string(nl2br($title));
-		  
+        $location = $db->real_escape_string($location);		  
 	
 		// if(csrf_token_is_recent() && csrf_token_is_valid()){
               // check the length of the caption string        
-        if(isset($caption) && !empty(trim($caption)) && strlen($caption > 4000){
+        if(isset($caption) && !empty(trim($caption)) && strlen($caption) > 4000){
          print  j(["false" => "Please the maximum number of characters for the caption is <b>(4000)</b>"]);
            return;
         }
@@ -137,8 +141,8 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
            return;
         }
         
-        
-  PostImage::edit_post($post_id,$caption,$title);        
+         
+  PostImage::edit_post($post_id,$caption,$title,$location,$lat,$lat);        
         
         
         

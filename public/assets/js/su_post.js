@@ -1249,34 +1249,43 @@ function post_option_edit(user_id = 0,post_id = 0,element = ""){
 
 }
 
-  function editPost(post_id = 0,targetElement = ""){
+  function editPost(postID = 0,userID,targetElement = ""){
 
-      if(typeof post_id != "number" || $.trim(targetElement) == ""){
+      if(typeof postID != "number" || $.trim(targetElement) == ""){
           return;
       }
 
-      let grParent = $(targetElement).parentsUntil("#ps-activitystream");
-      let mainParent = $(grParent).find(".ps-postbox");
-      let title    = $(mainParent).find("textarea")[0];
-      let titleParent = $(title).parent();
-          title     = $(title).html();
-      let caption   = $(mainParent).find("textarea")[1];
-          caption   = $(caption).html();
-           if($.trim(title) == ""){
-             $(titleParent).effect("shake");
-             $(titleParent).css("border","#d24942");
-             $(titleParent).css("background","#d24942");
+      // old post variables
+      let grParent         = $(targetElement).parentsUntil("#ps-activitystream");
+      let oldTitleElement  = $(grParent).find(".ps-stream-action-title");
+      let oldTitle         = $(oldTitleElement).html();
+      let oldCaptionElement = $(grParent).find(".peepso-markdown");
+      let oldCaption        = $(oldCaptionElement).html();
+
+
+      // new post variables
+      let editBoxElement        = $(grParent).find(".ps-postbox");
+      let newTitleElement       = $(editBoxElement).find("textarea")[0];
+      let newTitle              = $(newTitleElement).val();
+      let newTitleParent       = $(newTitleElement).parent();
+      let newCaptionElement     = $(editBoxElement).find("textarea")[1];
+      let newCaption            = $(newCaptionElement).val();
+      let locationValue         = "wa";
+      let logValue                   = 122.34453566455554;
+      let latValue                   = 123.44555803840509;
+           if($.trim(newTitle) == ""){
+             $(newTitleParent).effect("shake");
+             $(newTitleParent).css("border","#d24942");
+             $(newTitleParent).css("background","#d24942");
              return;
            }
-          console.log(grParent);  
-          console.log(title);  
-          console.log(caption);   
-
+            
 
           $.ajax({
             url: "../private/neutral_ajax.php",
             type: "POST",
-            data: {request_type: "edit_post",caption: captionValue, title: titleValue,location: locationValue},
+            data: {request_type: "edit_post",post_id: postID,user_id: userID,caption: newCaption,
+             title: newTitle,location: locationValue,lat: latValue, log: logValue},
             dataType : "html"
           }).done(function(response){
              console.log(response);

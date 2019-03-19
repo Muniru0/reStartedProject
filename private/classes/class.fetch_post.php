@@ -285,8 +285,10 @@ class FetchPost extends DatabaseObject{
 	
     
      // get edit post template 
-     public static function get_edit_post_template($caption = "",$title = "", $location = "",$post_id = 0){
-		    
+     public static function get_edit_post_template($uploader_id= 0,$caption = "",$title = "", $location = "",$post_id = 0){
+		      if($uploader_id < 1){
+                  return "";
+              }
 		$caption_count = 4000 - strlen($caption);	  
 			  
 			return "<div class='ps-js-activity-edit ps-js-activity-edit--482' style='display:none;'><div class='ps-postbox ps-postbox--edit ps-sclearfix'>
@@ -313,7 +315,7 @@ class FetchPost extends DatabaseObject{
 					</div>
 	</div>
 	<nav class='ps-postbox__tabs ps-postbox-tab selected'>
-		<div class='ps-postbox__menu ps-postbox__menu--interactions'>
+		<div class='ps-postbox__menu ps-postbox__menu--interactions' style='background:beige; border-radius: 10%;'>
 			<div id='location_tab_{$post_id}' class='ps-postbox__menu-item'><div class='interaction-icon-wrapper'><a class='pstd-secondary ps-tooltip ps-tooltip--postbox' data-tooltip='Location' onclick='return;'>
 <i class='ps-icon-map-marker'></i>
 </a>
@@ -346,9 +348,9 @@ class FetchPost extends DatabaseObject{
 </div>
 </div>		</div>
 		<div class='ps-postbox__action ps-postbox-action' style='display: flex;'>
-	 <button type='button' onclick='cancelEditPost({$post_id});' class='ps-btn ps-btn--postbox ps-button-cancel' style='position: relative;
+	 <button type='button' onclick='cancelEditPost({$post_id},this);' class='ps-btn ps-btn--postbox ps-button-cancel' style='position: relative;
     right: 5%;'>Cancel</button>
-			<button type='button' onclick ='editPost({$post_id})' class='ps-btn ps-btn--postbox ps-button-action postbox-submit' style='display: inline-block;'>Post</button>
+			<button type='button' onclick ='editPost({$post_id},{$uploader_id},this)' class='ps-btn ps-btn--postbox ps-button-action postbox-submit' style='display: inline-block;'>Post</button>
 		</div>
 		<div class='ps-postbox-loading' style='display: none;'>
 			<img src='https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif'>
@@ -449,7 +451,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
     public static function images_layout_template($uploader_id = 0,$post_id = 0,$images =[],$count = 0,$number_of_supports = 0,$number_of_opposes = 0,$reactions_user_ids = [],$location = "",$title = "",$caption = null){
  
 	
-	
+	log_action(__CLASS__,$title);
 	  // veirfy the entire the images array
 		if(!is_array($images) || !isset($images) || empty($images)){
 			return false;
@@ -466,7 +468,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 		return false;	
 		}
 		
-      $edit_post_template = ((int)$uploader_id === (int)$_SESSION[user::$id]) ? self::get_edit_post_template($caption,$title,$location,$post_id) : "";
+      $edit_post_template = ((int)$uploader_id === (int)$_SESSION[user::$id]) ? self::get_edit_post_template($uploader_id,$caption,$title,$location,$post_id) : "";
 		
 		  // check the number of reactions and show or hide the 
 		  // the reactions div accordingly
@@ -624,7 +626,9 @@ if($width >= 1000){
 								</div>
 	</div>
 </a>
-
+<div class='post_title' style='top: 0;right:0;height: 21%;bottom: 90%;'>
+				<span>{$title}</span>
+			</div>
   </div>
   </div>
   </div>
@@ -783,7 +787,9 @@ if(!file_exists(self::$images_dir_string.$image)){
 			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
 								</div>
 	</div>
-</a>
+</a><div class='post_title' style='top: 0;right:0;height: 21%;bottom: 90%;'>
+				<span>{$title}</span>
+			</div>
 
 ";
 	 $images_processed ++;
@@ -1044,8 +1050,8 @@ foreach ($returned_array as $posts_info => $images_or_info){
 				  $_SESSION[PostImage::$uploader_id][] = (int)$post_info[PostImage::$uploader_id];
 			  }
 			  
-			 if(!in_array((int)$post_info[PostImage::$alias_of_id],$_SESSION["post_ids"])){
-				 $_SESSION[PostImage::$alias_of_id][] = (int)$post_info[PostImage::$alias_of_id];
+			 if(!in_array((int)$post_info[PostImage::$alias_of_id],$_SESSION[PostImage::$session_post_ids])){
+				 $_SESSION[PostImage::$session_post_ids][] = (int)$post_info[PostImage::$alias_of_id];
 			 }
 			 
 			 $reaction_user_ids = (empty($reactions_user_ids[$post_info[PostImage::$alias_of_id]]) || !isset($reactions_user_ids[$post_info[PostImage::$alias_of_id]])) ? [] : $reactions_user_ids[$post_info[PostImage::$alias_of_id]];
