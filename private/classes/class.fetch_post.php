@@ -43,10 +43,6 @@ class FetchPost extends DatabaseObject{
     public static $BLESSED     = "blessed";
 
 
-
-public static function show_post(){
-
-
 // helper method to get the appropriate mood
 //
     public static function get_mood_template($mood){
@@ -144,6 +140,8 @@ public static function show_post(){
 		
         return "<span class=\"ps-stream-action-title\"> uploaded {$photos_string} about a  <a href=\"https://demo.peepso.com/profile/demo/photos/album/37\" title='This incident is about {$label}. (See more {$label} based incidents)'>".h($label)."  issue</a></span>";
     }
+	
+	
 
     public static function get_location_template($longitude = 0,$latitude = 0){
           $locations = ["Wa","Tamale","Kumasi","Accra","Koforidua","Cape Coast","Tema","Bolgatanga","Winneba","Saudi Arabia"];
@@ -279,34 +277,83 @@ public static function show_post(){
 		if(!isset($caption) || trim($caption) == "" || empty($caption)){
 			return "";
 		}
+		
+		$caption = str_replace("\n","",$caption);
 		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown' ><p>{$caption}</p></div></div>";
 	}// get_caption_template();
 	
-    public static function get_stream_options_template($post_id,$uploader_id){
-
-        return "<div class=\"ps-stream-options\">
-            <div class=\"ps-dropdown ps-dropdown--stream ps-js-dropdown\">
-<a href=\"#\" class=\"ps-dropdown__toggle ps-js-dropdown-toggle\" data-value=\"\">
-<span class=\"dropdown-caret ps-icon-caret-down\"></span>
+     public static function get_post_edit_template($caption = "",$title = "", $location = "",$post_id = 0){
+		    
+		$caption_count = 4000 - count($caption);	  
+			  
+			return "<div class='ps-js-activity-edit ps-js-activity-edit--482' style=''><div class='ps-postbox ps-postbox--edit ps-sclearfix'>
+	<div class='ps-postbox-content'>
+		<div class='ps-postbox-status'>
+			<div style='position:relative'>
+				<div class='ps-postbox-input ps-inputbox'>
+<div class='ps-tagging-wrapper'><div class='ps-tagging-beautifier'></div><textarea class='ps-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Say what is on your mind...' spellcheck='false' style='height: 92px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;' ></textarea><input type='hidden' class='ps-tagging-hidden' value='' /><div class='ps-tagging-dropdown' style='display: none;'></div></div>
+									</div>
+				<div class='ps-postbox-addons'>— <i class='ps-icon-map-marker'></i><b>{$location}</b></div>
+			</div>
+	 <div class='post-charcount charcount ps-postbox-charcount'>{$caption_count}</div>
+		</div>
+	</div>
+	<div class='ps-postbox-tab ps-postbox-tab-root ps-sclearfix' style='display:none'>
+		<div class='ps-postbox__menu ps-postbox__menu--tabs'>
+					</div>
+	</div>
+	<nav class='ps-postbox__tabs ps-postbox-tab selected'>
+		<div class='ps-postbox__menu ps-postbox__menu--interactions'>
+			<div id='location-tab' class='ps-postbox__menu-item'><div class='interaction-icon-wrapper'><a class='pstd-secondary ps-tooltip ps-tooltip--postbox' data-tooltip='Location' onclick='return;'>
+<i class='ps-icon-map-marker'></i>
 </a>
-<div class=\"ps-dropdown__menu ps-js-dropdown-menu\">
-<a href=\"#\" onclick=\"activity.option_edit(930, 482); return false\" data-post-id=\"930\"><i class=\"ps-icon-edit\"></i><span>Edit Post</span>
-</a>
-<a href=\"#\" onclick=\"return peepso.photos.delete_stream_album(930,482);\" data-post-id=\"930\"><i class=\"ps-icon-trash\"></i><span>Delete Album</span>
-</a>
-<a href=\"#\" onclick=\"return activity.action_pin(930, 1);\" data-post-id=\"930\"><i class=\"ps-icon-move-up\"></i><span>Pin to top</span>
-</a>
-<a href=\"#\" onclick=\"return activity.action_pin(930, 0);\" data-post-id=\"930\"><i class=\"ps-icon-move-down\"></i><span>Unpin</span>
-</a>
-<a href=\"#\" onclick=\"window.open(&quot;https://demo.peepso.com/profile/demo/&quot;, &quot;_blank&quot;);return false\" data-post-id=\"930\"><i class=\"ps-icon-info-circled\"></i><span>Pinned by Patricia</span>
-</a>
-<a href=\"#\" class=\"active\" onclick=\"return false\" data-post-id=\"930\"><i class=\"ps-icon-calendar\"></i><span>Pinned June 11, 2018 at 8:39 pm</span>
-</a>
+</div><div id='pslocation' class='hidden ps-postbox-dropdown ps-js-postbox-location'><div class='ps-location-wrapper ps-js-location-wrapper' style='display:block'>
+	<div class='ps-location ps-js-location ps-clearfix' style='position:relative;border:0 none'>
+		<input type='text' class='ps-input ps-input-full' placeholder='Enter location name...'>
+		<div class='ps-location-loading ps-js-location-loading'>
+			<img src='https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif' alt=''>
+		</div>
+		<div class='ps-location-result ps-js-location-result'>
+			<div class='ps-location-map ps-js-location-map' style='display:none'></div>
+			<div class='ps-location-list ps-js-location-list'></div>
+			<a href='#' class='ps-btn ps-btn-small ps-btn-primary ps-js-select' style='top:42px'>Select</a>
+			<a href='#' class='ps-btn ps-btn-small ps-btn-danger ps-js-remove' style='top:42px'>Remove</a>
+		</div>
+	</div>
+	<script type='text/template' class='ps-js-location-fragment'>
+		<a href='#' class='ps-location-listitem {{= data.place_id ? 'ps-js-location-listitem' : '' }}' data-place-id='{{= data.place_id }}' style='line-height:12px;padding-top:6px;padding-bottom:6px'>
+			<strong class='ps-js-location-listitem-name'>{{= data.name }}</strong><br />
+			<small>{{= data.description || '&nbsp;' }}</small>
+		</a>
+	</script>
 </div>
 </div>
-        </div>";
-    }
-    
+<div style='display: none;'>
+	<div id='pslocation-search-loading'>
+		<img src='https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif' alt=''>
+	</div>
+	<div id='pslocation-in-text'></div>
+</div>
+</div>		</div>
+		<div class='ps-postbox__action ps-postbox-action' style='display: flex;'>
+			<button type='button' onclick='cancelEditPost();' class='ps-btn ps-btn--postbox ps-button-cancel'>Cancel</button>
+			<button type='button' onclick ='submitEditedPost(post_id)' class='ps-btn ps-btn--postbox ps-button-action postbox-submit' style='display: inline-block;'>Post</button>
+		</div>
+		<div class='ps-postbox-loading' style='display: none;'>
+			<img src='https://demo.peepso.com/wp-content/plugins/peepso-core/assets/images/ajax-loader.gif'>
+			<div></div>
+		</div>
+	</nav>
+</div>
+</div>";
+		 
+		 
+	 }// get_post_edit_template();
+	 
+	 
+	 
+	 
+	 
     // get the recently uploaded post
  public static function get_uploaded_post($post_id = 0){
         global $db;
@@ -410,7 +457,8 @@ public static function images_layout_template($post_id = 0,$images =[],$count = 
 		if($post_id < 1){
 		return false;	
 		}
-
+		
+      $edit_post_template = $_SESSION[userr::$id]self::get_edit_post_template($caption,$title,$location,$post_id);
 		  
 		  // check the number of reactions and show or hide the 
 		  // the reactions div accordingly
@@ -433,7 +481,9 @@ public static function images_layout_template($post_id = 0,$images =[],$count = 
 		
 		$support_check     = "";
 		$oppose_check      = "";
-		  
+		
+        $oppose_label_selected = "";		
+		 
 		     
 		  if(($number_of_supports > 0 || $number_of_opposes > 0) && !empty($reactions_user_ids)){ 
 		 
@@ -446,6 +496,7 @@ public static function images_layout_template($post_id = 0,$images =[],$count = 
 					   $support_span_selected = "selected_support_span";
 					   $oppose_span_deselected = "deselected_oppose_span";
 					   $support_check     = "checked='checked'";
+					 
 					   
 		
 					   
@@ -455,6 +506,7 @@ public static function images_layout_template($post_id = 0,$images =[],$count = 
 					   $support_span_deselected = "deselected_support_span";
 					   $oppose_span_selected = "selected_oppose_span";
 					   $oppose_check        = "checked='checked'";
+					   $oppose_label_selected = "oppose_label_selected";
 				   }
 				   
 				   
@@ -472,7 +524,7 @@ public static function images_layout_template($post_id = 0,$images =[],$count = 
 		{$number_of_opposes} opposed</a>" ;
 		
  $images_string = "<div class='ps-stream-body'>
-		".self::get_caption_template($caption)."
+		".self::get_caption_template($caption).."
 		<div class='ps-stream-attachments cstream-attachments'>
 		<div class='cstream-attachment photo-attachment'>
 		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
@@ -586,7 +638,7 @@ if($width >= 1000){
 	
 	<span class='oppose_span {$oppose_span_deselected} {$oppose_span_selected}'>Oppose</span>
 	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)' {$oppose_check}/>
-	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em;'></label>
+	<label for='oppose_{$post_id}' class='{$oppose_label_selected} ' title='Oppose the above post' style='margin-left: 11em;'></label>
  </div>
    
    <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' $toggle_reactions_count style='padding-left:0px;padding-right: 0px;'>
@@ -672,7 +724,7 @@ elseif($count % 2 === 1 || $count >= 5){
 	 $images_processed = 1;
 	 $overlay = "";
 	foreach($images As $image_id => $image){
-	  // if(!$display_inline){
+	  
 		
 if(!file_exists(self::$images_dir_string.$image)){
 		 continue; 
@@ -750,10 +802,10 @@ $images_string .= "</div></div></div></div>
 	
 	<span class='oppose_span  {$oppose_span_deselected} {$oppose_span_selected}'>Oppose</span>
 	<input type='radio' name='reaction_{$post_id}' id='oppose_{$post_id}'  oninput='reaction.addReaction({$post_id},1,this)' {$oppose_check}/>
-	<label for='oppose_{$post_id}'title='Oppose the above post' style='margin-left: 11em; '></label>
+	<label for='oppose_{$post_id}' class='{$oppose_label_selected}'  title='Oppose the above post' style='margin-left: 11em; '></label>
  </div>
    
-   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' $toggle_reactions_count style='padding-left:0px;padding-right: 0px;'>
+   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' {$toggle_reactions_count} style='padding-left:0px;padding-right: 0px;'>
 							
 ".$number_of_supports_string.$number_of_opposes_string." 
 </div>
@@ -1202,7 +1254,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			 $_SESSION["scroll_ready_state"] = true;
         return true; 
 		 }else{
-		print j(["true"=>"waiting"]);
+		print j(["true"=>"no_more_posts"]);
 		
 		$_SESSION["scroll_ready_state"] = true;
         return true; 

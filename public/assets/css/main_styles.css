@@ -540,3 +540,23 @@ button:hover {
     margin-left: 0.5em;
 
 }
+
+.oppose_label_selected {
+	background:#dc756f !important;
+}
+
+
+.user_link_div {
+	border-top-right-radius: 5%;
+    padding: 4%;
+	text-align: center;
+    background: antiquewhite;
+    border-top-left-radius: 5%;
+    webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
+}
+
+
+.user_link_div:hover{
+	opacity: 0.85;
+}

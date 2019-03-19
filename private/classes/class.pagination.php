@@ -34,7 +34,7 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
  $where_clause = "";
   $posts        = "";
   
-  
+
 	// provide a different where clause for each of the different
 	//   types of streams
   if($stream_type == STREAM_HOME){
@@ -57,7 +57,7 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
 	 
 	  $posts = self::self_posts();
   }elseif($stream_type == STREAM_COMMUNITY){
-	  $posts = self::community_posts($offset,$offset_upperbound);
+	  $posts = self::community_posts($stream_type_id);
   }
   
   
@@ -448,11 +448,11 @@ $reactions  = [];
 	
   // if the user has no more posts or no posts at all	
  }elseif($row_count < 1 && trim($db->error) == ""){
-	if($_SESSION[STREAM_SELF] == 1){
+	if($_SESSION[STREAM_SELF] == 0){
 			
 			 print j(["true" =>"no_posts"]);
 			 return;
-		 }elseif( $_SESSION[STREAM_SELF] > 1){
+		 }elseif( $_SESSION[STREAM_SELF] > 0){
 			
 			  print j(["true" => "no_more_posts"]);
 			  return;
@@ -460,6 +460,9 @@ $reactions  = [];
  }else{
 	 Errors::trigger_error(RETRY);
  }
+ 
+ 
+ 
  return $returned_array;
  }//self_posts();
 
@@ -467,41 +470,42 @@ $reactions  = [];
  
  
  // get users own uploaed incidents	
- public static function community_posts($offset = 0 ,$offset_upperbound = 0){
-	 	
+ 
+ public static function community_posts($community_type = ""){
+	 	 
 		global $db;
+     
+     if(!isset($community_type) || trim($community_type) == ""){
+         
+           Errors::trigger_error(RETRY);
+         return false;
+     }
 		
-		  $where_clause = PostImage::$table_name.".".PostImage::$id." >={$offset} && ".PostImage::$table_name.".".PostImage::$id."<= {$offset_upperbound}";
 		
-  $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
+  $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".PostImage::$table_name.".".PostImage::$files_count." AS ".PostImage::$alias_of_files_count.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
-".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE {$where_clause} ";
-
+".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." WHERE label = '{$community_type}' LIMIT ".$_SESSION[STREAM_COMMUNITY].",50 ";
+  
+     $post_ids_array = [];
+     $row_count = 0;
 $results = $db->query($query);
 	
-
-echo $row_count = $results->num_rows;
-	  
-	if($db->error){
-		
-		Errors:;trigger_error(RETRY);
-		return;
-	}
+ if($results){
+     
+$row_count = $results->num_rows;
 	
-	
+ }
+     
+     
 // validate the returning of results	
  if($row_count > 0){
-	 // initialize the post ids array variable to be used
-	 // in the while loop
-	 if($offset == 1){
-	 $post_ids_array = [];
- }
+	 
 	while($row = $results->fetch_assoc()){
 		// get all the post ids to be sorted and the least one
 		// to be set to the session variable of the stream type
-		if($offset == 1){
+		
 		 $post_ids_array[] = $row[PostImage::$alias_of_id];
-		}
+	
 	if(isset($reactions_user_ids) && array_key_exists($row[FetchPost::$post_id],$reactions_user_ids)){
 		    if(isset($reactions_user_ids) && isset($reactions_user_ids[$row[FetchPost::$post_id]]) && !in_array($row[Reaction::$alias_of_user_id],$reactions_user_ids[$row[FetchPost::$post_id]])){
 				$reactions_user_ids[$row[FetchPost::$post_id]][$row[Reaction::$alias_of_user_id]] = $row[ Reaction::$reaction_type];
@@ -539,43 +543,34 @@ echo $row_count = $results->num_rows;
 		
 }
 	}
+	 if(!empty($post_ids)){
+         
+     sort($post_ids_array);
+     $_SESSION[$qr_lowerbound] = array_shift($post_ids_array);
+     $_SESSION[$qr_upperbound] = array_pop($post_ids_array);
+     }
 	
+ }elseif($row_count < 1 && trim($db->error) == ""){
 	
-	//get the least post id and set it to the session stream type 
-	//variable to be used by the comments and activities_user_ids queries
-	if($offset == 1){
-	$_SESSION[$stream_type] = array_shift(sort($post_ids_array));
-	}
+	  if($_SESSION[STREAM_COMMUNITY] == 0){
+          print j(["true" =>"no_posts"]);
+			 return;
+      }elseif($_SESSION[STREAM_COMMUNITY] > 0){
+          print j(["true" => "no_more_posts"]);
+          return;
+      }
+	
  }else{
-	
-	$query = "SELECT MIN(id) AS min_id FROM post_table WHERE id > ".((int)$_SESSION[$stream_type]." LIMIT 1000");
-	 $result = $db->query($query); 
-	 
-	 if($result->num_rows > 0 && $row = $result->fetch_assoc()){
-		  $_SESSION[$stream_type] = $row["min_id"];
-		   $result->free();
-	 }else{
-		$_SESSION[$stream_type] = 0;
-		
-		print j(["true"=>"waiting"]);
-		$result->free();
-        	return;	
-	 }
-	
+      log_action(__CLASS__,"entered here {$db->error}".__LINE__);
+     Errors::trigger_error(RETRY);
+     return false;
  } 
-  // check if the returned post is empty
-  if(empty($returned_array)){
-	print j(["true"=>"waiting"]);
-	
-return false;	 
-  }
   
   
- 
- 
-
  return $returned_array;
- }
+ }// community_posts();
+    
+    
 
  // get users own uploaed incidents	
  public static function profile_posts($where_clause = ""){

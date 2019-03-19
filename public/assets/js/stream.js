@@ -96,13 +96,18 @@
 
 
   // get your own stream( posts that you posted) 
-  static getSelfStream(streamType = "",targetElement = null,reset = null){
+  static getSelfStream(streamType = "",targetElement = null){
 
-    
+   
   // validate the stream type presence
   if($.trim(streamType) == ""){
   return;
   }
+
+
+
+ 
+ 
   
   if($("#page_scroll").val() == "inactive"){
   	if($("#ps-no-more-posts").css("display") != "none"){
@@ -116,11 +121,7 @@
 
   	return;
   }
-  // toggle the display of the reset post button
-  if($("#reset_posts_personal").css("display") == "none"){
-	$("#reset_posts_personal").show();  
-  }
-
+  
  
 
 
@@ -139,46 +140,40 @@
 		if( streamTypeValue != "self"){
 		$("#ps-activitystream").html("");	
 		}
-	
+   }
      // if the stream type value is 
 	 //not self set it to self	
 		 if(streamTypeValue != "self"){
 	   $("#stream_type").val("self");
    }
 					  	
-   }
+   
 
 
-  let resetValue = "false";
-   if($.trim(reset) != "" && reset != null){
-   	resetValue = "reset_post";
-   }
  
 
    // activate the scrolling of the page
     if($("#page_scroll").val() == "inactive"){
 			  stream.togglePageScroll("active");
 	}
+
+  
+
   	 $.ajax({
 			 url:"../private/neutral_ajax.php",
 			 type: "POST",
-			 data: {request_type: "scroll",stream_type:streamType,reset:resetValue},
+			 data: {request_type: "scroll",stream_type:streamType},
 			 datatype: "html"
 		 }).done(function(response){
 			console.log(response);
 
-   let emptyResponseGif =false;
+  
 			try{
 			response = JSON.parse(response);
-
-			// if there are no post for now
-			if($.trim(response["pending"]) == "waiting" && $("#ps-activitystream-loading").css("display") == "none" ){
-			    $("#ps-activitystream-loading").show();
-			    	
-			}
-				 
+         
+			
 	// incase of a redirect		
-		else if(response["false"] != undefined && response["false"] == "login"){
+		if(response["false"] != undefined && response["false"] == "login"){
 location.href="login.php";
    }
 		// incase of an error
@@ -187,23 +182,13 @@ location.href="login.php";
 	$("#ps-activitystream-loading").hide();
 	return;
 	}
-	
-	// incase the user hasn't posted anything yet
- else if(response["true"]){
-	// if the posts are still pending
-		if($.trim(response["true"]) == "waiting"){
-		utility.showErrorDialogBox("Please be patient,we are loading the posts...");
-		  emptyResponseGif  = true;
-			return;
-			// if there are no posts
-		}else if($.trim(response["true"]) == "no_posts"){
+	 else if($.trim(response["true"])){
+	 	  if($.trim(response["true"]) == "no_posts"){
 		   	$("#ps-no-posts").show();
-			  stream.togglePageScroll("inactive");
-			 // if there are no more posts
+		 // if there are no more posts
 		   }else if($.trim(response["true"]) == "no_more_posts"){
 		   	$("#ps-no-more-posts").show();
-			stream.togglePageScroll("inactive");
-		   }
+			}
 		// prevent the request of more data
 		stream.togglePageScroll("inactive");
 		}
@@ -217,14 +202,7 @@ else if($.trim($("#ps-activitystream")) != "" && $("#ps-activitystream") != null
 		}
 					
 		}catch(e){
-            if($.trim(response) == ""){
-            utility.showErrorDialogBox("Please be patient, we are loading your posts...");
-
-           }
-          emptyResponseGif = true;
-            $(window).scroll();
-           
-			}finally{
+           }finally{
 			$(targetElement).attr("disabled",false);
 			$(targetElement).find("img").hide();
 			if($("#ps-activitystream-loading") && $("#ps-activitystream-loading").css("display") == "block" && emptyResponseGif === false){
@@ -237,6 +215,88 @@ else if($.trim($("#ps-activitystream")) != "" && $("#ps-activitystream") != null
 		 }); 
 
   }
+
+
+  static getCommunityStream(streamType = ""){
+
+  	
+
+ 
+ 
+   
+  if($.trim(streamType) == ""){
+  return;
+  }
+  
+  // activate the scrolling of the page
+    if($("#page_scroll").val() == "inactive"){
+			  stream.togglePageScroll("active");
+	}
+  
+ if($("#ps-activitystream-loading").css("display") == "none"){
+ 	 $("#ps-activitystream-loading").show();
+ }
+
+    
+   if($("#stream_type").val() != streamType){
+   	$("#stream_type").val(streamType)
+   }
+  
+   $.ajax({
+			 url:"../private/neutral_ajax.php",
+			 type: "POST",
+			 data: {request_type: "scroll",stream_type:streamType},
+			 datatype: "html"
+		 }).done(function(response){
+			console.log(response);
+
+
+			try{
+			response = JSON.parse(response);
+
+		 if(response["false"] != undefined && response["false"] == "login"){
+ location.href="login.php";
+		}
+		// incase of an error
+		else if($.trim(response["false"]) != ""){
+					 	 utility.showErrorDialogBox(response["false"]);
+					 	  $("#ps-activitystream-loading").hide();
+						 return;
+					 
+	}else if($.trim(response["true"]) != ""){
+	 if($.trim(response["true"]) == "no_posts"){
+		   	$("#ps-no-posts").show();
+			 console.log("here");
+			 // if there are no more posts
+		   }else if($.trim(response["true"]) == "no_more_posts"){
+		   	$("#ps-no-more-posts").show();
+			
+		   }
+		// prevent the request of more data
+		stream.togglePageScroll("inactive");	     	
+	}else if($.trim(response) != ""){
+		$.each(response,function(index,value){
+			$("#ps-activitystream").append(value);
+		});
+	}
+		}catch(e){
+			}finally{
+				
+				 $("#ps-activitystream-loading").hide();
+					
+			}	 	
+	}).fail(function(error){
+			 alert(error);
+		 }); 
+
+
+  
+
+
+
+
+  }
+  
 
   static getProfile(){
 
@@ -377,62 +437,35 @@ if(response["false"] != undefined && response["false"] == "login"){
 
   }
 
-// if the reset personal post button has being clicked
 
-$("#reset_posts_personal").click(function(e){
-	
-	// find the loading gif and toggle the display
-let gif = $("#reset_posts_personal").find("img");	 
-	 if($(gif).css("display") == "none"){
-		$(gif).show(); 
-	 }
-
-$.ajax({
-	url:"../private/neutral_ajax.php",
-	type: "POST",
-	data:{request_type: "reset",param: "personal"},
-	dataType: "html"
-}).done(function(response){
-	
-	try{
-		response = JSON.parse(response);
-	
- if(response["result"]  != undefined && reponse["result"] == "fail"){
-	
-	utility.showErrorDialogBox(response["result"]);
-}else{
-	utility.showErrorDialogBox("Operation failed please try again later");
-}	
-		
-	}catch(e){
-		console.log(e);
-		utility.showErrorDialogBox("Operation failed please try again later");
-	}finally{
-		
-	
-	if($(gif).css("display") != "none"){
-		$(gif).hide(); 
-	 
-	
-}
-	}
-});	
-	
-	
-	
-});
 $(window).scroll(function() {
 	   if($("#page_scroll").val() == "inactive"){
 			   return;
 		   }
 		   
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-    
-          
+         let streamType = $("#stream_type").val();
+             if(streamType.split("_")[0] === "community"){
+             	  stream.getCommunityStream(streamType);
+             	  return;
+             }
+
          	 stream.getCallMethod($("#stream_type").val());
         
         
        
     }
+});
+
+$(document).ready(function(){
+      let streamType = $("#stream_type").val();
+      console.log(streamType);
+	    if(streamType.split("_")[0] === "community"){
+	    	console.log("entered here");
+         stream.getCommunityStream(streamType);
+          return;
+     }
+
+	stream.getCallMethod($("#stream_type").val());
 });
 

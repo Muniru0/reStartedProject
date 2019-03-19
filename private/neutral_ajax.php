@@ -37,6 +37,7 @@ throttle::record_failed_logins($email);
 }
 
 } */
+
 if(!Session::before_every_protected_page()){
 	return;
 }
@@ -487,12 +488,14 @@ elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_
 
 // get the main stream infinite scroll
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll"){
+	   
+   
 	  
 	$allowed_scroll_parameters = [STREAM_HOME,STREAM_PROFILE,STREAM_COMMUNITY,STREAM_SELF];
         
 	  $stream_type = explode("_",trim($_POST["stream_type"]));
-	 
-	  $id      = 0;
+   
+	  $community_or_id      = 0;
 	   
 	  switch(trim($stream_type[0])){
 		  case STREAM_HOME:
@@ -515,32 +518,41 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
 	    Errors::trigger_error(RETRY);
 	  return;
   }
-  
+
   
   // if the result is two
   if(count($stream_type)== 2 ){
 	  
-      $id = (int)$stream_type[1];
+      $community_or_id = trim($stream_type[1]);
   }
-  
+   
     
-  if(is_string($stream) && $id > 0 && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != "home" && trim($stream) != "community" && trim($stream) != "self"){
-		
-    // get the main infinite scroll for the sreaming of post
-	Pagination::get_infinite_scroll($stream,$id);
+  if(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != "home"  && trim($stream) != "self"){
+      // incase you are getting posts for a visited profile
+      // some ones profile that the user visited
+      if($id = is_int($community_or_id)){
+               if($id > 0){
+                    $community_or_id = (int)$id;
+               }else{
+                   Errors::trigger_error(RETRY);
+                   return;
+               }
+          //incase the user wants posts pertaining to a particular
+          // community only
+        }elseif(is_string($community_or_id)){
+        
+           if(trim($community_or_id) == "" || !in_array($community_or_id,COMMUNITIES)){
+                   Errors::trigger_error(RETRY);
+                   return;
+               }
+            
+      }
+      
+    // when the stream type is profile
+	Pagination::get_infinite_scroll($stream,$community_or_id);
 
 	 }
 elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters)){
-	// reset the personal posts		  
-			if(isset($_POST["reset"]) && trim($_POST["reset"]) === RESET_POST){
-			 
-			  if(isset($_SESSION) && isset($_SESSION[STREAM_SELF]) && $_SESSION[STREAM_SELF] > 0 || $_SESSION[STREAM_SELF] != 1){
-				  $_SESSION[STREAM_SELF] = 1;
-				}else{
-				  Errors::trigger_error(RETRY);
-				  return;
-			  }
-		}
 			
 	// get the main infinite scroll for the sreaming of post
 	Pagination::get_infinite_scroll(trim($stream));

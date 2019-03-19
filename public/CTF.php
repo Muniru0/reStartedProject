@@ -73,7 +73,13 @@ div{
  <?php
   
  
-Pagination::home_posts();
+ 
+ if(in_array("transport",COMMUNITIES)){
+	 echo "in it";
+ }else{
+	 echo " not in it";
+ }
+Pagination::community_posts("sol");
 
    
  function test_calling_functions($id = 10000){global $db;

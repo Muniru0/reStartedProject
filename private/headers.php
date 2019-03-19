@@ -88,6 +88,39 @@ function profile_header($firstname = "" ,$lastname = ""){
       </div>";
 }
 
+function community_header($community){
+	
+	return "<div class='header__wrapper header__wrapper--medium'>
+        
+		<div class='header' style='margin: 0px auto;'>
+          <div class='header__logo'>
+            <a href=' ://demo.peepso.com/'>
+              <img src=' ://demo.peepso.com/wp-content/themes/new/assets/images/logo.svg' alt='PeepSo'><img src=' ://demo.peepso.com/wp-content/themes/new/assets/images/logo-white.svg' alt='PeepSo'>
+            </a>
+          </div>
+    <div id='userbar' class='header__account' style='
+   margin: 0px auto;
+'><div class='widget_text widget header__widget'><div class='textwidget custom-html-widget'><div class='ultimate__box-actions' style='margin-left: 30px;'><a class='btn btn--sm' style='display:block;' href='#'>Label \ <strong>{$community}</strong></a></div></div></div></div>
+         
+</div>
+
+          <div class='header__actions'>
+                        <a class='header__toggle header__toggle--account' href='#userbar'>
+              <svg class='svg-inline--fa fa-user-alt fa-w-16' aria-hidden='true' data-prefix='fas' data-icon='user-alt' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' data-fa-i2svg=''><path fill='currentColor' d='M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z'></path></svg><!-- <i class='fas fa-user-alt'></i> -->
+            </a>
+
+            <a href='#userbar' class='header__toggle header__toggle--close' style='display: none'>
+              <svg class='svg-inline--fa fa-times fa-w-12' aria-hidden='true' data-prefix='fas' data-icon='times' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512' data-fa-i2svg=''><path fill='currentColor' d='M323.1 441l53.9-53.9c9.4-9.4 9.4-24.5 0-33.9L279.8 256l97.2-97.2c9.4-9.4 9.4-24.5 0-33.9L323.1 71c-9.4-9.4-24.5-9.4-33.9 0L192 168.2 94.8 71c-9.4-9.4-24.5-9.4-33.9 0L7 124.9c-9.4 9.4-9.4 24.5 0 33.9l97.2 97.2L7 353.2c-9.4 9.4-9.4 24.5 0 33.9L60.9 441c9.4 9.4 24.5 9.4 33.9 0l97.2-97.2 97.2 97.2c9.3 9.3 24.5 9.3 33.9 0z'></path></svg><!-- <i class='fas fa-times'></i> -->
+            </a>
+
+            <a class='header__toggle header__toggle--menu modal__toggle' href='#menu'>
+              <svg class='svg-inline--fa fa-bars fa-w-14' aria-hidden='true' data-prefix='fas' data-icon='bars' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z'></path></svg><!-- <i class='fas fa-bars'></i> -->
+            </a>
+          </div>
+        
+      </div>";
+}
+
 
     // community side left templates
 	function community_side__left(){
@@ -1295,6 +1328,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	 
   <body class='home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 logged-in plg-peepso' id='top' data-gr-c-s-loaded='true'>
   {$request_type}
+  <input type='hidden' id='page_scroll' value='active' />
     <div class='top__button' style='display: none;'>
       <a class='btn btn--red' href='#top'><svg class='svg-inline--fa fa-angle-up fa-w-10' aria-hidden='true' data-prefix='fas' data-icon='angle-up' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 512' data-fa-i2svg=''><path fill='currentColor' d='M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z'></path></svg><!-- <i class='fas fa-angle-up'></i> --></a>
     </div>
@@ -1308,6 +1342,10 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
   <div class='community__wrapper'>
     <div class='community__side community__side--left'>
               <div class='widget community__widget'>
+			  <div class='user_link_div'>
+    <a href='' style='font-size: 150%;'>".$_SESSION["firstname"]." ".$_SESSION["lastname"]."</a>
+    
+    </div>
 	<div class='ps-widget--profile__wrapper ps-widget--external'>
 		<!-- Title of Profile Widget -->
 

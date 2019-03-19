@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<head>
+    <title>Dialog Box</title>
+    <style>
+        #white-background{
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            background-color: : #fefefe;
+            opacity: : 0.7;
+            z-index: 9999;
+        }
+        
+        #dlgbox{
+            display: none;
+            position: fixed;
+            width: 480px;
+            z-index:  9999;
+            border-radius: 10px;
+            background-color:#7c7d7e;
+            
+        }
+        
+        #dlg-header{
+            background-color: #6d84b4;
+            color: #fff;
+            padding:10px;
+            margin: 10px 10px 0px 10px;
+        }
+        #dlg-body {
+            background-color: #fff;
+            color: black;
+            font-size: 14px;
+            padding: 10px;
+            margin: 0px 10px 0px 10px;
+        }  
+        
+        #dlg-footer{
+            background-color: #f2f2f2;
+            text-align: right;
+            padding: 10px;
+            margin: 0px 10px 10px 10px;
+        }
+        #dlg-footer button{
+            background-color: #6d84b4;
+            color: #fff;
+            padding: 5px;
+            border: 0px;
+        }
+    </style>
+</head>
+<body>
+<!--- dialog box -->
+    <div id ="white-background">
+    
+    </div>
+    <div id="dlgbox">
+    <div id="dlg-header">You are logged out.</div>
+    <div id="dlg-body">Kindly log in to continue</div>
+    <div id="dlg-footer">
+        <button onclick="dlgLogin()">Log in</button>
+        </div></div>
+    
+    
+    <!-- rest of the page -->
+    
+    <h1>Dialog Box Demo</h1>
+    <p>This is a dialog box example.</p>
+    <p>Feel free to experiment with the code.</p>
+    <p>Click the button below to see the dialog box.</p>
+    <button onclick="showDialog()">Click me!</button>
+    
+    <script>
+    
+     function dlgLogin(){
+    let whitebg =  document.querySelector("#white-background");
+    let dlg = document.querySelector("#dlgbox");
+         
+whitebg.style.display = "none";
+         dlg.style.display = "none";
+         
+         
+     }
+        
+function showDialog(){
+    
+    let whitebg =  document.querySelector("#white-background");
+    let dlg = document.querySelector("#dlgbox");
+         
+whitebg.style.display = "block";
+         dlg.style.display = "block";
+let winWidth = window.innerWidth;
+    let winHeight = window.innerHeight;
+    
+    dlg.style.left = (winWidth/2) - 480/2 + "px";
+    dlg.style.top ="150px";
+    
+         
+}        
+        
+    </script>
+</body>

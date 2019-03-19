@@ -84,6 +84,7 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 !defined("INVALID_STREAM_OPTION")               ?  define("INVALID_STREAM_OPTION","invalid")                : null;
 !defined("INVALID_SESSION")               ?  define("INVALID_SESSION","invalid_session")                : null;
 !defined("RESET_POST")               ?  define("RESET_POST","reset_post")                : null;
+!defined("COMMUNITIES")               ?  define("COMMUNITIES",["transport","health","work","sol","security","sanitation","oppression","other"])        : null;
 
 
 
