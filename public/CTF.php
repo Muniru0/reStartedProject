@@ -72,7 +72,7 @@ div{
  <div id="sample-div" class="test"> Simple div </div>
  <?php
   
-  echo strlen("helkfkajfkjakfjsalkfjsalkfjlsakjfl;ksajf;");
+  echo strlen("HOW TO MAKE THINGS MOVE FAST ENOUGH FOR THE BETTER IN THE BEST OF WAYS RIGHT OFF THE COAST SINCE THE LAST TIME WE VISITED");
  //Pagination::community_posts("sol");
  
    
