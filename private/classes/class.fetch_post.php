@@ -280,7 +280,7 @@ class FetchPost extends DatabaseObject{
 		}
 		
 		$caption = str_replace("\n","",$caption);
-		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ps-js-activity-content--498'><div class='peepso-markdown' ><p>{$caption}</p></div></div>";
+		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ' style='margin-bottom: 5%;'><div class='peepso-markdown' ><p>{$caption}</p></div></div>";
 	}// get_caption_template();
 	
     
@@ -348,7 +348,7 @@ class FetchPost extends DatabaseObject{
 </div>
 </div>		</div>
 		<div class='ps-postbox__action ps-postbox-action' style='display: flex;'>
-	 <button type='button' onclick='cancelEditPost({$post_id},this);' class='ps-btn ps-btn--postbox ps-button-cancel' style='position: relative;
+	 <button type='button' onclick='cancelEditPost(this);' class='ps-btn ps-btn--postbox ps-button-cancel' style='position: relative;
     right: 5%;'>Cancel</button>
 			<button type='button' onclick ='editPost({$post_id},{$uploader_id},this)' class='ps-btn ps-btn--postbox ps-button-action postbox-submit' style='display: inline-block;'>Post</button>
 		</div>
@@ -451,7 +451,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
     public static function images_layout_template($uploader_id = 0,$post_id = 0,$images =[],$count = 0,$number_of_supports = 0,$number_of_opposes = 0,$reactions_user_ids = [],$location = "",$title = "",$caption = null){
  
 	
-	log_action(__CLASS__,$title);
+	
 	  // veirfy the entire the images array
 		if(!is_array($images) || !isset($images) || empty($images)){
 			return false;
@@ -541,10 +541,11 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 		
 		";		
 		
-		
-	if(isset($images)  && $count === 1){  
+		 
+	if(isset($images)  && $count == 1){  
 	$width;
 	$height;
+	
 
 	$image = array_shift($images);
 	 if(file_exists(self::$images_dir_string.$image)){
@@ -622,15 +623,16 @@ if($width >= 1000){
 		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
 	<div class='ps-media-grid-padding'>
 		<div class='ps-media-grid-fitwidth' style='border-radius: 3%;'>
+		<div class='post_title' style='width: inherit;'>{$title}</div>
 			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
 								</div>
 	</div>
 </a>
-<div class='post_title' style='top: 0;right:0;height: 21%;bottom: 90%;'>
-				<span>{$title}</span>
-			</div>
+
+			
   </div>
   </div>
+
   </div>
 	</div>	
 		<div class='ps-stream-actions stream-actions' data-type='stream-action' style='padding-left: 0px;padding-right: 0px; padding-bottom: 0px;'>
@@ -651,7 +653,7 @@ if($width >= 1000){
 	<label for='oppose_{$post_id}' class='{$oppose_label_selected} ' title='Oppose the above post' style='margin-left: 11em;'></label>
  </div>
    
-   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' $toggle_reactions_count style='padding-left:0px;padding-right: 0px;'>
+   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' {$toggle_reactions_count} style='padding-left:0px;padding-right: 0px;'>
 							
 ".$number_of_supports_string.$number_of_opposes_string." 
 </div>
@@ -699,6 +701,8 @@ if(krsort($images)){
 ";
 	
 }
+
+
 // if the images are of an odd number
 }
 elseif($count % 2 === 1 || $count >= 5){
@@ -787,9 +791,7 @@ if(!file_exists(self::$images_dir_string.$image)){
 			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
 								</div>
 	</div>
-</a><div class='post_title' style='top: 0;right:0;height: 21%;bottom: 90%;'>
-				<span>{$title}</span>
-			</div>
+</a>
 
 ";
 	 $images_processed ++;
@@ -799,7 +801,7 @@ if(!file_exists(self::$images_dir_string.$image)){
 
 
 	
-$images_string .= "</div></div></div></div>
+$images_string .= "</div></div><div class='post_title'>{$title}</div></div></div>
 <div class='ps-stream-actions stream-actions' data-type='stream-action'>
     <nav class='ps-stream-status-action ps-stream-status-action'>
 <!--<a data-stream-id='482' onclick='return reactions.action_reactions(this, 482);' href='javascript:' class='ps-reaction-toggle--482 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>-->

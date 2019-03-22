@@ -441,7 +441,7 @@ return;
      }
 
   // if check that the post hasn't already being confirmed   
-$query = "CALL confirm_post($post_id,{$id},{$flag})";    
+$query = "CALL confirm_post({$post_id},{$id},{$flag})";    
 
 
 // perform the query on the database

@@ -1293,7 +1293,8 @@ function post_option_edit(user_id = 0,post_id = 0,element = ""){
              try{
                response = JSON.parse(response);
                
-
+   $(oldTitleElement).html(response["title"]);
+   $(oldCaptionElement).html(response["caption"]);
 
              }catch(e){
 
@@ -1307,13 +1308,15 @@ function post_option_edit(user_id = 0,post_id = 0,element = ""){
   function cancelEditPost(targetElement = ""){
       
       if($.trim(targetElement) == ""){
+        
 return;
       }
 
 
     let editBox = $(targetElement).parentsUntil(".ps-stream-body");
+      
          //hide the entire editbox
-         $(editBox);
+         $(editBox).hide();
 
    
 
@@ -1412,7 +1415,7 @@ function post_options(userID = 0,postID = 0 , element = "",option = null){
  
  
 
-   requestTypeValue = (option == null || $.trim(option) == "") ? "comfirm_post" : option;
+   requestTypeValue = (option == null || $.trim(option) == "") ? "confirm_post" : option;
     
  
     $.ajax({
@@ -1430,7 +1433,17 @@ try{
      
       if(response["true"] == "success" || response["unlink"] == "success" || response["unfollow"]){
            if(option == "confirm_post" || option == null){
+                let confirmTagElement =   $(element).parentsUntil(".ps-stream").sibling(".ps-stream__post-pin");
+                let confirmTag       =   $(confirmTagElement).find("span");
+                $(confirmTagElement).toggleClass("confirm_tag");
+                let confirmText      = $(confirmTag).html();
+
                 
+                 if(confirmText.toLowerCase == "unconfirmed"){
+                    $(confirmTag).html("confirmed");
+                 }else if(confirmText.toLowerCase == "confirmed"){
+                    $(confirmTag).html("Unconfirmed");
+                 }
                  title              = ($(element).hasClass("confirm_post")) ? "Confirm that this incident really took place" : "Reverse the confirmation of this incident";
                  confirmationText   = ($(element).hasClass("confirm_post")) ? "Confirm this post" : "Reverse Confirmation";
                  addElementClass    = ($(element).hasClass("confirm_post")) ? "confirm_post" : "reverse_post_action";
@@ -1489,8 +1502,8 @@ try{
  }
       
     catch(e){
-         console.log(e);
-    utility.showErrorDialogBox(response["false"]);
+        console.log(e);
+    utility.showErrorDialogBox("Please refresh the page and try again if the intended action failed");
                         
     }
     });

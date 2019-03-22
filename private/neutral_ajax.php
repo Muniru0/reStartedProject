@@ -639,7 +639,7 @@ elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_t
 		 print j(["false" => "Invalid request,if the problem persists please re-login"]);
 		 return;
 	}
-
+log_action($_POST["request_type"]);
 	//confirm the post
 	PostImage::confirm_post($post_id,$_POST["request_type"]);
 	
