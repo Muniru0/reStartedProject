@@ -8,8 +8,8 @@
  
 // initialize variables to default values
 
-$message = "";
-$email = "";
+$message  = "";
+$email    = "";
 $password = "";
 
 // if this is a redirect then set the message 
@@ -34,10 +34,11 @@ if(is_request_post() && request_is_same_domain()) {
   if(!csrf_token_is_valid() || !csrf_token_is_recent()) {
 
    
-  	print j(["false" => "Sorry, Please refresh the page and try again."]);
+  	Errors::trigger_error(RETRY);
       return;
 
   } else {
+     
     // CSRF tests passed--form was created by us recently.
    // retrieve the values submitted via the form
 $email    =  user::$email    = $_POST['email'];
@@ -49,9 +50,11 @@ if(validate_presence_on(["password","email"]) && is_email($email)){
   if(throttle::throttle_user()){
     
   if(user::found_user()) {
+      
     Session::after_successful_login();
           // if they are authenticated successfully
 	   	 // then clear all the failed logins
+      
         throttle::clear_failed_logins();
 		 print j([true]);
       return;
@@ -65,7 +68,7 @@ throttle::record_failed_logins($email);
 		    }
 		}else{
 // don't tell the person that he is being throttled
-          print j(["Throttled! Try again after 10mins"]);
+          print j(["false" =>"Throttled! Try again after 10mins"]);
           return;
 		}
 			}
@@ -295,6 +298,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 	</div>
      
 
+<script type="text/javascript" src="assets/js/utility.js" defer=""></script>
 <script type="text/javascript" src="assets/js/login.js" defer=""></script>
         
  </section></section></div></div></div></div></div></div></div>

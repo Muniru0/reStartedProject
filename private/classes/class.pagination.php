@@ -285,8 +285,8 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
  $query .= "SELECT * FROM ".Reaction::$table_name." WHERE ".Reaction::$post_id." >=".$_SESSION[Session::$qr_lowerbound]." && ".Reaction::$post_id."<= ".$_SESSION[Session::$qr_upperbound].";";
   
  if(isset($_SESSION) && isset($_SESSION[user::$id])){
- $query .= " SELECT * FROM ".LinkUsers::$table_name." WHERE ".LinkUsers::$linker_id."
-=".$_SESSION[user::$id]." || ".LinkUsers::$link." = ".$_SESSION[user::$id].";";
+ $query .= " SELECT * FROM ".ConnectUsers::$table_name." WHERE ".ConnectUsers::$linker_id."
+=".$_SESSION[user::$id]." || ".ConnectUsers::$link." = ".$_SESSION[user::$id].";";
 
 
 $query .= " SELECT * FROM ".FollowPost::$table_name." WHERE ".FollowPost::$follower_id." = ".$_SESSION[user::$id];
@@ -317,19 +317,19 @@ $reactions  = [];
 			  elseif(isset($row[ReplyViewsLikes::$alias_of_id]) && isset($row[ReplyViewsLikes::$alias_of_user_id]) && $row[ReplyViewsLikes::$alias_of_id] > 0 && $row[ReplyViewsLikes::$alias_of_user_id] > 0){
 				  
 				  $replys[$row[ReplyViewsLikes::$alias_of_reply_id]][] = $row[ReplyViewsLikes::$alias_of_user_id];
-			  }elseif(isset($row[LinkUsers::$linker_id])){
+			  }elseif(isset($row[ConnectUsers::$linker_id])){
 				    
-	if(isset($_SESSION) && isset($_SESSION[LinkUsers::$session_string])){
-		if(!in_array((int)$row[LinkUsers::$linker_id],$_SESSION[LinkUsers::$session_string]) || !in_array((int)$row[LinkUsers::$link],$_SESSION[LinkUsers::$session_string])){
+	if(isset($_SESSION) && isset($_SESSION[ConnectUsers::$session_string])){
+		if(!in_array((int)$row[ConnectUsers::$linker_id],$_SESSION[ConnectUsers::$session_string]) || !in_array((int)$row[ConnectUsers::$link],$_SESSION[ConnectUsers::$session_string])){
 			
 			
 			   
-			  if($row[LinkUsers::$link] != (int)$_SESSION[user::$id] && !in_array((int)$row[LinkUsers::$link],$_SESSION[LinkUsers::$session_string])){
+			  if($row[ConnectUsers::$link] != (int)$_SESSION[user::$id] && !in_array((int)$row[ConnectUsers::$link],$_SESSION[ConnectUsers::$session_string])){
 				  
-				  $_SESSION[LinkUsers::$session_string][] = (int)$row[LinkUsers::$link];
-			  }elseif($row[LinkUsers::$linker_id] != (int)$_SESSION[user::$id] && !in_array((int)$row[LinkUsers::$linker_id],$_SESSION[LinkUsers::$session_string])){
+				  $_SESSION[ConnectUsers::$session_string][] = (int)$row[ConnectUsers::$link];
+			  }elseif($row[ConnectUsers::$linker_id] != (int)$_SESSION[user::$id] && !in_array((int)$row[ConnectUsers::$linker_id],$_SESSION[ConnectUsers::$session_string])){
 				  
-			$_SESSION[LinkUsers::$session_string] [] =(int)$row[LinkUsers::$linker_id];
+			$_SESSION[ConnectUsers::$session_string] [] =(int)$row[ConnectUsers::$linker_id];
 			  }
 						  
 					  }

@@ -2,7 +2,7 @@
 
 require_once("../private/initialize.php");
 
-class LinkUsers Extends DatabaseObject{
+class ConnectUsers Extends DatabaseObject{
 	
 
   public static $table_name = "link_users";
@@ -18,7 +18,7 @@ class LinkUsers Extends DatabaseObject{
 
   public static $session_string = "linked_users_ids";
 
-  public static function link_user($user_id  = 0, $post_id = 0){
+  public static function connect_user($user_id  = 0, $post_id = 0){
 	   
 	   global $db;
 
@@ -30,31 +30,35 @@ class LinkUsers Extends DatabaseObject{
 		  $post_id = $db->real_escape_string($post_id);
 		  
 		  
-	   $query = "CALL link_user({$user_id},".$_SESSION[user::$id].",".time().")";
+	   $query = "CALL user_connection_request({$user_id},".$_SESSION[user::$id].",".time().")";
       
 
 
 	   if($db->multi_query($query)){
           
-       log_action(__CLASS__,"passed 3".__LINE__);
+      
 			
 			do{
-        log_action(__CLASS__,"passed 2".__LINE__);
+       
 			if($result = $db->store_result()){
 				
 				 if($result->num_rows > 0){
 			  if($row = $result->fetch_assoc()){
-          log_action(__CLASS__,"passed 2".__LINE__);
+         
 				  if(isset($row) && $row["result"] > 0){
 					  print j(["true" =>"success"]);
 					  return;
-				  }elseif(isset($row) && $row["result"] == 0){
+				  }elseif(isset($row) && $row["result"] == "disconnected"){
 					  
-					  print j(["unlink" => "success"]);
+					  print j(["disconnected" => "success"]);
 					  return;
-				  }elseif(trim($db->error) != ""){
-				  log_action(__CLASS__,$db->error);
-					  print j(["false" => "Sorry please refresh the page and try again there"]);
+				  }elseif(isset($row) && $row["result"] == "invalid_connection" ){
+                      Errors::trigger_error(RETRY);
+					  return;
+				  }
+                  
+                  elseif(trim($db->error) != ""){
+				    Errors::trigger_error(RETRY);
 					  return;
 				  }
 			  }	

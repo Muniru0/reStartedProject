@@ -333,9 +333,10 @@ public static function found_user(){
        // prepare the statement
       $stmt = $db->prepare($query);
        if(!$stmt){
-           
-         log_action("User class : found_user() ","Statement preparation failed ".$db->errors);
-         }
+        
+           Errors::trigger_error(RETRY);
+           return;
+       }
 
        // assign the bind parameter
        $email    =  user::$email;
@@ -345,18 +346,21 @@ public static function found_user(){
         
 
         if(!$bind_result){
-          
-         log_action("User class: found_user() || ","Binding failed. ". $db->error. " ".$stmt->error);
+           
+        Errors::trigger_error(RETRY);
+            return;
        
         }
-          
+           
          // then execute the query
           $result = $stmt->execute();
 
           
           if(!$result){
-     
-           log_action(__CLASS__,"Query execution failed: ( ".$db->errno." )".$db->error);
+            
+     Errors::trigger_error(RETRY);
+            return;
+           
           }
               
        $verification = false;
@@ -385,9 +389,12 @@ public static function found_user(){
    
   return $verification;
   
-  }else{
+  }
+    else{
 	
-   print j(["false" => "Username and password mismatch"]);
+  Errors::trigger_error(RETRY);
+            
+            return;
     return $verification;
   }      
         

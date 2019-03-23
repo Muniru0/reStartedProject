@@ -1431,9 +1431,12 @@ try{
       let confirmationTextSpan = $(element).find("span")[0]; 
       let confirmationIcon = $(element).find("i")[0];
      
-      if(response["true"] == "success" || response["unlink"] == "success" || response["unfollow"]){
+      if(response["confirmation"] == "success" || response["disconnected"] == "success" || response["unfollow"]){
            if(option == "confirm_post" || option == null){
-                let confirmTagElement =   $(element).parentsUntil(".ps-stream").sibling(".ps-stream__post-pin");
+             console.log(element);
+                let confirmTagElement =   $(element).parentsUntil(".ps-stream");
+               confirmTagElement      =   $(confirmTagElement).sibling(".ps-stream__post-pin");
+               console.log(confirmTagElement);
                 let confirmTag       =   $(confirmTagElement).find("span");
                 $(confirmTagElement).toggleClass("confirm_tag");
                 let confirmText      = $(confirmTag).html();

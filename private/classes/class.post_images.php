@@ -410,14 +410,14 @@ return;
 
    
    // confirm a post
-   public static function confirm_post($post_id = 0,$flag = null){
+   public static function confirm_post($post_id = 0){
 	   
 	   global $db;
       
 	     $post_id = $db->real_escape_string($post_id);
 	   if((int)$post_id < 1){
-		   log_action(__CLASS__," post id less than 1 but passed the neutral ajax file on LINE: ".__LINE__." in FILE: ".__FILE__);
-		   print j(["false" =>"Please try again"]);
+		   
+		  Errors::trigger_error(RETRY);
 		   return;
 	   }
 	   
@@ -431,17 +431,9 @@ return;
       }
       $id = $_SESSION["id"];
     
-     if($flag === "confirm_post" && $flag !== null){
-       $flag = 1;
-     }elseif($flag !== null && $flag === "reverse_confirmation"){
-    $flag = 2;
-     }else{
-        print j(["false"=>"Please try again"]);
-        return;
-     }
 
   // if check that the post hasn't already being confirmed   
-$query = "CALL confirm_post({$post_id},{$id},{$flag})";    
+$query = "CALL confirm_post({$post_id},{$id})";    
 
 
 // perform the query on the database
@@ -451,35 +443,39 @@ if($db->multi_query($query)){
 		// store the result set
        	if($result = $db->store_result()){
 			if($row = $result->fetch_assoc()){
-
-      if(isset($row["re_confirmation"])){
-					print j(["false" =>"Please this post has already being confirmed by someone else"]);
-
-					return;
-				}elseif(isset($row["post_id"]) && (int)$row["post_id"] > 0 ){
+if(isset($row["result"]) && $row["result"] == "confirmed"){
 					  
-					print j(["true" => "success"]);
+					print j(["confirmation" => "success"]);
 					return;
-				}elseif(trim($db->error) != ""){
+				}  elseif(isset($row["result"]) && $row["result"] == "reverse_confirmation"){
+					$_SESSION[user::$invalid_confirmations] = $_SESSION[user::$invalid_confirmations]++;
+					print j(["reverse_cofirmation"=>"success"]);
+					return;
+				}
+    elseif(isset($row["result"]) && $row["result"] == "duplicate_confirmation"){
+					print j(["false" =>"Please this post has already being confirmed by someone else"]);
+                    return;
+	}elseif(isset($row["result"]) && $row["result"] == "invalid_confirmation"){
+					print j(["false" =>"Please you not eligible to confirm a post"]);
+
+					return;
+				}
+               
+                
+                elseif(trim($db->error) != ""){
 					
 					 print j(["false"=>"Sorry server problem,please try again."]);
 					 return;
-				}elseif(isset($row["invalid_confirmer"])){
-					$_SESSION[user::$invalid_confirmation] = $_SESSION[user::$invalid_confirmation]++;
-					print j(["false"=>"Please you not eligible to confirm a post"]);
-					return;
 				}
+                
+               
 			}
 		}
 	 }while($db->more_results() && $db->next_result());
 	
 
 }
-
-print j(["false"=>"Please try again later, if the problem persists please refresh the page"]);
-return;	
-	   
-	   
+   
    }//confirm_post();
 
 

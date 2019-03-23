@@ -182,20 +182,23 @@ public static  function createThumbnail($filename) {
 
    /*************** optimal size for thumbnail(140 x 106px) *****************/
           if(!file_exists(self::$upload_path.IMGS_DIR.$filename)){
-			  log_action(__CLASS__,self::$upload_path.IMGS_DIR.$filename);
+			  Errors::trigger_error(RETRY);
 			 return false;   
 		  }
 		   
 		  $width  = getimagesize(self::$upload_path.IMGS_DIR.$filename)[0];
+		  
 		  if($width >= 1000){
 			  
 			  $width = 1000;
 		  }elseif( $width >= 500 && $width < 1000){
 			  $width = 500;
 			  
-		  }elseif(!$width > 0  && $width < 500){
+		  }elseif($width > 0  && $width < 500){
 			   $width = 200;
 		  }
+		  
+		  
 		  
         if(preg_match('/[.](jpg)$/', $filename)) {
             $im = imagecreatefromjpeg(self::$upload_path.IMGS_DIR.$filename);

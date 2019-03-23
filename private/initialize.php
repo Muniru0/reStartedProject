@@ -83,6 +83,8 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 !defined("INVALID_STREAM_OPTION")               ?  define("INVALID_STREAM_OPTION","invalid")                : null;
 !defined("INVALID_SESSION")               ?  define("INVALID_SESSION","invalid_session")                : null;
+!defined("UNEXPECTED_RETRY")               ?  define("UNEXPECTED_RETRY","unexpected_retry")                : null;
+
 !defined("RESET_POST")               ?  define("RESET_POST","reset_post")                : null;
 !defined("COMMUNITIES")               ?  define("COMMUNITIES",["transport","health","work","sol","security","sanitation","oppression","other"])        : null;
 
@@ -122,7 +124,7 @@ require_once(PRIVATE_DIR . "classes/class.notifications.php");
 require_once(PRIVATE_DIR . "classes/class.post_templates.php");
 require_once(PRIVATE_DIR . "classes/class.views_likes.php");
 require_once(PRIVATE_DIR . "classes/class.reply_views_likes.php");
-require_once(PRIVATE_DIR . "classes/class.link_users.php");
+require_once(PRIVATE_DIR . "classes/class.connect_users.php");
 require_once(PRIVATE_DIR . "classes/class.follow_post.php");
 
 block_blacklisted_ips();

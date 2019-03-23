@@ -23,6 +23,9 @@ return;
 		case INVALID_SESSION:
   		print j(["false"=>"login"]);
   		break;
+		case UNEXPECTED_RETRY:
+  		print j(["false"=>"Sorry, Something unexpectedly happened,please refresh the page and try again."]);
+  		break;
   	
   	default:
   		# code...

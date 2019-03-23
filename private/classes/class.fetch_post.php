@@ -119,7 +119,7 @@ class FetchPost extends DatabaseObject{
 		 $toggle_string     = "display:none;";
 		 $link_title_string = "";
 		 $user_parent_breathing_space = "";
-		if(isset($_SESSION) && isset($_SESSION[LinkUsers::$session_string]) && !empty($_SESSION[LinkUsers::$session_string]) && in_array($id,$_SESSION[LinkUsers::$session_string])){
+		if(isset($_SESSION) && isset($_SESSION[ConnectUsers::$session_string]) && !empty($_SESSION[ConnectUsers::$session_string]) && in_array($id,$_SESSION[ConnectUsers::$session_string])){
 			
 		 $linked_user_class = "link_user";
 		 $toggle_string     = "display:inline;";
@@ -197,7 +197,7 @@ class FetchPost extends DatabaseObject{
 		 
 		 // adjust the link user variables if the two 
 		 //users are linked
-		  if(in_array($user_id,$_SESSION[LinkUsers::$session_string])){
+		  if(in_array($user_id,$_SESSION[ConnectUsers::$session_string])){
 			 $toggle_link_icon = "fal fa-unlink";
 			 $toggle_link_class = "reverse_post_action";
 			 $toggle_link_string = "unlink with ";
@@ -280,7 +280,7 @@ class FetchPost extends DatabaseObject{
 		}
 		
 		$caption = str_replace("\n","",$caption);
-		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ' style='margin-bottom: 5%;'><div class='peepso-markdown' ><p>{$caption}</p></div></div>";
+		return "<div class='ps-stream-attachment cstream-attachment ps-js-activity-content ' style='margin-bottom: 2%;'><div class='peepso-markdown' ><p>{$caption}</p></div></div>";
 	}// get_caption_template();
 	
     
@@ -468,6 +468,9 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 		return false;	
 		}
 		
+		$multi_images_title = ($count > 1) ? "<div class='post_title' style='width: inherit;
+'>{$title}</div>" : "";
+ 
       $edit_post_template = ((int)$uploader_id === (int)$_SESSION[user::$id]) ? self::get_edit_post_template($uploader_id,$caption,$title,$location,$post_id) : "";
 		
 		  // check the number of reactions and show or hide the 
@@ -538,7 +541,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 		<div class='ps-stream-attachments cstream-attachments'>
 		<div class='cstream-attachment photo-attachment'>
 		<div class='ps-media-photos ps-media-grid  ps-clearfix' data-ps-grid='photos' style='position: relative; width: 100%; max-width: 600px; min-width: 200px; max-height: 1200px; overflow: hidden;'>
-		
+		{$multi_images_title}
 		";		
 		
 		 
@@ -690,7 +693,7 @@ if(krsort($images)){
 	  }
 	$images_string .="
 		
-		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' data-ps-grid-item='' onclick='return ps_comments.open(200, \'photo\');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
+		<a href=' ://demo.peepso.com/activity/?status/2-2-1528720781/' class='ps-media-photo ps-media-grid-item' onclick='return ps_comments.open(200, 'photo');' style='float: left;width: ".$width."%;padding-top: ".$height."%;'>
 	<div class='ps-media-grid-padding'>
 		<div class='ps-media-grid-fitwidth' style='border-radius: 3%;'>
 			<img src=".self::$images_dir_string."{$image}  class='ps-js-fitted' style='width: auto; height: 100%;'>
@@ -801,7 +804,7 @@ if(!file_exists(self::$images_dir_string.$image)){
 
 
 	
-$images_string .= "</div></div><div class='post_title'>{$title}</div></div></div>
+$images_string .= "</div></div></div></div>
 <div class='ps-stream-actions stream-actions' data-type='stream-action'>
     <nav class='ps-stream-status-action ps-stream-status-action'>
 <!--<a data-stream-id='482' onclick='return reactions.action_reactions(this, 482);' href='javascript:' class='ps-reaction-toggle--482 ps-reaction-emoticon-0 ps-js-reaction-toggle ps-icon-reaction'><span>Like</span></a>-->
@@ -1003,8 +1006,8 @@ $images_string .= "</div></div><div class='post_title'>{$title}</div></div></div
 	try{
 		
 	if(empty($returned_array) || !is_array($returned_array) && !isset($views)){
-	   print j(["false" => "Something happend Unexpectedly, Please refresh the page and try again"]);
-      log_action(__CLASS__," {$flag}image(s) or post info is/are empty on LINE ".__LINE__." in FILE ".__FILE__);
+	  Errors::trigger_error(UNEXPECTED_RETRY);
+      
     return;   
    }
    

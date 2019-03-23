@@ -167,25 +167,24 @@ PostImage::delete_post($user_id,$post_id);
 	
 }// delete the post
 
- elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) == "link_user" &&
-        isset($_POST["post_id"]) && $_POST["post_id"] > 0 && isset($_POST["user_id"]) > 0){
-			log_action("passed 1");
+ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) == "connect_user" && isset($_POST["post_id"]) && $_POST["post_id"] > 0 && isset($_POST["user_id"]) > 0){
+			
 			$post_id = (int)$_POST["post_id"];
 			$user_id = (int)$_POST["user_id"];
 			
 			if(!in_array($post_id,$_SESSION[PostImage::$alias_of_id])){
-				print j(["false"=>"Sorry please refresh the page and try again"]);
+			  Errors::trigger_error(RETRY);
 				return;
 			}
 			
 			if(!in_array($user_id,$_SESSION[PostImage::$uploader_id])){
 				
-				print j(["false"=>"Sorry please refresh the page and try again"]);
+				 Errors::trigger_error(RETRY);
 				return;
 			}
 			
 			// link with this user
-			LinkUsers::link_user( $user_id , $post_id );
+			ConnectUsers::connect_user( $user_id , $post_id );
 			
 	 
  }
@@ -639,7 +638,7 @@ elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_t
 		 print j(["false" => "Invalid request,if the problem persists please re-login"]);
 		 return;
 	}
-log_action($_POST["request_type"]);
+
 	//confirm the post
 	PostImage::confirm_post($post_id,$_POST["request_type"]);
 	

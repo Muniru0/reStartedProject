@@ -125,7 +125,7 @@ require_once(PRIVATE_DIR."initialize.php");
     $_SESSION['ip']          = $_SERVER['REMOTE_ADDR'];
     $_SESSION['user_agent']  = $_SERVER['HTTP_USER_AGENT'];
 	$_SESSION[FollowPost::$session_string] = [];
-	$_SESSION[LinkUsers::$session_string]  = [];
+	$_SESSION[ConnectUsers::$session_string]  = [];
 	$_SESSION[PostImage::$uploader_id] = [];
 	$_SESSION[PostImage::$alias_of_id] = [];
 	$_SESSION['last_login']  = time();
