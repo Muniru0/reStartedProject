@@ -2031,7 +2031,7 @@ one {
 }
 
 .ps-stream-user {
-    font-weight: bold
+    font-weight: normal;
 }
 
 .ps-stream-time {

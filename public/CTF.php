@@ -47,35 +47,43 @@ div {
   transition: all .5s;
 }
 
-div{
-	display:none;
+	
+
+.show_change {
+	display: block !important;
+	transition: all 0.5s ease-in-out!important;
+	position: relative;
+	left: 50%;
+	
+	
 }
 
  </style>
 
- 
+ <button type="button" id="button">Click me</button>
+ <div id="sample-div" class="test"> Simple div </div>
  <script>
-   mutationObserver.observe(document.documentElement, {
+  /*  mutationObserver.observe(document.documentElement, {
   attributes: true,
   characterData: true,
   childList: true,
   subtree: true,
   attributeOldValue: true,
   characterDataOldValue: true
-});
-
-	$("#sample-div").removeAttr("class");  
+}); */
+ $("#button").click(function(e){
+	  
+	 $("#sample-div").toggleClass("show_change");
+	 
+ });
+	
       
  
  </script>
  
- <div id="sample-div" class="test"> Simple div </div>
+ 
  <?php
   
-  echo strlen("HOW TO MAKE THINGS MOVE FAST ENOUGH FOR THE BETTER IN THE BEST OF WAYS RIGHT OFF THE COAST SINC");
- //Pagination::community_posts("sol");
- 
-   
  function test_calling_functions($id = 10000){global $db;
 	 $result = $db->query("SELECT * FROM test LIMIT 1,2");
 	 

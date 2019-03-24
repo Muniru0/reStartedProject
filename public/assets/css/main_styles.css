@@ -1,9 +1,10 @@
 
-<!-- personal media queries -->
+ /* personal media queries  */
 
-@media only screen and (min-width: 481px)
+@media only screen and (max-width: 481px){
 .ps-stream__post--pinned .ps-dropdown--stream .ps-dropdown__menu {
     min-width: 150px !important;
+}
 }
 	   .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon{
           border-style:none;
@@ -496,30 +497,31 @@ button:hover {
 	color: #525964 !important;
 }
 
-.link_user{
+.connect_user{
 	padding: 0.4em;
     border-radius: 1em;
-    background: #d9d8d8;
-    color: #333;
-    opacity: 0.75;
+    background: #3cbdac;
+    color: #fff;
 }
 
-.link_user>small{
+
+.connect_user>small{
 	position: relative;
     left: 0.4em;
-    top: 0.8em;
-    z-index: 10;
+   z-index: 10;
     font-size: 1.05em;
 }
 
-.link_user>small>i{
-	transform: rotate(90deg);
+.connect_user>small>i{
+    transform: rotate(5deg);
+    color: #fff !important;
 }
 
-.link_user:hover{
-	 background: #d9d8d8;
-    color: #333;
-    opacity: 0.85;
+.connect_user:hover{
+    background: #3cbdac;
+    color: #fff;
+    opacity: 0.9;
+    font-size: 105%;
 }
 
 .following_span{
@@ -546,18 +548,18 @@ button:hover {
 }
 
 
-.user_link_div {
+.user_connect_div {
 	border-top-right-radius: 5%;
     padding: 4%;
 	text-align: center;
     background: antiquewhite;
     border-top-left-radius: 5%;
-    webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08);
 }
 
 
-.user_link_div:hover{
+.user_connect_div:hover{
 	opacity: 0.85;
 }
  

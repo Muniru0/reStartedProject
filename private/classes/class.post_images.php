@@ -449,7 +449,7 @@ if(isset($row["result"]) && $row["result"] == "confirmed"){
 					return;
 				}  elseif(isset($row["result"]) && $row["result"] == "reverse_confirmation"){
 					$_SESSION[user::$invalid_confirmations] = $_SESSION[user::$invalid_confirmations]++;
-					print j(["reverse_cofirmation"=>"success"]);
+					print j(["reverse_confirmation"=>"success"]);
 					return;
 				}
     elseif(isset($row["result"]) && $row["result"] == "duplicate_confirmation"){

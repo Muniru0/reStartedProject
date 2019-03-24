@@ -126,6 +126,11 @@ require_once(PRIVATE_DIR . "classes/class.views_likes.php");
 require_once(PRIVATE_DIR . "classes/class.reply_views_likes.php");
 require_once(PRIVATE_DIR . "classes/class.connect_users.php");
 require_once(PRIVATE_DIR . "classes/class.follow_post.php");
+require_once(PRIVATE_DIR . "classes/class.pending_connections.php");
+
+// foreach (glob("../private/classes/class.*") AS $filename) {
+//     require_once(PRIVATE_DIR.substr($filename,strpos($filename,"c")));
+// }
 
 block_blacklisted_ips();
 

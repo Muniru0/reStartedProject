@@ -115,21 +115,21 @@ class FetchPost extends DatabaseObject{
     // get the fullname template
     public static function get_fullname($id = 0,$firstname,$lastname){
          
-		 $linked_user_class = "";
+		 $connected_user_class = "";
 		 $toggle_string     = "display:none;";
-		 $link_title_string = "";
+		 $connect_title_string = "";
 		 $user_parent_breathing_space = "";
 		if(isset($_SESSION) && isset($_SESSION[ConnectUsers::$session_string]) && !empty($_SESSION[ConnectUsers::$session_string]) && in_array($id,$_SESSION[ConnectUsers::$session_string])){
 			
-		 $linked_user_class = "link_user";
+		 $connected_user_class = "connect_user";
 		 $toggle_string     = "display:inline;";
 		 $user_parent_breathing_space = "breathing_space";
-		 $link_title_string = "You are linked to this User.You will be notified of all of his posted incidents.";
+		 $connect_title_string = "You are connected to this User.You will be notified of all of his posted incidents.";
 		 
 		}
 		  
 		   
-        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap {$user_parent_breathing_space}\" ><a class=\"ps-stream-user  {$linked_user_class}\" href=\"../public/".PROFILE_PAGE."?id=".$id."\">". $firstname." ".$lastname."<small style='{$toggle_string}'><i class ='fal fa-link'></i></small></a>";
+        return "<div class=\"ps-stream-header\"><div class=\"ps-stream-meta\"><div class=\"reset-gap {$user_parent_breathing_space}\" ><a class=\"ps-stream-user  {$connected_user_class}\" href=\"../public/".PROFILE_PAGE."?id=".$id."\" style='transition: all 0.5s;'>". $firstname." ".$lastname."<small style='{$toggle_string} transition: all 0.5s;'><i class ='fal fa-link' style='transition: all 0.5s;'></i></small></a>";
 		
     }//get_fullname();
 
@@ -159,15 +159,16 @@ class FetchPost extends DatabaseObject{
     // get the time template
     public static function get_time_template($post_id = 0,$time = 0){
 
-	    $toggle_follow_icon = "";
+	    $toggle_follow_icon = "display:none";
 	   if(in_array($post_id,$_SESSION[FollowPost::$session_string])){
-		   $toggle_follow_icon = "<i class='far fa-eye following_span' style='margin-left: 0.2em !important;' title='you are following this post'></i>  ";
-	   }
+		   $toggle_follow_icon = "";
+		}
 	   
         return "<small class=\"ps-stream-time\" data-timestamp=\"1528749581\">
                 <a href=\"https://demo.peepso.com/activity/?status/2-2-1528720781/\">
                     <span class=\"ps-js-autotime\" data-timestamp=\"1528749581\" title=\"June 11, 2018 8:39 pm\">".self::time_converter($time)."</span>             </a>
-					{$toggle_follow_icon}</small></div>";
+					<i class='far fa-eye following_span' style='margin-left: 0.2em !important;{$toggle_follow_icon} ' title='you are following this post'></i>  
+					</small></div>";
     }
 
 	// get the post options template
@@ -181,11 +182,11 @@ class FetchPost extends DatabaseObject{
 		 
 		 // initialize the necessary variables
 		 // link user variables
-		 $link_user_string = "link_user";
-		 $toggle_link_icon   = "fal fa-link";
-		 $toggle_link_class  = "";
-		 $toggle_link_string  = "link with ";
-		 $toggle_link_title  = "linking with a user will get you notified of all future incidents posted by that user.";
+		 $connect_user_string = "connect_user";
+		 $toggle_connect_icon   = "fal fa-link";
+		 $toggle_connect_class  = "";
+		 $toggle_connect_string  = "connect with";
+		 $toggle_connect_title  = "connecting with a user will get you notified of all future incidents posted by that user.";
 		 
 		 // follow post variables
 		 $follow_post_string = "follow_post";
@@ -198,10 +199,10 @@ class FetchPost extends DatabaseObject{
 		 // adjust the link user variables if the two 
 		 //users are linked
 		  if(in_array($user_id,$_SESSION[ConnectUsers::$session_string])){
-			 $toggle_link_icon = "fal fa-unlink";
-			 $toggle_link_class = "reverse_post_action";
-			 $toggle_link_string = "unlink with ";
-			 $toggle_link_title  = "You are linked to {$firstname} {$lastname}";
+			 $toggle_connect_icon = "fal fa-unlink";
+			 $toggle_connect_class = "reverse_post_action";
+			 $toggle_connect_string = "disconnect from ";
+			 $toggle_connect_title  = "You are connected to {$firstname} {$lastname}";
 		  }
 		 
 		
@@ -212,7 +213,7 @@ class FetchPost extends DatabaseObject{
 			 $toggle_follow_post_icon = "far fa-eye-slash";
 			 $toggle_follow_post_html_string = "unfollow this post";
 			 $toggle_follow_post_class = "reverse_post_action";
-			  $toggle_follow_title  = "You are following this incident";
+			 $toggle_follow_title  = "You are following this incident";
 			 
 		 }
 		 
@@ -224,12 +225,12 @@ class FetchPost extends DatabaseObject{
 </a> ";
 		
 		 // follow post html link 
-		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' title='{$toggle_link_title}' class='{$toggle_follow_post_class}' onclick='post_options(0,{$post_id},this,\"".$follow_post_string."\");' >
+		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' title='{$toggle_connect_title}' class='{$toggle_follow_post_class}' onclick='post_options(0,{$post_id},this,\"".$follow_post_string."\");' >
 		<i class='{$toggle_follow_post_icon}'></i><span>{$toggle_follow_post_html_string}</span>
 </a>";
       
 		 // link user html link 
-	    $link_user_string =  $_SESSION[user::$id] == $user_id ? "" :"<a href='javascript:' title='{$toggle_link_title}' class='{$toggle_link_class}' onclick='post_options({$user_id},{$post_id},this,\"".$link_user_string."\");return false' ><i class='{$toggle_link_icon}'></i><span>{$toggle_link_string}  {$firstname} {$lastname}</span>
+	    $connect_user_string =  $_SESSION[user::$id] == $user_id ? "" :"<a href='javascript:' title='{$toggle_connect_title}' class='{$toggle_connect_class}' onclick='post_options({$user_id},{$post_id},this,\"".$connect_user_string."\");return false' ><i class='{$toggle_connect_icon}'></i><span>{$toggle_connect_string}  {$firstname} {$lastname}</span>
 </a>
 ";
 
@@ -255,11 +256,11 @@ class FetchPost extends DatabaseObject{
 			<a href='javascript:' class='ps-dropdown__toggle ps-js-dropdown-toggle' data-value=''>
 <span class='dropdown-caret ps-icon-caret-down'></span>
 </a>
-<div class='ps-dropdown__menu ps-js-dropdown-menu' style='display: none;'>
+<div class='ps-dropdown__menu ps-js-dropdown-menu' style='display: none;z-index: 100;'>
 {$edit_post_string}
 {$delete_post_string} 
 {$follow_post_string} 
-{$link_user_string}
+{$connect_user_string}
 {$confirmation_option_string}
 
 </div>
@@ -1047,17 +1048,21 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			  }
 			  
 			  if(!isset($post_info[PostImage::$alias_of_id]) || $post_info[PostImage::$alias_of_id] < 1){
-				 log_action(__CLASS__,"The post id ( ".$post_info[PostImage::$alias_of_id].") is less than 1 in the post array  on line :".__LINE__." in file: ".__FILE__);
+				
 				  continue;
 			  }
 
 			  if(!in_array((int)$post_info[PostImage::$uploader_id],$_SESSION[PostImage::$uploader_id])){
 				  $_SESSION[PostImage::$uploader_id][] = (int)$post_info[PostImage::$uploader_id];
 			  }
-			  
+
+			
+			
 			 if(!in_array((int)$post_info[PostImage::$alias_of_id],$_SESSION[PostImage::$session_post_ids])){
 				 $_SESSION[PostImage::$session_post_ids][] = (int)$post_info[PostImage::$alias_of_id];
 			 }
+
+			 
 			 
 			 $reaction_user_ids = (empty($reactions_user_ids[$post_info[PostImage::$alias_of_id]]) || !isset($reactions_user_ids[$post_info[PostImage::$alias_of_id]])) ? [] : $reactions_user_ids[$post_info[PostImage::$alias_of_id]];
 			 

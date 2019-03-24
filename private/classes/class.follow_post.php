@@ -30,11 +30,13 @@ class FollowPost Extends DatabaseObject{
 	   global $db;
 	   
 
-      if(isset($_SESSION[user::$id]) && $_SESSION[user::$id] > 0 && trim($_SESSION[user::$firstname]) != "" && trim($_SESSION[user::$lastname]) != "" ){
-
+      if(!isset($_SESSION[user::$id]) || $_SESSION[user::$id] < 1 || trim($_SESSION[user::$firstname]) == "" || trim($_SESSION[user::$lastname]) == "" ){
+		Errors::trigger_error(INVALID_SESSION);
+		
+		return;
       }
 
-	      
+	 
 		  $post_id = $db->real_escape_string($post_id);
 		  
 		  
@@ -51,14 +53,18 @@ class FollowPost Extends DatabaseObject{
 				
 				 if($result->num_rows > 0){
 			  if($row = $result->fetch_assoc()){
-				  if(isset($row) && $row["result"] > 0){
-					  print j(["true" =>"success"]);
+				  if(isset($row) && $row["result"] == "following"){
+					  print j(["follow_post" =>"success"]);
 					  return;
-				  }elseif(isset($row) && $row["result"] == 0){
+				  }elseif(isset($row) && $row["result"] == "unfollowed"){
 					  
-					  print j(["unfollow" => "success"]);
+					  print j(["unfollow_post" => "success"]);
 					  return;
-				  }elseif(trim($db->error) != ""){
+				  }elseif(isset($row) && $row["result"] == "invalid_request"){
+					  
+					print j(["invalid_request" => "success"]);
+					return;
+				}elseif(trim($db->error) != ""){
 				  log_action(__CLASS__,$db->error);
 					  print j(["false" => "Sorry please refresh the page and try again"]);
 					  return;
@@ -74,7 +80,7 @@ class FollowPost Extends DatabaseObject{
 			}while($db->more_results() && $db->next_result());
 				  
   }else{
-	 
+	
   }
    
    }// link_user();

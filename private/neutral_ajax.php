@@ -172,19 +172,20 @@ PostImage::delete_post($user_id,$post_id);
 			$post_id = (int)$_POST["post_id"];
 			$user_id = (int)$_POST["user_id"];
 			
-			if(!in_array($post_id,$_SESSION[PostImage::$alias_of_id])){
+			if(!in_array($post_id,$_SESSION[PostImage::$session_post_ids])){
+			
 			  Errors::trigger_error(RETRY);
 				return;
 			}
-			
+			log_action(__CLASS__,"here".__LINE__);
 			if(!in_array($user_id,$_SESSION[PostImage::$uploader_id])){
-				
+				log_action(__CLASS__,"here".__LINE__);
 				 Errors::trigger_error(RETRY);
 				return;
 			}
 			
 			// link with this user
-			ConnectUsers::connect_user( $user_id , $post_id );
+			PendingConnections::send_request($user_id);
 			
 	 
  }
@@ -193,12 +194,12 @@ PostImage::delete_post($user_id,$post_id);
 			
 			$post_id = (int)$_POST["post_id"];
 			
-		if(!in_array($post_id,$_SESSION[PostImage::$alias_of_id])){
-				
+		if(!in_array($post_id,$_SESSION[PostImage::$session_post_ids])){
+			
 				print j(["false"=>"Sorry please refresh the page and try again"]);
 				return;
 			}
-			
+		
 			// link with this user
 			FollowPost::follow_post($post_id );
 			
