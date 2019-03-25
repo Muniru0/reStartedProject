@@ -403,7 +403,7 @@ elseif(isset($_POST["edit_comment"]) && $_POST["edit_comment"] === "false"){
 	
 }
 
-elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
+elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "delete_reply"){
 	
 	 // cast the post and comment ids to integers  
 	$comment_id   = (int) $_POST["post_id"];
@@ -427,7 +427,7 @@ elseif(isset($_POST["delete_comment"]) && $_POST["delete_comment"] === "reply"){
 		 }
 		 
 	 // delete the view from the database			
-	 Views::delete_view($comment_id,$reply_id,"reply");
+	 ReplyViews::delete_reply_view($comment_id,$reply_id);
 	
 }
 
@@ -682,9 +682,12 @@ print_r(Views::add_view($_POST["reaction_view"]));
 }elseif(isset($_POST[""]) && !empty($_POST["get_views"])){
 
    //die($_POST["get_views"]);
-  echo FetchPost::get_views($_POST["get_views"]);
+  FetchPost::get_views($_POST["get_views"]);
  // print ShowPost::get_views();
 }
+
+
+
 elseif(isset($_POST["trybe_member"]) && !empty($_POST["trybe_member"])){
 
     //die($_POST["trybe_member"]);

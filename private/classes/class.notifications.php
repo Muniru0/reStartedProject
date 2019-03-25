@@ -13,12 +13,17 @@ class Notifications extends DatabaseObject {
 	 public static $id         = 'id';
 	 public static $post_id    = 'post_id';
 	 public static $user_id    = 'user_id';
-     public static $type       = 'type';
-     public static $time       = 'time';
+     public static $type       = 'notification_type';
+     public static $time       = 'notification_time';
+
+	 public static $alias_of_id         = 'notifcations_table_id';
+	 public static $alias_of_post_id    = 'notifcations_table_post_id';
+	 public static $alias_of_user_id    = 'notifcations_table_user_id';
+     public static $alias_of_type       = 'notifcations_table_notification_type';
+     public static $alias_of_time       = 'notifcations_table_notification_time';
 
 
-
-public  static function send_notification($post_id = '',$user_id = '',$type = '', $date = '')
+public  static function send_notification($post_id = 0,$user_id = 0,$type = '')
 {
 	global $db;
 	
@@ -27,7 +32,9 @@ public  static function send_notification($post_id = '',$user_id = '',$type = ''
 	
 	if(!$db->query($query))
 	{
+        Errors::trigger_error(RETRY);
 		log_action(__CLASS__." Query failed: {$db->error} on line: ".__LINE__);
+		return;
 	}else{
 		return $db->insert_id();
 	}
@@ -38,17 +45,19 @@ public  static function send_notification($post_id = '',$user_id = '',$type = ''
 
 
 
-public function get_notifications($user_id){
+public static function get_notifications($user_id){
 	
 	
 	global $db;
 	
-	$query =" SELECT * FROM ".self::$table_name."";
+	$query =" SELECT * FROM ".self::$table_name." WHERE ";
 	
 }//get_notifications();
 
 
-public function get_notification_template(){
+
+
+public static function get_notification_template(){
 	
 	
 	return "<div class='ps-popover app-box' style='display:none;'>

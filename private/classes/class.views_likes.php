@@ -69,10 +69,15 @@
 				   
 		  if(isset($row["likes"]) && !empty($row["likes"]) ){
 			  		
-			  $result = (int)$row["likes"];
-			   if(is_int($result)){
+			  $likes = (int)$row["likes"];
+			   if(is_int($likes)){
 				   		 
-				   print j(["likes" => $result]);
+					 print j(["likes" => $likes]);
+					 if($row["result"] == "like_comment"){
+            Notification::send_notification($post_id,$user_id,LIKED_COMMENT,$time);
+					 }elseif($row["result"] == "like_reply"){
+						Notification::send_notification($post_id,$user_id,LIKED_REPLY,$time);
+					 }
 			   }
 			  return;
 		  }

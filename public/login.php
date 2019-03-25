@@ -176,11 +176,11 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
     <div class="page__wrapper">
       <div class="header__wrapper header__wrapper--medium">
         <div class="header">
-          <div class="header__logo">
+          <!-- <div class="header__logo">
             <a href="https://demo.peepso.com/">
               <img src="https://demo.peepso.com/wp-content/themes/new/assets1/images/logo.svg" alt="PeepSo"><img src="https://demo.peepso.com/wp-content/themes/new/assets1/images/logo-white.svg" alt="PeepSo">
             </a>
-          </div>
+          </div> -->
           <ul class="header__menu">
             <li id="menu-item-149" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149"><a href="https://demo.peepso.com/">Community</a></li>
 <li id="menu-item-148" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a href="https://demo.peepso.com/profile/">Profile</a></li>
@@ -192,7 +192,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
             </li>
           </ul>
 
-                    <div id="userbar" class="header__account"><div class="widget_text widget header__widget"><div class="textwidget custom-html-widget"><div class="ultimate__box-actions" style="margin-left: 30px;"><a class="btn btn--sm" style="display:block;" href="http://peep.so/bundle">Buy <strong>Ultimate Bundle</strong></a></div></div></div></div>
+                    <div id="userbar" class="header__account"><div class="widget_text widget header__widget"><div class="textwidget custom-html-widget"><div class="ultimate__box-actions" style="margin-left: 30px;"><a class="btn btn--sm" style="display:block;" href="http://peep.so/bundle"><strong>Campus Nervy</strong></a></div></div></div></div>
           
           <div class="header__actions">
                         <a class="header__toggle header__toggle--account" href="#userbar">
@@ -245,7 +245,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <p>Come and join our community. Expand your network and get to know new people!</p>
 </div>
 <div class="ps-landing-signup">
-<a class="ps-btn ps-btn-join" href="https://demo.peepso.com/register/">Join us now, to SpeakUp!</a>
+<a class="ps-btn ps-btn-join" href="https://demo.peepso.com/register/">Let's CampusConnect!</a>
 </div>
 			</div>
 		</div>

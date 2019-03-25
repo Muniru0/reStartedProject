@@ -170,6 +170,7 @@ $query    = " INSERT INTO ".self::$normalize_post_table." (post_id,filename) {$s
   print j($db->errno. " ".$db->error); 
        return false;
    }
+   Notification::send_notification($post_id,$_SESSION[user::$id],INCIDENT_POST,time());
      return true;
     }//normal_post_media();
 	
@@ -334,8 +335,8 @@ return;
          return;
      }
      $time = time();  
-    
-   $query = "CALL edit_post(".$_SESSION[user::$id].",{$post_id},'{$caption}','{$title}','{$location}',{$lat},{$log},{$time})";
+     $user_id = $_SESSION[user::$id];
+   $query = "CALL edit_post(".$user_id.",{$post_id},'{$caption}','{$title}','{$location}',{$lat},{$log},{$time})";
      
   
  
@@ -349,16 +350,18 @@ return;
                          
                      
                       print j(["caption"=>$row[PostImage::$caption],"title"=>$row[PostImage::$title],"location"=>$row[PostImage::$location],"lat"=>$row[PostImage::$lat],"log"=>$row[PostImage::$log]]);
+                      Notification::send_notification($post_id,$user_id,EDIT_POST,$time);
+                      return;
                      }elseif(isset($row["result"]) && $row["invalid request"]){
                          print j(["false" =>"PLEASE INVALID OPERATION"]);
                          return;
                      }
                  }elseif(trim($db->error) != ""){
-                      log_action(__CLASS__,$db->error." ".__LINE__);
+                     
                      Errors::trigger_error(RETRY);
                      return;
                  }elseif(trim($db->error) != ""){
-                        log_action(__CLASS__,$db->error." ".__LINE__);
+                        
                       Errors::trigger_error(RETRY);
                         return;
                  }
@@ -445,11 +448,13 @@ if($db->multi_query($query)){
 			if($row = $result->fetch_assoc()){
 if(isset($row["result"]) && $row["result"] == "confirmed"){
 					  
-					print j(["confirmation" => "success"]);
+                    print j(["confirmation" => "success"]);
+                    Notification::send_notification($post_id,$id,CONFIRMED_POST,time());
 					return;
 				}  elseif(isset($row["result"]) && $row["result"] == "reverse_confirmation"){
 					$_SESSION[user::$invalid_confirmations] = $_SESSION[user::$invalid_confirmations]++;
-					print j(["reverse_confirmation"=>"success"]);
+                    print j(["reverse_confirmation"=>"success"]);
+                    Notification::send_notification($post_id,$id,REVERSE_CONFIRMATION,time());
 					return;
 				}
     elseif(isset($row["result"]) && $row["result"] == "duplicate_confirmation"){
@@ -544,9 +549,15 @@ if($db->multi_query($query)){
 
 
  // delete the post 
-  public static function delete_post($user_id = 0 ,$post_id = 0){
+  public static function delete_post($post_id = 0){
 	  global $db;
 
+        if(!isset($_SESSION) || isset($_SESSION[user::$id]) || $_SESSION[user::$id] < 1){
+            Errors::trigger_error(INVALID_SESSIOn);
+            return;
+        }
+
+        $user_id = $_SESSION[user::$id]
      $query = "DELETE FROM ".self::$table_name." WHERE ".self::$id." = {$post_id} && ".self::$uploader_id." = {$user_id} LIMIT 1";
 
     $results = $db->query($query);
@@ -562,6 +573,7 @@ if($db->multi_query($query)){
 		log_action(__CLASS__," Query failed: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
 		return;
 	}elseif($db->affected_rows == 1){
+        Notification::send_notification($post_id,$user_id,DELETE_POST,time());
 		print j(["true"]);
 	}
 	

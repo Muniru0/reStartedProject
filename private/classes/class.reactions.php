@@ -99,13 +99,6 @@ $user_id = $_SESSION["id"];
  }
   
 
-/* if(!$stmt->bind_result($support,$oppose)){
-
-  log_action(__CLASS__," Preparation failed ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
- 
- print j(["false"=>" Sorry server problem please try again"]);
- return;
-} */
   
 $result = $stmt->get_result();
      if($db->error === "" && $stmt->error === ""){
@@ -116,6 +109,27 @@ $result = $stmt->get_result();
 			
  print j(["support" => "{$row["support"]}",
  "oppose"=>"{$row["oppose"]}","post_id"=>"{$row["id"]}"]);
+
+ switch ($row["reaction_type"]) {
+   case NEW_SUPPORT:
+   Notification::send_notification($post_id,$user_id,NEW_SUPPORT,$time);
+     break;
+     case NEW_OPPOSE:
+Notification::send_notification($post_id,$user_id,NEW_OPPOSE,$time);
+     break;
+      case ALT_SUPPORT:
+Notification::send_notification($post_id,$user_id,ALT_SUPPORT,$time);
+     break;
+      case ALT_OPPOSE:
+Notification::send_notification($post_id,$user_id,ALT_OPPOSE,$time);
+     break;
+   default:
+   Errors::trigger_error(RETRY);
+     break;
+ }
+
+
+ 
 		}
 	 }
 	 }else{

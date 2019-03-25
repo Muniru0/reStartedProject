@@ -355,14 +355,22 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
 	    
 	$commentReply = $db->real_escape_string(str_replace("\n","",$commentReply));
 	 $query = "";
-	    
+			
+	 
+	 if(!isset($_SESSION) || $_SESSION[user::$id] < 1 ||){
+
+	 }
+
+
+	 $user_id = $_SESSION[user::$id];
+	 $time    = time();
 	 // set the edit view as the default
 	 if(!isset($option) || $option == null || trim($option) == "view"){
 		 //set the query for the edit_view  routine
-	  $query = "CALL edit_view('".j([$postCommentID,$commentReplyID,$_SESSION["id"],$commentReply,time()])."')";
+	  $query = "CALL edit_view('".j([$postCommentID,$commentReplyID,$user_id,$commentReply,$time])."')";
 	 }elseif(isset($option) && trim($option) != "" && trim($option) == "reply"){
 		 // set the query for the edit_reply routine
-		  $query = "CALL edit_reply('".j([$postCommentID,$commentReplyID,$_SESSION["id"],$commentReply,time()])."')";
+		  $query = "CALL edit_reply('".j([$postCommentID,$commentReplyID,$user_id,$commentReply,$time])."')";
 	 }else{
 		 print j(["false" => "Server problem, please refresh the page and try again if the problem persists."]);
 		 return;
@@ -377,13 +385,29 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
    do{
 	   if($result = $db->store_result()){
 		   if($row  = $result->fetch_assoc()){
-			   // print back the result to the client side
-			  print j(["true" => $row["comment"]]);
-		   }
+				// send the response to the client
+				if(isset($row["comment"]) && trim($row["comment"]) != ""){
+					print j(["true" => $row["comment"]]);
+					// send an appropriate notification to the appropriate 
+					Notification::send_notification($user_id,$postCommentID,EDITTED_COMMENT,$time);
+					return;
+				}elseif(isset($row["reply"]) && trim($row["reply"]) != ""){
+					print j(["true" => $row["reply"]]);
+					// send an appropriate notification to the appropriate 
+					Notification::send_notification($user_id,$commentReplyID,EDITTED_REPLY,$time);
+					return;
+				}else{
+					Errors::trigger_error(RETRY);
+				}
+			  
+			 
+			 }
+
+			 
+			 
 		}elseif(trim($db->error) != ""){
-			 print j(["false" => "Server problem, please refresh the page and try again if the problem persist."]);
-			log_action(__CLASS__," Query encountered an error: $db->error"." on line: ".__LINE__." in file ".__FILE__);
-			return;
+	  Errors::trigger_error(SERVER_PROBLEM);
+	  return;
 		}
 		
 		
@@ -441,48 +465,35 @@ if($stmt->fetch()){
 
 
 // delete a view
-public static function delete_view ($postCommentID = 0 ,$commentReplyID = 0,$flag = ""){
+public static function delete_view ($post_id = 0 ,$comment_id = 0){
 	
 	global $db;
 	
-    $postCommentID     = $db->real_escape_string($postCommentID);
-    $commentReplyID    = $db->real_escape_string($commentReplyID);	
+   
 	
-/* 	$post_id     = (int) $post_id;
-	$comment_id  = (int) $comment_id; */
-	
-	 if(trim($flag) === "comment"){
-	// query to delete a comment and it's associated replys
-	$query  = "DELETE FROM ".self::$table_name." WHERE id = $commentReplyID && post_id = $postCommentID && commentor_id = ".$_SESSION["id"].";";
-	$query .= "DELETE FROM ".ReplyViews::$table_name." WHERE post_id = {$postCommentID} && comment_id = {$commentReplyID} && user_id = ".$_SESSION["id"];
-	
-	// query to delete a reply
-	}elseif(trim($flag) === "reply"){
-	// query to be executed if the call was made to delete a reply
-	$query  = "DELETE FROM ".ReplyViews::$table_name." WHERE id = $commentReplyID && comment_id = $commentReplyID && user_id = ".$_SESSION["id"];
+  if(!isset($_SESSION) || $_SESSION[user::$id] < 1){
+	Errors::trigger_error(RETRY);
+	return;
 	}
+
+	$post_id     = $db->real_escape_string($post_id);
+	$comment_id    = $db->real_escape_string($comment_id);	
+	$user_id      $_SESSION[user::$id];
+	
+	// query to delete a comment and it's associated replys
+	$query  = "DELETE FROM ".self::$table_name." WHERE id = $comment_id && post_id = $post_id && commentor_id = ".$user_id.";";
+	
+
 	  
-	  if($db->multi_query($query)){
+	  if($result = $db->query($query)){
+		   if($row = $result->fetch_assoc()){
+         if($db->affected_rows == 1){
+				print j(["comment_delete"=>"success"]);
+				Notification::send_notification($post_id,$user_id,DELETE_VIEW,time());
+				return;
+				 }
+			 }
 		  
-		  do{
-			  // echo $db->affected_rows;
-			  // store first result
-		  if($result = $db->use_result()){
-			 // clean up the resources  
-			$result->close();
-		  }elseif(trim($db->error) != "")
-			{
-			// check if mysql does not return an empty string as a result since operations like insert and
-			// delete will make multi_query return false
-		    log_action(__CLASS__,"Query failed: $db->error on line :".__LINE__." in file: ".__FILE__);
-				   print j(["false" => "Something went wrong Please try again... if problem persist refresh the page"]);
-				   break;
-			}
-		  if(!$db->more_results() && $db->error == ""){
-			  print j([true]);
-            break;			  
-		  }
-		 }while($db->next_result());
 		  
 }else{
 	print j(["false" => "Something went wrong please try again... if the problem persist refresh the page1"]);

@@ -317,7 +317,51 @@ return $record;
  
  
  }
+	
+ 
+// delete the a reply to a comment
+ public static function delete_reply_view ($comment_id = 0 ,$reply_id = 0){
+	
+	global $db;
+	
+   
+	
+  if(!isset($_SESSION) || $_SESSION[user::$id] < 1){
+	Errors::trigger_error(RETRY);
+	return;
+	}
 
+	$comment_id     = $db->real_escape_string($comment_id);
+	$reply_id    = $db->real_escape_string($reply_id);	
+	$user_id      $_SESSION[user::$id];
+	
+	// query to delete a comment and it's associated replys
+	$query  = "DELETE FROM ".self::$table_name." WHERE id = {$reply_id} && post_id = {$comment_id} && commentor_id = {$user_id};";
+	
+
+	  
+	  if($result = $db->query($query)){
+		   if($row = $result->fetch_assoc()){
+         if($db->affected_rows == 1){
+				print j(["reply_delete"=>"success"]);
+				Notification::send_notification($post_id,$user_id,DELETE_REPLYVIEW,time());
+				return;
+				 }
+			 }
+		  
+		  
+}else{
+	print j(["false" => "Something went wrong please try again... if the problem persist refresh the page1"]);
+}
+	  
+	
+}
+
+
+
+
+
+ 
 
 } 
 
