@@ -32,17 +32,17 @@ class Views extends DatabaseObject{
 	  
    // get all the views for some specific post_ids
    public static function get_views_with_replys($post_id = 0, $views_with_replys = "",$views_likes_user_ids = [],$reply_views_user_ids = []) {
-	   
+	  
       
 	   if(empty($post_id)  || $post_id < 1 ){
-		   log_action(__CLASS__, " View with this post id is zero (".$post_id.") on line: ".__LINE__." in file: ".__FILE__);
+		  
 		   print j(["false" =>"Sorry server problem,please try again, if problem persists refresh the page."]);
 		   return;
 		 
 	   }
 	   
 	   if(!is_array($views_with_replys) || in_array(0,$views_with_replys)){
-		   log_action(__CLASS__, "on one the views with the post id as (".$post_id.") has an index as zero or the array of views and replys is not an array on line: ".__LINE__." in file: ".__FILE__);
+		  
 		   print j(["false" =>"Sorry server problem,please try again, if problem persists refresh the page."]);
 		   return;
 	}
@@ -357,7 +357,7 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
 	 $query = "";
 			
 	 
-	 if(!isset($_SESSION) || $_SESSION[user::$id] < 1 ||){
+	 if(!isset($_SESSION) || $_SESSION[user::$id] < 1 ){
 
 	 }
 
@@ -389,12 +389,12 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
 				if(isset($row["comment"]) && trim($row["comment"]) != ""){
 					print j(["true" => $row["comment"]]);
 					// send an appropriate notification to the appropriate 
-					Notification::send_notification($user_id,$postCommentID,EDITTED_COMMENT,$time);
+					Notifications::send_notification($user_id,$postCommentID,EDITTED_COMMENT,$time);
 					return;
 				}elseif(isset($row["reply"]) && trim($row["reply"]) != ""){
 					print j(["true" => $row["reply"]]);
 					// send an appropriate notification to the appropriate 
-					Notification::send_notification($user_id,$commentReplyID,EDITTED_REPLY,$time);
+					Notifications::send_notification($user_id,$commentReplyID,EDITTED_REPLY,$time);
 					return;
 				}else{
 					Errors::trigger_error(RETRY);
@@ -478,7 +478,7 @@ public static function delete_view ($post_id = 0 ,$comment_id = 0){
 
 	$post_id     = $db->real_escape_string($post_id);
 	$comment_id    = $db->real_escape_string($comment_id);	
-	$user_id      $_SESSION[user::$id];
+	$user_id      =  $_SESSION[user::$id];
 	
 	// query to delete a comment and it's associated replys
 	$query  = "DELETE FROM ".self::$table_name." WHERE id = $comment_id && post_id = $post_id && commentor_id = ".$user_id.";";
@@ -489,7 +489,7 @@ public static function delete_view ($post_id = 0 ,$comment_id = 0){
 		   if($row = $result->fetch_assoc()){
          if($db->affected_rows == 1){
 				print j(["comment_delete"=>"success"]);
-				Notification::send_notification($post_id,$user_id,DELETE_VIEW,time());
+				Notifications::send_notification($post_id,$user_id,DELETE_VIEW,time());
 				return;
 				 }
 			 }

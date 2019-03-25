@@ -332,8 +332,8 @@ return $record;
 	}
 
 	$comment_id     = $db->real_escape_string($comment_id);
-	$reply_id    = $db->real_escape_string($reply_id);	
-	$user_id      $_SESSION[user::$id];
+	$reply_id       = $db->real_escape_string($reply_id);	
+	$user_id        = $_SESSION[user::$id];
 	
 	// query to delete a comment and it's associated replys
 	$query  = "DELETE FROM ".self::$table_name." WHERE id = {$reply_id} && post_id = {$comment_id} && commentor_id = {$user_id};";
@@ -344,7 +344,7 @@ return $record;
 		   if($row = $result->fetch_assoc()){
          if($db->affected_rows == 1){
 				print j(["reply_delete"=>"success"]);
-				Notification::send_notification($post_id,$user_id,DELETE_REPLYVIEW,time());
+				Notifications::send_notification($post_id,$user_id,DELETE_REPLYVIEW,time());
 				return;
 				 }
 			 }
