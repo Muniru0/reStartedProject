@@ -19,7 +19,7 @@ class DatabaseObject  {
      //die in that case.
   if ($db->connect_errno){
     //
-    die("Database connection failed: ".$this->db->connect_error."(".mysqli_connect_errno().")");
+    die("Database connection failed: ".$db->connect_error."(".mysqli_connect_errno().")");
     
 }else{
        return $db;

@@ -25,7 +25,10 @@ return;
   		break;
 		case UNEXPECTED_RETRY:
   		print j(["false"=>"Sorry, Something unexpectedly happened,please refresh the page and try again."]);
-  		break;
+		  break;
+		  case RE_INITIATE_OPERATION:
+  		print j(["false"=>"Please refresh and try again if the operation wasn't successful."]);
+  		break;  
   	
   	default:
   		# code...

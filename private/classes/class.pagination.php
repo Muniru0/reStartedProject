@@ -66,6 +66,7 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
  // get the post comments
  $comments  = self::get_post_comments($stream_type);
  
+
    if($comments === false){
 	  
 	   return;
@@ -73,8 +74,6 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
  
  $activities_user_ids = self::get_activities_user_ids();
  
- 
-   
  
  // now output the post that you just queried
  FetchPost::get_full_post($posts,$comments,$activities_user_ids["reactions"],$activities_user_ids["views"],$activities_user_ids["replys"],STREAM);
@@ -203,12 +202,12 @@ return false;
 		
 		 if(class_exists("ReplyViews") && class_exists("user") && class_exists("Views")){
 
-		 
+		 log_action(__CLASS__,$_SESSION[Session::$qr_upperbound],$_SESSION[Session::$qr_lowerbound]);
 	$comments = [];	 
 		 
 		 
      $query = "SELECT ".Views::$table_name.".*,".ReplyViews::$table_name.".*,".Views::$table_name.".".Views::$id." AS ".Views::$alias_of_id.",".ReplyViews::$table_name.".".ReplyViews::$id." AS ".ReplyViews::$alias_of_id.", ".ReplyViews::$table_name.".".ReplyViews::$firstname." AS ".ReplyViews::$alias_of_firstname." ,".ReplyViews::$table_name.".".ReplyViews::$lastname." AS ".ReplyViews::$alias_of_lastname.",".Views::$table_name.".".Views::$firstname." AS ".Views::$alias_of_firstname.",".Views::$table_name.".".Views::$lastname." AS ".Views::$alias_of_lastname.",".Views::$table_name.".".Views::$post_id." AS ".Views::$alias_of_post_id." ,".ReplyViews::$table_name.".".ReplyViews::$post_id." AS ".ReplyViews::$alias_of_post_id.",".Views::$table_name.".".Views::$likes." AS ".Views::$alias_of_likes.",".ReplyViews::$table_name.".".ReplyViews::$likes." AS ".ReplyViews::$alias_of_likes." FROM  ".Views::$table_name." 
-  LEFT JOIN  ".ReplyViews::$table_name." ON ".ReplyViews::$table_name.".".ReplyViews::$comment_id." = ".Views::$table_name.".".Views::$id."  WHERE  ".Views::$table_name.".".Views::$post_id." >= ".$_SESSION[Session::$qr_upperbound]." && ".Views::$table_name.".".Views::$post_id." <= ".$_SESSION[Session::$qr_upperbound]." LIMIT 3000";
+  LEFT JOIN  ".ReplyViews::$table_name." ON ".ReplyViews::$table_name.".".ReplyViews::$comment_id." = ".Views::$table_name.".".Views::$id."  WHERE  ".Views::$table_name.".".Views::$post_id." >= ".$_SESSION[Session::$qr_lowerbound]." && ".Views::$table_name.".".Views::$post_id." <= ".$_SESSION[Session::$qr_upperbound]." LIMIT 3000";
 
  
   $results = $db->query($query);
@@ -581,13 +580,7 @@ $row_count = $results->num_rows;
     
     
     
-    
-    
-    public static function gest(){
-        echo "how to make things move fast";
-    }
 
- 
  
  // get users own uploaed incidents	
  public static function profile_posts($where_clause = ""){
@@ -770,9 +763,12 @@ $row_count = $results->num_rows;
 	}
 	
 	  sort($post_ids_array);
-    $_SESSION[Session::$qr_lowerbound] = array_shift($post_ids_array);
-	$_SESSION[Session::$qr_upperbound] = array_pop($post_ids_array);
-	 $_SESSION[STREAM_HOME] += 30;
+	 
+   $_SESSION[Session::$qr_lowerbound] = array_shift($post_ids_array);
+   $_SESSION[Session::$qr_upperbound] = array_pop($post_ids_array);
+	log_action(__CLASS__, $_SESSION[Session::$qr_lowerbound]."   ". $_SESSION[Session::$qr_upperbound]);
+	
+	$_SESSION[STREAM_HOME] += 30;
 	}elseif(trim($db->error) ==  "" && $row_count < 1){
 	 
 	  if($_SESSION[STREAM_HOME] == 1){

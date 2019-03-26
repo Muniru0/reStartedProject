@@ -58,7 +58,7 @@ if(is_ajax()){
 
 
 // add the view 
-if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
+if(isset($_POST["request_type"]) && $_POST["request_type"] == "add_comment" ){
 	    
 	$_POST["comment"] = h($_POST["comment"]);
 		
@@ -67,7 +67,7 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
       // check if the comment is empty or set	  
 	  if(!isset($_POST["comment"]) || empty(trim($_POST["comment"]))){
 		  print j(["false" => "Please comment can't be empty"]);
-		  print j($_POST["comment"]);
+		
 		  return false;
 	  }   
 	  
@@ -146,7 +146,8 @@ if(isset($_POST["add_comment"]) && $_POST["add_comment"] == true ){
         
         
         
-    }// edit_post();
+		}// edit_post();
+		// delete post
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "delete_post"){
    $post_id = (int)$_POST["post_id"];
    $user_id = (int) $_POST["user_id"];
@@ -206,7 +207,7 @@ PostImage::delete_post($user_id,$post_id);
 	 
  }
 // delete the view
-elseif(isset($_POST["delete_comment"]) && trim($_POST["delete_comment"]) === "comment"){
+elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "delete_comment"){
 
 	 // cast the post and comment ids to integers  
 	 $post_id    = (int) $_POST["post_id"];
@@ -230,7 +231,7 @@ elseif(isset($_POST["delete_comment"]) && trim($_POST["delete_comment"]) === "co
 		 }
 		 
 	 // delete the view from the database			
-	 Views::delete_view($post_id,$comment_id,"comment");
+	 Views::delete_view($post_id,$comment_id);
 	
 	
 	
@@ -240,7 +241,7 @@ elseif(isset($_POST["delete_comment"]) && trim($_POST["delete_comment"]) === "co
 
 
 // edit the view
-elseif(isset($_POST["edit_comment"]) && $_POST["edit_comment"] === "true"){
+elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "edit_comment"){
 
  
 	  $comment =  nl2br($_POST["comment"],true);

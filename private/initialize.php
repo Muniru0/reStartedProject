@@ -87,6 +87,11 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 !defined("RESET_POST")               ?  define("RESET_POST","reset_post")                : null;
 !defined("COMMUNITIES")               ?  define("COMMUNITIES",["transport","health","work","sol","security","sanitation","oppression","other"])        : null;
+!defined("RE_INITIATE_OPERATION")               ?  define("RE_INITIATE_OPERATION","re-initiate-operation")   : null;
+
+// post interaction operations
+!defined("NEW_COMMENT")               ?  define("NEW_COMMENT","new_comment")   : null;
+
 
 
 

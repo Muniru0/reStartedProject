@@ -14,7 +14,6 @@ class Views extends DatabaseObject{
    public static $comment_time  = "comment_time";
    public static $firstname     = "firstname";
    public static $lastname      = "lastname";
-  
    public static $likes         = "likes";
 
 
@@ -61,7 +60,7 @@ class Views extends DatabaseObject{
 		   $views_info = array_pop($views);
 		   if(!isset($_SESSION) || !isset($_SESSION["comment_ids"]) || !isset($_SESSION[user::$id])){
 			   
-			     print j(["false"=>"login"]);
+			    Errors::trigger_error(RETRY);
 				return false;
 		   }
 		   
@@ -69,7 +68,9 @@ class Views extends DatabaseObject{
 		   $toggle_likes_count = "";
 		   $likes_count_string = "";
 		   $user_like_status   = "";
-		   
+		   echo "<pre>";
+		     print_r(array_keys($views_info));
+			 echo "</pre>";
 		   //if there are no likes yet
 		   if(isset($views_info[Views::$alias_of_likes]) && $views_info[Views::$alias_of_likes] < 1 ){
 			    $toggle_likes_count = " style= 'display:none;'";
@@ -77,7 +78,7 @@ class Views extends DatabaseObject{
 			 
 		   }
 		   
-		 // if there is only one like an dyou are the one who liked it
+		 // if you are the only one who liked it
 		   if(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$views_likes_user_ids[$views_info[Views::$alias_of_id]])){
 			   $likes_count_string .= "<span class='likes_count liked' title='you liked this'>1</span></a>";
 			   $user_like_status = "liked";
@@ -248,41 +249,47 @@ return $record;
 	
 	$post_id = $db->real_escape_string($post_id);
 	
+	
+	if(!isset($_SESSION) || !isset($_SESSION[user::$id]) || $_SESSION[user::$id] < 1 || !isset($_SESSION[user::$firstname]) || !isset($_SESSION[user::$lastname]) || empty(trim($_SESSION[user::$lastname])) || empty(trim($_SESSION[user::$lastname]))){
+		  
+		Errors::trigger_error(INVALID_SESSION);
+		 return false;
+	 }
+	 
+
 	// the insert query for the new comment	
-	$query = "INSERT INTO ".self::$table_name." VALUES(?,?,?,?,?,?,?)";
+	$query = "INSERT INTO ".self::$table_name." VALUES(?,?,?,?,?,?,?,?)";
+
 	// prepare the new comment statement
-	if(!($stmt= $db->prepare($query))){
-		log_action(__CLASS__, " Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
+	$stmt = $db->prepare($query);
+
+
+	if(!$stmt){
+		Errors::trigger_error(RETRY);
+	
 		return false;
 	} 
 
 	
 	// assign the parameters
-	$id = NULL;
-	$time = time();
-	$user_id = $_SESSION["id"] ? $_SESSION["id"] : 0;
-	
-	if($user_id === 0 || $id !== NULL || strlen($time) < 10 ){
-		 print j(["false" =>"Something Unexpectedly went wrong, please refresh the page and try again"]);
-		 
-	 }
-	 
-	 
-	  if(!isset($_SESSION) || !isset($_SESSION["firstname"]) || !isset($_SESSION["lastname"]) || empty(trim($_SESSION["firstname"])) || empty(trim($_SESSION["lastname"]))){
-		  
-		  print j(["false"=> "login"]);
-		  return false;
-	  }
-	  
-	
+	$id        = NULL;
+	$time      = time();
+	$user_id   = $_SESSION[user::$id];
+	$firstname = $_SESSION[user::$firstname];
+	$lastname  = $_SESSION[user::$lastname];
+	$likes     = "likes + 1";
+
+	log_action(__CLASS__,$user_id);
 	// bind the parameters
-	if(!$stmt->bind_param("iissisi",$id,$post_id,$_SESSION["firstname"],$_SESSION["lastname"],$_SESSION["id"],$comment,$time)){
-		log_action(__CLASS__," Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
+	$bound_parameters = $stmt->bind_param("sissisii",$id,$post_id,$firstname,$lastname,$user_id,$comment,$time,$likes);
+	if(!$bound_parameters){
+		Errors::trigger_error(RE_INITIATE_OPERATION);
+	 log_action(__CLASS__,$db->error." ".$stmt->error);
          return false;
 		}
 	// execute the statement
 	if(!$stmt->execute()){
-		log_action(__CLASS__,"  Query failed {$db->error} {$stmt->error} on line ".__LINE." in file ".__FILE__);
+		log_action(__CLASS__,"Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
 		return false;
 	}
 	// return a new_comment_id  in case the id is to be used to delete the comment
@@ -295,6 +302,7 @@ return $record;
         $_SESSION["comment_ids"][] = (int)$view_info[0];
     $view_info[4] = FetchPost::time_converter($view_info[4]);
 	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
+	  Notifications::send_noitification($post_id,$iuser_d,NEW_COMMENT,$time);
  }else{
 	 log_action(__CLASS__," Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
 	 print j(["false" => "Sorry please re-comment..."]);

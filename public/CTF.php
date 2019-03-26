@@ -60,10 +60,12 @@ div {
 
  </style>
 
- <button type="button" id="button">Click me</button>
- <div id="sample-div" class="test"> Simple div </div>
+ 
  <script>
-  /*  mutationObserver.observe(document.documentElement, {
+  /*  
+ <button type="button" id="button">Click me</button>
+ <div id="sample-div" class="test"> Simple div </div> 
+  mutationObserver.observe(document.documentElement, {
   attributes: true,
   characterData: true,
   childList: true,
@@ -83,7 +85,9 @@ div {
  
  
  <?php
-  
+	
+	Pagination::get_infinite_scroll(STREAM_HOME);
+	return;
  function test_calling_functions($id = 10000){global $db;
 	 $result = $db->query("SELECT * FROM test LIMIT 1,2");
 	 
