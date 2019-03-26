@@ -163,6 +163,7 @@ class comment{
      try{
   
      let   comment_value = returnedArray[1];
+     
    
        //  post a new comment
      $.ajax({
@@ -172,7 +173,7 @@ class comment{
        datatype:"html",
      }).done(function(response){ 
       console.log(response);
-          try{
+        
 
             if($.trim(response["false"]) != "" && response["false"] == undefined){
               utility.showErrorDialogBox(response["false"]);
@@ -287,11 +288,8 @@ class comment{
      $(comments_container).before(comment_template);
            $(comments_container).before(reply_template);
      
-      $(comment_template).fadeIn(680);
-       }catch(e){
-         console.log(e);
-         utility.showErrorDialogBox("Please re-initiate the operation if it wasn't successful.");
-       }
+      $(comment_template).fadeIn(690);
+     
         
       }).fail(function (error){
         alert(error);
