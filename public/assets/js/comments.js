@@ -162,13 +162,14 @@ class comment{
     let     returnedArray =  comment.prepare_text(postID,post_button,"comment",true);	
      try{
   
-     let   comment_value = returnedArray[1];
+     let   commentValue = returnedArray[1];
      
+     comment.showComment(commentValue,postID,"request","");
    
        //  post a new comment
      $.ajax({
         url: "../private/neutral_ajax.php",
-     data: {comment:comment_value,post_id : postID,request_type : "add_comment"},
+     data: {comment:commentValue,post_id : postID,request_type : "add_comment"},
      type: "POST",
        datatype:"html",
      }).done(function(response){ 
@@ -181,54 +182,200 @@ class comment{
             }
         response = JSON.parse(response);
        
-           let comment_template = document.querySelector("#comment_template");
-              
+          comment.showComment(0,0,"response",response);
+        
+      }).fail(function (error){
+        alert(error);
+      });
+    
+        // hide the grandParent
+     }catch(e){
+       console.log(e);
+      utility.showErrorDialogBox("Please refresh the page and try again if the action wasn't not successful");
+     }finally{
+           //finally block
+      $(returnedArray[2]).hide();
+     // hide the parent
+     $(returnedArray[3]).hide();
+     // hide the loadinGif
+     $(returnedArray[4]).hide();
+     returnedArray[0].disabled = false;
+     }
+
+ } 
+
+
+
+  static showComment(commentValue = "", postID = 0,flag = "pre",response = []){
+
+                    // maintain the line breaks in the comment 
+                    commentValue = commentValue.split("\n");
+                    commentValue = commentValue.join("<br />"); 
+
+                    // find the comment template
+                  let comment_template = document.querySelector("#comment_template");
+                  // clone the comment template
                    comment_template = comment_template.cloneNode(true);
-                       comment_template.id = response["comment_div_id"];
-                        $(comment_template).hide();
+                   // hide the comment_template for now
+                    $(comment_template).hide();
+                    // initialize the fullname element of the user
                    let user = $(comment_template).find(".ps-comment-user")[0];
-                   $(user).html(response["fullname"]);
+                   // initialize the time element of the template
                   let time  =  $(comment_template).find(".ps-js-autotime")[0];
-                  $(time).attr("title",response["comment_date"]);
-                   
-                   $(time).html(response["comment_info"]["c_time"]);
+                  // initialize the comment text element of the template
+                  let db_comment = $(comment_template).find("p");
+                   // set the delete variable
+                  let actionsLink = "";
+              // define the reply template
+               let reply_template ;
+               // define the textArea div
+               let textAreaDiv;
+               // define the reply container
+               let reply_container;
+               // define the  reply textArea
+               let textArea;
+                     
+                     // this is prior to the returning of the request
+                     if(flag == "request"){
 
-                  // set the text of the comment from the db
-           let db_comment = $(comment_template).find("p");
-               db_comment.html(response["comment_info"]["comment"]);
+                       // set the comment template id
+                     comment_template.id = "temporary";
 
-           
-/////////////////// SETUP THE VARIOUS LINKS OF THE                                COMMENT(e.gedit,delete,reply)////////////////////               
+                     // the user fullname
+                    $(user).html($(user).html());
 
- // set the delete variable
-         let actionsLink = "";
-  
-  // edit the delete comment link
+                     // set the comment
+                      db_comment.html(commentValue);
+                    // set the time of title
+                     $(time).attr("title","just now");
+
+                   // set the time of title
+                   $(time).html("just now");
+
+                // edit the delete comment link
      if($(comment_template).find(".actaction-delete")[0]){
    actionsLink = $(comment_template).find(".actaction-delete")[0];
  // change the onclick attribute of the link 
-   $(actionsLink).attr("onclick","comment.delete_comment("+ response["comment_info"]["comment_id"] +","+ response["comment_info"]["incident_id"] +"); return false;");
- }             
+   $(actionsLink).attr("onclick","comment.delete_comment(0,0); return false;");
+ }        
 
+  
  // edit the reply to the comment link
      if($(comment_template).find(".actaction-reply")[0]){
    actionsLink = $(comment_template).find(".actaction-reply")[0];
  // change the onclick attribute of the link 
-   $(actionsLink).attr("onclick","comment.showReplyBox("+ response["comment_info"]["comment_id"] +"); return false;");
+   $(actionsLink).attr("onclick","comment.showReplyBox(0); return false;");
  }    
  
    // edit the delete comment link
      if($(comment_template).find(".actaction-edit")[0]){
    actionsLink = $(comment_template).find(".actaction-edit")[0];
  // change the onclick attribute of the link 
-   $(actionsLink).attr("onclick","comment.prepare_edit_comment("+ response["comment_info"]["incident_id"] +","+ response["comment_info"]["incident_id"] +",this,'comment'); return false;");
-     }     
+   $(actionsLink).attr("onclick","comment.prepare_edit_comment(0,0,this,'comment'); return false;");
+     } 
 
-       //set the reply template
-    let reply_template ;
-    let textAreaDiv;
-    let reply_container;
-    let textArea;
+       
+
+     
+    // set up the entire reply wall template
+     if(document.querySelector("#reply_wall_template")){
+       reply_template = document.querySelector("#reply_wall_template");
+       
+       // clone the reply template
+             reply_template = reply_template.cloneNode(true);  
+     // set the id of the reply wall template div        
+          $(reply_template).attr("id","reply_wall_0");  
+      
+       // find the replys container
+          if($(reply_template).find(".ps-comment-container")[0]){
+      // find the id of the replys container
+       reply_container = $(reply_template).find(".ps-comment-container")[0];
+   // set the id of the replys container
+      reply_container   =  $(reply_container).attr("id","reply_container_0");
+      }
+      
+      //
+      if($(reply_template).find(".ps-comment-reply")[0]){
+        //find the entire div with the textarea, the reply post button and cancel button
+           textAreaDiv  = $(reply_template).find(".ps-comment-reply")[0];
+      $(textAreaDiv).attr("id","comment_area_0");
+      }
+      
+      // find the text area associated with the reply template
+         if($(reply_template).find("textarea")){
+       textArea    = $(reply_template).find("textarea");
+       
+       // set the id of reply textarea
+     $(textArea).attr("id","reply_area_0");
+     $(textArea).attr("onkeydown","comment.reply_field_change(0,this)");
+       }
+      
+     }
+
+      // edit the post reply  link
+     if( $(reply_template).find(".ps-button-action")[0]){
+   actionsLink =  $(reply_template).find(".ps-button-action")[0];
+ // change the onclick attribute of the link 
+   $(actionsLink).attr("onclick","comment.reply_comment("+ postID +",0,this); return false;");
+     }     
+ 
+       // edit the cancel reply  link
+     if( $(reply_template).find(".ps-button-cancel")[0]){
+   actionsLink =  $(reply_template).find(".ps-button-cancel")[0];
+ // change the onclick attribute of the link 
+   $(actionsLink).attr("onclick","comment.reply_cancel("+ postID + ",0,this); return false;");
+     }     
+       // give the reply text area an id
+       $(textAreaDiv).attr("id","reply_area_wrapper_0" );
+                // find the comments list
+       let comments_container = document.querySelector("#comment_area_wrapper_" + postID); 
+
+   
+           // append the comment to the comments_container 
+     $(comments_container).before(comment_template);
+           $(comments_container).before(reply_template);
+     
+      $(comment_template).fadeIn(690);
+
+                     }else if(flag == "reponse"){
+                       // set the comment template id
+                       comment_template.id = response["comment_div_id"];
+                       // set the user fullname
+                       $(user).html(response["fullname"]);
+                  // set the data from the database     
+                        db_comment.html(response["comment_info"]["comment"]);
+
+                   // set the time title
+                  $(time).attr("title",response["comment_date"]);
+
+                   // set the time string
+                   $(time).html(response["comment_info"]["c_time"]);
+
+              // edit the delete comment link
+                   if($(comment_template).find(".actaction-delete")[0]){
+                 actionsLink = $(comment_template).find(".actaction-delete")[0];
+               // change the onclick attribute of the link 
+                 $(actionsLink).attr("onclick","comment.delete_comment("+ response["comment_info"]["comment_id"] +","+ response["comment_info"]["incident_id"] +"); return false;");
+               }     
+
+              
+ // edit the reply to the comment link
+     if($(comment_template).find(".actaction-reply")[0]){
+   actionsLink = $(comment_template).find(".actaction-reply")[0];
+ // change the onclick attribute of the link 
+   $(actionsLink).attr("onclick","comment.showReplyBox("+ response["comment_info"]["comment_id"] +"); return false;");
+ }    
+  
+    // edit the delete comment link
+     if($(comment_template).find(".actaction-edit")[0]){
+   actionsLink = $(comment_template).find(".actaction-edit")[0];
+ // change the onclick attribute of the link 
+   $(actionsLink).attr("onclick","comment.prepare_edit_comment("+ response["comment_info"]["incident_id"] +","+ response["comment_info"]["incident_id"] +",this,'comment'); return false;");
+     } 
+           
+       
+
+     
     // set up the entire reply wall template
      if(document.querySelector("#reply_wall_template")){
        reply_template = document.querySelector("#reply_wall_template");
@@ -256,16 +403,17 @@ class comment{
       // find the text area associated with the reply template
          if($(reply_template).find("textarea")){
        textArea    = $(reply_template).find("textarea");
-       console.log();
+       
        // set the id of reply textarea
      $(textArea).attr("id","reply_area_" + response["comment_info"][0]);
      $(textArea).attr("onkeydown","comment.reply_field_change("+ response["comment_info"]["comment_id"] + ",this)");
        }
       
-     }
-    
-     
-    // edit the post reply  link
+     }    
+
+
+
+      // edit the post reply  link
      if( $(reply_template).find(".ps-button-action")[0]){
    actionsLink =  $(reply_template).find(".ps-button-action")[0];
  // change the onclick attribute of the link 
@@ -288,28 +436,21 @@ class comment{
      $(comments_container).before(comment_template);
            $(comments_container).before(reply_template);
      
-      $(comment_template).fadeIn(690);
-     
-        
-      }).fail(function (error){
-        alert(error);
-      });
-    
-        // hide the grandParent
-     }catch(e){
-       
-       alert("Sorry it is our fault, but please try again.");
-     }finally{
-           //finally block
-      $(returnedArray[2]).hide();
-     // hide the parent
-     $(returnedArray[3]).hide();
-     // hide the loadinGif
-     $(returnedArray[4]).hide();
-     returnedArray[0].disabled = false;
-     }
+      $(comment_template).fadeIn(690);          
 
- } 
+                     }
+                      
+         
+          
+
+   
+    
+     
+   
+     
+
+
+  }
  
  
  
