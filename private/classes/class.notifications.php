@@ -28,15 +28,15 @@ public  static function send_notification($post_id = 0,$user_id = 0,$type = '')
 	global $db;
 	
 	
-	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,$user_id,$type,$date)";
+	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,$user_id,'".$type."',".time().")";
 	
 	if(!$db->query($query))
 	{
-        Errors::trigger_error(RETRY);
-		log_action(__CLASS__." Query failed: {$db->error} on line: ".__LINE__);
-		return;
+        
+		log_action(__CLASS__," Query failed: {$db->error} on line: ".__LINE__);
+		return false;
 	}else{
-		return $db->insert_id();
+		return $db->insert_id;
 	}
 	
 	return false;

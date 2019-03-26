@@ -3735,8 +3735,7 @@ window.onclick = function(event) {
 		<div class="ps-comment-time ps-shar-meta-date">
 			<small class="activity-post-age" data-timestamp="1529076871"><span class="ps-js-autotime" data-timestamp="1529076871" title="June 15, 2018 3:34 pm">2 weeks ago</span></small>
 
-						<div id="act-like-497" class="ps-comment-links cstream-likes ps-js-act-like--497" data-count="1">
-				<a onclick="return activity.show_likes(497);" href="#showLikes">1 person likes this</a>			</div>
+						
 
 			<div class="ps-comment-links stream-actions" data-type="stream-action">
 				<span class="ps-stream-status-action ps-stream-status-action">

@@ -215,15 +215,15 @@ class Views extends DatabaseObject{
    }// get_views_with_replys();
    
    
-  public static function get_view($comment_id,$post_id = 0){
+  public static function get_view($comment_id = 0,$post_id = 0){
 	  global $db;
 	 
 	  $post_id = (int)$post_id;
 	   if(!isset($post_id) || $post_id < 1 || !is_integer($post_id)){
 		 return false;
 	   }
-	 
-	  $query = "SELECT * FROM ".self::$table_name." WHERE post_id = {$post_id} && id ={$comment_id} LIMIT 1";
+	 // find aliases for the db columns just for the sake of security
+	  $query = "SELECT id AS comment_id,post_id AS comment_id,firstname,lastname,commentor_id,comment, comment_time ,likes AS c_likes FROM ".self::$table_name." WHERE post_id = {$post_id} && id ={$comment_id} LIMIT 1";
 	  $result = $db->query($query);
 	  
 	  if(!$result){
@@ -232,15 +232,13 @@ class Views extends DatabaseObject{
 	  }
 	  
 	  
-	   $record = [];
-	  if($row = $result->fetch_array()){
-		  for($x = 0;$x < 5 ; $x ++){
-			   $record[$x] = $row[$x];
-		  }
-		 
-return $record;
-	}
 	 
+	  if($row = $result->fetch_assoc()){
+ 
+    return $row;
+
+		}
+		return [];
 	 
   }// get_view();
    
@@ -282,7 +280,7 @@ return $record;
 	$lastname  = $_SESSION[user::$lastname];
 	$likes     = "likes + 1";
 
-	log_action(__CLASS__,$user_id);
+
 	// bind the parameters
 	$bound_parameters = $stmt->bind_param("sissisii",$id,$post_id,$firstname,$lastname,$user_id,$comment,$time,$likes);
 	if(!$bound_parameters){
@@ -300,12 +298,15 @@ return $record;
 	if($view_id == true){
 		 
 		$view_info = self::get_view($view_id,$post_id);
-	    $post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info[4]);
+	    $post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info["comment_time"]);
+		    
+        $_SESSION["comment_ids"][] = (int)$view_info["comment_id"];
+    $view_info["c_time"] = FetchPost::time_converter($view_info["comment_time"]);
+	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $firstname." ".$lastname,"comment_date" => $post_date]);
+
+	  Notifications::send_notification($post_id,$user_id,NEW_COMMENT);
+
 		
-        $_SESSION["comment_ids"][] = (int)$view_info[0];
-    $view_info[4] = FetchPost::time_converter($view_info[4]);
-	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],"comment_date" => $post_date]);
-	  Notifications::send_noitification($post_id,$iuser_d,NEW_COMMENT,$time);
  }else{
 	 log_action(__CLASS__," Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
 	 print j(["false" => "Sorry please re-comment..."]);

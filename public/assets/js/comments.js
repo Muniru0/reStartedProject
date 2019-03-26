@@ -190,11 +190,11 @@ class comment{
                   let time  =  $(comment_template).find(".ps-js-autotime")[0];
                   $(time).attr("title",response["comment_date"]);
                    
-                   $(time).html(response["comment_info"][4]);
+                   $(time).html(response["comment_info"]["c_time"]);
 
                   // set the text of the comment from the db
            let db_comment = $(comment_template).find("p");
-               db_comment.html(response["comment_info"][3]);
+               db_comment.html(response["comment_info"]["comment"]);
 
            
 /////////////////// SETUP THE VARIOUS LINKS OF THE                                COMMENT(e.gedit,delete,reply)////////////////////               
@@ -206,21 +206,21 @@ class comment{
      if($(comment_template).find(".actaction-delete")[0]){
    actionsLink = $(comment_template).find(".actaction-delete")[0];
  // change the onclick attribute of the link 
-   $(actionsLink).attr("onclick","comment.delete_comment("+ response["comment_info"][1] +","+ response["comment_info"][0] +"); return false;");
+   $(actionsLink).attr("onclick","comment.delete_comment("+ response["comment_info"]["comment_id"] +","+ response["comment_info"]["incident_id"] +"); return false;");
  }             
 
  // edit the reply to the comment link
      if($(comment_template).find(".actaction-reply")[0]){
    actionsLink = $(comment_template).find(".actaction-reply")[0];
  // change the onclick attribute of the link 
-   $(actionsLink).attr("onclick","comment.showReplyBox("+ response["comment_info"][0] +"); return false;");
+   $(actionsLink).attr("onclick","comment.showReplyBox("+ response["comment_info"]["comment_id"] +"); return false;");
  }    
  
    // edit the delete comment link
      if($(comment_template).find(".actaction-edit")[0]){
    actionsLink = $(comment_template).find(".actaction-edit")[0];
  // change the onclick attribute of the link 
-   $(actionsLink).attr("onclick","comment.prepare_edit_comment("+ response["comment_info"][1] +","+ response["comment_info"][0] +",this,'comment'); return false;");
+   $(actionsLink).attr("onclick","comment.prepare_edit_comment("+ response["comment_info"]["incident_id"] +","+ response["comment_info"]["incident_id"] +",this,'comment'); return false;");
      }     
 
        //set the reply template
@@ -235,21 +235,21 @@ class comment{
        // clone the reply template
              reply_template = reply_template.cloneNode(true);  
      // set the id of the reply wall template div        
-          $(reply_template).attr("id","reply_wall_" + response["comment_info"][0]);  
+          $(reply_template).attr("id","reply_wall_" + response["comment_info"]["comment_id"]);  
       
        // find the replys container
           if($(reply_template).find(".ps-comment-container")[0]){
       // find the id of the replys container
        reply_container = $(reply_template).find(".ps-comment-container")[0];
    // set the id of the replys container
-      reply_container   =  $(reply_container).attr("id","reply_container_" + response["comment_info"][0]);
+      reply_container   =  $(reply_container).attr("id","reply_container_" + response["comment_info"]["comment_id"]);
       }
       
       //
       if($(reply_template).find(".ps-comment-reply")[0]){
         //find the entire div with the textarea, the reply post button and cancel button
            textAreaDiv  = $(reply_template).find(".ps-comment-reply")[0];
-      $(textAreaDiv).attr("id","comment_area_" + response["comment_info"][0]);
+      $(textAreaDiv).attr("id","comment_area_" + response["comment_info"]["comment_id"]);
       }
       
       // find the text area associated with the reply template
@@ -258,7 +258,7 @@ class comment{
        console.log();
        // set the id of reply textarea
      $(textArea).attr("id","reply_area_" + response["comment_info"][0]);
-     $(textArea).attr("onkeydown","comment.reply_field_change("+ response["comment_info"][0] + ",this)");
+     $(textArea).attr("onkeydown","comment.reply_field_change("+ response["comment_info"]["comment_id"] + ",this)");
        }
       
      }
@@ -268,17 +268,17 @@ class comment{
      if( $(reply_template).find(".ps-button-action")[0]){
    actionsLink =  $(reply_template).find(".ps-button-action")[0];
  // change the onclick attribute of the link 
-   $(actionsLink).attr("onclick","comment.reply_comment("+ postID +","+ response["comment_info"][0] +",this); return false;");
+   $(actionsLink).attr("onclick","comment.reply_comment("+ postID +","+ response["comment_info"]["comment_id"] +",this); return false;");
      }     
  
        // edit the cancel reply  link
      if( $(reply_template).find(".ps-button-cancel")[0]){
    actionsLink =  $(reply_template).find(".ps-button-cancel")[0];
  // change the onclick attribute of the link 
-   $(actionsLink).attr("onclick","comment.reply_cancel("+ postID + "," +response["comment_info"][0] + ",this); return false;");
+   $(actionsLink).attr("onclick","comment.reply_cancel("+ postID + "," +response["comment_info"]["comment_id"] + ",this); return false;");
      }     
        // give the reply text area an id
-       $(textAreaDiv).attr("id","reply_area_wrapper_" + response["comment_info"][0]);
+       $(textAreaDiv).attr("id","reply_area_wrapper_" + response["comment_info"]["comment_id"]);
                 // find the comments list
        let comments_container = document.querySelector("#comment_area_wrapper_" + postID); 
 
