@@ -68,20 +68,23 @@ class Views extends DatabaseObject{
 		   $toggle_likes_count = "";
 		   $likes_count_string = "";
 		   $user_like_status   = "";
-		   echo "<pre>";
-		     print_r(array_keys($views_info));
-			 echo "</pre>";
+			
 		   //if there are no likes yet
 		   if(isset($views_info[Views::$alias_of_likes]) && $views_info[Views::$alias_of_likes] < 1 ){
 			    $toggle_likes_count = " style= 'display:none;'";
 			   $likes_count_string .= "<span class='likes_count'></span></a>";
 			 
 		   }
-		   
+		 
 		 // if you are the only one who liked it
-		   if(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1 && in_array($_SESSION[user::$id],$views_likes_user_ids[$views_info[Views::$alias_of_id]])){
+		   if(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1){
+			   
+			     if(isset($views_likes_user_ids[$views_info[Views::$alias_of_id]]) && array_key_exists($views_info[Views::$alias_of_id],$views_likes_user_ids)){
+					
 			   $likes_count_string .= "<span class='likes_count liked' title='you liked this'>1</span></a>";
 			   $user_like_status = "liked";
+			   
+				 }
 			   
 			  
 			   // if you are not the one person that liked this

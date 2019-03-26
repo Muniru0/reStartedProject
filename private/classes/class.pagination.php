@@ -74,7 +74,16 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
  
  $activities_user_ids = self::get_activities_user_ids();
  
+// echo "<pre>";
+//  print_r($activities_user_ids["reactions"]);
+//  echo "end of reactions";
+//  print_r($activities_user_ids["views"]);
+//  echo "end of views";
+//  print_r($activities_user_ids["replys"]);
+//  echo "end of replys";
+//  echo "</pre>";
  
+//  return;
  // now output the post that you just queried
  FetchPost::get_full_post($posts,$comments,$activities_user_ids["reactions"],$activities_user_ids["views"],$activities_user_ids["replys"],STREAM);
     $activities_user_ids = null;
@@ -282,7 +291,8 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
  
   
  $query .= "SELECT * FROM ".Reaction::$table_name." WHERE ".Reaction::$post_id." >=".$_SESSION[Session::$qr_lowerbound]." && ".Reaction::$post_id."<= ".$_SESSION[Session::$qr_upperbound].";";
-  
+	
+ log_action(__CLASS__,$query);
  if(isset($_SESSION) && isset($_SESSION[user::$id])){
  $query .= " SELECT * FROM ".ConnectUsers::$table_name." WHERE ".ConnectUsers::$linker_id."
 =".$_SESSION[user::$id]." || ".ConnectUsers::$link." = ".$_SESSION[user::$id].";";
@@ -310,7 +320,7 @@ $reactions  = [];
 				
 			  if(isset($row[ViewsLikes::$alias_of_id]) && isset($row[ViewsLikes::$alias_of_user_id]) && $row[ViewsLikes::$alias_of_id] > 0 && $row[ViewsLikes::$alias_of_user_id] > 0){
 				  
-				 
+				
 				  $views[$row[ViewsLikes::$alias_of_comment_id]][] = $row[ViewsLikes::$alias_of_user_id];
 			  }
 			  elseif(isset($row[ReplyViewsLikes::$alias_of_id]) && isset($row[ReplyViewsLikes::$alias_of_user_id]) && $row[ReplyViewsLikes::$alias_of_id] > 0 && $row[ReplyViewsLikes::$alias_of_user_id] > 0){
@@ -363,8 +373,8 @@ $reactions  = [];
 	  
   } 
   	
- 
- 
+  
+  
  return ["views" =>$views,"replys"=>$replys,"reactions"=>$reactions];
    }
 	
@@ -766,8 +776,7 @@ $row_count = $results->num_rows;
 	 
    $_SESSION[Session::$qr_lowerbound] = array_shift($post_ids_array);
    $_SESSION[Session::$qr_upperbound] = array_pop($post_ids_array);
-	log_action(__CLASS__, $_SESSION[Session::$qr_lowerbound]."   ". $_SESSION[Session::$qr_upperbound]);
-	
+
 	$_SESSION[STREAM_HOME] += 30;
 	}elseif(trim($db->error) ==  "" && $row_count < 1){
 	 

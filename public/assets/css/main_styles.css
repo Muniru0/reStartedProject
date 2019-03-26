@@ -96,9 +96,7 @@
          background-color: #fff;
         border: 0.09em solid #a2d9dc;
         }
-      .ui-dialog-buttonset > .ui-button{
-
-      }
+     
         .error-titlebar {
             background-color:#d61e1e
         }
@@ -277,9 +275,7 @@
     letter-spacing: 0px;
 }
 
-.selected_reactions_count,.deselected_reactions_count {
-	
-}
+
 
 .reply-sidebar{
 	border-radius: 0.6em !important;
@@ -398,10 +394,7 @@ button:hover {
 	
 }
 
-/* Add Zoom Animation */
-.animate {
-   
-}
+
 @keyframes zoom {
     from {transform: scale(0)} 
     to {transform: scale(1)}
