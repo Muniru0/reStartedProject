@@ -492,26 +492,21 @@ public static function delete_view ($post_id = 0 ,$comment_id = 0){
 	$user_id      =  $_SESSION[user::$id];
 	
 	// query to delete a comment and it's associated replys
-	$query  = "DELETE FROM ".self::$table_name." WHERE id = $comment_id && post_id = $post_id && commentor_id = ".$user_id.";";
-	
+	$query  = "DELETE FROM ".self::$table_name." WHERE id = {$comment_id} && post_id = {$post_id} && commentor_id = {$user_id}";
 
-	  
-	  if($result = $db->query($query)){
-		   if($row = $result->fetch_assoc()){
-         if($db->affected_rows == 1){
+	if($result = $db->query($query)){
+    if($db->affected_rows == 1 && $db->error == ""){
 				print j(["comment_delete"=>"success"]);
 				Notifications::send_notification($post_id,$comment_id,NULL,$user_id,DELETE_VIEW,time());
 				return;
-				 }
-			 }
-		  
-		  
-}else{
-	print j(["false" => "Something went wrong please try again... if the problem persist refresh the page1"]);
-}
-	  
-	
-}
+			}
+		
+}				
+		
+		Errors::trigger_error(RE_INITIATE_OPERATION);	
+Errors::trigger_error(SERVER_PROBLEM);
+
+}// delete_view();
 
 
 

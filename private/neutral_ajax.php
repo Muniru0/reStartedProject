@@ -806,7 +806,7 @@ $mood      = $_POST["mood"]      ?? "";
 //   move_uploaded_file($_FILES["tmp"],$upload_dir.$_FILES["name"]);
 }
 else{
-
+  log_action(__CLASS__,$_POST["request_type"]);
 	print j(["false" => "Something Unexpectedly went wrong, please refresh the page and try again"]);
 }
 

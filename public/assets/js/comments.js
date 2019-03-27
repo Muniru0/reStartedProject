@@ -559,15 +559,15 @@ class comment {
               // find the comment to be deleted and hide it
               if (document.querySelector("#new_comment_" + commentReplyID) != null && document.querySelector("#new_comment_" + commentReplyID)) {
                 hiddenComment = document.querySelector("#new_comment_" + commentReplyID);
-                $(hiddenComment).fadeOut(600);
+                $(hiddenComment).fadeOut(680);
 
               }
 
               // find the reply to be deleted and hide it
               if (document.querySelector("#reply_wall_" + commentReplyID) != null && document.querySelector("#reply_wall_" + commentReplyID)) {
                 hiddenReply = document.querySelector("#reply_wall_" + commentReplyID);
-                $(hiddenReply).fadeOut(600);
-                requestValue = "comment";
+                $(hiddenReply).fadeOut(680);
+                requestValue = "delete_comment";
 
 
 
@@ -635,12 +635,12 @@ class comment {
               data: { post_id: postCommentID, comment_id: commentReplyID, request_type: requestValue },
               datatype: "html"
             }).done(function (response) {
-
+      console.log(response);
               // parse the json response  
               try {
-                response = JSON.parse(response);
-
-                if (response[0] === true) {
+                response = JSON.parse($.trim(response));
+                 
+                if (response["comment_delete"] === "success") {
                   if ($.trim(option) === "comment") {
                     //now you can remove the comment from the DOM
                     hiddenComment.remove();
@@ -654,19 +654,18 @@ class comment {
                 } else if (response["false"] != undefined && response["false"] != "") {
                   $(hiddenComment).fadeIn(680);
                   $(hiddenReply).fadeIn(680);
-                  setTimeout(function () {
-                    alert(response["false"]);
-                  }, 1000);
+                  utility.showErrorDialogBox(response["false"]);
 
 
                 }
 
               } catch (e) {
+                  console.log(e);
                 $(hiddenComment).fadeIn(680);
                 $(hiddenReply).fadeIn(680);
-                setTimeout(function () {
-                  alert("Something unexpectedly happend, Please refresh the page and try again");
-                }, 800);
+                
+                  utility.showErrorDialogBox("Please refresh the page and re-initiate the operation if it was unsuccessful.");
+               
               }
 
             }).fail(function (error) {
@@ -853,12 +852,12 @@ class comment {
       $.ajax({
         url: "../private/neutral_ajax.php",
         type: "POST",
-        data: { post_id: postCommentID, comment_id: commentReplyID, comment: newComment, request_type: requestValue },
+        data: { post_comment_id: postCommentID, comment_reply_id: commentReplyID, comment: newComment, request_type: requestValue },
         datatype: "html"
       }).done(function(response) {
 
 
-        response = JSON.parse(response);
+        response = JSON.parse($.trim(response));
         if (response["true"] && $.trim(response["true"] != "")) {
 
           $(textArea).val("");

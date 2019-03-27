@@ -475,12 +475,19 @@ button:hover {
     opacity: 0.75;
 	transition: all .5;
 }
+nav.ps-stream-status-action:hover{
+    transition: font-size .3s cubic-bezier(0.42, 0, 0, 0.89) !important;
+}
+
+.actaction-like,.actaction-reply,.actaction-delete,.actaction-edit{
+ transition: font-size .3s  ease-in-out !important;
+}
 
 .actaction-like:hover,.actaction-reply:hover,.actaction-delete:hover,.actaction-edit:hover{
     opacity: 0.9 !important;
     font-size: 105%;
     color: #412D00;
-    transition: font-size .5 !important;
+   
 }
 
 
