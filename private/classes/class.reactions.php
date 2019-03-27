@@ -112,16 +112,16 @@ $result = $stmt->get_result();
 
  switch ($row["reaction_type"]) {
    case NEW_SUPPORT:
-   Notifications::send_notification($post_id,$user_id,NEW_SUPPORT,$time);
+   Notifications::send_notification($post_id,NULL,NULL,$user_id,NEW_SUPPORT,$time);
      break;
      case NEW_OPPOSE:
-Notifications::send_notification($post_id,$user_id,NEW_OPPOSE,$time);
+Notifications::send_notification($post_id,NULL,NULL,$user_id,NEW_OPPOSE,$time);
      break;
       case ALT_SUPPORT:
-Notifications::send_notification($post_id,$user_id,ALT_SUPPORT,$time);
+Notifications::send_notification($post_id,NULL,NULL,$user_id,ALT_SUPPORT,$time);
      break;
       case ALT_OPPOSE:
-Notifications::send_notification($post_id,$user_id,ALT_OPPOSE,$time);
+Notifications::send_notification($post_id,NULL,NULL,$user_id,ALT_OPPOSE,$time);
      break;
    default:
    Errors::trigger_error(RETRY);

@@ -470,12 +470,17 @@ button:hover {
 }
 
 .liked {
-	color: #412d13;
+	color:  #412D00;
     font-weight: 1000;
     opacity: 0.75;
 	transition: all .5;
 }
 
+.actaction-like{
+    opacity: 0.9 !important;
+    font-size: 105%;
+    color: #412D00;
+}
 
 .fal,.far,.fas{
 	margin-right: 0.4em;

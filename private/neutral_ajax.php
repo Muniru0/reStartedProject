@@ -288,21 +288,12 @@ elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "edit_comment
 
 
 // reply to a comment
-elseif(isset($_POST["reply_comment"])){
+elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "reply_comment"){
 	
 	global $db;
 	$post_id    = (int)$db->real_escape_string($_POST["post_id"]);
 	$comment_id = (int)$db->real_escape_string($_POST["comment_id"]);
-	 
-	  $reply_comment_post_var = (boolean) $_POST["reply_comment"];
-	  
-	  // check to see if the reply comment variable within the
-	  // global POST variable is set to true
-	  if( $reply_comment_post_var != true){
-		  
-		  print j(["false" => "Please try again... if problem persist refresh the page"]);
-		  return false;
-	  }
+	 log_action(__CLASS__,"here".__LINE__);
 	  
 	  
 	  $_POST["reply"] = nl2br($_POST["reply"]);
@@ -343,7 +334,7 @@ elseif(isset($_POST["reply_comment"])){
 			return false;
 		 }
 		 
-		
+		 log_action(__CLASS__,"here".__LINE__);
 		
 		  ReplyViews::reply_views($post_id,$comment_id,$_POST["reply"]);	
 	  
@@ -485,54 +476,55 @@ elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_
 	 // call the add likes method to add the like for both the comment and the reply			
 	
 	  ViewsLikes::like($post_id,$comment_id,$reply_id,$_POST["request_type"]);
-}
+} // like comment or reply
 
-
-elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_reply")){
+// // edit reply
+// elseif(isset($_POST["request_type"]) && (trim($_POST["request_type"]) === "like_reply")){
 	
-	  $post_id = $_POST["post_id"];
-	  $comment_id = $_POST["comment_id"];
-	  $reply      = $_POST["reply_id"];
+// 	  $post_id = $_POST["post_id"];
+// 	  $comment_id = $_POST["comment_id"];
+// 	  $reply      = $_POST["reply_id"];
 	  
-	  // check if the ids of the post and comment are integers and set	  
-	  if(
-		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
-		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
-		  return false;
-	  }  
+// 	  // check if the ids of the post and comment are integers and set	  
+// 	  if(
+// 		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
+// 		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
+// 		  return false;
+// 	  }  
 	  
 	 
 	 
 		 
-// check to see if the post id is in the post ids array	  
-        if(!in_array($comment_id,$_SESSION["comment_ids"],true))
-		 {
+// // check to see if the post id is in the post ids array	  
+//         if(!in_array($comment_id,$_SESSION["comment_ids"],true))
+// 		 {
 			
-			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
-		}
+// 			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
+// 		}
 
-	// if the user is liking a reply then set the reply variables 
-	// and make the necessary checks
-	 if($_POST["request_type"] === "like_reply"){
-		 $reply_id = (int)$_POST["reply_id"];
-	     $flag     = "like_reply";
+// 	// if the user is liking a reply then set the reply variables 
+// 	// and make the necessary checks
+// 	 if($_POST["request_type"] === "like_reply"){
+// 		 $reply_id = (int)$_POST["reply_id"];
+// 	     $flag     = "like_reply";
 		  
-	  // run this check only if the user is liking a reply 
-	  if((!isset($reply_id) || $reply_id < 1  || !is_int($reply_id)) && $flag = "like_reply"){
-		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
-		  return false;
-	  }  
+// 	  // run this check only if the user is liking a reply 
+// 	  if((!isset($reply_id) || $reply_id < 1  || !is_int($reply_id)) && $flag = "like_reply"){
+// 		  print j(["false" => "Operation failed, Please try again... if problem persist refresh the page"]);
+// 		  return false;
+// 	  }  
 
-  // if the user is liking a reply check that the reply is present before
-		if(!in_array($reply_id,$_SESSION["reply_ids"],true) && $flag = "like_reply")
-		 {
+//   // if the user is liking a reply check that the reply is present before
+// 		if(!in_array($reply_id,$_SESSION["reply_ids"],true) && $flag = "like_reply")
+// 		 {
 			
-			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
-		}
+// 			print j(["false" => "Please try again...if problem persist please refresh the page"]); 
+// 		}
 		 	  
 	  
-	 }
-}
+// 	 }
+
+// }
 
 // get the main stream infinite scroll
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll"){

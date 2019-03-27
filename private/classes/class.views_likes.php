@@ -74,9 +74,9 @@
 				   		 
 					 print j(["likes" => $likes]);
 					 if($row["result"] == "like_comment"){
-            Notifications::send_notification($post_id,$user_id,LIKED_COMMENT,$time);
+            Notifications::send_notification($post_id,$comment_id,NULL,$user_id,LIKED_COMMENT,$time);
 					 }elseif($row["result"] == "like_reply"){
-						Notifications::send_notification($post_id,$user_id,LIKED_REPLY,$time);
+						Notifications::send_notification($post_id,$comment_id,$reply_id,$user_id,LIKED_REPLY,$time);
 					 }
 			   }
 			  return;

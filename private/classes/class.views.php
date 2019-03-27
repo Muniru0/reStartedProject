@@ -304,7 +304,7 @@ class Views extends DatabaseObject{
     $view_info["c_time"] = FetchPost::time_converter($view_info["comment_time"]);
 	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $firstname." ".$lastname,"comment_date" => $post_date]);
 
-	  Notifications::send_notification($post_id,$user_id,NEW_COMMENT);
+	  Notifications::send_notification($post_id,$row["comment_id"],NULL,$user_id,NEW_COMMENT);
 
 		
  }else{
@@ -401,12 +401,12 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
 				if(isset($row["comment"]) && trim($row["comment"]) != ""){
 					print j(["true" => $row["comment"]]);
 					// send an appropriate notification to the appropriate 
-					Notifications::send_notification($user_id,$postCommentID,EDITTED_COMMENT,$time);
+					Notifications::send_notification($postCommentID,$commentReplyID,NULL,$user_id,EDITTED_COMMENT,$time);
 					return;
 				}elseif(isset($row["reply"]) && trim($row["reply"]) != ""){
 					print j(["true" => $row["reply"]]);
 					// send an appropriate notification to the appropriate 
-					Notifications::send_notification($user_id,$commentReplyID,EDITTED_REPLY,$time);
+					Notifications::send_notification($postCommentID,$commentReplyID,NULL,$user_id,EDITTED_REPLY,$time);
 					return;
 				}else{
 					Errors::trigger_error(RETRY);
@@ -501,7 +501,7 @@ public static function delete_view ($post_id = 0 ,$comment_id = 0){
 		   if($row = $result->fetch_assoc()){
          if($db->affected_rows == 1){
 				print j(["comment_delete"=>"success"]);
-				Notifications::send_notification($post_id,$user_id,DELETE_VIEW,time());
+				Notifications::send_notification($post_id,$comment_id,NULL,$user_id,DELETE_VIEW,time());
 				return;
 				 }
 			 }

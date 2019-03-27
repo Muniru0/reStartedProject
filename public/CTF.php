@@ -85,9 +85,8 @@ div {
  
  
  <?php
-	
-	Pagination::get_infinite_scroll(STREAM_HOME);
-	return;
+
+ echo  FetchPost::time_converter(mktime(0, 0, 0, 7, 1, 2000));
  function test_calling_functions($id = 10000){global $db;
 	 $result = $db->query("SELECT * FROM test LIMIT 1,2");
 	 

@@ -48,7 +48,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 
 	// prepare the new comment statement
 	if(!($stmt= $db->prepare($query))){
-		log_action(__CLASS__, " Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
+	  Errors::trigger_error(RE_INTIATE_OPERATION);
 		return false;
 	} 
 	
@@ -56,29 +56,26 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	
 	
 	
-	if(!isset($_SESSION) || $_SESSION["id"] < 0 || $_SESSION["id"] == NULL || strlen($time) < 10  || !isset($_SESSION["reply_ids"]) || !is_array($_SESSION["reply_ids"])){
-	 
-	print j(["false"=>"Sorry server problem please refresh the page and try again"]); 
-	 return;
- }
 	
-	  if(!isset($_SESSION) || !isset($_SESSION["firstname"]) || !isset($_SESSION["lastname"]) || empty(trim($_SESSION["firstname"])) || empty(trim($_SESSION["lastname"]))){
+	  if( !isset($_SESSION) || $_SESSION["id"] < 0 || !isset($_SESSION[user::$firstname]) || !isset($_SESSION[user::$lastname]) || empty(trim($_SESSION[user::$firstname])) || empty(trim($_SESSION["lastname"]))){
 		  
-		  print j(["false"=> "login"]);
+			Errors::trigger_error(INVALID_SESSION);
 		  return false;
 	  }
 	  
 	  
 	// assign the parameters
-   $parameter = j([$post_id,$_SESSION["firstname"],$_SESSION["lastname"],$comment_id,$_SESSION["id"],$reply,$time]);
+   $parameter = j([$post_id,$_SESSION[user::$firstname],$_SESSION[user::$lastname],$comment_id,$_SESSION[user::$id],$reply,$time]);
 	// bind the parameters
 	if(!$stmt->bind_param("s",$parameter)){
+		Errors::trigger_error(INVALID_SESSION);
 		log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
          return false;
 		}
 		
 	// execute the statement
 	if(!$stmt->execute()){
+		Errors::trigger_error(INVALID_SESSION);
 		log_action(__CLASS__,"  Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
 		return false;
 	}
@@ -88,7 +85,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	  
 	  if($result = $stmt->get_result()){
 		    if($row = $result->fetch_assoc()){
-			if(isset($row["LAST_INSERT_ID()"])  && $row["LAST_INSERT_ID()"] > 0){
+			if(isset($row["new_reply_id"])  && $row["new_reply_id"] > 0 && $row["result"] == "successful"){
 		 
 		//$view_info = self::get_reply($view_id,$post_id);
 	    // to be used as the title attribute for the time paragraph in html	
@@ -97,25 +94,27 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	 
 	 
 		// add the reply id to the array of reply_ids
-		 $_SESSION["reply_ids"][] = (int)$row["LAST_INSERT_ID()"];
+		 $_SESSION["reply_ids"][] = (int)$row["new_reply_id"];
 		// convert the time stamp from UNIX based timestamp to something more readable
        $formatted_reply_time = FetchPost::time_converter($time);
-			print j(["new_reply_id" => "new_reply_{$row["LAST_INSERT_ID()"]}",
-			"reply_id" => $row["LAST_INSERT_ID()"],
+			print j(["new_reply_id" => "new_reply_{$row["new_reply_id"]}",
+			"reply_id" => $row["new_reply_id"],
 			"comment_id" => $comment_id,
 			"reply" => $reply,
 			"reply_time" =>$formatted_reply_time,
-			"fullname" => $_SESSION["firstname"]." ".$_SESSION["lastname"],
+			"fullname" => $_SESSION[user::$firstname]." ".$_SESSION[user::$firstname],
 			"reply_date" => $post_date]);
+
+			Notifications::send_notification($post_id,$comment_id,$row["new_reply_id"],$_SESSION[user::$firstname],NEW_REPLY_COMMENT,$time);
  }elseif(Isset($row["invalid_request"])){
+	 Errors::trigger_error(RETRY);
 	 log_action(__CLASS__," Query failed {$db->error} {$stmt->error}on line ".__LINE__." in file ".__FILE__);
-	 print j(["false" => "Operation failed, please try again..."]);
+	
 	 return false;
  }else{
 	  
-	  log_action(__CLASS__," Query failed {$db->error} {$stmt->error}on line ".__LINE__." in file ".__FILE__);
-	 print j(["false" => "Operation failed, please try again...if the problem persists refresh the page"]);
-	 return false;
+	 Errors::trigger_error(RE_INITIATE_OPERATION);
+	return false;
  }   
 			}
 	  }
@@ -344,7 +343,7 @@ return $record;
 		   if($row = $result->fetch_assoc()){
          if($db->affected_rows == 1){
 				print j(["reply_delete"=>"success"]);
-				Notifications::send_notification($post_id,$user_id,DELETE_REPLYVIEW,time());
+				Notifications::send_notification(NULL,$comment_id,$reply_id,$user_id,DELETE_REPLYVIEW,time());
 				return;
 				 }
 			 }

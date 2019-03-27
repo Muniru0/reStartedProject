@@ -92,6 +92,58 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 // post interaction operations
 !defined("NEW_COMMENT")               ?  define("NEW_COMMENT","new_comment")   : null;
 
+!defined("INCIDENT_POST")               ?  define("INCIDENT_POST","incident_post")   : null;
+
+!defined("POST")               ?  define("POST","post")   : null;
+
+
+!defined("CONFIRMED_POST")               ?  define("CONFIRMED_POST","confirm_post")   : null;
+
+!defined("REVERSE_CONFIRMATION")               ?  define("REVERSE_CONFIRMATION","reverse_confirmation")   : null;
+
+
+!defined("DELETE_POST")               ?  define("DELETE_POST","delete_post")   : null;
+
+!defined("NEW_SUPPORT")               ?  define("NEW_SUPPORT","new_support")   : null;
+
+
+!defined("NEW_OPPOSE")               ?  define("NEW_OPPOSE","new_oppose")   : null;
+
+!defined("ALT_SUPPORT")               ?  define("ALT_SUPPORT","alt_support")   : null;
+
+
+!defined("ALT_OPPOSE")               ?  define("ALT_OPPOSE","alt_oppose")   : null;
+
+!defined("NEW_REPLY_COMMENT")               ?  define("NEW_REPLY_COMMENT","new_reply_comment")   : null;
+
+
+
+!defined("DELETE_REPLYVIEW")               ?  define("DELETE_REPLYVIEW","delete_reply_view")   : null;
+
+!defined("LIKED_COMMENT")               ?  define("LIKED_COMMENT","liked_comment")   : null;
+
+
+!defined("LIKED_REPLY")               ?  define("LIKED_REPLY","liked_reply")   : null;
+
+!defined("ALT_SUPPORT")               ?  define("ALT_SUPPORT","alt_support")   : null;
+
+
+!defined("NEW_COMMENT")               ?  define("NEW_COMMENT","new_comment")   : null;
+
+!defined("NEW_REPLY_COMMENT")               ?  define("NEW_REPLY_COMMENT","new_reply_comment")   : null;
+
+
+!defined("EDITTED_COMMENT")               ?  define("EDITTED_COMMENT","editted_comment")   : null;
+
+!defined("EDITTED_REPLY")               ?  define("EDITTED_REPLY","editted_comment")   : null;
+
+
+!defined("DELETE_VIEW")               ?  define("DELETE_VIEW","delete_view")   : null;
+
+
+
+
+
 
 
 

@@ -1146,7 +1146,7 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
 
 
  // reply to a comment
- static reply_comment(postID,commentID,post_button){
+ static reply_comment(postID = 0,commentID = 0,post_button = 0){
 
    
    // return an array of all the relevant information
@@ -1160,11 +1160,11 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
       //  post a new comment
      $.ajax({
         url: "../private/neutral_ajax.php",
-     data: {reply:returnedArray[1],comment_id : commentID,post_id : postID, reply_comment : true},
+     data: {reply:returnedArray[1],comment_id : commentID,post_id : postID, "request_type" : "reply_comment"},
      type: "POST",
        datatype:"html",
      }).done(function(response){ 
-              
+            console.log(response);  
        try{
      response = JSON.parse(response);
      
@@ -1210,10 +1210,11 @@ if(document.querySelector("#new_comment_" + commentReplyID)  != null  && documen
         $("#reply_container_" + commentID).append(comment_template); 
                    $(comment_template).fadeIn(680);       
  } catch(e){
+   console.log(e);
       setTimeout(function(){
       
    
-    alert("Something Unexpectedly happened");
+     utility.showErrorDialogBox("Please refresh the page and try again if the operation was not successful");
    },680);
  }finally {
          

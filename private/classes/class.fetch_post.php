@@ -859,19 +859,22 @@ $images_string .= "</div></div></div></div>
     // get time converter string
     public static function time_converter($upload_time){
 
-        $upload_time = (integer)$upload_time;
+		$upload_time = (int)$upload_time;
+		
         if (isset($upload_time) && !empty($upload_time) && is_integer($upload_time)) {
-
+			// if the current unix timestamp is > or equal to the "to
+			// be converted time";
             if ((time() - $upload_time) > -1 ) {
+				
                 try {
 
                     //echo $upload_time
                     $min = 60;
                     $hr = $min * 60;
                     $day = $hr * 24;
-                    $mid_night = $hr * 18;
+                    $mid_night = $hr * 12;
                     $wk = $day * 7;
-                    $mon = ($wk * 4) + 2;
+                    $mon = $wk * 4;
                     $yr = $mon * 12;
 
                     $upload_time = time()  - $upload_time;
@@ -921,7 +924,7 @@ $images_string .= "</div></div></div></div>
                             return ceil( $upload_time / $day) . " days ago";
                         }
                         // greater than or equal to a week or less than or equal to a month
-                    } elseif($upload_time >= $wk && $upload_time <= $mon) {
+                    } elseif($upload_time >= $wk && $upload_time < $mon) {
                         if($upload_time == $wk){
                             return "a week ago";
 
