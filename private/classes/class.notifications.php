@@ -23,15 +23,15 @@ class Notifications extends DatabaseObject {
      public static $alias_of_time       = 'notifcations_table_notification_time';
 
 
-public  static function send_notification($post_id = 0,$comment_id = NULL,$user_id = 0,$type = '')
+public  static function send_notification($post_id =  "NULL",$comment_id = "NULL",$reply_id = "NULL",$user_id = 0,$type = '')
 {
 	global $db;
 	
-	
-	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,$post_id,$comment_id,$user_id,'".$type."',".time().")";
-	
-	if(!$db->query($query))
-	{
+
+	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},{$user_id},'".$type."',".time().")";
+	log_action(__CLASS__,"he is the leading part ".$query);
+
+	if(!$db->query($query)){
         
 		log_action(__CLASS__," Query failed: {$db->error} on line: ".__LINE__);
 		return false;

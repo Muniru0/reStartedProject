@@ -497,7 +497,7 @@ public static function delete_view ($post_id = 0 ,$comment_id = 0){
 	if($result = $db->query($query)){
     if($db->affected_rows == 1 && $db->error == ""){
 				print j(["comment_delete"=>"success"]);
-				Notifications::send_notification($post_id,$comment_id,NULL,$user_id,DELETE_VIEW,time());
+				Notifications::send_notification($post_id,$comment_id,"NULL",$user_id,DELETE_VIEW);
 				return;
 			}
 		
