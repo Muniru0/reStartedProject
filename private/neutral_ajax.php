@@ -241,12 +241,18 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "delete
 
 
 // edit the view
-elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "edit_comment"){
+elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "edit_comment" || $_POST["request_type"] === "edit_reply"){
 
  
 	  $comment =  nl2br($_POST["comment"],true);
     
-	 
+		$flag = "";
+		
+		if(trim($_POST["request_type"]) === "edit_comment"){
+  $flag = "view";
+		}elseif(trim($_POST["request_type"]) === "edit_reply"){
+			$flag = "reply";
+		}
 		
       // check if the comment is empty or set	  
 	  if(!isset($comment) || empty(trim($comment))){
@@ -262,25 +268,40 @@ elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "edit_comment
 		  return false;
 	  }
 
-	$post_id    = (int) $_POST["post_id"];
-	$comment_id = (int) $_POST["comment_id"];
+	$postCommentID    = (int) $_POST["post_comment_id"];
+	$commentReplyID   = (int) $_POST["comment_reply_id"];
 	 
 	 // check if the comment is empty or set	  
-	   if(!isset($post_id) || $post_id < 1 || !is_int($post_id)  &&
-		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
-		  print j(["false" => "Operation failed, Please try again..."]);
+	   if(!isset($postCommentID) || $postCommentID < 1 || !is_int($postCommentID)  &&
+		 !isset($postCommentID) || $postCommentID < 1 || !is_int($postCommentID)){
+			 Errors::trigger_error(FAILED_OPERATION);
+		 log_action("nutr","he");
 		  return false;
 	  }   
-   
+	 
+		 if($flag === "view"){
 // check to see if the post id is in the post ids array	  
-		 if(!in_array($post_id,$_SESSION["post_ids"],true) ||
-   		    !in_array($comment_id,$_SESSION["comment_ids"],true))
-		 {
-		    print j(["false" => "Operation failed, Please try again..."]); 
+if(!in_array($postCommentID,$_SESSION["post_ids"],true) ||
+!in_array($commentReplyID,$_SESSION["comment_ids"],true))
+{
+log_action("neutral ajax file: ", $post_id." comment_id: ".$comment_id);
+print j(["false" => "Operation failed, Please try again..."]); 
+return;
+}
+		 }elseif($flag === "reply"){
+// check to see if the post id is in the post ids array	  
+if(!in_array($postCommentID,$_SESSION["comment_ids"],true) ||
+!in_array($commentReplyID,$_SESSION["reply_ids"],true))
+{
+log_action(__CLASS__,$postCommentID." comment_id or reply id".$commentReplyID);
+print j(["false" => "Operation failed, Please try again..."]); 
+return;
+}
 		 }
+
 		 
 	// delete the view from the database			
-	 Views::edit_view($post_id,$comment_id,$comment);
+	 Views::edit_view($postCommentID,$commentReplyID,$comment,$flag);
 
 
 	

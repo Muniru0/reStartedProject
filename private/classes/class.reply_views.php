@@ -205,7 +205,8 @@ return $record;
 			    
 		   }
 		   // if another user is the only one who liked the reply
-		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 && !in_array($_SESSION[user::$id],$likes_user_ids[$reply[ReplyViews::$alias_of_id]])){
+		   elseif(isset($reply[ReplyViews::$alias_of_likes]) && (int)$reply[ReplyViews::$alias_of_likes] === 1 &&  !in_array($_SESSION[user::$id],$likes_user_ids) ){
+				 
 			   $likes_count_string = "<span class='likes_count' title= 'person liked this'>1</span></a>";
 			   
 		   }
@@ -264,7 +265,7 @@ return $record;
 					<nav class='ps-stream-status-action ps-stream-status-action'>
 <a  onclick='reaction.like({$post_id},{$comment_id},".$reply_id.",this,\"reply\"); return false;' href='#like' class='actaction-like ps-icon-thumbs-up {$user_like_status}'><span>Like</span></a>
 
-<a onclick='comment.prepare_edit_comment({$comment_id},".$reply_id.",this,'reply'); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
+<a onclick='comment.prepare_edit_comment({$comment_id},{$reply_id},this,\"reply\"); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
 <a  onclick='comment.delete_comment({$comment_id},".$reply_id.",'reply'); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
 </nav>
 				</span>

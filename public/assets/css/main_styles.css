@@ -476,11 +476,14 @@ button:hover {
 	transition: all .5;
 }
 
-.actaction-like{
+.actaction-like:hover,.actaction-reply:hover,.actaction-delete:hover,.actaction-edit:hover{
     opacity: 0.9 !important;
     font-size: 105%;
     color: #412D00;
+    transition: font-size .5 !important;
 }
+
+
 
 .fal,.far,.fas{
 	margin-right: 0.4em;

@@ -29,6 +29,12 @@ return;
 		  case RE_INITIATE_OPERATION:
   		print j(["false"=>"Please refresh and try again if the operation wasn't successful."]);
   		break;  
+		  case SERVER_PROBLEM:
+		  print j(["false" => "Server problem, please refresh the page and try again if the problem persists."]);
+  		break;  
+		  case OPERATION_FAILED:
+		  print j(["false" => "Operation failed, Please try again later."]);
+  		break;  
   	
   	default:
   		# code...

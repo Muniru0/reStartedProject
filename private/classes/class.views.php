@@ -140,7 +140,7 @@ class Views extends DatabaseObject{
 					<nav class='ps-stream-status-action ps-stream-status-action'>
 <a onclick='reaction.like({$post_id},{$comment_id},0,this,\"comment\");'  href='#like' class='actaction-like ps-icon-thumbs-up {$user_like_status}'> <span>Like</span></a>
 <a  onclick='comment.showReplyBox(".$views_info[Views::$alias_of_id]."); return false;' href='#reply' class='actaction-reply ps-icon-plus'><span>Reply</span></a>
-<a  onclick='comment.prepare_edit_comment({$post_id},".$views_info[Views::$alias_of_id]."},this,'comment'}, this); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
+<a  onclick='comment.prepare_edit_comment({$post_id},{$views_info[Views::$alias_of_id]}, this,\"comment\"); return false;' href='#edit' class='actaction-edit ps-icon-pencil'><span>Edit</span></a>
 <a  onclick='comment.delete_comment({$post_id},".$views_info[Views::$alias_of_id]."); return false;' href='#delete' class='actaction-delete ps-icon-trash'><span></span></a>
 </nav>
 				</span>
@@ -384,14 +384,12 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
 		 // set the query for the edit_reply routine
 		  $query = "CALL edit_reply('".j([$postCommentID,$commentReplyID,$user_id,$commentReply,$time])."')";
 	 }else{
-		 print j(["false" => "Server problem, please refresh the page and try again if the problem persists."]);
+		 log_action(__CLASS__,"how to make things move fast enough");
+		  Errors::trigger_error(SERVER_ERROR);
 		 return;
 	 }
 	 
-	 if($db->error != ""){
-		 log_action(__CLASS__," Query encountered an error: $db->error"." on line: ".__LINE__." in file: ".__FILE__);return;
-	 }
-	 
+	
 	 
   $result = $db->multi_query($query);
    do{
@@ -401,15 +399,16 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
 				if(isset($row["comment"]) && trim($row["comment"]) != ""){
 					print j(["true" => $row["comment"]]);
 					// send an appropriate notification to the appropriate 
-					Notifications::send_notification($postCommentID,$commentReplyID,NULL,$user_id,EDITTED_COMMENT,$time);
+					Notifications::send_notification($postCommentID,$commentReplyID,$user_id,EDITTED_COMMENT,$time);
 					return;
 				}elseif(isset($row["reply"]) && trim($row["reply"]) != ""){
 					print j(["true" => $row["reply"]]);
 					// send an appropriate notification to the appropriate 
-					Notifications::send_notification($postCommentID,$commentReplyID,NULL,$user_id,EDITTED_REPLY,$time);
+					Notifications::send_notification(NULL,$postCommentID,$commentReplyID,$user_id,EDITTED_REPLY,$time);
 					return;
 				}else{
 					Errors::trigger_error(RETRY);
+					return;
 				}
 			  
 			 

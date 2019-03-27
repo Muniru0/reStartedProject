@@ -143,6 +143,20 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 
 
+!defined("DELETE_VIEW")               ?  define("DELETE_VIEW","delete_view")   : null;
+
+
+
+
+!defined("SERVER_PROBLEM")               ?  define("SERVER_PROBLEM","server_problem")   : null;
+
+
+
+!defined("OPERATION_FAILED")               ?  define("OPERATION_FAILED","operation_failed")   : null;
+
+
+
+
 
 
 
