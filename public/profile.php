@@ -46,7 +46,7 @@ if(!allowed_get_params([user::$id])){
 
 $content = "";
  
-$content  .= main_header(profile_header($result[user::$firstname],$result[user::$lastname]),$request_type);
+$content  .= main_header(profile_header($result[user::$firstname],$result[user::$lastname],$id),$request_type);
  echo $content  .= main_footer(); 
 
 

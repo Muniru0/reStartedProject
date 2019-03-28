@@ -76,6 +76,7 @@ class Views extends DatabaseObject{
 			 
 		   }
 		 
+
 		 // if you are the only one who liked it
 		   if(isset($views_info[Views::$alias_of_likes]) && (int)$views_info[Views::$alias_of_likes] === 1){
 			   
@@ -120,7 +121,7 @@ class Views extends DatabaseObject{
 
 	<div class='ps-comment-body cstream-content'>
 		<div class='ps-comment-message stream-comment-content'>
-			<a class='ps-comment-user cstream-author' href=' ://demo.peepso.com/profile/demo/'>".$views_info[Views::$alias_of_firstname]."  ".$views_info[Views::$alias_of_lastname]."</a>
+			<a class='ps-comment-user cstream-author' href=\"../public/".PROFILE_PAGE."?id=".$views_info[Views::$commentor_id]."\">".$views_info[Views::$alias_of_firstname]."  ".$views_info[Views::$alias_of_lastname]."</a>
 			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p>".$views_info["comment"]." </p></div></span>
 		</div>
 
@@ -497,14 +498,14 @@ public static function delete_view ($post_id = 0 ,$comment_id = 0){
 	if($result = $db->query($query)){
     if($db->affected_rows == 1 && $db->error == ""){
 				print j(["comment_delete"=>"success"]);
-				Notifications::send_notification($post_id,$comment_id,"NULL",$user_id,DELETE_VIEW);
+				Notifications::send_notification($post_id,$comment_id,"NULL",$user_id,$_SESSION[user::$firstname],$_SESSION[user::$lastname],DELETE_VIEW);
 				return;
 			}
 		
 }				
 		
 		Errors::trigger_error(RE_INITIATE_OPERATION);	
-Errors::trigger_error(SERVER_PROBLEM);
+
 
 }// delete_view();
 

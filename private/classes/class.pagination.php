@@ -64,7 +64,7 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
 }
 	   
  // get the post comments
- $comments  = self::get_post_comments($stream_type);
+ $comments  = self::get_post_comments();
  
 
    if($comments === false){
@@ -207,6 +207,7 @@ return false;
 	
 	// the comments 
 	public static function get_post_comments(){
+
 		global $db;
 		
 		 if(class_exists("ReplyViews") && class_exists("user") && class_exists("Views")){
@@ -269,8 +270,10 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
 
 	}
 	
+
+
 	return $comments;
-	}//get_the_comments
+	}//get_post_comments();
 	
 
 	

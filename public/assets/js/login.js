@@ -51,7 +51,7 @@ if(status  === "success"){
 		
 		 if(value == true)
 		 {
-		  location.href="home.php";
+		  location.href="me.php";
 		  return;
 		 }else
     if(index == "false"){

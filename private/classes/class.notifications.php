@@ -45,12 +45,12 @@ public  static function send_notification($post_id =  "NULL",$comment_id = "NULL
 
 
 
-public static function get_notifications($user_id){
+public static function get_latest_notifications($user_id){
 	
 	
 	global $db;
 	
-	$query =" SELECT * FROM ".self::$table_name." WHERE ";
+	$query =" SELECT COUNT(*),* FROM ".self::$table_name." WHERE ";
 	
 }//get_notifications();
 

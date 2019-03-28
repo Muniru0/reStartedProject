@@ -2,90 +2,41 @@
 
 function home_header($firstname = "",$lastname = ""){
 
-  return "<div class='header'>
-          <div class='header__logo'>
-            <a href=' ://demo.peepso.com/'>
-              <img src=' ://demo.peepso.com/wp-content/themes/new/assets/images/logo.svg' alt='PeepSo'><img src=' ://demo.peepso.com/wp-content/themes/new/assets/images/logo-white.svg' alt='PeepSo'>
-            </a>
-          </div>
-          <ul class='header__menu'>
-            <li id='menu-item-149' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149'><a href=' ://demo.peepso.com/'>Transport</a></li>
-			<li id='menu-item-149' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149'><a href=' ://demo.peepso.com/'>Health</a></li>
-			<li id='menu-item-149' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149'><a href=' ://demo.peepso.com/'>Work</a></li>
-			<li id='menu-item-149' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149'><a href=' ://demo.peepso.com/'>Sanitation</a></li>
-<li id='menu-item-148' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-148'><a href=' ://demo.peepso.com/profile/'>S.O.L</a></li>
-<li id='menu-item-663' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-663'><a href=' ://demo.peepso.com/members/'>Security</a></li>
-<li id='menu-item-664' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-664'><a href=' ://demo.peepso.com/classifieds/'>Sanitation</a></li>
-<li id='menu-item-150' class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href='/wp-admin/'>Corruption</a></li>
-
-<li id='menu-item-150' class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href='/wp-admin/'>Other</a></li>
-            <li class='menu-item menu-item--myacccount'>
-              <a href=' ://www.peepso.com/my-account/'>Other</a>
-            </li>
-          </ul>
-
-                    <div id='userbar' class='header__account'><div class='widget_text widget header__widget'><div class='textwidget custom-html-widget'><div class='ultimate__box-actions' style='margin-left: 30px;'><a class='btn btn--sm' style='display:block;' href='http://peep.so/bundle'><strong>{$firstname} {$lastname}</strong></a></div></div></div></div>
-
-          <div class='header__actions'>
-                        <a class='header__toggle header__toggle--account' href='#userbar'>
-              <svg class='svg-inline--fa fa-user-alt fa-w-16' aria-hidden='true' data-prefix='fas' data-icon='user-alt' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' data-fa-i2svg=''><path fill='currentColor' d='M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z'></path></svg><!-- <i class='fas fa-user-alt'></i> -->
-            </a>
-
-            <a href='#userbar' class='header__toggle header__toggle--close' style='display: none'>
-              <svg class='svg-inline--fa fa-times fa-w-12' aria-hidden='true' data-prefix='fas' data-icon='times' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512' data-fa-i2svg=''><path fill='currentColor' d='M323.1 441l53.9-53.9c9.4-9.4 9.4-24.5 0-33.9L279.8 256l97.2-97.2c9.4-9.4 9.4-24.5 0-33.9L323.1 71c-9.4-9.4-24.5-9.4-33.9 0L192 168.2 94.8 71c-9.4-9.4-24.5-9.4-33.9 0L7 124.9c-9.4 9.4-9.4 24.5 0 33.9l97.2 97.2L7 353.2c-9.4 9.4-9.4 24.5 0 33.9L60.9 441c9.4 9.4 24.5 9.4 33.9 0l97.2-97.2 97.2 97.2c9.3 9.3 24.5 9.3 33.9 0z'></path></svg><!-- <i class='fas fa-times'></i> -->
-            </a>
-
-            <a class='header__toggle header__toggle--menu modal__toggle' href='#menu'>
-              <svg class='svg-inline--fa fa-bars fa-w-14' aria-hidden='true' data-prefix='fas' data-icon='bars' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z'></path></svg><!-- <i class='fas fa-bars'></i> -->
-            </a>
-          </div>
-        </div>";
-
-}// home_header();
-
-
-
-
-
-// the user profile header
-function profile_header($firstname = "" ,$lastname = ""){
+  return "<div class='header__wrapper header__wrapper--medium'>
+  <div class='header'>
 	
-	return "<div class='header__wrapper header__wrapper--medium'>
-        
-		<div class='header' style='margin: 0px auto;'>
-          <div class='header__logo'>
-            <a href=' ://demo.peepso.com/'>
-              <img src=' ://demo.peepso.com/wp-content/themes/new/assets/images/logo.svg' alt='PeepSo'><img src=' ://demo.peepso.com/wp-content/themes/new/assets/images/logo-white.svg' alt='PeepSo'>
-            </a>
-          </div>
-    <div id='userbar' class='header__account' style='
-    margin-left: 8em;
-'><div class='widget_text widget header__widget'><div class='textwidget custom-html-widget'><div class='ultimate__box-actions' style='margin-left: 30px;'><a class='btn btn--sm' style='display:block;' href='#'><strong>{$firstname} {$lastname}</strong></a></div></div></div></div>
-          <ul class='header__menu' style='
-    max-width: 300px !important;
-   
-'>
-<li  class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href=''><i class='fal fa-envelope'></i>Message</a></li>
+	<ul class='header__menu' style='margin-right: 25%;'>
+	  <li id='menu-item-149' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149' title='incidents about transport'><a href='transport.php'>Transport</a></li>
+	  <li id='menu-item-149' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149' title='incidents about health'><a href='health.php'>Health</a></li>
+	  <li id='menu-item-149' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149' title='incidents about work'><a href='work.php'>Work</a></li>
+	  <li id='menu-item-149' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149' title='incidents about sanitation'><a href='sanitation.php'>Sanitation</a></li>
+<li id='menu-item-148' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-148'><a href='sol.php' title='incidents about sol'>S.O.L</a></li>
+<li id='menu-item-663' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-663' title='incidents about security'><a href='security.php'>Security</a></li>
+<li id='menu-item-150' class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150' title='incidents about corruption'><a target='_blank' href='corruption.php'>Corruption</a></li>
 
- <li  class='menu-item menu-item-type-custom menu-item-object-custom '><a target='_blank' href=''><i class='fal fa-user'></i>Profile</a></li>
-</ul>
-</div>
+<li id='menu-item-150' class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href='other.php'>Other</a></li>
+	  <li class='menu-item menu-item--myacccount'>
+		<a href=' ://www.peepso.com/my-account/'>Other</a>
+	  </li>
+	</ul>
 
-          <div class='header__actions'>
-                        <a class='header__toggle header__toggle--account' href='#userbar'>
-              <svg class='svg-inline--fa fa-user-alt fa-w-16' aria-hidden='true' data-prefix='fas' data-icon='user-alt' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' data-fa-i2svg=''><path fill='currentColor' d='M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z'></path></svg><!-- <i class='fas fa-user-alt'></i> -->
-            </a>
+			  
 
-            <a href='#userbar' class='header__toggle header__toggle--close' style='display: none'>
-              <svg class='svg-inline--fa fa-times fa-w-12' aria-hidden='true' data-prefix='fas' data-icon='times' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512' data-fa-i2svg=''><path fill='currentColor' d='M323.1 441l53.9-53.9c9.4-9.4 9.4-24.5 0-33.9L279.8 256l97.2-97.2c9.4-9.4 9.4-24.5 0-33.9L323.1 71c-9.4-9.4-24.5-9.4-33.9 0L192 168.2 94.8 71c-9.4-9.4-24.5-9.4-33.9 0L7 124.9c-9.4 9.4-9.4 24.5 0 33.9l97.2 97.2L7 353.2c-9.4 9.4-9.4 24.5 0 33.9L60.9 441c9.4 9.4 24.5 9.4 33.9 0l97.2-97.2 97.2 97.2c9.3 9.3 24.5 9.3 33.9 0z'></path></svg><!-- <i class='fas fa-times'></i> -->
-            </a>
+	<div class='header__actions'>
+				  <a class='header__toggle header__toggle--account' href='#userbar'>
+		<svg class='svg-inline--fa fa-user-alt fa-w-16' aria-hidden='true' data-prefix='fas' data-icon='user-alt' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' data-fa-i2svg=''><path fill='currentColor' d='M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z'></path></svg><!-- <i class='fas fa-user-alt'></i> -->
+	  </a>
 
-            <a class='header__toggle header__toggle--menu modal__toggle' href='#menu'>
-              <svg class='svg-inline--fa fa-bars fa-w-14' aria-hidden='true' data-prefix='fas' data-icon='bars' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z'></path></svg><!-- <i class='fas fa-bars'></i> -->
-            </a>
-          </div>
-        
-      </div>";
+	  <a href='#userbar' class='header__toggle header__toggle--close' style='display: none'>
+		<svg class='svg-inline--fa fa-times fa-w-12' aria-hidden='true' data-prefix='fas' data-icon='times' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512' data-fa-i2svg=''><path fill='currentColor' d='M323.1 441l53.9-53.9c9.4-9.4 9.4-24.5 0-33.9L279.8 256l97.2-97.2c9.4-9.4 9.4-24.5 0-33.9L323.1 71c-9.4-9.4-24.5-9.4-33.9 0L192 168.2 94.8 71c-9.4-9.4-24.5-9.4-33.9 0L7 124.9c-9.4 9.4-9.4 24.5 0 33.9l97.2 97.2L7 353.2c-9.4 9.4-9.4 24.5 0 33.9L60.9 441c9.4 9.4 24.5 9.4 33.9 0l97.2-97.2 97.2 97.2c9.3 9.3 24.5 9.3 33.9 0z'></path></svg><!-- <i class='fas fa-times'></i> -->
+	  </a>
+
+	  <a class='header__toggle header__toggle--menu modal__toggle' href='#menu'>
+		<svg class='svg-inline--fa fa-bars fa-w-14' aria-hidden='true' data-prefix='fas' data-icon='bars' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z'></path></svg><!-- <i class='fas fa-bars'></i> -->
+	  </a>
+	</div>
+  </div>
+</div>";
 }
 
 function community_header($community){
@@ -122,186 +73,7 @@ function community_header($community){
 }
 
 
-    // community side left templates
-	function community_side__left(){
-		
-		return "<div class='community__side community__side--left'>
-              <div class='widget community__widget'>
-	<div class='ps-widget--profile__wrapper ps-widget--external'>
-		<!-- Title of Profile Widget -->
-
-		<div class='ps-widget--profile'>
-
-					<div class='ps-widget--profile__cover'>
-	<div class='ps-widget--profile__cover-image' style='background:url('images/image-1.jpg') no-repeat center'></div>
-				<a class='ps-widget--profile__cover-wrapper' href=''>
-					<div class='ps-widget--profile__cover-header'>
-						<!-- Avatar -->
-						<div class='ps-widget--profile__cover-avatar'>
-							<div class='ps-avatar ps-avatar--widget' href='#'>
-								<img alt='Osman Ganiu ' title='Profile Image' src='assets/images/image_5.gif'>
-							</div>
-						</div>
-
-						<!-- Name, edit profile -->
-						<div class='ps-widget--profile__cover-details'>
-							<img src=' ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg' alt='VIP' title='VIP' class='ps-img-vipicons ps-js-vip-badge' data-id='2'>Osman Ganiu</div>
-					</div>
-				</a>
-				<div class='ps-widget--profile__cover-notif'>
-					        <div class='ps-widget--profile__notifications'>                    <span class='ps-js-friends-notification friends-notification psnotification-toggle'>              <a href=' ://demo.peepso.com/profile/demo/friends/requests' title=''>                <div class='ps-bubble__wrapper'>                    <i class='ps-icon-users'></i>                        <span class='js-counter ps-bubble ps-bubble--widget ps-js-counter'>                            1                        </span>                </div>              </a>            <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=' ://demo.peepso.com/profile/demo/friends/requests'>View All</a></div></div></span>                    <span class='dropdown-notification ps-js-notifications'>              <a href=' ://demo.peepso.com/profile/?notifications' title='Pending Notifications'>                <div class='ps-bubble__wrapper'>                    <i class='ps-icon-globe'></i>                        <span class='js-counter ps-bubble ps-bubble--widget ps-js-counter'>20</span>                </div>              </a>            <div class='ps-popover app-box' style='display:none;'><div class='ps-notifications' style='max-height: 40vh; overflow: auto;'><div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
-	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1528720781/?t=1530441733#comment.482.931.493.935'>
-		<div class='ps-notification__header'>
-			<div class='ps-avatar ps-avatar--notification'>
-				<img src='assets/images/image_5.gif' alt='William Torres'>
-			</div>
-		</div>
-
-		<div class='ps-notification__body'>
-			<div class='ps-notification__desc'>
-				<strong>William</strong>
-				liked your comment on your post			</div>
-
-			<div class='ps-notification__meta'>
-				<small class='activity-post-age' data-timestamp='2018-06-25 10:01:52'><span title='2018-06-25 10:01:52'>6 days ago</span></small>
-
-								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
-					<i class='ps-icon-eye'></i>
-					<span>Mark as read</span>
-				</span>
-							</div>
-		</div>
-	</a>
-</div>
-<div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--150' data-id='150' data-unread='1'>
-	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1502693781/#comment.457.933.933'>
-		<div class='ps-notification__header'>
-			<div class='ps-avatar ps-avatar--notification'>
-				<img src='assets/images/image_5.gif' alt='Andrew Simmons'>
-			</div>
-		</div>
-
-		<div class='ps-notification__body'>
-			<div class='ps-notification__desc'>
-				<strong>Andrew</strong>
-				commented on your photo			</div>
-
-			<div class='ps-notification__meta'>
-				<small class='activity-post-age' data-timestamp='2018-06-15 15:32:39'><span title='2018-06-15 15:32:39'>2 weeks ago</span></small>
-
-								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
-					<i class='ps-icon-eye'></i>
-					<span>Mark as read</span>
-				</span>
-							</div>
-		</div>
-	</a>
-</div>
-<div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--149' data-id='149' data-unread='1'>
-	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1505368315/'>
-		<div class='ps-notification__header'>
-			<div class='ps-avatar ps-avatar--notification'>
-				<img src='assets/images/image_5.gif' alt='Andrew Simmons'>
-			</div>
-		</div>
-
-		<div class='ps-notification__body'>
-			<div class='ps-notification__desc'>
-				<strong>Andrew</strong>
-				Loved your post			</div>
-
-			<div class='ps-notification__meta'>
-				<small class='activity-post-age' data-timestamp='2018-06-15 15:32:32'><span title='2018-06-15 15:32:32'>2 weeks ago</span></small>
-
-								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
-					<i class='ps-icon-eye'></i>
-					<span>Mark as read</span>
-				</span>
-							</div>
-		</div>
-	</a>
-</div>
-<div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--146' data-id='146' data-unread='1'>
-	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1505369700/#comment.471.932.932'>
-		<div class='ps-notification__header'>
-			<div class='ps-avatar ps-avatar--notification'>
-				<img src='assets/images/image_5.gif' alt='Andrew Simmons'>
-			</div>
-		</div>
-
-		<div class='ps-notification__body'>
-			<div class='ps-notification__desc'>
-				<strong>Andrew</strong>
-				commented on your cover photo			</div>
-
-			<div class='ps-notification__meta'>
-				<small class='activity-post-age' data-timestamp='2018-06-15 15:32:24'><span title='2018-06-15 15:32:24'>2 weeks ago</span></small>
-
-								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
-					<i class='ps-icon-eye'></i>
-					<span>Mark as read</span>
-				</span>
-							</div>
-		</div>
-	</a>
-</div>
-<div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--145' data-id='145' data-unread='1'>
-	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1505369700/'>
-		<div class='ps-notification__header'>
-			<div class='ps-avatar ps-avatar--notification'>
-				<img src='assets/images/image_5.gif' alt='Andrew Simmons'>
-			</div>
-		</div>
-
-		<div class='ps-notification__body'>
-			<div class='ps-notification__desc'>
-				<strong>Andrew</strong>
-				Loved your post			</div>
-
-			<div class='ps-notification__meta'>
-				<small class='activity-post-age' data-timestamp='2018-06-15 15:32:13'><span title='2018-06-15 15:32:13'>2 weeks ago</span></small>
-
-								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
-					<i class='ps-icon-eye'></i>
-					<span>Mark as read</span>
-				</span>
-							</div>
-		</div>
-	</a>
-</div>
-</div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href='#' style='float: left; width: 50%;'>Mark All as Read</a><a href='#' style='float: left; width: 50%;'>Show unread only</a></div></div></span>                </div>        				</div>
-			</div>
-
-			<!-- Profile Completeness -->
-							<div class='ps-progress-status ps-completeness-status' style=''>
-					<a href=' ://demo.peepso.com/profile/demo/about'>Your profile is 37% complete</a>				</div>
-				<div class='ps-progress-bar ps-completeness-bar' style=''>
-					<span style='width:60%'></span>
-				</div>
-
-
-			<!-- Profile Links -->
-			<span class='ps-widget--profile__title'>My Profile</span>
-			<div class='ps-widget--profile__menu'>
-				<a href=' ://demo.peepso.com/profile/demo/' class=''><span class='ps-icon-home'></span> Stream</a><a href=' ://demo.peepso.com/profile/demo/about' class=''><span class='ps-icon-user'></span> About</a><a href='../private/' class=''><span class='ps-icon-users'></span> Friends</a><a href=' ://demo.peepso.com/profile/demo/groups' class=''><span class='ps-icon-group'></span> Groups</a><a href=' ://demo.peepso.com/profile/demo/photos' class=''><span class='ps-icon-camera'></span> Photos</a><a href=' ://demo.peepso.com/profile/demo/videos' class=''><span class='ps-icon-videocam'></span> Videos</a>			</div>
-       <div class='ps-widget--profile__menu'>
-					<a href='#' id='logout_link' tabindex='0' role='button' style='border-radius:3px;'><span class='ps-icon-off' style='color:#d2578b;'></span> Log Out <img src='assets/images/ajax-loader.gif' alt='ajax loader' style='position: relative;top: 0.2em;left: 1.3em; display:none;'></a>	
-
-   <form id='logout_form' method='POST' style='display:none;'>
-   <input id='csrf' type='hidden' name='csrf_token' value='f6d144667f4596f1aaa678c0e77d600d'>   <button type='submit' id='logout_button' name='submit'></button>
-   
-   </form>
-					</div>
-
-		</div>
-	</div>
-
-</div><div class='widget community__widget'>
-
-
-</div>          </div>";
-		
-	}// community_side__left();
+ 
 
 
 // communities toolbar
@@ -1267,6 +1039,242 @@ function notifications_toolbar(){
   }
 
 
+  
+
+// the user profile header
+function profile_header($firstname = "" ,$lastname = "",$user_id = 0){
+	
+	  if(trim($firstname) == "" && trim($lastname) != ""){
+$firstname = "";
+	  }elseif(trim($lastname) == "" && trim($firstname) != ""){
+    $lastname = "";
+	  }elseif(trim($lastname) == "" && trim($firstname) == ""){
+	  $firstname = "";
+	  $lastname = "Unknown User";
+	  }
+	  $profile_string =  $_SESSION[user::$id] == $user_id ? "My Profile" : "Profile";
+      $message_user_string = $_SESSION[user::$id] != $user_id ? "<li  class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href=''><i class='fal fa-envelope'></i>Message</a></li>" : "";
+
+
+	return "<div class='header__wrapper header__wrapper--medium'>
+        
+		<div class='header' style='margin: 0px auto;'>
+          <div class='header__logo'>
+            <a href=' ://demo.peepso.com/'>
+              <img src=' ://demo.peepso.com/wp-content/themes/new/assets/images/logo.svg' alt='PeepSo'><img src=' ://demo.peepso.com/wp-content/themes/new/assets/images/logo-white.svg' alt='PeepSo'>
+            </a>
+          </div>
+    <div id='userbar' class='header__account' style='
+    margin-left: 8em;
+'><div class='widget_text widget header__widget'><div class='textwidget custom-html-widget'><div class='ultimate__box-actions' style='margin-left: 30px;'><a class='btn btn--sm' style='display:block;' href='#'><strong>{$firstname} {$lastname}</strong></a></div></div></div></div>
+          <ul class='header__menu' style='
+    max-width: 300px !important;
+   
+'>
+{$message_user_string}
+
+ <li  class='menu-item menu-item-type-custom menu-item-object-custom '><a target='_blank' href=''><i class='fal fa-user'></i>{$profile_string}</a></li>
+</ul>
+</div>
+
+          <div class='header__actions'>
+                        <a class='header__toggle header__toggle--account' href='#userbar'>
+              <svg class='svg-inline--fa fa-user-alt fa-w-16' aria-hidden='true' data-prefix='fas' data-icon='user-alt' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' data-fa-i2svg=''><path fill='currentColor' d='M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z'></path></svg><!-- <i class='fas fa-user-alt'></i> -->
+            </a>
+
+            <a href='#userbar' class='header__toggle header__toggle--close' style='display: none'>
+              <svg class='svg-inline--fa fa-times fa-w-12' aria-hidden='true' data-prefix='fas' data-icon='times' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512' data-fa-i2svg=''><path fill='currentColor' d='M323.1 441l53.9-53.9c9.4-9.4 9.4-24.5 0-33.9L279.8 256l97.2-97.2c9.4-9.4 9.4-24.5 0-33.9L323.1 71c-9.4-9.4-24.5-9.4-33.9 0L192 168.2 94.8 71c-9.4-9.4-24.5-9.4-33.9 0L7 124.9c-9.4 9.4-9.4 24.5 0 33.9l97.2 97.2L7 353.2c-9.4 9.4-9.4 24.5 0 33.9L60.9 441c9.4 9.4 24.5 9.4 33.9 0l97.2-97.2 97.2 97.2c9.3 9.3 24.5 9.3 33.9 0z'></path></svg><!-- <i class='fas fa-times'></i> -->
+            </a>
+
+            <a class='header__toggle header__toggle--menu modal__toggle' href='#menu'>
+              <svg class='svg-inline--fa fa-bars fa-w-14' aria-hidden='true' data-prefix='fas' data-icon='bars' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' data-fa-i2svg=''><path fill='currentColor' d='M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z'></path></svg><!-- <i class='fas fa-bars'></i> -->
+            </a>
+          </div>
+        
+      </div>";
+}
+
+
+    // community side left templates
+	function community_side__left(){
+		
+		return "<div class='community__side community__side--left'>
+              <div class='widget community__widget'>
+	<div class='ps-widget--profile__wrapper ps-widget--external'>
+		<!-- Title of Profile Widget -->
+
+		<div class='ps-widget--profile'>
+
+					<div class='ps-widget--profile__cover'>
+	<div class='ps-widget--profile__cover-image' style='background:url('images/image-1.jpg') no-repeat center'></div>
+				<a class='ps-widget--profile__cover-wrapper' href=''>
+					<div class='ps-widget--profile__cover-header'>
+						<!-- Avatar -->
+						<div class='ps-widget--profile__cover-avatar'>
+							<div class='ps-avatar ps-avatar--widget' href='#'>
+								<img alt='Osman Ganiu ' title='Profile Image' src='assets/images/image_5.gif'>
+							</div>
+						</div>
+
+						<!-- Name, edit profile -->
+						<div class='ps-widget--profile__cover-details'>
+							<img src=' ://demo.peepso.com/wp-content/plugins/peepso-extras-vip/classes/../assets/svg/def_3.svg' alt='VIP' title='VIP' class='ps-img-vipicons ps-js-vip-badge' data-id='2'>Osman Ganiu</div>
+					</div>
+				</a>
+				<div class='ps-widget--profile__cover-notif'>
+					        <div class='ps-widget--profile__notifications'>                    <span class='ps-js-friends-notification friends-notification psnotification-toggle'>              <a href=' ://demo.peepso.com/profile/demo/friends/requests' title=''>                <div class='ps-bubble__wrapper'>                    <i class='ps-icon-users'></i>                        <span class='js-counter ps-bubble ps-bubble--widget ps-js-counter'>                            1                        </span>                </div>              </a>            <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=' ://demo.peepso.com/profile/demo/friends/requests'>View All</a></div></div></span>                    <span class='dropdown-notification ps-js-notifications'>              <a href=' ://demo.peepso.com/profile/?notifications' title='Pending Notifications'>                <div class='ps-bubble__wrapper'>                    <i class='ps-icon-globe'></i>                        <span class='js-counter ps-bubble ps-bubble--widget ps-js-counter'>20</span>                </div>              </a>            <div class='ps-popover app-box' style='display:none;'><div class='ps-notifications' style='max-height: 40vh; overflow: auto;'><div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
+	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1528720781/?t=1530441733#comment.482.931.493.935'>
+		<div class='ps-notification__header'>
+			<div class='ps-avatar ps-avatar--notification'>
+				<img src='assets/images/image_5.gif' alt='William Torres'>
+			</div>
+		</div>
+
+		<div class='ps-notification__body'>
+			<div class='ps-notification__desc'>
+				<strong>William</strong>
+				liked your comment on your post			</div>
+
+			<div class='ps-notification__meta'>
+				<small class='activity-post-age' data-timestamp='2018-06-25 10:01:52'><span title='2018-06-25 10:01:52'>6 days ago</span></small>
+
+								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
+					<i class='ps-icon-eye'></i>
+					<span>Mark as read</span>
+				</span>
+							</div>
+		</div>
+	</a>
+</div>
+<div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--150' data-id='150' data-unread='1'>
+	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1502693781/#comment.457.933.933'>
+		<div class='ps-notification__header'>
+			<div class='ps-avatar ps-avatar--notification'>
+				<img src='assets/images/image_5.gif' alt='Andrew Simmons'>
+			</div>
+		</div>
+
+		<div class='ps-notification__body'>
+			<div class='ps-notification__desc'>
+				<strong>Andrew</strong>
+				commented on your photo			</div>
+
+			<div class='ps-notification__meta'>
+				<small class='activity-post-age' data-timestamp='2018-06-15 15:32:39'><span title='2018-06-15 15:32:39'>2 weeks ago</span></small>
+
+								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
+					<i class='ps-icon-eye'></i>
+					<span>Mark as read</span>
+				</span>
+							</div>
+		</div>
+	</a>
+</div>
+<div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--149' data-id='149' data-unread='1'>
+	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1505368315/'>
+		<div class='ps-notification__header'>
+			<div class='ps-avatar ps-avatar--notification'>
+				<img src='assets/images/image_5.gif' alt='Andrew Simmons'>
+			</div>
+		</div>
+
+		<div class='ps-notification__body'>
+			<div class='ps-notification__desc'>
+				<strong>Andrew</strong>
+				Loved your post			</div>
+
+			<div class='ps-notification__meta'>
+				<small class='activity-post-age' data-timestamp='2018-06-15 15:32:32'><span title='2018-06-15 15:32:32'>2 weeks ago</span></small>
+
+								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
+					<i class='ps-icon-eye'></i>
+					<span>Mark as read</span>
+				</span>
+							</div>
+		</div>
+	</a>
+</div>
+<div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--146' data-id='146' data-unread='1'>
+	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1505369700/#comment.471.932.932'>
+		<div class='ps-notification__header'>
+			<div class='ps-avatar ps-avatar--notification'>
+				<img src='assets/images/image_5.gif' alt='Andrew Simmons'>
+			</div>
+		</div>
+
+		<div class='ps-notification__body'>
+			<div class='ps-notification__desc'>
+				<strong>Andrew</strong>
+				commented on your cover photo			</div>
+
+			<div class='ps-notification__meta'>
+				<small class='activity-post-age' data-timestamp='2018-06-15 15:32:24'><span title='2018-06-15 15:32:24'>2 weeks ago</span></small>
+
+								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
+					<i class='ps-icon-eye'></i>
+					<span>Mark as read</span>
+				</span>
+							</div>
+		</div>
+	</a>
+</div>
+<div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--145' data-id='145' data-unread='1'>
+	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1505369700/'>
+		<div class='ps-notification__header'>
+			<div class='ps-avatar ps-avatar--notification'>
+				<img src='assets/images/image_5.gif' alt='Andrew Simmons'>
+			</div>
+		</div>
+
+		<div class='ps-notification__body'>
+			<div class='ps-notification__desc'>
+				<strong>Andrew</strong>
+				Loved your post			</div>
+
+			<div class='ps-notification__meta'>
+				<small class='activity-post-age' data-timestamp='2018-06-15 15:32:13'><span title='2018-06-15 15:32:13'>2 weeks ago</span></small>
+
+								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
+					<i class='ps-icon-eye'></i>
+					<span>Mark as read</span>
+				</span>
+							</div>
+		</div>
+	</a>
+</div>
+</div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href='#' style='float: left; width: 50%;'>Mark All as Read</a><a href='#' style='float: left; width: 50%;'>Show unread only</a></div></div></span>                </div>        				</div>
+			</div>
+
+			<!-- Profile Completeness -->
+							<div class='ps-progress-status ps-completeness-status' style=''>
+					<a href=' ://demo.peepso.com/profile/demo/about'>Your profile is 37% complete</a>				</div>
+				<div class='ps-progress-bar ps-completeness-bar' style=''>
+					<span style='width:60%'></span>
+				</div>
+
+
+			<!-- Profile Links -->
+			<span class='ps-widget--profile__title'>My Profile</span>
+			<div class='ps-widget--profile__menu'>
+				<a href=' ://demo.peepso.com/profile/demo/' class=''><span class='ps-icon-home'></span> Stream</a><a href=' ://demo.peepso.com/profile/demo/about' class=''><span class='ps-icon-user'></span> About</a><a href='../private/' class=''><span class='ps-icon-users'></span> Friends</a><a href=' ://demo.peepso.com/profile/demo/groups' class=''><span class='ps-icon-group'></span> Groups</a><a href=' ://demo.peepso.com/profile/demo/photos' class=''><span class='ps-icon-camera'></span> Photos</a><a href=' ://demo.peepso.com/profile/demo/videos' class=''><span class='ps-icon-videocam'></span> Videos</a>			</div>
+       <div class='ps-widget--profile__menu'>
+					<a href='#' id='logout_link' tabindex='0' role='button' style='border-radius:3px;'><span class='ps-icon-off' style='color:#d2578b;'></span> Log Out <img src='assets/images/ajax-loader.gif' alt='ajax loader' style='position: relative;top: 0.2em;left: 1.3em; display:none;'></a>	
+
+   <form id='logout_form' method='POST' style='display:none;'>
+   <input id='csrf' type='hidden' name='csrf_token' value='f6d144667f4596f1aaa678c0e77d600d'>   <button type='submit' id='logout_button' name='submit'></button>
+   
+   </form>
+					</div>
+
+		</div>
+	</div>
+
+</div><div class='widget community__widget'>
+
+
+</div>          </div>";
+		
+	}// community_side__left();
 
 // main header
   function main_header($page_header = "",$request_type = ""){

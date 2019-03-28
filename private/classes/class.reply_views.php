@@ -242,7 +242,7 @@ return $record;
 
 	<div class='ps-comment-body cstream-content'>
 		<div class='ps-comment-message stream-comment-content'>
-			<a class='ps-comment-user cstream-author' href='' >".$reply[ReplyViews::$alias_of_firstname]." ".$reply[ReplyViews::$alias_of_lastname]."</a>
+			<a class='ps-comment-user cstream-author' href=\"../public/".PROFILE_PAGE."?id=".$reply[ReplyViews::$user_id]."\" >".$reply[ReplyViews::$alias_of_firstname]." ".$reply[ReplyViews::$alias_of_lastname]."</a>
 			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p>".$reply[ReplyViews::$reply]."</p></div></span>
 		</div>
 
