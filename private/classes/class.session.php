@@ -128,7 +128,7 @@ require_once(PRIVATE_DIR."initialize.php");
 	$_SESSION[ConnectUsers::$session_string]  = [];
 	$_SESSION[PostImage::$uploader_id] = [];
 	$_SESSION[PostImage::$alias_of_id] = [];
-	$_SESSION['last_login']  = time();
+	$_SESSION['last_login']  = $_SESSION[Notifications::$last_notification_check_time]  = time();
 	$_SESSION['mainstream']  = 0;
 	$_SESSION['community']   = 0;
 	$_SESSION["post_ids"]    = [];

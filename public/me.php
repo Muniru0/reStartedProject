@@ -3,7 +3,9 @@
 
 require_once("../private/initialize.php");
 
- Session::before_every_protected_page(); 
+Session::before_every_protected_page(); 
+//Session::after_successful_logout();
+
 
 $firstname = "";
 $lastname  =  "";
@@ -43,12 +45,15 @@ $lastname  =  "";
 // 	 return;
 // 	}
     
+if(isset($_SESSION) ){
+
 
 $_SESSION[STREAM_HOME] = 1;
 $_SESSION[STREAM_SELF] = 1;
 
 $firstname = $_SESSION[user::$firstname];
 $lastsname = $_SESSION[user::$firstname];
+}
  $request_type = "<input type='hidden' id='stream_type' value= ".STREAM_HOME." />";
 
 $content = "";

@@ -85,6 +85,7 @@ public static function get_infinite_scroll($stream_type = "",$stream_type_id = n
  
 //  return;
  // now output the post that you just queried
+
  FetchPost::get_full_post($posts,$comments,$activities_user_ids["reactions"],$activities_user_ids["views"],$activities_user_ids["replys"],STREAM);
     $activities_user_ids = null;
 	
@@ -212,7 +213,7 @@ return false;
 		
 		 if(class_exists("ReplyViews") && class_exists("user") && class_exists("Views")){
 
-		 log_action(__CLASS__,$_SESSION[Session::$qr_upperbound],$_SESSION[Session::$qr_lowerbound]);
+		
 	$comments = [];	 
 		 
 		 
@@ -295,7 +296,7 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
   
  $query .= "SELECT * FROM ".Reaction::$table_name." WHERE ".Reaction::$post_id." >=".$_SESSION[Session::$qr_lowerbound]." && ".Reaction::$post_id."<= ".$_SESSION[Session::$qr_upperbound].";";
 	
- log_action(__CLASS__,$query);
+ 
  if(isset($_SESSION) && isset($_SESSION[user::$id])){
  $query .= " SELECT * FROM ".ConnectUsers::$table_name." WHERE ".ConnectUsers::$linker_id."
 =".$_SESSION[user::$id]." || ".ConnectUsers::$link." = ".$_SESSION[user::$id].";";
@@ -768,6 +769,8 @@ $row_count = $results->num_rows;
 		$returned_array[$row[FetchPost::$post_id]][] = $row;
 		$returned_array[$row[FetchPost::$post_id]]["filenames_".$row[FetchPost::$post_id]][$row[FetchPost::$alias_of_id]] = $row[FetchPost::$filename];
 		
+		// get all the uploader_ids to help validate post options like 
+		// connect user
 		 if(!in_array((int)$row[PostImage::$uploader_id],$_SESSION[PostImage::$uploader_id])){
 				  $_SESSION[PostImage::$uploader_id][] = (int)$row[PostImage::$uploader_id];
 			  }

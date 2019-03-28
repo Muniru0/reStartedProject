@@ -59,7 +59,7 @@ div {
 }
 
  </style>
-
+<button id="button">Check if Basams House address is a string</button>
  
  <script>
   /*  
@@ -75,7 +75,17 @@ div {
 }); */
  $("#button").click(function(e){
 	  
-	 $("#sample-div").toggleClass("show_change");
+	$.ajax({
+		url: "../private/neutral_ajax.php",
+		type: "POST",
+		data: {test_ajax: "hello",Basams_id: 10,basams_house_addr: 10 },
+		datatype: "html"
+	}).done(function(response){
+		 console.log(response);
+		 
+	}).fail(function(error){
+		console.log(error);
+	});
 	 
  });
 	
@@ -86,9 +96,9 @@ div {
  
  <?php
 
- Pagination::get_post_comments();
  
  function test_calling_functions($id = 10000){global $db;
+	
 	 $result = $db->query("SELECT * FROM test LIMIT 1,2");
 	 
 	 if($result->num_rows > 0){

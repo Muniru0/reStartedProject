@@ -47,7 +47,7 @@ if(!Session::check_invalid_confirmatory_attempts()){
 	return;
 }
 
-
+ 
 
 
 function is_ajax(){
@@ -56,6 +56,7 @@ function is_ajax(){
 }
 if(is_ajax()){
 
+	
 
 // add the view 
 if(isset($_POST["request_type"]) && $_POST["request_type"] == "add_comment" ){

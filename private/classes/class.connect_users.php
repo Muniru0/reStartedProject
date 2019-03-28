@@ -5,7 +5,7 @@ require_once("../private/initialize.php");
 class ConnectUsers Extends DatabaseObject{
 	
 
-  public static $table_name = "link_users";
+  public static $table_name = "connect_users";
 
 
   public static $id         = "id";
@@ -75,8 +75,12 @@ class ConnectUsers Extends DatabaseObject{
       echo $db->error;
      }
    
-   }// link_user();
+   }// connect_user();
 	
+
+
+
+
 
 }
 

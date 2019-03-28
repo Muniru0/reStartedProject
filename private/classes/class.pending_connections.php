@@ -87,6 +87,22 @@ class PendingConnections extends DatabaseObject{
     
 
 
+    public static function get_pending_connections(){global $db;
+        $query = "SELECT COUNT(*),* FROM ".self::$table_name." WHERE ".self::$receiver_id."= ".$_SESSION[user::$id];
+        
+        $result = $db->query($query);
+ 
+        while($row = $result->fetch_assoc()){
+            $array[] =  $row;
+        }
+
+        $result->free();
+     
+
+        
+
+      }
+
 
 
 }
