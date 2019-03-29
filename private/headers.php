@@ -2483,8 +2483,8 @@ window.onclick = function(event) {
 
 	<div class='ps-comment-body cstream-content'>
 		<div class='ps-comment-message stream-comment-content'>
-			<a class='ps-comment-user cstream-author' href=' ://demo.peepso.com/profile/demo/'>Patricia Currie</a>
-			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p><a href=' ://demo.peepso.com/profile/andrew/' title='Andrew Simmons'>Andrew</a> yes! That's the first one we saw. But trust me, it's not nearly as empty as the gif shows. There's a lot of tourists. </p></div></span>
+			<a class='ps-comment-user cstream-author' href=' ://demo.peepso.com/profile/demo/'>".$_SESSION[user::$id]."</a>
+			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p></p></div></span>
 		</div>
 
 		<div data-type='stream-more' class='cstream-more' data-commentmore='true'></div>
@@ -2492,10 +2492,10 @@ window.onclick = function(event) {
 		<div class='ps-comment-media cstream-attachments'></div>
 
 		<div class='ps-comment-time ps-shar-meta-date'>
-			<small class='activity-post-age' data-timestamp='1529076871'><span class='ps-js-autotime' data-timestamp='1529076871' title='June 15, 2018 3:34 pm'>2 weeks ago</span></small>
+			<small class='activity-post-age' data-timestamp='1529076871'><span class='ps-js-autotime' data-timestamp='1529076871' title='just now'>just now</span></small>
 
 						<div id='act-like-497' class='ps-comment-links cstream-likes ps-js-act-like--497' data-count='1'>
-				<a onclick='return activity.show_likes(497);' href='#showLikes'>1 person likes this</a>			</div>
+							</div>
 
 			<div class='ps-comment-links stream-actions' data-type='stream-action'>
 				<span class='ps-stream-status-action ps-stream-status-action'>

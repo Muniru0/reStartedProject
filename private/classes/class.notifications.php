@@ -10,24 +10,21 @@ class Notifications extends DatabaseObject {
      
 	 public static $table_name = 'notifications';
 	 
-	 public static $id         = 'id';
-	 public static $post_id    = 'post_id';
-	 public static $user_id    = 'user_id';
-     public static $type       = 'notification_type';
-     public static $time       = 'notification_time';
-
-	 public static $alias_of_id         = 'notifcations_table_id';
-	 public static $alias_of_post_id    = 'notifcations_table_post_id';
-	 public static $alias_of_user_id    = 'notifcations_table_user_id';
-     public static $alias_of_type       = 'notifcations_table_notification_type';
-     public static $alias_of_time       = 'notifcations_table_notification_time';
-  
+	 public static $id           = 'notifications_id';
+	 public static $post_id      = 'notifications_post_id';
+	 public static $comment_id   = 'notifications_comment_id';
+	 public static $reply_id     = 'notifications_post_id';
+	 public static $user_id      = 'notifications_user_id';
+     public static $firstname    = 'notifications_notification_firstname';
+     public static $lastname     = 'notifications_notification_lastname';
+     public static $type         = 'notifications_notification_type';
+     public static $time         = 'notifications_notification_time';
+	
 
 	 //healper properties
 	 public static $last_notification_check_time = "last_notifcation_check_time";
 
-public  static function send_notification($post_id =  "NULL",$comment_id = "NULL",$reply_id = "NULL",$user_id = 0,$type = '')
-{
+  public  static function send_notification($post_id =  "NULL",$comment_id = "NULL",$reply_id = "NULL",$user_id = 0,$type = ''){
 	global $db;
 	
 
@@ -48,15 +45,121 @@ public  static function send_notification($post_id =  "NULL",$comment_id = "NULL
 
 
 
-public static function get_latest_notifications($user_id){
+public static function get_latest_notifications(){
 	
 	
 	global $db;
+
+	if(!isset($_SESSION) || !isset($_SESSION[user::$id])){
+        Errors::trigger_error(INVALID_SESSION);
+		return;
+		}
 	
-	$query =" SELECT COUNT(*),* FROM ".self::$table_name." WHERE ";
-	
+
+
+	$query = "
+	SELECT ".self::$table_name.".* FROM ".self::$table_name." WHERE ".self::$user_id." IN (SELECT ".ConnectUsers::$followed_id." FROM ".ConnectUsers::$table_name.") || ".self::$post_id." IN (SELECT ".FollowPost::$post_id." FROM ".FollowPost::$table_name." WHERE ".FollowPost::$follower_id." = ".$_SESSION[user::$id].")";
+
+
+  if($result = $db->query($query)){
+
+  
+  if($result->num_rows > 0 && trim($db->error) == ""){
+	  $array = [];
+    while($row = $result->fetch_assoc()){
+		$restructured_notifications_row = [];
+
+		if(isset($row[self::$id]) && $row[self::$id] != null){
+			
+			$restructured_notifications_row["id"] = $row[self::$id];   
+        
+		}
+		if(isset($row[self::$post_id]) && $row[self::$post_id] != null){
+			
+	     	$restructured_notifications_row["incident_id"] = $row[self::$post_id];	   
+        
+		}
+		if(isset($row[self::$comment_id]) && $row[self::$comment_id] != null){
+			
+			$restructured_notifications_row["comment_id"] = $row[self::$comment_id];	   	   
+        
+		}
+		if(isset($row[self::$reply_id]) && $row[self::$reply_id] != null){
+			
+			$restructured_notifications_row["reply_id"] = $row[self::$reply_id];
+        
+		}
+		if(isset($row[self::$user_id]) && $row[self::$user_id] != null){
+			
+			$restructured_notifications_row["user_id"] = $row[self::$user_id];
+        
+		}
+		
+		if(isset($row[self::$firstname]) && $row[self::$firstname] != null){
+			
+			$restructured_notifications_row["firstname"] = $row[self::$firstname];
+        
+		}
+		if(isset($row[self::$lastname]) && $row[self::$lastname] != null){
+			
+			$restructured_notifications_row["lastname"] = $row[self::$lastname];
+			   
+        
+		}
+
+		if(isset($row[self::$type]) && $row[self::$type] != null){
+			
+			$restructured_notifications_row["notification_string"] = self::get_notification_type_string($row[self::$type]);
+            
+		}
+		if(isset($row[self::$time]) && $row[self::$time] != null){
+			
+			$restructured_notifications_row["time"] = $row[self::$time];
+			   
+        
+		}
+
+
+
+
+		$array[] = $restructured_notifications_row;
+	}
+   
+	print_r($array);
+  }
+
+
+   unset($array);
+   $result->free();
+
+}else{
+	echo "$db->error";
+	Errors::trigger_error(RE_INITIATE_OPERATION);
+}
+
 }//get_notifications();
 
+
+
+	// get the notification type string
+public static function get_notification_type_string($type = "",$user_id){
+ 		if(trim($type) == "" || $user_id < 1){
+       return "Please Ignore This Notification.";
+  }
+
+
+   switch($type){
+
+	case NEW_COMMENT: 
+    if($user_id === $_SESSION[user::$id]){
+   " commented on ";
+	}
+
+   }
+
+
+
+}
 
 public static function personal_styled_notification_template(){
 
@@ -121,6 +224,8 @@ public static function get_notification_template(){
 
    </div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=' ://demo.peepso.com/profile/demo/friends/requests'>View All</a></div></div></div></div>";
 }// get_notification_template();
+
+
 
 
 

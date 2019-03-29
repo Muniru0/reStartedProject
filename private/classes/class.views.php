@@ -305,7 +305,7 @@ class Views extends DatabaseObject{
     $view_info["c_time"] = FetchPost::time_converter($view_info["comment_time"]);
 	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $firstname." ".$lastname,"comment_date" => $post_date]);
 
-	  Notifications::send_notification($post_id,$row["comment_id"],NULL,$user_id,NEW_COMMENT);
+	  Notifications::send_notification($post_id,$view_info["comment_id"],NULL,$user_id,NEW_COMMENT);
 
 		
  }else{

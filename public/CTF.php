@@ -95,8 +95,11 @@ div {
  
  
  <?php
-
  
+echo "<pre>";
+Notifications::get_latest_notifications();
+echo "</pre>";
+
  function test_calling_functions($id = 10000){global $db;
 	
 	 $result = $db->query("SELECT * FROM test LIMIT 1,2");

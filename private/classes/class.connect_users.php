@@ -8,12 +8,12 @@ class ConnectUsers Extends DatabaseObject{
   public static $table_name = "connect_users";
 
 
-  public static $id         = "id";
-  public static $link      = "link";
-  public static $linker_id  = "linker_id";
-  public static $firstname  = "firstname";
-  public static $lastname   = "lastname";
-  public static $time       = "time";
+  public static $id        		     = "connect_users_id";
+  public static $followed_id         = "connect_users_followed_id";
+  public static $linker_id 		     = "connect_users_follower_id";
+  public static $followed_firstname  = "connect_users_followed_firstname";
+  public static $followed_lastname   = "connect_users_followed_lastname";
+  public static $time                = "connect_users_time";
 
 
   public static $session_string = "linked_users_ids";

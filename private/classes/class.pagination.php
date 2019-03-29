@@ -299,7 +299,7 @@ if(isset($comments) && isset($comments["postID_".$row[Views::$alias_of_post_id]]
  
  if(isset($_SESSION) && isset($_SESSION[user::$id])){
  $query .= " SELECT * FROM ".ConnectUsers::$table_name." WHERE ".ConnectUsers::$linker_id."
-=".$_SESSION[user::$id]." || ".ConnectUsers::$link." = ".$_SESSION[user::$id].";";
+=".$_SESSION[user::$id]." || ".ConnectUsers::$followed_id." = ".$_SESSION[user::$id].";";
 
 
 $query .= " SELECT * FROM ".FollowPost::$table_name." WHERE ".FollowPost::$follower_id." = ".$_SESSION[user::$id];
@@ -333,13 +333,13 @@ $reactions  = [];
 			  }elseif(isset($row[ConnectUsers::$linker_id])){
 				    
 	if(isset($_SESSION) && isset($_SESSION[ConnectUsers::$session_string])){
-		if(!in_array((int)$row[ConnectUsers::$linker_id],$_SESSION[ConnectUsers::$session_string]) || !in_array((int)$row[ConnectUsers::$link],$_SESSION[ConnectUsers::$session_string])){
+		if(!in_array((int)$row[ConnectUsers::$linker_id],$_SESSION[ConnectUsers::$session_string]) || !in_array((int)$row[ConnectUsers::$followed_id],$_SESSION[ConnectUsers::$session_string])){
 			
 			
 			   
-			  if($row[ConnectUsers::$link] != (int)$_SESSION[user::$id] && !in_array((int)$row[ConnectUsers::$link],$_SESSION[ConnectUsers::$session_string])){
+			  if($row[ConnectUsers::$followed_id] != (int)$_SESSION[user::$id] && !in_array((int)$row[ConnectUsers::$followed_id],$_SESSION[ConnectUsers::$session_string])){
 				  
-				  $_SESSION[ConnectUsers::$session_string][] = (int)$row[ConnectUsers::$link];
+				  $_SESSION[ConnectUsers::$session_string][] = (int)$row[ConnectUsers::$followed_id];
 			  }elseif($row[ConnectUsers::$linker_id] != (int)$_SESSION[user::$id] && !in_array((int)$row[ConnectUsers::$linker_id],$_SESSION[ConnectUsers::$session_string])){
 				  
 			$_SESSION[ConnectUsers::$session_string] [] =(int)$row[ConnectUsers::$linker_id];
