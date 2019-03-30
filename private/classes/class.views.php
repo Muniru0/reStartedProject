@@ -224,7 +224,7 @@ class Views extends DatabaseObject{
 		 return false;
 	   }
 	 // find aliases for the db columns just for the sake of security
-	  $query = "SELECT id AS comment_id,post_id AS comment_id,firstname,lastname,commentor_id,comment, comment_time ,likes AS c_likes FROM ".self::$table_name." WHERE post_id = {$post_id} && id ={$comment_id} LIMIT 1";
+	  $query = "SELECT ".self::$id." AS comment_id,".self::$post_id." AS incident_id,".self::$firstname.",".self::$lastname.",".self::$commentor_id.",".self::$comment.", ".self::$comment_time." ,".self::$likes." AS c_likes FROM ".self::$table_name." WHERE ".self::$post_id." = {$post_id} && id ={$comment_id} LIMIT 1";
 	  $result = $db->query($query);
 	  
 	  if(!$result){
@@ -305,7 +305,7 @@ class Views extends DatabaseObject{
     $view_info["c_time"] = FetchPost::time_converter($view_info["comment_time"]);
 	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $firstname." ".$lastname,"comment_date" => $post_date]);
 
-	  Notifications::send_notification($post_id,$view_info["comment_id"],NULL,$user_id,NEW_COMMENT);
+	  Notifications::send_notification($post_id,$view_info["comment_id"],"NULL",$user_id,NEW_COMMENT);
 
 		
  }else{
@@ -531,7 +531,18 @@ public static function delete_view ($post_id = 0 ,$comment_id = 0){
 			
    
 
-   }//convert_likes_number();
+	 }//convert_likes_number();
+	 
+
+
+
+
+
+
+
+
+
+
 }
 
 

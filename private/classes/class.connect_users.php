@@ -10,7 +10,7 @@ class ConnectUsers Extends DatabaseObject{
 
   public static $id        		     = "connect_users_id";
   public static $followed_id         = "connect_users_followed_id";
-  public static $linker_id 		     = "connect_users_follower_id";
+  public static $follower_id 		     = "connect_users_follower_id";
   public static $followed_firstname  = "connect_users_followed_firstname";
   public static $followed_lastname   = "connect_users_followed_lastname";
   public static $time                = "connect_users_time";

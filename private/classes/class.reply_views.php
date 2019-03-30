@@ -177,6 +177,8 @@ return $record;
 <div class='ps-comment-container comment-container ps-js-comment-container' id='reply_container_{$comment_id}'>" ;
  
 		    
+        // order the replys by DESC(thus more recent ones // first)
+			$replys = array_reverse($replys);
 	  foreach($replys AS $index => $reply){
 		   if(!isset($index) || empty($index)){
 			   continue;
@@ -344,7 +346,7 @@ return $record;
 		   if($row = $result->fetch_assoc()){
          if($db->affected_rows == 1){
 				print j(["reply_delete"=>"success"]);
-				Notifications::send_notification(NULL,$comment_id,$reply_id,$user_id,DELETE_REPLYVIEW,time());
+				Notifications::send_notification("NULL",$comment_id,$reply_id,$user_id,DELETE_REPLYVIEW,time());
 				return;
 				 }
 			 }

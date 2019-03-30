@@ -95,19 +95,29 @@ div {
  
  
  <?php
- 
-echo "<pre>";
-Notifications::get_latest_notifications();
-echo "</pre>";
 
- function test_calling_functions($id = 10000){global $db;
+//  $_SESSION[STREAM_HOME] = 1;
+//   Pagination::get_infinite_scroll(STREAM_HOME);
+
+
+Notifications::get_latest_notifications();
+
+ function test_function($id = null){global $db;
 	
-	 $result = $db->query("SELECT * FROM test LIMIT 1,2");
+	 $result = $db->query("SELECT notifications.*,views.commentor_id AS views_commentor_id, reply_views.user_id AS reply_views_user_id, post_table.uploader_id AS post_table_uploader_id FROM notifications JOIN follow_posts ON follow_posts_follower_id = notifications_user_id LEFT JOIN connect_users ON notifications_user_id = connect_users_followed_id LEFT JOIN post_table ON notifications_post_id = post_table.id LEFT JOIN views ON views.id = notifications_comment_id LEFT JOIN reply_views ON reply_views.id = notifications_reply_id WHERE (follow_posts_follower_id = ".$_SESSION[user::$id]." || connect_users_followed_id = ".$_SESSION[user::$id].") && notifications_user_id != ".$_SESSION[user::$id]."  ORDER BY notifications_time DESC");
 	 
 	 if($result->num_rows > 0){
+		 $array = [];
 	 while($row = $result->fetch_assoc()){
-		 echo $row["id"]."<br />";
+     if(!array_key_exists($row["notifications_id"],$array)){
+
+			 $array[$row["notifications_id"]] = $row;
+		 }
 	 }
+
+	 echo "<pre>";
+	 print_r($array);
+	 echo "</pre>";
 	 }else{echo $db->error;}
  }
  

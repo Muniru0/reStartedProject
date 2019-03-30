@@ -15,10 +15,10 @@ class Notifications extends DatabaseObject {
 	 public static $comment_id   = 'notifications_comment_id';
 	 public static $reply_id     = 'notifications_post_id';
 	 public static $user_id      = 'notifications_user_id';
-     public static $firstname    = 'notifications_notification_firstname';
-     public static $lastname     = 'notifications_notification_lastname';
-     public static $type         = 'notifications_notification_type';
-     public static $time         = 'notifications_notification_time';
+     public static $firstname    = 'notifications_firstname';
+     public static $lastname     = 'notifications_lastname';
+     public static $type         = 'notifications_type';
+     public static $time         = 'notifications_time';
 	
 
 	 //healper properties
@@ -28,11 +28,11 @@ class Notifications extends DatabaseObject {
 	global $db;
 	
 
-	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},{$user_id},'".$type."',".time().")";
+	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},{$user_id},'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."','".$type."',".time().")";
 	
 
 	if(!$db->query($query)){
-        
+       
 		
 		return false;
 	}else{
@@ -61,12 +61,17 @@ public static function get_latest_notifications(){
 	SELECT ".self::$table_name.".* FROM ".self::$table_name." WHERE ".self::$user_id." IN (SELECT ".ConnectUsers::$followed_id." FROM ".ConnectUsers::$table_name.") || ".self::$post_id." IN (SELECT ".FollowPost::$post_id." FROM ".FollowPost::$table_name." WHERE ".FollowPost::$follower_id." = ".$_SESSION[user::$id].")";
 
 
+	$query  = "SELECT notifications.*,views.commentor_id AS views_commentor_id, reply_views.user_id AS reply_views_user_id, post_table.uploader_id AS post_table_uploader_id FROM notifications JOIN follow_posts ON follow_posts_follower_id = notifications_user_id LEFT JOIN connect_users ON notifications_user_id = connect_users_followed_id LEFT JOIN post_table ON notifications_post_id = post_table.id LEFT JOIN views ON views.id = notifications_comment_id LEFT JOIN reply_views ON reply_views.id = notifications_reply_id WHERE (follow_posts_follower_id = ".$_SESSION[user::$id]." || connect_users_followed_id = ".$_SESSION[user::$id].")   ORDER BY notifications_time DESC ";
+
   if($result = $db->query($query)){
 
   
   if($result->num_rows > 0 && trim($db->error) == ""){
 	  $array = [];
     while($row = $result->fetch_assoc()){
+		  if(array_key_exists($row[self::$id],$array)){
+   					continue;
+			}
 		$restructured_notifications_row = [];
 
 		if(isset($row[self::$id]) && $row[self::$id] != null){
@@ -95,21 +100,16 @@ public static function get_latest_notifications(){
         
 		}
 		
-		if(isset($row[self::$firstname]) && $row[self::$firstname] != null){
+		if($row[self::$firstname] != null
+		 && $row[self::$lastname] != null){
 			
-			$restructured_notifications_row["firstname"] = $row[self::$firstname];
+			$restructured_notifications_row["fullname"] = $row[self::$firstname] ." ".$row[self::$lastname];
         
 		}
-		if(isset($row[self::$lastname]) && $row[self::$lastname] != null){
-			
-			$restructured_notifications_row["lastname"] = $row[self::$lastname];
-			   
-        
-		}
-
+		
 		if(isset($row[self::$type]) && $row[self::$type] != null){
 			
-			$restructured_notifications_row["notification_string"] = self::get_notification_type_string($row[self::$type]);
+			$restructured_notifications_row["notification_string"] = self::get_notification_type_string($row[self::$type],$row["post_table_uploader_id"],$row["views_commentor_id"],$row["reply_views_user_id"]);
             
 		}
 		if(isset($row[self::$time]) && $row[self::$time] != null){
@@ -122,10 +122,12 @@ public static function get_latest_notifications(){
 
 
 
-		$array[] = $restructured_notifications_row;
+		$array[$row[self::$id]] = $restructured_notifications_row;
 	}
-   
+	 
+	echo "<pre>";
 	print_r($array);
+	echo  "</pre>";
   }
 
 
@@ -133,7 +135,7 @@ public static function get_latest_notifications(){
    $result->free();
 
 }else{
-	echo "$db->error";
+	echo $db->error." ".__LINE__;
 	Errors::trigger_error(RE_INITIATE_OPERATION);
 }
 
@@ -142,8 +144,8 @@ public static function get_latest_notifications(){
 
 
 	// get the notification type string
-public static function get_notification_type_string($type = "",$user_id){
- 		if(trim($type) == "" || $user_id < 1){
+public static function get_notification_type_string($type = "",$uploader_id = NULL, $commentor_id = NULL, $replier_id = NULL){
+ 		if(trim($type) == "" || ($uploader_id  == NULL && $commentor_id == NULL && $replier_id == NULL)){
        return "Please Ignore This Notification.";
   }
 
@@ -151,9 +153,18 @@ public static function get_notification_type_string($type = "",$user_id){
    switch($type){
 
 	case NEW_COMMENT: 
-    if($user_id === $_SESSION[user::$id]){
-   " commented on ";
+    if($commentor_id == $_SESSION[user::$id]){
+  return " commented on your post ";
+	}else{
+	return	" commented on a post";
 	}
+ break;
+	case EDITTED_COMMENT: 
+		return " edited a comment ";
+		break;
+
+	 default: return "Please Ignore This Notification.";
+	 
 
    }
 
@@ -226,6 +237,24 @@ public static function get_notification_template(){
 }// get_notification_template();
 
 
+
+
+// clear all the old notifications
+public static function clear_old_notifications(){
+	 global $db;
+	 
+	 // clear all notifications that are 6  months or more old
+	 $db->query("DELETE FROM ".self::$tabl_name." WHERE ".self::$time." < ".(time() * 60 * 60 * 24* 7 * 4 * 6) - time());
+
+if(trim($db->error) !=  ""){
+	
+	print j(["false" => "Operation failed."]);
+	return;
+}
+
+print j(["true" => "Operation successful."]);
+	
+}
 
 
 

@@ -2483,7 +2483,7 @@ window.onclick = function(event) {
 
 	<div class='ps-comment-body cstream-content'>
 		<div class='ps-comment-message stream-comment-content'>
-			<a class='ps-comment-user cstream-author' href=' ://demo.peepso.com/profile/demo/'>".$_SESSION[user::$id]."</a>
+			<a class='ps-comment-user cstream-author' href=' ://demo.peepso.com/profile/demo/'>".$_SESSION[user::$firstname]." ".$_SESSION[user::$lastname]."</a>
 			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p></p></div></span>
 		</div>
 
@@ -2522,8 +2522,8 @@ window.onclick = function(event) {
 
 	<div class='ps-comment-body cstream-content'>
 		<div class='ps-comment-message stream-comment-content'>
-			<a class='ps-comment-user cstream-author' href='' data-hover-card='2'> Patricia Currie</a>
-			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p>okay lets see how the css is like here</p></div></span>
+			<a class='ps-comment-user cstream-author' href='' data-hover-card='2'>".$_SESSION[user::$firstname]." ".$_SESSION[user::$lastname]."</a>
+			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p></p></div></span>
 		</div>
 
 		<div data-type='stream-more' class='cstream-more' data-commentmore='true'></div>
@@ -2531,7 +2531,7 @@ window.onclick = function(event) {
 		<div class='ps-comment-media cstream-attachments'></div>
 
 		<div class='ps-comment-time ps-shar-meta-date'>
-			<small class='activity-post-age' data-timestamp='1547457853'><span class='ps-js-autotime' data-timestamp='1547457853' title='January 14, 2019 9:24 am'>4 mins ago</span></small>
+			<small class='activity-post-age' data-timestamp='1547457853'><span class='ps-js-autotime' data-timestamp='1547457853' title='just now'>just now</span></small>
 
 						<div id='act-like-716' class='ps-comment-links cstream-likes ps-js-act-like--716' data-count='0' style='display:none'></div>
 			
@@ -2558,7 +2558,7 @@ window.onclick = function(event) {
 
 	<div class='ps-comment-body cstream-content'>
 		<div class='ps-comment-message stream-comment-content'>
-			<a class='ps-comment-user cstream-author' href='' data-hover-card='2'><img src='' alt='VIP' title='VIP' class='ps-img-vipicons ps-js-vip-badge ' data-id='2'> Patricia Currie</a>
+			<a class='ps-comment-user cstream-author' href='' data-hover-card='2'><img src='' alt='VIP' title='VIP' class='ps-img-vipicons ps-js-vip-badge ' data-id='2'>".$_SESSION[user::$firstname]." ".$_SESSION[user::$lastname]."</a>
 			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p>yes and another one</p></div></span>
 		</div>
 
@@ -2614,8 +2614,8 @@ window.onclick = function(event) {
 
 	<div class='ps-comment-body cstream-content'>
 		<div class='ps-comment-message stream-comment-content'>
-			<a class='ps-comment-user cstream-author' href='' data-hover-card='2'> Patricia Currie</a>
-			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p>okay lets see how the css is like here</p></div></span>
+			<a class='ps-comment-user cstream-author' href='' data-hover-card='2'>".$_SESSION[user::$firstname]." ".$_SESSION[user::$lastname]."</a>
+			<span class='ps-comment__content' data-type='stream-comment-content'><div class='peepso-markdown'><p></p></div></span>
 		</div>
 
 		<div data-type='stream-more' class='cstream-more' data-commentmore='true'></div>
