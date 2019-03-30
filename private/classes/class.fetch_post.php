@@ -391,7 +391,7 @@ if( !isset($post_id) || is_array($post_id)
 	
 	// check to see if there are any errors 
  if(!$result || $db->error != ""){
-	    print j(["false" => "Something Unexpectedly went wrong please try again"]);
+	    Errors::trigger_error(RE_INITIATE_OPERATION);
 	 log_action(__CLASS__,"Query failed: {$db->error} on line: ".__LINE__." in file: ".__FILE__);
 	
 	 return [];
@@ -441,7 +441,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 	}
   
 	 }else{
-	  print j(["false" => "Sorry, Please try again"]);
+	  Errors::trigger_error(RE_INITIATE_OPERATION);
 	  return [];
 	 }  
   

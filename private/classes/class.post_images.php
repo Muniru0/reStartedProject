@@ -241,7 +241,7 @@ $filenames = FileUpload::upload_file($file_destination, $files,$count);
 	
 	// this is for debugging purposes only
 	/***********************************/
-	$location = ["Wa","Tamale","Kumasi","Accra","Koforidua","Cape Coast","Tema","Bolgatanga","Winneba","Saudi Arabia"];
+	$locations = ["Wa","Tamale","Kumasi","Accra","Koforidua","Cape Coast","Tema","Bolgatanga","Winneba","Saudi Arabia"];
 		   $location = $locations[array_rand($locations)];
     /***********************************/
 		   
@@ -288,6 +288,11 @@ $post_id = (int)$post_id;
 
 if(self::normalize_post($post_id,$filenames))
 {    
+    // the post has being uploaded successful trigger a notification
+
+Notifications::send_notification($post_id,NULL,NULL,$uploader_id,$_SESSION[user::$firstname],$_SESSION[user::$lastname],NEW_POST,$upload_time);
+	
+		
 
       
 	  if(is_array($post_id)){
@@ -306,10 +311,7 @@ return;
 	 log_action(__CLASS__," get full post execution failed: on line ".__LINE__." in file ".__FILE__);
 	 // send a notification to those that this post may be connected to and alert them of the new post 
 	 // and its x'tics
-	if(Notifications::send_notification($post_id[0],NULL,NULL,$uploader_id,POST,$upload_time))
-	{
-		
-	} 
+
  } 
      
 	

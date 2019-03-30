@@ -94,7 +94,7 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 !defined("INCIDENT_POST")               ?  define("INCIDENT_POST","incident_post")   : null;
 
-!defined("POST")               ?  define("POST","post")   : null;
+!defined("NEW_POST")                    ?  define("NEW_POST","new_post")   : null;
 
 
 !defined("CONFIRMED_POST")               ?  define("CONFIRMED_POST","confirm_post")   : null;
