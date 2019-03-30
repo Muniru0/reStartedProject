@@ -48,7 +48,8 @@ class Views extends DatabaseObject{
 	   
      	 
 	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' >
-		<div class='ps-comment-container comment-container ps-js-comment-container'> ";
+		<div class='ps-comment-container comment-container ps-js-comment-container' style='max-height: 29em;
+    overflow-y: scroll;'> ";
 	
    if(isset($views_with_replys) && !empty($views_with_replys) && is_array($views_with_replys) &&  (int)$post_id > 0 ){
 	   
@@ -168,7 +169,9 @@ class Views extends DatabaseObject{
 
 
 // the commentbox(the comment text area);
-  $views_and_viewsbox_template_string .= " <div id='comment_area_wrapper_{$post_id}'  class='ps-comment-reply cstream-form stream-form wallform ps-js-comment-new'>
+	$views_and_viewsbox_template_string .= " </div>
+	
+	<div id='comment_area_wrapper_{$post_id}'  class='ps-comment-reply cstream-form stream-form wallform ps-js-comment-new'>
 			
 			<div class='ps-textarea-wrapper cstream-form-input'>
 				<div class='ps-tagging-wrapper'><div class='ps-tagging-beautifier'></div><textarea id='comment_area_{$post_id}' class='ps-textarea cstream-form-text ps-tagging-textarea' name='comment'  oninput='utility.resizeTextarea(this);' onkeypress='comment.on_text_field_change(this);' maxlength='4000' placeholder='Write a comment...' style='overflow:hidden;'></textarea></div>
@@ -209,7 +212,11 @@ class Views extends DatabaseObject{
 					<button onclick='return comment.post_comment({$post_id},this);' class='ps-btn ps-btn-primary ps-button-action'>Post</button>
 				</div>
 			</div>
-		</div></div>";
+		</div>
+	
+	
+	
+	";
 		
 		
 	   return $views_and_viewsbox_template_string;

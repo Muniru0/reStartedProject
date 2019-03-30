@@ -330,16 +330,17 @@ class comment {
       // give the reply text area an id
       $(textAreaDiv).attr("id", "reply_area_wrapper_" + response["comment_info"]["comment_id"]);
       // find the comments list
-      let comments_container = document.querySelector("#comment_area_wrapper_" + response["comment_info"]["incident_id"]);
+      let commentsTextAreaWrapper = document.querySelector("#comment_area_wrapper_" + response["comment_info"]["incident_id"]);
 
 
+      let commentsContainer = $(commentsTextAreaWrapper).siblings(".ps-comment-container");
       // append the comment to the comments_container 
-      $(comments_container).before(comment_template);
-      $(comments_container).before(reply_template);
+      $(commentsContainer).append(comment_template);
+      $(commentsContainer).append(reply_template);
 
       $(comment_template).fadeIn(690);
 
-       console.log(comments_container);
+       
   }
 
 
