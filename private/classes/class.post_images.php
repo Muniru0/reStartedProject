@@ -247,8 +247,17 @@ $filenames = FileUpload::upload_file($file_destination, $files,$count);
 		   
 $query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$lat,$location,$count]);
 
+$uploader_id = $db->real_escape_string($uploader_id);
+$upload_time = $db->real_escape_string($upload_time);
 
-    $query = "CALL post_image('".$query_parameters."')";
+$title   = $db->real_escape_string($title);
+$label   = $db->real_escape_string($label);
+$locaion = $db->real_escape_string($location);
+$log      = $db->real_escape_string($log);
+$lat      = $db->real_escape_string($lat);
+$count      = $db->real_escape_string($count);
+
+    $query = "CALL post_image(".$uploader_id.",".$upload_time.",'".$title."','".$label."','".$caption."','".$log."','".$lat."','".$location."',".$count.")";
     
     $post_id = 0;
 
@@ -290,7 +299,7 @@ if(self::normalize_post($post_id,$filenames))
 {    
     // the post has being uploaded successful trigger a notification
 
-Notifications::send_notification($post_id,NULL,NULL,$uploader_id,$_SESSION[user::$firstname],$_SESSION[user::$lastname],NEW_POST,$upload_time);
+Notifications::send_notification($post_id,"NULL","NULL",$uploader_id,NEW_POST);
 	
 		
 
@@ -326,18 +335,27 @@ return;
     }//post();
 
 
+
+
+
   // edit post 
-    
  public static function edit_post($post_id = 0,$caption = "", $title = "",$location = "" ,$lat = "",$log = ""){
      
      global $db;
     
-     if($post_id < 1 || !isset($caption)  || !isset($title) || trim($location) == ""  || !is_float($lat) || !is_float($log)){
+     if($post_id < 1 || !isset($caption)  || !isset($title) || trim($location) == "" ){
         Errors::trigger_error(RETRY);
          return;
      }
      $time = time();  
      $user_id = $_SESSION[user::$id];
+    //  $post_id = $db->real_escape_string($post_id);
+    //  $caption = $db->real_escape_string($caption);
+    //  $title   = $db->real_escape_string($title);
+    //  $loctaion = $db->real_escape_string($location);
+    //  $log      = $db->real_escape_string($location);
+    //  $lat      = $db->real_escape_string($lat);
+   
    $query = "CALL edit_post(".$user_id.",{$post_id},'{$caption}','{$title}','{$location}',{$lat},{$log},{$time})";
      
   
@@ -352,8 +370,9 @@ return;
                          
                      
                       print j(["caption"=>$row[PostImage::$caption],"title"=>$row[PostImage::$title],"location"=>$row[PostImage::$location],"lat"=>$row[PostImage::$lat],"log"=>$row[PostImage::$log]]);
-                      Notifications::send_notification($post_id,NULL,NULL,$user_id,EDIT_POST,$time);
-                      return;
+                     
+                      
+                     
                      }elseif(isset($row["result"]) && $row["invalid request"]){
                          print j(["false" =>"PLEASE INVALID OPERATION"]);
                          return;
@@ -367,6 +386,8 @@ return;
                       Errors::trigger_error(RETRY);
                         return;
                  }
+
+                 $results->free_result();
             }
             
         }while($db->more_results() && $db->next_result());
@@ -376,6 +397,9 @@ return;
         Errors::trigger_error(RETRY);
         return;
     }
+
+     
+    Notifications::send_notification($post_id,"NULL","NULL",$user_id,EDIT_POST);
      
  }// edit_post();    
 
@@ -555,7 +579,7 @@ if($db->multi_query($query)){
 	  global $db;
 
         if(!isset($_SESSION) || isset($_SESSION[user::$id]) || $_SESSION[user::$id] < 1){
-            Errors::trigger_error(INVALID_SESSIOn);
+            Errors::trigger_error(INVALID_SESSION);
             return;
         }
 
@@ -575,8 +599,8 @@ if($db->multi_query($query)){
 		log_action(__CLASS__," Query failed: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
 		return;
 	}elseif($db->affected_rows == 1){
-        Notifications::send_notification($post_id,NULL,NULL,$user_id,DELETE_POST,time());
-		print j(["true"]);
+        Notifications::send_notification($post_id,"NULL","NULL",$user_id,DELETE_POST);
+		print j(["delete_post" => "success"]);
 	}
 	
 	

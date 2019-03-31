@@ -95,14 +95,14 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 !defined("INCIDENT_POST")               ?  define("INCIDENT_POST","incident_post")   : null;
 
 !defined("NEW_POST")                    ?  define("NEW_POST","new_post")   : null;
-
-
+!defined("EDIT_POST")               ?  define("EDIT_POST","edit_post")   : null;
+!defined("DELETE_POST")               ?  define("DELETE_POST","delete_post")   : null;
 !defined("CONFIRMED_POST")               ?  define("CONFIRMED_POST","confirm_post")   : null;
 
 !defined("REVERSE_CONFIRMATION")               ?  define("REVERSE_CONFIRMATION","reverse_confirmation")   : null;
 
 
-!defined("DELETE_POST")               ?  define("DELETE_POST","delete_post")   : null;
+
 
 !defined("NEW_SUPPORT")               ?  define("NEW_SUPPORT","new_support")   : null;
 

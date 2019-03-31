@@ -306,7 +306,7 @@ class FetchPost extends DatabaseObject{
    
     <div class='ps-tagging-beautifier'></div><textarea class='ps-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Say what is on your mind...' spellcheck='false'  MAXLENGTH='100' style='height: 92px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'>{$caption}</textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
 									</div>
-				<div class='ps-postbox-addons'>— <i class='ps-icon-map-marker'></i><b>{$location}</b></div>
+				<div class='ps-postbox-addons'><div>— <i class='ps-icon-map-marker'></i><b>{$location}</b></div></div>
 			</div>
 	 <div class='post-charcount charcount ps-postbox-charcount' style='top:24%'>{$caption_count}</div>
 		</div>
@@ -381,7 +381,7 @@ if( !isset($post_id) || is_array($post_id)
 	   }
 	  
 	   
-     $query = "SELECT ".user::$table_name.".".user::$firstname.",".user::$table_name.".".user::$lastname.",".user::$user_category.",".PostImage::$table_name.".*,".self::$table_name.".*,".PostImage::$table_name.".id AS post_table_id,".self::$table_name.".id AS file_id FROM ".PostImage::$table_name."
+     $query = "SELECT ".user::$table_name.".".user::$firstname.",".user::$table_name.".".user::$lastname.",".user::$user_category.",".PostImage::$table_name.".*,".self::$table_name.".*,".PostImage::$table_name.".id AS post_table_id,".self::$table_name.".id AS file_id, ".PostImage::$files_count." AS ".PostImage::$alias_of_files_count." FROM ".PostImage::$table_name."
 				JOIN ".user::$table_name." ON 
 				".PostImage::$table_name.".uploader_id = ".user::$table_name.".id JOIN ".self::$table_name." ON ".self::$table_name.".post_id = ".PostImage::$table_name.".id WHERE 
 				".PostImage::$table_name.".id = $post_id  LIMIT 10";
@@ -473,7 +473,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 '>{$title}</div>" : "";
  
       $edit_post_template = ((int)$uploader_id === (int)$_SESSION[user::$id]) ? self::get_edit_post_template($uploader_id,$caption,$title,$location,$post_id) : "";
-		
+		log_action(__CLASS__,$edit_post_template);
 		  // check the number of reactions and show or hide the 
 		  // the reactions div accordingly
 		  $toggle_reactions_count = "";
@@ -1021,8 +1021,8 @@ $images_string .= "</div></div></div></div>
      
 	 // check if the results array($returned_array) is empty
 	 if(empty($returned_array)){
-		 print j(["false" => "Something happend Unexpectedly, Please refresh the page and try again"]);
-		 log_action(__CLASS__," The queried post is empty on Line: ".__LINE__." in file: ".__FILE__);
+		 Errors::trigger_error(UNEXPECTED_RETRY);
+		 
 		return ; 
 	 }
 
@@ -1107,7 +1107,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 		 // if the post body is false then uset the post table id since we no longer 
 		 // need it to reference any post
 		    if($full_body === false){
-				print j(["false" => "Sorry, something went wrong,Please try  again after some time"]);
+				Errors::trigger_error(RE_INITIATE_OPERATION);
 				 unset($headers[$post_info[PostImage::$alias_of_id]]);
 				continue;				
 			}

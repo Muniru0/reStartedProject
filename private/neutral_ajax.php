@@ -107,29 +107,27 @@ if(isset($_POST["request_type"]) && $_POST["request_type"] == "add_comment" ){
             Errors::trigger_error(INVALID_SESSION);
            return; 
         }
-      
-         $caption = h($_POST["caption"]);
-         $title   = h($_POST["title"]);
-         $post_id = $_POST["post_id"];
-         $user_id = $_POST["user_id"];
-         $log     = (float)$_POST["log"];
-         $lat     = (float) $_POST["lat"];
-         $location = h($_POST["location"]);
+			
          
-        
+				 $post_id = $db->real_escape_string($_POST["post_id"]);
+         $user_id = $_POST["user_id"];
+				 $log      = (float)$db->real_escape_string($_POST["log"]);
+				 $lat      = (float)$db->real_escape_string( $_POST["lat"]);
+				 $location = $db->real_escape_string($_POST["location"]);	
+         $caption = $db->real_escape_string(nl2br($_POST["caption"]));
+         $title = $db->real_escape_string(nl2br($_POST["title"]));
+       	
+			 
         if($user_id != $_SESSION[user::$id] || !in_array($post_id,$_SESSION[PostImage::$session_post_ids]) ||
-          !is_float($lat) || $lat < 0 || $log < 0 || !is_float($log) || !is_string($location)){
-          
+			 $lat < 0 || $log < 0 ||  !is_string($location)){
+
+				 
           Errors::trigger_error(RETRY);
             return;
         }
         
       
-        
-        $caption = $db->real_escape_string(nl2br($caption));
-        $title = $db->real_escape_string(nl2br($title));
-        $location = $db->real_escape_string($location);		  
-	
+       
 		// if(csrf_token_is_recent() && csrf_token_is_valid()){
               // check the length of the caption string        
         if(isset($caption) && !empty(trim($caption)) && strlen($caption) > 4000){
@@ -142,12 +140,13 @@ if(isset($_POST["request_type"]) && $_POST["request_type"] == "add_comment" ){
            return;
         }
         
-         
+      
   PostImage::edit_post($post_id,$caption,$title,$location,$lat,$lat);        
         
         
         
 		}// edit_post();
+		
 		// delete post
 elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "delete_post"){
    $post_id = (int)$_POST["post_id"];

@@ -25,19 +25,23 @@ class Notifications extends DatabaseObject {
 	 public static $last_notification_check_time = "last_notifcation_check_time";
 
   public  static function send_notification($post_id =  "NULL",$comment_id = "NULL",$reply_id = "NULL",$user_id = 0,$type = ''){
-	global $db;
 	
+		global $db;
 
-	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},{$user_id},'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."','".$type."',".time().")";
+
+	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},{$user_id},'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."','".$type."',".time().") ON DUPLICATE KEY UPDATE ".self::$id." = ".self::$id." + 1";
 	
-
-	if(!$db->query($query)){
+	$result = $db->query($query);
+	if(!$result){
        
-		
+		log_action(__CLASS__,$db->error." $query");
 		return false;
 	}else{
+
 		return $db->insert_id;
 	}
+	
+	$result->free();
 	
 	return false;
 	

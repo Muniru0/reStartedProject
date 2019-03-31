@@ -586,7 +586,8 @@ nav.ps-stream-status-action:hover{
     text-align: center;
     padding: 1%;
     position: absolute;
-    
+    word-wrap: normal;
+    word-break: keep-all;
     border-top-left-radius: 0.5em;
     border-top-right-radius: 0.5em;
     background-color: #00000066;

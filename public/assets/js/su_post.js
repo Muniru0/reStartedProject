@@ -18,6 +18,7 @@ function post_options_dropdown(element){
            caption   = $.trim($(caption).html());
     
        let editBox  =  $(grParent).find(".ps-js-activity-edit");   
+       
          // show the editBox
          $(editBox).show();
     
@@ -25,112 +26,11 @@ function post_options_dropdown(element){
     
     }
     
-      function editPost(post_id = 0,targetElement = ""){
-    
-          if(typeof post_id != "number" || $.trim(targetElement) == ""){
-              return;
-          }
-    
-          let grParent = $(targetElement).parentsUntil("#ps-activitystream");
-          let mainParent = $(grParent).find(".ps-postbox");
-          let title    = $(mainParent).find("textarea")[0];
-          let titleParent = $(title).parent();
-              title     = $(title).html();
-          let caption   = $(mainParent).find("textarea")[1];
-              caption   = $(caption).html();
-               if($.trim(title) == ""){
-                 $(titleParent).effect("shake");
-                 $(titleParent).css("border","#d24942");
-                 $(titleParent).css("background","#d24942");
-                 return;
-               }
-              console.log(grParent);  
-              console.log(title);  
-              console.log(caption);   
     
     
-              $.ajax({
-                url: "../private/neutral_ajax.php",
-                type: "POST",
-                data: {request_type: "edit_post",caption: captionValue, title: titleValue,location: locationValue},
-                dataType : "html"
-              }).done(function(response){
-                 console.log(response);
+     
     
-                 try{
-                   response = JSON.parse(response);
-                   
-    
-    
-                 }catch(e){
-    
-                 }      
-    
-              }); 
-      }
-    
-    
-    
-      function cancelEditPost(targetElement = ""){
-          
-          if($.trim(targetElement) == ""){
-    return;
-          }
-    
-    
-        let editBox = $(targetElement).parentsUntil(".ps-stream-body");
-             //hide the entire editbox
-             $(editBox);
-    
-       
-    
-      }
-    
-    
-    
-    function post_option_delete(userID,postID,element){
-      
-      if(Number(userID)  == 0 || Number(userID)  == undefined  || Number(userID) == null ||
-         Number(postID)  == 0 || Number(postID)  == undefined  || Number(postID) == null ||
-         $.trim(element)  == "" || $.trim(element) == undefined || $.trim(element) == null){
-    
-     return;
-      }
-        
-         let postContainer = $(element).parentsUntil("#ps-activitystream").fadeOut(600);
-    
-        $.ajax({
-            url: "../private/neutral_ajax.php",
-            type: "POST",
-            data: {post_id: postID,user_id: userID,request_type:"delete_post"},
-            dataType: "html"
-        }).done(function(response){
-             
-           try{
-    response = JSON.parse(response);
-    
-        // if the session is invalid
-                            if(response["false"] == "login"){
-                                utility.toLoginPage();
-                                return;
-                            }else if($.trim(response["false"]) != ""){
-                                utility.showErrorDialogBox(response["false"]);
-                                return;
-                            }
-           if(response["true"]){
-             $(postContainer).remove();
-           }
-           }catch(e){
-            $(postContainer).fadeIn(600);
-      utility.showErrorDialogBox("It is our fault, but please try again.<br /> if problem persist refresh the page ");
-           }
-           
-        }).fail(function(error){
-            utility.showErrorDialogBox("It is our fault, but please try again.<br /> if problem persist refresh the page ");
-            $(postContainer).fadeIn(600);
-        });
-    
-    }
+  
     
     function post_option_follow(post_id,element){
         
@@ -486,8 +386,8 @@ function post_options_dropdown(element){
         myDropzone.on("queuecomplete",function(file){
                     
     
-     $("#ps-activitystream").prepend(returnedPost);
-             $("#ps-activitystream").show();
+     $("#ps-activitystream-recent").prepend(returnedPost);
+             $("#ps-activitystream-recent").show();
             
               reset_postbox();
         });
@@ -1227,41 +1127,22 @@ function post_options_dropdown(element){
     
     }        
     
-    function post_option_edit(user_id = 0,post_id = 0,element = ""){
     
-        if(typeof user_id != "number" || typeof post_id != "number" || $.trim(element) == ""){
-            return;
-        }
-    
-       let grParent =  $(element).parentsUntil("#ps-activitystream");
-       let title    =  $(grParent).find(".ps-stream-action-title").html();
-       
-           title    =  title.split("<a")[0];
-    
-       let caption  = $(grParent).find("peepso-markdown").find("p");
-           caption   = $.trim($(caption).html());
-    
-       let editBox  =  $(grParent).find(".ps-js-activity-edit");   
-         // show the editBox
-         $(editBox).show();
-    
-         
-    
-    }
     
       function editPost(postID = 0,userID,targetElement = ""){
     
           if(typeof postID != "number" || $.trim(targetElement) == ""){
               return;
           }
-    
+          
           // old post variables
           let grParent         = $(targetElement).parentsUntil("#ps-activitystream");
-          let oldTitleElement  = $(grParent).find(".ps-stream-action-title");
+          let oldTitleElement  = $(grParent).find("div.post_title");
           let oldTitle         = $(oldTitleElement).html();
           let oldCaptionElement = $(grParent).find(".peepso-markdown");
           let oldCaption        = $(oldCaptionElement).html();
     
+  
     
           // new post variables
           let editBoxElement        = $(grParent).find(".ps-postbox");
@@ -1313,8 +1194,8 @@ function post_options_dropdown(element){
           }
     
     
-        let editBox = $(targetElement).parentsUntil(".ps-stream-body");
-          
+        let editBox = $(targetElement).parentsUntil(".ps-stream-body")[3];
+            
              //hide the entire editbox
              $(editBox).hide();
     
@@ -1357,12 +1238,14 @@ function post_options_dropdown(element){
              $(postContainer).remove();
            }
            }catch(e){
+               console.log(e);
             $(postContainer).fadeIn(600);
-      utility.showErrorDialogBox("It is our fault, but please try again.<br /> if problem persist refresh the page ");
+           
+      utility.showErrorDialogBox("It is our fault, but please try again. if problem persist refresh the page ");
            }
            
         }).fail(function(error){
-            utility.showErrorDialogBox("It is our fault, but please try again.<br /> if problem persist refresh the page ");
+            utility.showErrorDialogBox("It is our fault, but please try again. if problem persist refresh the page ");
             $(postContainer).fadeIn(600);
         });
     
@@ -1482,12 +1365,7 @@ function post_options_dropdown(element){
                      let uiFollowing         = $(mainParent).find("ps-stream-meta").find("ps-stream-time").toggle("fade",400);
                }
     
-               console.log(title);
-               console.log(confirmationText);
-               console.log(addElementClass);
-               console.log(removeElementClass);
-               console.log(removeIconClass);
-               console.log(addIconClass);
+             
     
                      $(element).attr("title",title);
                      $(element).removeClass(removeElementClass).addClass(addElementClass);

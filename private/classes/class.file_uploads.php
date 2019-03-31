@@ -184,7 +184,10 @@ public static  function createThumbnail($filename) {
           if(!file_exists(self::$upload_path.IMGS_DIR.$filename)){
 			  Errors::trigger_error(RETRY);
 			 return false;   
-		  }
+          }
+          
+
+         // 0541859128
 		   
 		  $width  = getimagesize(self::$upload_path.IMGS_DIR.$filename)[0];
 		  
@@ -194,8 +197,6 @@ public static  function createThumbnail($filename) {
 		  }elseif( $width >= 500 && $width < 1000){
 			  $width = 500;
 			  
-		  }elseif($width > 0  && $width < 500){
-			   $width = 200;
 		  }
 		  
 		  
