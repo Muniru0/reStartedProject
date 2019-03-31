@@ -9,13 +9,19 @@ function post_options_dropdown(element){
             return;
         }
     
-       let grParent =  $(element).parentsUntil("#ps-activitystream");
-       let title    =  $.trim($(grParent).find(".ps-stream-action-title").html());
        
-           title    =  title.split("<a")[0];
-    
-       let caption  = $(grParent).find("peepso-markdown").find("p");
-           caption   = $.trim($(caption).html());
+       let grParent =  $(element).parentsUntil("#ps-activitystream").find(".ps-stream-body");
+        let title    =  $(grParent).find("div.post_title").html();
+         if($.trim(title) == ""){
+         $(grParent).find(".edit_title_textarea").val(title);    
+         }
+         
+          let caption  = $(grParent).find(".peepso-markdown").find("p").html();
+          if($.trim($(caption)) == ""){
+       $(grParent).find(".edit_caption_textarea").val(caption);        
+          }
+      
+          
     
        let editBox  =  $(grParent).find(".ps-js-activity-edit");   
        
@@ -939,7 +945,7 @@ function post_options_dropdown(element){
             // reset the mirrored post
             $(firstPostMirror).html("");
             // reset the mood if any if chosen
-            $(".ps-postbox-addons").html("");
+            //$(".ps-postbox-addons").html("");
             // reset the mood variable
             post_mood = [];
             toggleTheRest("all");

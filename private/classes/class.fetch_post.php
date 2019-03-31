@@ -300,14 +300,15 @@ class FetchPost extends DatabaseObject{
      <div class='ps-tagging-wrapper' style='
     border-bottom: 1px solid #e1dede;
     margin-bottom: 1%;
-'><div class='ps-tagging-beautifier'></div><textarea class='ps-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Please write the title here...(MAX-CHARACTERS: 100 )' MAXLENGTH='100' spellcheck='false' style='height: 32px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'></textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
+'><div class='ps-tagging-beautifier'></div><textarea class='ps-textarea edit-title-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Please write the title here...(MAX-CHARACTERS: 100 )' MAXLENGTH='100' spellcheck='false' style='height: 32px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'></textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
  
 <div class='ps-tagging-wrapper'>
    
-    <div class='ps-tagging-beautifier'></div><textarea class='ps-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Say what is on your mind...' spellcheck='false'  MAXLENGTH='100' style='height: 92px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'>{$caption}</textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
+    <div class='ps-tagging-beautifier'></div><textarea class='ps-textarea edit_caption_textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Say what is on your mind...' spellcheck='false'  MAXLENGTH='100' style='height: 92px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'>{$caption}</textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
 									</div>
-				<div class='ps-postbox-addons'><div>— <i class='ps-icon-map-marker'></i><b>{$location}</b></div></div>
+				
 			</div>
+			<div class='ps-postbox-addons'>— <i class='ps-icon-map-marker'></i><b>{$location}</b></div>
 	 <div class='post-charcount charcount ps-postbox-charcount' style='top:24%'>{$caption_count}</div>
 		</div>
 	</div>
