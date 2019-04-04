@@ -107,7 +107,7 @@ background: #f9f9f9;
 <li id="menu-item-148" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a href="<?php echo u("sol.php")?>">S.O.L</a></li>
 <li id="menu-item-663" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-663"><a href="<?php echo u("security.php")?>">Security</a></li>
 <li id="menu-item-664" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-664"><a href="<?php echo u("sanitation.php")?>">Sanitation</a></li>
-<li id="menu-item-150" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-150"><a target="_blank" href="<?php echo u("corruption.php")?>">Corruption</a></li>
+<li id="menu-item-150" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-150"><a target="_blank" href="<?php echo u("Education.php")?>">Education</a></li>
 </li>
 <li id="menu-item-150" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-150"><a target="_blank" href="<?php echo u("other.php")?>">Other</a></li>
             <li class="menu-item menu-item--myacccount">

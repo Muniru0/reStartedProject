@@ -242,8 +242,8 @@ $elements = count($attributes);
    $stmt = $db->prepare($this->escape_values($db,$query));
 
     if(!$stmt){
-      die($db->error." ".$stmt->error);
-     log_action("User Class : create() || ","Preparation failed ".$db->error);
+      Errors::trigger_error(RETRY);
+      return false;
     }
  
 
@@ -262,8 +262,9 @@ $elements = count($attributes);
 
     
     if(!$bind_param){
-die($db->error." ".$stmt->error);
-     log_action("User Class: create() || ","Binding failed ". $db->error);
+
+Errors::trigger_error(RETRY);
+return;
     
     }
 
@@ -298,7 +299,8 @@ $id = $db->insert_id;
  
    }else{
 die($db->error." ".$stmt->error);
-   log_action("USER Class: create() || ","Statement Execution failed ".$db->error." ".$stmt->error);
+Errors::trigger_error(RETRY);
+return;
    }
 
   }
@@ -421,19 +423,18 @@ public static function found_user(){
   $stmt = $sql->query($query);
     if(!$stmt){
 
-  log_action("Class User|| set_default_profile_image: ","Statement preparation failed");
-   
+      Errors::trigger_error(RETRY);
    return false;
   }
 
   if(!$stmt->bind_param("sii",$new_image,$upload_time,$id)){
- log_action("Class User|| set_default_profile_image: ","Binding failed");
+    Errors::trigger_error(RETRY);
 return false;
   }
 
 
 if(!$stmt->execute()){
-  log_action("User|| set_default_profile_image: ","Statement preparation failed");
+  Errors::trigger_error(RETRY);
   return false;
 }
 
@@ -485,8 +486,8 @@ if(!$stmt->execute()){
   $stmt = $sql->query($query);
     if(!$stmt){
      die(" file has being executed... ".$db->error);
-  log_action("Class User|| update_profile_image: ","Statement preparation failed");
-   return ($db->error." ");
+     Errors::trigger_error(RETRY);
+     return ($db->error." ");
   }
 
   // returns the name and the directory of the file as {$new_image}
@@ -494,16 +495,16 @@ if(!$stmt->execute()){
 
   if(!$stmt->bind_param("sii",$image,$upload_time,$id)){
 
-    log_action("Class User|| update_profile_image: ","Binding failed");
-      die($db->error." ".$stmt->error);
-//return false;
+    Errors::trigger_error(RETRY);
+      
+   return false;
   }
 
 
 if(!$stmt->execute()){
-  die($db->error." ".$stmt->error);
-  log_action("User|| update_profile_image: ","Statement preparation failed");
- // return false;
+  
+  Errors::trigger_error(RETRY);
+return false;
 }
 
 
@@ -545,26 +546,20 @@ return true;
     $stmt = $sql->query($query);
 
 if(!$stmt){
-
- log_action("Class User || save_former_profile_images: ","Statement preparation failed".$db->error);
- 
+  Errors::trigger_error(RETRY);
 return false;
   }
 
 
 if(!$stmt->bind_param("isi",$id,$profile_image,$time)){
 
-   
- log_action("Class User || save_former_profile_images: ","Binding param failed (".$db->error." ".$stmt->error);
-  
+  Errors::trigger_error(RETRY);
 return false;
 }
 
 
 if(!$stmt->execute()){
-  die($db->error);
- log_action("Class User || save_former_profile_images: ","Execution failed (".$db->error." ".$stmt->error);
-
+  Errors::trigger_error(RETRY);
 
 return false;
 

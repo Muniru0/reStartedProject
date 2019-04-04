@@ -59,16 +59,16 @@ class FollowPost Extends DatabaseObject{
 					print j(["invalid_request" => "success"]);
 					return;
 				}elseif(trim($db->error) != ""){
-				  log_action(__CLASS__,$db->error);
-					  print j(["false" => "Sorry please refresh the page and try again"]);
+				 
+					Errors::trigger_error(RETRY);
 					  return;
 				  }
 			  }	
 			
 			}
 				 }else{
-					 log_action(__CLASS__,$db->error);
-					 print j(["false" => "Please refresh the page and try again."]);
+					 
+					Errors::trigger_error(RETRY);
 					 return;
 				 }
 			}while($db->more_results() && $db->next_result());

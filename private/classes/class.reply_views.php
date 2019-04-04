@@ -69,14 +69,12 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	// bind the parameters
 	if(!$stmt->bind_param("s",$parameter)){
 		Errors::trigger_error(INVALID_SESSION);
-		log_action(__CLASS__," Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
-         return false;
+	return false;
 		}
 		
 	// execute the statement
 	if(!$stmt->execute()){
 		Errors::trigger_error(INVALID_SESSION);
-		log_action(__CLASS__,"  Query failed {$db->error} on line ".__LINE__." in file ".__FILE__);
 		return false;
 	}
 	
@@ -108,7 +106,6 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 			Notifications::send_notification($post_id,$comment_id,$row["new_reply_id"],$_SESSION[user::$firstname],NEW_REPLY_COMMENT,$time);
  }elseif(Isset($row["invalid_request"])){
 	 Errors::trigger_error(RETRY);
-	 log_action(__CLASS__," Query failed {$db->error} {$stmt->error}on line ".__LINE__." in file ".__FILE__);
 	
 	 return false;
  }else{
@@ -137,7 +134,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	  
 	  if(!$result){
 		  
-		  log_action(__CLASS__," Query failed: {$db->error} on line ".__LINE__." in file ".__FILE__);
+			Errors::trigger_error(RETRY);
 	  }
 	  
 	  

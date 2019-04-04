@@ -86,7 +86,7 @@
 			 $result->free();
 		
 	  }elseif($db->error != ""){
-		  log_action(__CLASS__,$db->error);
+			Errors::trigger_error(RETRY);
 			 
 			return;
 		 }

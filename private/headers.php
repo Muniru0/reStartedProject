@@ -1,5 +1,7 @@
  <?php
 
+
+$files_dir_string = "../public/assets/images/";
 function home_header($firstname = "",$lastname = ""){
 
   return "<div class='header__wrapper header__wrapper--medium'>
@@ -12,7 +14,7 @@ function home_header($firstname = "",$lastname = ""){
 	  <li id='menu-item-149' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149' title='incidents about sanitation'><a href='sanitation.php'>Sanitation</a></li>
 <li id='menu-item-148' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-148'><a href='sol.php' title='incidents about sol'>S.O.L</a></li>
 <li id='menu-item-663' class='menu-item menu-item-type-post_type menu-item-object-page menu-item-663' title='incidents about security'><a href='security.php'>Security</a></li>
-<li id='menu-item-150' class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150' title='incidents about corruption'><a target='_blank' href='corruption.php'>Corruption</a></li>
+<li id='menu-item-150' class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150' title='incidents about Education'><a target='_blank' href='Education.php'>Education</a></li>
 
 <li id='menu-item-150' class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href='other.php'>Other</a></li>
 	  <li class='menu-item menu-item--myacccount'>
@@ -395,9 +397,9 @@ function notifications_toolbar(){
 <!--  post label for sanitation community  -->
         <input type='radio' name='label' id='sanitation' value='sanitation' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
      <label for='sanitation' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span>Sanitation</label>
-        <!--  post label for corruption -->
-        <input type='radio' name='label' id='corruption' value='corruption' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
-     <label for='corruption' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span>Corruption</label>
+        <!--  post label for Education -->
+        <input type='radio' name='label' id='Education' value='Education' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
+     <label for='Education' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span>Education</label>
 <!--     post label for other community    -->
         <input type='radio' name='label' id='other' value='other' class='checkboxradio ui-checkboxradio ui-helper-hidden-accessible'>
      <label for='other' class='ui-checkboxradio-label ui-corner-all ui-button ui-widget ui-checkboxradio-radio-label'><span class='ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank'></span><span class='ui-checkboxradio-icon-space'> </span>Other</label>
@@ -1708,9 +1710,9 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <!--  post label for sanitation community  -->
         <input type='radio' name='label' id='sanitation' value='sanitation' class='checkboxradio'>
      <label for='sanitation'>Sanitation</label>
-        <!--  post label for corruption -->
-        <input type='radio' name='label' id='corruption' value='corruption' class='checkboxradio'>
-     <label for='corruption'>Corruption</label>
+        <!--  post label for Education -->
+        <input type='radio' name='label' id='Education' value='Education' class='checkboxradio'>
+     <label for='Education'>Education</label>
 <!--     post label for other community    -->
         <input type='radio' name='label' id='other' value='other' class='checkboxradio'>
      <label for='other'>Other</label>
@@ -2049,7 +2051,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
   function main_footer($page_footer = ""){
 
 
-
+global $files_dir_string;
   	return "<div id='modal-wrapper' class='modal' style='display: none;'>
   
 
@@ -2324,68 +2326,68 @@ window.onclick = function(event) {
           <div class='widget community__widget'>
 <div class='ps-widget__wrapper--external ps-widget--external'>
     <div class='ps-widget__header--external'>
-        <h3>Latest Community Photos</h3>    </div>
+        <h3>Latest National Incidents</h3>    </div>
     <div class='ps-widget__body--external'>
         <div class='ps-widget--photos'>
                     <div class='ps-widget__photos'>
             <div class='ps-widget__photos-item ps-js-photo' data-post-id='936'>
 	<a data-id='498' href='javascript:' rel='post-936' onclick='ps_comments.open(202, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/4/photos/thumbs/70640a470d2dc15316ba72aba3217b6d_s_s.jpg' title='70640a470d2dc15316ba72aba3217b6d.jpg' alt=''>
+		<img src='{$files_dir_string}problem_8.jpg' title='70640a470d2dc15316ba72aba3217b6d.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='937'>
 	<a data-id='500' href='javascript:' rel='post-937' onclick='ps_comments.open(203, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/4/photos/thumbs/efdf37f9f321058da933d99689b53b56_s_s.jpg' title='efdf37f9f321058da933d99689b53b56.jpg' alt=''>
+		<img src='{$files_dir_string}problem_1.jpg' title='efdf37f9f321058da933d99689b53b56.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(192, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/9c82616225c5528674c7ea8356d77535_s_s.jpg' title='9c82616225c5528674c7ea8356d77535.jpg' alt=''>
+		<img src='{$files_dir_string}problem_2.jpg' title='9c82616225c5528674c7ea8356d77535.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(193, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/74a44b916c14e35205e478a5c7a628df_s_s.jpg' title='74a44b916c14e35205e478a5c7a628df.jpg' alt=''>
+		<img src='{$files_dir_string}problem_5.jpg' title='74a44b916c14e35205e478a5c7a628df.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(194, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/9a45d90e5bcaa0265b925bf1f14cb6c3_s_s.jpg' title='9a45d90e5bcaa0265b925bf1f14cb6c3.jpg' alt=''>
+		<img src=' {$files_dir_string}problem_4.jpg' title='9a45d90e5bcaa0265b925bf1f14cb6c3.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(195, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/15598b15256036969d4491f68db09291_s_s.jpg' title='15598b15256036969d4491f68db09291.jpg' alt=''>
+		<img src='{$files_dir_string}problem_3.jpg' title='15598b15256036969d4491f68db09291.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(196, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/f8b8c8df5a87be458b26af9de27a3726_s_s.jpg' title='f8b8c8df5a87be458b26af9de27a3726.jpg' alt=''>
+		<img src='{$files_dir_string}problem_6.jpg' title='f8b8c8df5a87be458b26af9de27a3726.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(197, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/99f0c9db0c47bcbb8547f715e8b5b077_s_s.jpg' title='99f0c9db0c47bcbb8547f715e8b5b077.jpg' alt=''>
+		<img src='{$files_dir_string}solution_1.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(198, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/6fbfb103b71552812d15660baf571b20_s_s.jpg' title='6fbfb103b71552812d15660baf571b20.jpg' alt=''>
+		<img src='{$files_dir_string}solution_2.jpg' title='6fbfb103b71552812d15660baf571b20.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(199, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/1a0404c47115f89b03dc6014c886828b_s_s.jpg' title='1a0404c47115f89b03dc6014c886828b.jpg' alt=''>
+		<img src='{$files_dir_string}solution_3.jpg' title='1a0404c47115f89b03dc6014c886828b.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(200, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/44ac221e456bbe980d831f783ee7768a_s_s.jpg' title='44ac221e456bbe980d831f783ee7768a.jpg' alt=''>
+		<img src='{$files_dir_string}speech_1.jpg' title='44ac221e456bbe980d831f783ee7768a.jpg' alt=''>
 	</a>
 </div>
 <div class='ps-widget__photos-item ps-js-photo' data-post-id='930'>
 	<a data-id='482' href='javascript:' rel='post-930' onclick='ps_comments.open(201, 'photo', { nonav: 1 }); return false;'>
-		<img src=' ://demo.peepso.com/wp-content/peepso/users/2/photos/thumbs/655b536fd174a7b229c298025ef81177_s_s.jpg' title='655b536fd174a7b229c298025ef81177.jpg' alt=''>
+		<img src='{$files_dir_string}speech_2.jpg' title='655b536fd174a7b229c298025ef81177.jpg' alt=''>
 	</a>
 </div>
             </div>
@@ -2396,7 +2398,7 @@ window.onclick = function(event) {
 </div><div class='widget community__widget'>
 <div class='ps-widget__wrapper--external ps-widget--external'>
     <div class='ps-widget__header--external'>
-        <h3>Community Videos</h3>    </div>
+        <h3>Trending issues</h3>    </div>
 
 
     <div class='ps-widget__body--external'>
@@ -2405,7 +2407,7 @@ window.onclick = function(event) {
             <div class='ps-widget__videos-item ps-video-wrapper ps-js-video' data-post-id='590'>
     <div class='ps-video-item'>
         <a href='javascript:void()' onclick='ps_comments.open('590', 'video'); return false;'>
-            <img src=' ://i.ytimg.com/vi/mMgHsufmjEA/hqdefault.jpg'>
+            <img src=' {$files_dir_string}info_ministry.jpg'>
             <i class='ps-icon-youtube-play ps-video-play'></i>
         </a>
     </div>
@@ -2413,7 +2415,7 @@ window.onclick = function(event) {
 <div class='ps-widget__videos-item ps-video-wrapper ps-js-video' data-post-id='589'>
     <div class='ps-video-item'>
         <a href='javascript:void()' onclick='ps_comments.open('589', 'video'); return false;'>
-            <img src=' ://i.ytimg.com/vi/zEUG3_Zh-rw/hqdefault.jpg'>
+            <img src=' {$files_dir_string}yams-road.jpg'>
             <i class='ps-icon-youtube-play ps-video-play'></i>
         </a>
     </div>
@@ -2421,7 +2423,7 @@ window.onclick = function(event) {
 <div class='ps-widget__videos-item ps-video-wrapper ps-js-video' data-post-id='513'>
     <div class='ps-video-item'>
         <a href='javascript:void()' onclick='ps_comments.open('513', 'video'); return false;'>
-            <img src=' ://i.ytimg.com/vi/kukI2LnxrqY/hqdefault.jpg'>
+            <img src='{$files_dir_string}zongo.jpg'>
             <i class='ps-icon-youtube-play ps-video-play'></i>
         </a>
     </div>
@@ -2429,7 +2431,7 @@ window.onclick = function(event) {
 <div class='ps-widget__videos-item ps-video-wrapper ps-js-video' data-post-id='359'>
     <div class='ps-video-item'>
         <a href='javascript:void()' onclick='ps_comments.open('359', 'video'); return false;'>
-            <img src=' ://i.ytimg.com/vi/xV7Ha3VDbzE/hqdefault.jpg'>
+            <img src='{$files_dir_string}atiko.jpg'>
             <i class='ps-icon-youtube-play ps-video-play'></i>
         </a>
     </div>
@@ -2442,9 +2444,9 @@ window.onclick = function(event) {
 </div><div class='widget community__widget'><div class='ps-widget--members__wrapper ps-widget__wrapper--external ps-widget--external ps-js-widget-latest-members ps-js-initialized' data-hideempty='0' data-totalmember='0' data-limit='12'>
 
     <div class='ps-widget__header--external'>
-        <h3>Latest Members</h3>    </div>
+        <h3>Latest National Incidents</h3>    </div>
     <div class='ps-widget__body--external'>
-        <div class='ps-widget--members ps-js-widget-content' id='peepso-latest-members-29150bb2319c182c944841c74d2f8d75'><div class='ps-widget__members'><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/paul/' title='Paul Derby'>				<img alt='Paul Derby avatar' src=' ://demo.peepso.com/wp-content/peepso/users/12/fdafa667df-avatar-full.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/eric/' title='Eric Tracz'>				<img alt='Eric Tracz avatar' src=' ://demo.peepso.com/wp-content/peepso/users/10/avatar-full.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/thomas/' title='Thomas A Anderson'>				<img alt='Thomas A Anderson avatar' src=' ://demo.peepso.com/wp-content/peepso/users/9/avatar-full.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/andrew/' title='Andrew Simmons'>				<img alt='Andrew Simmons avatar' src=' ://demo.peepso.com/wp-content/peepso/users/8/avatar-full.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/andrea/' title='Andrea Greer'>				<img alt='Andrea Greer avatar' src=' ://demo.peepso.com/wp-content/peepso/users/7/avatar-full.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/william/' title='William Torres'>				<img alt='William Torres avatar' src=' ://demo.peepso.com/wp-content/peepso/users/6/avatar-full.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/dena/' title='Dena Segal'>				<img alt='Dena Segal avatar' src=' ://demo.peepso.com/wp-content/peepso/users/5/avatar-full.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/amy/' title='Amy Doyle'>				<img alt='Amy Doyle avatar' src=' ://demo.peepso.com/wp-content/peepso/users/4/avatar-full.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/gregory/' title='Gregory Jones'>				<img alt='Gregory Jones avatar' src=' ://demo.peepso.com/wp-content/peepso/users/3/avatar-full.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/demo/' title='Patricia Currie'>				<img alt='Patricia Currie avatar' src=' ://demo.peepso.com/wp-content/peepso/users/2/avatar-full.jpg' class='ps-name-tips'> <span data-tooltip='Patricia Currie is currently online' class='ps-tooltip ps-tooltip--online ps-user__status ps-icon-circle ps-user__status--member'></span></a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/admin/' title='Community Admin'>				<img alt='Community Admin avatar' src=' ://demo.peepso.com/wp-content/peepso/users/1/717bd395c2-avatar-full.jpg' class='ps-name-tips'> </a></div></div></div>
+        <div class='ps-widget--members ps-js-widget-content' id='peepso-latest-members-29150bb2319c182c944841c74d2f8d75'><div class='ps-widget__members'><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/paul/' title='Paul Derby'>				<img alt='Paul Derby avatar' src='{$files_dir_string}national_incident_1.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/eric/' title='Eric Tracz'>				<img alt='Eric Tracz avatar' src='{$files_dir_string}national_incident_2.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/thomas/' title='Thomas A Anderson'>				<img alt='Thomas A Anderson avatar' src={$files_dir_string}national_incident_3.jpg class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/andrew/' title='Andrew Simmons'>				<img alt='Andrew Simmons avatar' src='{$files_dir_string}national_incident_4.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/andrea/' title='Andrea Greer'>				<img alt='Andrea Greer avatar' src='{$files_dir_string}national_incident_5.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/william/' title='William Torres'>				<img alt='William Torres avatar' src='{$files_dir_string}national_incident_6.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/dena/' title='Dena Segal'>				<img alt='Dena Segal avatar' src=' {$files_dir_string}national_incident_7.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/amy/' title='Amy Doyle'>				<img alt='Amy Doyle avatar' src=' {$files_dir_string}national_incident_8.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/gregory/' title='Gregory Jones'>				<img alt='Gregory Jones avatar' src='{$files_dir_string}national_incident_9.jpg' class='ps-name-tips'> </a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/demo/' title='Patricia Currie'>				<img alt='Patricia Currie avatar' src='{$files_dir_string}national_incident_10.jpg' class='ps-name-tips'> <span data-tooltip='Patricia Currie is currently online' class='ps-tooltip ps-tooltip--online ps-user__status ps-icon-circle ps-user__status--member'></span></a></div><div class='ps-widget__members-item'><a class='ps-avatar ps-avatar--full' href=' ://demo.peepso.com/profile/admin/' title='Community Admin'>				<img alt='Community Admin avatar' src='{$files_dir_string}national_incident_11.jpg' class='ps-name-tips'> </a></div></div></div>
     </div>
 
 </div></div>          </div>

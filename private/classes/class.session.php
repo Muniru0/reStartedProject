@@ -209,9 +209,7 @@ if(trim($db->error) == "" && $result){
 	
 	return true;
   }
-log_action(__CLASS__," this is a complete log action: ".__LINE__);
-print j(["false"=> "Please server problem, refresh the page and try again"]);
-
+  Errors::trigger_error(RETRY);
 $result->close();
 return false;	 
   

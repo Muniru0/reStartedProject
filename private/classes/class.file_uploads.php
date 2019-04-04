@@ -167,11 +167,11 @@ if(empty($filenames) || !isset($filenames))
 	{
 		if(unlink(UPLOADS_DIR."/".IMAGES_DIR.$filename))
 		{
-			 log_action(__CLASS__," The image file {filename} couldn't be clean in a partial upload cleanup on line ".__LINE__. "  in file ".__FILE__);
+			
 		}
          if(unlink(UPLOADS_DIR."/".IMG_THUMBS_DIR.$filename))
 		{
-			 log_action(__CLASS__," The image file {filename} couldn't be clean in a partial upload cleanup on line ".__LINE__. "  in file ".__FILE__);
+			
 		}
 	}
 

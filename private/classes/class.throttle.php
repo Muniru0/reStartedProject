@@ -33,18 +33,20 @@ $query = " SELECT failed_logins, failure_time FROM ".Throttle::$table_name." WHE
     // Use this for simpler straight-forward queries(from the sql class)
     $stmt = $db->prepare($query);
      if(!$stmt){
-		 log_action(__CLASS__,"Statement preparation failed: ".$db->error." ( ".$db->error." )");
-		 
+      Errors::trigger_error(RETRY);
+      return false;
 	 }
 
      // bind the parameters
     if(!$stmt->bind_param("s",$email)){
-    log_action(__CLASS__, "Binding failed : ( " .$db->errno. " ) ".$db->error);
+      Errors::trigger_error(RETRY);
+      return false;
       }
 
     //execute the statemet
     if(!$stmt->execute()){
-    log_action(__CLASS__, "Execution failed : ( " .$db->errno. " ) ".$db->error);
+      Errors::trigger_error(RETRY);
+      return false;
     }
 	
 	
@@ -54,7 +56,7 @@ $query = " SELECT failed_logins, failure_time FROM ".Throttle::$table_name." WHE
 		
 		return [$row["failed_logins"],$row["failure_time"]];
 	}else{
-	log_action(__CLASS__," Failure to return throttle results {$db->error} on line: ".__LINE__);
+    Errors::trigger_error(RETRY);
 	return;
 	}
 
@@ -66,7 +68,7 @@ if($stmt->fetch()){
   return [$failed_logins,$failure_time];
 }else{
 
-  log_action(__CLASS__, "Couldn't fetch the result: ( ".$db->errno." ) ".$stmt->error." db error ".$db->error." on line ".__LINE__." in file ".__FILE__ );
+  Errors::trigger_error(RETRY);
 // return -1 to differentiate between having no rows {which will return 0} and
 //  having an error in fetch the result
    return false;
@@ -153,14 +155,14 @@ $time = time();
  $bind = $stmt->bind_param("siss",$email,$failed_logins,$ip,$time);
 if(!$bind){
 
-log_action("Throttle User: ", "Insert Binding failed : ( " .$db->errno. " ) ".$db->error);
+  Errors::trigger_error(RETRY);
 
 }
 
 // execute the statement
 if(!$stmt->execute()){
 
-log_action("Throttle User: ", "Execution failed : ( " .$db->errno. " ) ".$db->error);
+  Errors::trigger_error(RETRY);
 return true;
 
   }
@@ -197,7 +199,7 @@ $stmt = $db->prepare($query);
 // bind the parameter
   if(!$stmt){
 
-log_action("increase_failed_logins () : ".$db->error); 
+    Errors::trigger_error(RETRY); 
  
   }
 
@@ -206,14 +208,14 @@ $bind = $stmt->bind_param("is",$failed_logins,user::$email);
 
  if(!$bind){
 
- log_action("increase_failed_logins () : ".$db->error); 
+  Errors::trigger_error(RETRY);
  }
 //execute the statement
 $execute = $stmt->execute();
   
 if(!$execute){
 
-log_action("Throttle User: ", "Execution failed : ( " .$db->errno. " ) ".$db->error);
+  Errors::trigger_error(RETRY);
 }
 
 
@@ -249,7 +251,7 @@ $execute = $stmt->execute();
   
 if(!$execute){
 
-log_action("Throttle User: ", "Execution failed : ( " .$db->errno. " ) ".$db->error);
+  Errors::trigger_error(RETRY);
  
  return false; 
    }

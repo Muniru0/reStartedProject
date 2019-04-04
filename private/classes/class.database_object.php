@@ -70,8 +70,6 @@ if(isset($db) && $db != null){
   $stmt = $db->prepare($query);
     if(!$stmt){
       
-       log_action("DATBASE CLASS ERR: ","Couldn't prepare the statement in the query function");
-       
     return null;
 
     }

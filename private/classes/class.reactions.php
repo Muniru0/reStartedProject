@@ -53,10 +53,7 @@ $query = "CALL  add_reactions(?)";
 $stmt = $db->prepare($query); 
 
  if(!$stmt){
-
- log_action(__CLASS__," Preparation failed  {$stmt->error} ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
- 
- print j(["false"=>" Sorry server problem please try again"]);
+  Errors::trigger_error(RETRY);
  return;
  }
 
@@ -79,10 +76,7 @@ $user_id = $_SESSION["id"];
 
   $parameters = j([$post_id,$user_id,$reactionType]);
  if(!$stmt->bind_param("s",$parameters)){
-  
- log_action(__CLASS__," Binding failed   {$stmt->error} ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
- 
- print j(["false"=>" Sorry server problem please try again"]);
+  Errors::trigger_error(RETRY);
  return;
 
  }
@@ -91,10 +85,7 @@ $user_id = $_SESSION["id"];
 
 // execute the query
  if(!$stmt->execute()){
-
- log_action(__CLASS__," Execution failed  {$stmt->error}  ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
- 
- print j(["false"=>" Sorry server problem please try again"]);
+Errors::trigger_error(SERVER_PROBLEM);
  return;
  }
   

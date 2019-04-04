@@ -30,7 +30,7 @@ class Views extends DatabaseObject{
 	  
 	  
    // get all the views for some specific post_ids
-   public static function get_views_with_replys($post_id = 0, $views_with_replys = "",$views_likes_user_ids = [],$reply_views_user_ids = []) {
+   public static function get_views_with_replys($post_id = 0, $views_with_replys = [],$views_likes_user_ids = [],$reply_views_user_ids = []) {
 	  
       
 	   if(empty($post_id)  || $post_id < 1 ){
@@ -47,7 +47,7 @@ class Views extends DatabaseObject{
 	}
 	   
      	 
-	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' style='margin-top: -1.1%;'  >
+	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' style='margin-top: -1.1%;' 	 >
 		<div class='ps-comment-container comment-container ps-js-comment-container' style='max-height: 29em;
     overflow-y: scroll; '> ";
 	
@@ -235,9 +235,9 @@ class Views extends DatabaseObject{
 	  $result = $db->query($query);
 	  
 	  if(!$result){
-		  
-		  log_action(__CLASS__," Query failed: {$db->error} on line ".__LINE__." in file ".__FILE__);
-	  }
+			Errors::trigger_error(RETRY);
+		  return false;
+		}
 	  
 	  
 	 
@@ -293,12 +293,12 @@ class Views extends DatabaseObject{
 	$bound_parameters = $stmt->bind_param("sissisii",$id,$post_id,$firstname,$lastname,$user_id,$comment,$time,$likes);
 	if(!$bound_parameters){
 		Errors::trigger_error(RE_INITIATE_OPERATION);
-	 log_action(__CLASS__,$db->error." ".$stmt->error);
+	
          return false;
 		}
 	// execute the statement
 	if(!$stmt->execute()){
-		log_action(__CLASS__,"Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
+		Errors::trigger_error(RETRY);
 		return false;
 	}
 	// return a new_comment_id  in case the id is to be used to delete the comment
@@ -316,8 +316,7 @@ class Views extends DatabaseObject{
 
 		
  }else{
-	 log_action(__CLASS__," Query failed {$db->error} {$stmt->error} on line ".__LINE__." in file ".__FILE__);
-	 print j(["false" => "Sorry please re-comment..."]);
+	Errors::trigger_error(RETRY);
 	 return false;
  }   
     
@@ -392,7 +391,7 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
 		 // set the query for the edit_reply routine
 		  $query = "CALL edit_reply('".j([$postCommentID,$commentReplyID,$user_id,$commentReply,$time])."')";
 	 }else{
-		 log_action(__CLASS__,"how to make things move fast enough");
+	
 		  Errors::trigger_error(SERVER_ERROR);
 		 return;
 	 }

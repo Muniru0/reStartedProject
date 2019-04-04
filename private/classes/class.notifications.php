@@ -24,17 +24,20 @@ class Notifications extends DatabaseObject {
 	 //healper properties
 	 public static $last_notification_check_time = "last_notifcation_check_time";
 
+
+
+
   public  static function send_notification($post_id =  "NULL",$comment_id = "NULL",$reply_id = "NULL",$user_id = 0,$type = ''){
 	
 		global $db;
 
 
 	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},{$user_id},'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."','".$type."',".time().") ON DUPLICATE KEY UPDATE ".self::$id." = ".self::$id." + 1";
-	
+	 log_action(__CLASS__,$query);
 	$result = $db->query($query);
 	if(!$result){
-       
-		log_action(__CLASS__,$db->error." $query");
+     
+	 Errors::trigger_error(RETRY);
 		return false;
 	}else{
 

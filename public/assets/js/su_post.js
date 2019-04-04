@@ -12,8 +12,12 @@ function post_options_dropdown(element){
        
        let grParent =  $(element).parentsUntil("#ps-activitystream").find(".ps-stream-body");
         let title    =  $(grParent).find("div.post_title").html();
-         if($.trim(title) == ""){
+
+      
+         if($(grParent).find(".edit_title_textarea").val() == ""){
          $(grParent).find(".edit_title_textarea").val(title);    
+         
+
          }
          
           let caption  = $(grParent).find(".peepso-markdown").find("p").html();

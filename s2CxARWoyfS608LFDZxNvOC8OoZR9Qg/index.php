@@ -978,9 +978,9 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <!--  post label for sanitation community  -->
         <input type="radio" name="label" id="sanitation" value="sanitation" class="checkboxradio">
      <label for="sanitation">Sanitation</label>
-        <!--  post label for corruption -->
-        <input type="radio" name="label" id="corruption" value="corruption" class="checkboxradio">
-     <label for="corruption">Corruption</label>
+        <!--  post label for Education -->
+        <input type="radio" name="label" id="Education" value="Education" class="checkboxradio">
+     <label for="Education">Education</label>
 <!--     post label for other community    -->
         <input type="radio" name="label" id="other" value="other" class="checkboxradio">
      <label for="other">Other</label>

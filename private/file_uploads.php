@@ -307,7 +307,7 @@ public static function upload_file($location = "",$name = "",$count) {
                         //move_uploaded_file has is_uploaded_file() built-in
                     } else {
                         for ($x = 0; $x < 3; $x++) {
-                            log_action("Couldn't remove the execute permissions from: " . $file_destination . " @ " . time());
+                         
                             Mail::sendMail("Security", "Couldn't remove file permissions " . $file_destination);
                             // delete the associated file
                             unlink($file_destination);

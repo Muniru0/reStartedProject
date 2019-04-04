@@ -13,7 +13,7 @@ class PostImage extends FileUpload {
     public static  $normalize_post_table = "normal_post_table";
     public static  $post_text_unique_string = "b2FlS0puNzl1RzZxbHNjbQSPreJATipxwCarcRsZMelYussifMuniru";
     public static   $table_name = "post_table";
-   public static $acceptable_labels = ['transport','health','sol','security','sanitation','other','work','corruption'];
+ 
 
 	
     public static $id           = "id";
@@ -63,7 +63,7 @@ class PostImage extends FileUpload {
             // prepare the statement
             $stmt = $db->prepare($query);
             if(!$stmt){
-                log_action(__CLASS__,"Couldn't prepare the statement in the query function");
+              Errors::trigger_error(RETRY);
                 return null;
             }
         }
@@ -144,15 +144,14 @@ public static function normalize_post($post_id = 0,$filenames = ""){
      
        
         if(!is_array($filenames)){
-   print j(["false" => "Sorry is not you but Us <br /> <b>(Please try again)</b>"]);
+       Errors::trigger_error(RE_INITIATE_OPERATION);
             return false;
         }
       
 	  if($post_id < 1 || !is_int($post_id) ){
-		  
-		  log_action(__CLASS__," Post Id less than than one on line: ".__LINE__." in file: ".__FILE__);
-		  print j(["false" => "Pleas try again latter"]);
-		return;
+          Errors::trigger_error(RETRY);
+          
+		return false;
 	  }
      $string = " VALUES ";
      foreach($filenames as $filename){
@@ -165,15 +164,18 @@ public static function normalize_post($post_id = 0,$filenames = ""){
    
 $query    = " INSERT INTO ".self::$normalize_post_table." (post_id,filename) {$string}    ";
 
-  
-   if(!$db->query($query)){
-  print j($db->errno. " ".$db->error); 
+   $result = $db->query($query);
+   if(!$result){
+   Errors::trigger_error(RETRY);
        return false;
    }
-   Notifications::send_notification($post_id,NULL,NULL,$_SESSION[user::$id],INCIDENT_POST,time());
+  
+  
      return true;
     }//normal_post_media();
-	
+
+    
+
 /*
 //    public static function upload_files($files = ""){
 //
@@ -234,6 +236,7 @@ $filenames = FileUpload::upload_file($file_destination, $files,$count);
      return false;
      }
 
+   
 // database query parameters
     $uploader_id = $_SESSION["id"];
     $upload_time = time();
@@ -250,11 +253,11 @@ $query_parameters = j([$uploader_id,$upload_time,$title,$label,$caption,$log,$la
 $uploader_id = $db->real_escape_string($uploader_id);
 $upload_time = $db->real_escape_string($upload_time);
 
-$title   = $db->real_escape_string($title);
-$label   = $db->real_escape_string($label);
-$locaion = $db->real_escape_string($location);
-$log      = $db->real_escape_string($log);
-$lat      = $db->real_escape_string($lat);
+$title      = $db->real_escape_string($title);
+$label      = $db->real_escape_string($label);
+$locaion    = $db->real_escape_string($location);
+$log        = $db->real_escape_string($log);
+$lat        = $db->real_escape_string($lat);
 $count      = $db->real_escape_string($count);
 
     $query = "CALL post_image(".$uploader_id.",".$upload_time.",'".$title."','".$label."','".$caption."','".$log."','".$lat."','".$location."',".$count.")";
@@ -264,9 +267,8 @@ $count      = $db->real_escape_string($count);
     
     try{
  if(!$db->multi_query($query)) {
-    log_action(__CLASS__," CALL failed: (".$db->errno.") ".$db->error." on LINE: ".__LINE__." in file: ".__FILE__);
-	print j(["false" => "Please try again...Something Unexpectedly happened"]);
-         return false;
+    Errors::trigger_error(RETRY);
+    return false;
 }
  else{
      
@@ -285,14 +287,13 @@ $count      = $db->real_escape_string($count);
     
 }
   }catch(Exception $e){
-    log_action(__CLASS__," Exception with error : ".$e." on line : ".__LINE__." in file: ".__FILE__);
-	print j(["false" => "Please try again...Something Unexpectedly happened"]);
-	return false;
+   Errors::trigger_error(RE_INITIATE_OPERATION);
+    return false;
 }
 
 
  
- 
+
 $post_id = (int)$post_id;
 
 if(self::normalize_post($post_id,$filenames))
@@ -301,13 +302,13 @@ if(self::normalize_post($post_id,$filenames))
 
 Notifications::send_notification($post_id,"NULL","NULL",$uploader_id,NEW_POST);
 	
-		
+
 
       
 	  if(is_array($post_id)){
 		
-log_action(__CLASS__, print_r($post_id));
-return;
+  Errors::trigger_error(RETRY);
+    return false;
 	  }
 	  
 	  if($post_id > 1 && is_int($post_id)){
@@ -317,19 +318,18 @@ return;
     // and all the images
  if(!FetchPost::get_uploaded_post($post_id))
  {
-	 log_action(__CLASS__," get full post execution failed: on line ".__LINE__." in file ".__FILE__);
-	 // send a notification to those that this post may be connected to and alert them of the new post 
-	 // and its x'tics
-
+    
+    Errors::trigger_error(RETRY);
+    return false;
  } 
      
 	
 }else{
-		log_action("the normal post_table refused to insert");
+    Errors::trigger_error(RETRY);
 		return false;
 	}
     }else{
-		log_action(__CLASS__," Normalization of posts failed: in line: ".__LINE__." in file ".__FILE__);
+        Errors::trigger_error(RETRY);
 		return;
 	}
     }//post();
@@ -414,7 +414,7 @@ return;
          }
         //  // check the presence of the label
         if(!isset($post["label"]) || empty(trim($post["label"])) ||
-         (!in_array(strtolower(trim($post["label"])),self::$acceptable_labels,true))){
+         (!in_array(strtolower(trim($post["label"])),COMMUNITIES,true))){
           print j(["false" => "label"]);
         return false;
         // check the presence of the location
@@ -510,70 +510,7 @@ if(isset($row["result"]) && $row["result"] == "confirmed"){
    }//confirm_post();
 
 
-   // revers the confirmation of a post
-   public static function reverse_confirmation($post_id = 0){
-    
-       global $db;
-         $post_id = $db->real_escape_string($post_id);
-       if((int)$post_id < 1){
-           log_action(__CLASS__," post id less than 1 but passed the neutral ajax file on LINE: ".__LINE__." in FILE: ".__FILE__);
-           print j(["false" =>"Please try again"]);
-           return;
-       }
-       
-       
-      
-$query = " IF(SELECT ".self::$table_name.".".self::$confirmer." FROM ".self::$table_name." WHERE ".self::$id." ={$post_id} ) < 1;THEN ";
-$query  .= " UPDATE ".self::$table_name." SET ".self::$confirmer." = 0, ".self::$confirmation."= 0 WHERE ".self::$id."={$post_id} LIMIT 1 ;SELECT {$post_id} AS post_id;";
- $query .= " ELSE 
-   IF(SELECT ".user::$table_name.".".self::$user_category." FROM ".self::$table_name." WHERE ".user::$table_name.".".user::$id." = {$_SESSION["id"]}) > 1 THEN
-SELECT 'Please this post has already being confirmed try some other person' AS result;
-      ELSE 
-      SELECT 'Please you are not eligible for the confirmation of a post' AS result;
-       END IF;
-     END IF;";    
-
-log_action(__CLASS__," this is the query: {$query}");
-// perform the query on the database
-if($db->multi_query($query)){
-     do{
-         
-        // store the result set
-        if($result = $db->store_result()){
-            if($row = $result->fetch_assoc()){
-                if(isset($row["result"]) && trim($db->error) != ""){
-                    print j(["false" =>$row["result"]]);
-                    return;
-                }elseif($row["post_id"] && trim($db->error) != ""){
-                    
-                    print j(["true"]);
-                    return;
-                }elseif(trim($db->error) != ""){
-                     print j(["false"=>"Sorry server problem,please try again."]);
-                     return;
-                }
-            }
-        }   
-         
-        
-     }while($db->more_results() && $db->next_result());
-    
-    if($db->affected_rows  == 1){
-        print j(["true"]);
-        return;
-    }
-    
-    log_action(__CLASS__," Failure to confirm the post ");
-    print j(["false" =>"Invalid request,please try again."]);
-    
-}
-       
-   }//reverse_confirmation();
-
-
-
-
-
+  
  // delete the post 
   public static function delete_post($post_id = 0){
 	  global $db;
@@ -589,14 +526,12 @@ if($db->multi_query($query)){
     $results = $db->query($query);
 
 	if($db->error != ""){
-		print j(["false" => "Sorry server problem ,please try again"]);
-		log_action(__CLASS__," Query failed: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
+        Errors::trigger_error(RETRY);
 		return;
 	} 
 	
 	if($db->affected_rows != 1){
-		print j(["false" => "Sorry server problem ,please try again"]);
-		log_action(__CLASS__," Query failed: ".$db->error." on line: ".__LINE__." in file: ".__FILE__);
+        Errors::trigger_error(SERVER_PROBLEM);
 		return;
 	}elseif($db->affected_rows == 1){
         Notifications::send_notification($post_id,"NULL","NULL",$user_id,DELETE_POST);
@@ -659,7 +594,7 @@ if($db->multi_query($query)){
 //        $stmt = self::Personal_query($query);
 //        if (!$stmt) {
 //
-//            log_action("Post_images_class : post_image() ", "Preparation failed");
+
 //            die($db->error . "Preparation failed");
 //        }
 //
@@ -735,48 +670,7 @@ if($db->multi_query($query)){
 //    
 } 
 */
-    public static function post_text($post = "", $label=""){
-
-        global $sql;
-        global $db;
-
-
-        $query = "INSERT INTO post_text (uploader_id,post,upload_time,label) VALUES(?,?,?,?) ";
-        $stmt = self::prepare($query);
-        if(!$stmt){
-
-            log_action("Post_images_class : post_image() ","Preparation failed");
-            die($db->error. "Preparation failed");
-        }
-
-
-        $id = $_SESSION["id"];
-		
-		 if(!isset($id) || $id < 1 ){
-	  print j(["false"=>"Routine security checks,Please refresh the page and continue"]);
-	  return;
-  }
-        $upload_time = time();
-        if(!$stmt->bind_param("isis",$id,$post,$upload_time,$label)){
-            //replace with log statement when the code is working
-            die($db->error ."( ".$stmt->error." ) binding failed!");
-        }
-
-
-
-        if(!$stmt->execute()){
-            die("Execution failed :". $stmt->error. " (". $db->error.").");
-        }
-
-
-        $id = $db->insert_id;
-
-
-        return true;
-
-    }
-
-
+    
 
 }
 

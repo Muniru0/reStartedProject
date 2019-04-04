@@ -300,7 +300,7 @@ class FetchPost extends DatabaseObject{
      <div class='ps-tagging-wrapper' style='
     border-bottom: 1px solid #e1dede;
     margin-bottom: 1%;
-'><div class='ps-tagging-beautifier'></div><textarea class='ps-textarea edit-title-textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Please write the title here...(MAX-CHARACTERS: 100 )' MAXLENGTH='100' spellcheck='false' style='height: 32px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'></textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
+'><div class='ps-tagging-beautifier'></div><textarea class='ps-textarea edit_title_textarea ps-postbox-textarea ps-tagging-textarea' placeholder='Please write the title here...(MAX-CHARACTERS: 100 )' MAXLENGTH='100' spellcheck='false' style='height: 32px; z-index: auto; position: relative; line-height: 18.2px; font-size: 13px; transition: none 0s ease 0s; background: transparent !important;'></textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
  
 <div class='ps-tagging-wrapper'>
    
@@ -376,8 +376,6 @@ class FetchPost extends DatabaseObject{
 if( !isset($post_id) || is_array($post_id) 
 	|| !is_int($post_id) || $post_id < 1){
 	
-		   log_action(__CLASS__,"Query couldn't bring back post after uploading on line: ".__LINE__." in file: ".__FILE__);
-		   
 		   return [];
 	   }
 	  
@@ -393,8 +391,7 @@ if( !isset($post_id) || is_array($post_id)
 	// check to see if there are any errors 
  if(!$result || $db->error != ""){
 	    Errors::trigger_error(RE_INITIATE_OPERATION);
-	 log_action(__CLASS__,"Query failed: {$db->error} on line: ".__LINE__." in file: ".__FILE__);
-	
+
 	 return [];
  }	
   
@@ -474,7 +471,7 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 '>{$title}</div>" : "";
  
       $edit_post_template = ((int)$uploader_id === (int)$_SESSION[user::$id]) ? self::get_edit_post_template($uploader_id,$caption,$title,$location,$post_id) : "";
-		log_action(__CLASS__,$edit_post_template);
+		
 		  // check the number of reactions and show or hide the 
 		  // the reactions div accordingly
 		  $toggle_reactions_count = "";
@@ -1047,7 +1044,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 		 }
 		
 			  if(!isset($images) || empty($images)){
-				 log_action(__CLASS__,"No images in the post on line :".__LINE__." in file: ".__FILE__);
+				
 				  continue;
 			  }
 			  
@@ -1103,11 +1100,13 @@ foreach ($returned_array as $posts_info => $images_or_info){
 				$full_body     .= $comments_with_replys;
 			}else{
 				Errors::trigger_error(INVALID_SESSION);
+				return false;
 			}
 			
 		 // if the post body is false then uset the post table id since we no longer 
 		 // need it to reference any post
 		    if($full_body === false){
+				
 				Errors::trigger_error(RE_INITIATE_OPERATION);
 				 unset($headers[$post_info[PostImage::$alias_of_id]]);
 				continue;				
@@ -1119,7 +1118,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 		
   if(!empty($headers)){
 			 print j($headers);
-			 $_SESSION["scroll_ready_state"] = true;
+			  
         return true; 
 		 }else{
 		print j(["true"=>"no_more_posts"]);
@@ -1131,8 +1130,8 @@ foreach ($returned_array as $posts_info => $images_or_info){
        
 	}catch(Exception $e)
 	{
-	log_action(__CLASS__," Exception occured '{$e}' on line: ".__LINE__." in file ".__FILE__);
-	    print j(["false" => "An Error occured please try again"]);
+		
+   Errors::trigger_error(RETRY);
 	   return false;
 	}
     

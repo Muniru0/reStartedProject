@@ -86,7 +86,7 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 !defined("UNEXPECTED_RETRY")               ?  define("UNEXPECTED_RETRY","unexpected_retry")                : null;
 
 !defined("RESET_POST")               ?  define("RESET_POST","reset_post")                : null;
-!defined("COMMUNITIES")               ?  define("COMMUNITIES",["transport","health","work","sol","security","sanitation","oppression","other"])        : null;
+!defined("COMMUNITIES")               ?  define("COMMUNITIES",["transport","health","work","sol","security","sanitation","education","oppression","other"])        : null;
 !defined("RE_INITIATE_OPERATION")               ?  define("RE_INITIATE_OPERATION","re-initiate-operation")   : null;
 
 // post interaction operations
