@@ -2590,7 +2590,7 @@ window.onclick = function(event) {
 	<div id='act-new-comment-506' class='ps-comment-reply cstream-form stream-form wallform ps-js-comment-new ps-js-newcomment-506' data-type='stream-newcomment' data-formblock='true' style='display:none;'>
 		
 		<div class='ps-textarea-wrapper cstream-form-input'>
-			<div class='ps-tagging-wrapper'><div class='ps-tagging-beautifier'></div><textarea data-act-id='506' class='ps-textarea cstream-form-text ps-tagging-textarea' name='comment' oninput='return activity.on_commentbox_change(this);' placeholder='Write a reply...' style='height: 37px;'></textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
+			<div class='ps-tagging-wrapper'><div class='ps-tagging-beautifier'></div><textarea data-act-id='506' class='ps-textarea cstream-form-text ps-tagging-textarea' name='comment' oninput='utility.resizeTextarea(this);' placeholder='Write a reply...' style='height: 37px;'></textarea><input type='hidden' class='ps-tagging-hidden' value=''><div class='ps-tagging-dropdown' style='display: none;'></div></div>
 				
 
 		</div>

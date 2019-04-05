@@ -47,7 +47,7 @@ class Views extends DatabaseObject{
 	}
 	   
      	 
-	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' style='margin-top: -1.1%;' 	 >
+	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' >
 		<div class='ps-comment-container comment-container ps-js-comment-container' style='max-height: 29em;
     overflow-y: scroll; '> ";
 	
@@ -469,6 +469,10 @@ if(!$stmt->execute()){
 
 	die("Execution failed: add_view_reaction(): Views ".$stmt->error." on line ".__LINE__." in file: ".__FILE__);
 }
+
+// just for the sake of the best practices
+$support = "";
+$oppose  = "";
 
 if(!$stmt->bind_result($support,$oppose)){
 

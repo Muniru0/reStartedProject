@@ -720,9 +720,9 @@ return false;
 		
  $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".PostImage::$table_name.".".PostImage::$files_count." AS ".PostImage::$alias_of_files_count.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id.",".Reaction::$table_name.".".Reaction::$user_id." AS ".Reaction::$alias_of_user_id.",".Reaction::$table_name.".".Reaction::$reaction_type." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
-".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." ORDER BY ".PostImage::$upload_time." DESC LIMIT ".$_SESSION[STREAM_HOME].",50";
+".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  LEFT JOIN  ".Reaction::$table_name." ON ".Reaction::$table_name.".".Reaction::$post_id." =  ".PostImage::$table_name.".".PostImage::$id." ORDER BY ".PostImage::$upload_time." DESC LIMIT 355,50";
      
-     
+     log_action(__CLASS__,$query);
   $returned_array = [];
   $post_ids_array = [];
 $results = $db->query($query);
@@ -782,8 +782,8 @@ $row_count = $results->num_rows;
 	 
    $_SESSION[Session::$qr_lowerbound] = array_shift($post_ids_array);
    $_SESSION[Session::$qr_upperbound] = array_pop($post_ids_array);
-
-	$_SESSION[STREAM_HOME] += 30;
+//	 $_SESSION[STREAM_HOME] += 30;
+	$_SESSION[STREAM_HOME] += 50;
 	}elseif(trim($db->error) ==  "" && $row_count < 1){
 	 
 	  if($_SESSION[STREAM_HOME] == 1){
@@ -801,8 +801,10 @@ $row_count = $results->num_rows;
 	   return false;
 	
  } 
+	
  
- 
+//  print_r($returned_array);
+//  return false;
  return $returned_array;
  }//home_posts();	 
 

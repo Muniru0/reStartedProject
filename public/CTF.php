@@ -96,8 +96,10 @@ div {
  
  <?php
 //  $_SESSION[STREAM_HOME] = 1;
-//   Pagination::get_infinite_scroll(STREAM_HOME);
 
+echo "<pre>";
+ Pagination::get_infinite_scroll(STREAM_HOME);
+ echo "</pre>";
 
 //Notifications::get_latest_notifications();
 

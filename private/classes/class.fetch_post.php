@@ -545,8 +545,8 @@ if(isset($returned_array) && array_key_exists($row["post_id"],$returned_array)){
 		
 		 
 	if(isset($images)  && $count == 1){  
-	$width;
-	$height;
+	$width = 0;
+	$height = 0;
 	
 
 	$image = array_shift($images);
@@ -655,7 +655,7 @@ if($width >= 1000){
 	<label for='oppose_{$post_id}' class='{$oppose_label_selected} ' title='Oppose the above post' style='margin-left: 11em;'></label>
  </div>
    
-   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' {$toggle_reactions_count} style='padding-left:0px;padding-right: 0px;'>
+   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' {$toggle_reactions_count} style='padding-left:0px;padding-right: 0px; margin-bottom: .2em;'>
 							
 ".$number_of_supports_string.$number_of_opposes_string." 
 </div>
@@ -821,7 +821,7 @@ $images_string .= "</div></div></div></div>
 	<label for='oppose_{$post_id}' class='{$oppose_label_selected}'  title='Oppose the above post' style='margin-left: 11em; '></label>
  </div>
    
-   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' {$toggle_reactions_count} style='padding-left:0px;padding-right: 0px;'>
+   <div id='reactions_count_{$post_id}' class='ps-reaction-likes  ps-stream-status cstream-reactions' {$toggle_reactions_count} style='padding-left:0px;padding-right: 0px; width: 100%; border-top-left-radius: 10em;'>
 							
 ".$number_of_supports_string.$number_of_opposes_string." 
 </div>

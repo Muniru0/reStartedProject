@@ -1,20 +1,3 @@
-[31/Mar/2019 04:03:47 AM] : [Notifications] | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',1,'Yussif','Muniru','incident_post',1554009269) ON DUPLICATE KEY UPDATE notific' at line 1
-[31/Mar/2019 05:14:30 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,610,,,1,'Yussif','Muniru','incident_post',1554009479) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[31/Mar/2019 05:14:30 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,610,NULL,NULL,1,'Yussif','Muniru','new_post',1554009479) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[31/Mar/2019 05:17:59 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,611,NULL,NULL,1,'Yussif','Muniru','new_post',1554009792) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[31/Mar/2019 05:23:12 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,612,NULL,NULL,1,'Yussif','Muniru','new_post',1554009860) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[31/Mar/2019 05:24:20 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,613,NULL,NULL,1,'Yussif','Muniru','new_post',1554009916) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[31/Mar/2019 05:25:16 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,614,NULL,NULL,1,'Yussif','Muniru','new_post',1554323414) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 3/Apr/2019 08:30:14 PM] : [Notifications] | INSERT INTO notifications VALUES(NULL,614,549,NULL,1,'Yussif','Muniru','new_comment',1554323475) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 3/Apr/2019 08:31:15 PM] : [Notifications] | INSERT INTO notifications VALUES(NULL,615,NULL,NULL,4,'Osman','Ganiu','new_post',1554323833) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 3/Apr/2019 08:37:13 PM] : [Notifications] | INSERT INTO notifications VALUES(NULL,615,550,NULL,4,'Osman','Ganiu','new_comment',1554323875) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 3/Apr/2019 08:37:55 PM] : [Notifications] | INSERT INTO notifications VALUES(NULL,616,NULL,NULL,1,'Yussif','Muniru','new_post',1554343756) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 4/Apr/2019 02:09:16 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,616,551,NULL,1,'Yussif','Muniru','new_comment',1554343807) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 4/Apr/2019 02:10:08 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,617,NULL,NULL,1,'Yussif','Muniru','new_post',1554345550) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 4/Apr/2019 02:39:10 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,618,NULL,NULL,1,'Yussif','Muniru','new_post',1554345709) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 4/Apr/2019 02:41:49 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,619,NULL,NULL,1,'Yussif','Muniru','new_post',1554345944) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 4/Apr/2019 02:45:44 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,620,NULL,NULL,1,'Yussif','Muniru','new_post',1554346165) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 4/Apr/2019 02:49:25 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,621,NULL,NULL,1,'Yussif','Muniru','new_post',1554346305) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 4/Apr/2019 02:51:45 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,622,NULL,NULL,1,'Yussif','Muniru','new_post',1554346618) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 4/Apr/2019 02:56:58 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,623,NULL,NULL,1,'Yussif','Muniru','new_post',1554346851) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
-[ 4/Apr/2019 03:00:51 AM] : [Notifications] | INSERT INTO notifications VALUES(NULL,623,552,NULL,1,'Yussif','Muniru','new_comment',1554346955) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1
+[ 5/Apr/2019 05:56:41 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id,reactions.user_id AS reactions_table_user_id,reactions.reaction_type FROM post_table
+JOIN users ON 
+post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id  LEFT JOIN  reactions ON reactions.post_id =  post_table.id ORDER BY upload_time DESC LIMIT 355,50
