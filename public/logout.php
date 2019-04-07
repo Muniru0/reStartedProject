@@ -1,5 +1,9 @@
 <?php
+
 	require_once("../private/initialize.php");
+	Session::after_successful_logout();
+	redirect_to('login.php');
+	return;
 if(is_request_post() && request_is_same_domain()) {
 	
   // is the csrf token valid and recent

@@ -53,6 +53,7 @@ class PostImage extends FileUpload {
     
     // utility properties
     public static $session_post_ids = "post_ids";
+    public static $are_there_latest_posts = "latest_post";
 
 // overriden database object method just for 
 // the ease of work

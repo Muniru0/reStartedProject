@@ -23,6 +23,8 @@ class user extends DatabaseObject{
     public static $firstname         = "firstname" ; 
     public static $lastname          = "lastname" ;
     public static $email             = "email" ;
+    public static $last_logout_time  = "users_last_logout_time";
+    public static $last_login         = "last_login";
     public static $gov               = "" ;
     public static $password          = "" ;
     public static $date              = "" ;

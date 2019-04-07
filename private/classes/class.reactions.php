@@ -45,93 +45,59 @@ public static function record_reaction($post_id = 0,$reactionType = 0){
 global $db;
 
 
+if( !isset($_SESSION[user::$id]) && !isset($_SESSION[user::$id])){
+  Errors::trigger_error(INVALID_SESSION);
+  return;
+}
 
-$query = "CALL  add_reactions(?)";
-  
- 
-// prepare the statement
-$stmt = $db->prepare($query); 
-
- if(!$stmt){
-  Errors::trigger_error(RETRY);
- return;
- }
-
-/** find the correct bind statement and execute the 
- *  statement
- */
- 
-
- if($_SESSION["id"] < 0){
-	 
-	print j(["false"=>" Sorry server problem please try again"]); 
-	 return;
- }
-$user_id = $_SESSION["id"];
- 
- if(!isset($user_id) || $user_id < 1 ){
-	  print j(["false"=>"Routine security checks,Please refresh the page and continue"]);
-	  return;
-  }
-
-  $parameters = j([$post_id,$user_id,$reactionType]);
- if(!$stmt->bind_param("s",$parameters)){
-  Errors::trigger_error(RETRY);
- return;
-
- }
+$user_id = $_SESSION[user::$id];
 
 
-
-// execute the query
- if(!$stmt->execute()){
-Errors::trigger_error(SERVER_PROBLEM);
- return;
- }
+$query = "CALL  add_reactions($post_id,$user_id,$reactionType,".time().")";
   
 
+if($db->multi_query($query)){
+
+  do{
+    if($result = $db->store_result()){
+      if($row = $result->fetch_assoc()){
+        if((isset($row["support"]) && isset($row["oppose"]) && isset($row["id"])) && $row["id"] > 0 ){
+        
+   print j(["support" => "{$row["support"]}",
+   "oppose"=>"{$row["oppose"]}","post_id"=>"{$row["id"]}"]);
   
-$result = $stmt->get_result();
-     if($db->error === "" && $stmt->error === ""){
+   switch ($row["notification_reaction_type"]) {
+     case NEW_SUPPORT:
+     Notifications::send_notification($post_id,"NULL","NULL",$user_id,NEW_SUPPORT);
+       break;
+       case NEW_OPPOSE:
+  Notifications::send_notification($post_id,"NULL","NULL",$user_id,NEW_OPPOSE);
+       break;
+        case ALT_SUPPORT:
+  Notifications::send_notification($post_id,"NULL","NULL",$user_id,ALT_SUPPORT);
+       break;
+        case ALT_OPPOSE:
+  Notifications::send_notification($post_id,"NULL","NULL",$user_id,ALT_OPPOSE);
+       break;
+     default:
+     Errors::trigger_error(RETRY);
+       break;
+   }
+  
+  
+   
+      }
+     }
+    
+
+    }
+  }while($db->more_results() && $db->next_result());
+}
+ 
+
 		 
 	 
-   if($row = $result->fetch_assoc()){
-	    if((isset($row["support"]) && isset($row["oppose"]) && isset($row["id"])) && $row["id"] > 0 ){
-			
- print j(["support" => "{$row["support"]}",
- "oppose"=>"{$row["oppose"]}","post_id"=>"{$row["id"]}"]);
-
- switch ($row["reaction_type"]) {
-   case NEW_SUPPORT:
-   Notifications::send_notification($post_id,NULL,NULL,$user_id,NEW_SUPPORT,$time);
-     break;
-     case NEW_OPPOSE:
-Notifications::send_notification($post_id,NULL,NULL,$user_id,NEW_OPPOSE,$time);
-     break;
-      case ALT_SUPPORT:
-Notifications::send_notification($post_id,NULL,NULL,$user_id,ALT_SUPPORT,$time);
-     break;
-      case ALT_OPPOSE:
-Notifications::send_notification($post_id,NULL,NULL,$user_id,ALT_OPPOSE,$time);
-     break;
-   default:
-   Errors::trigger_error(RETRY);
-     break;
- }
-
-
  
-		}
-	 }
-	 }else{
-	    
-	   print j(["empty"]);
-	   
-   }
-   
-  
-   
-   $stmt->free_result();
 }//record_reaction()
 
 

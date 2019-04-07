@@ -21,7 +21,7 @@
   
   
 
-  static getMainStream(streamType = "", targetElement = null){
+  static getMainStream(streamType = "", flagValue = null){
  
    
   if($.trim(streamType) == "" || $.trim(streamType) != "mainstream"){
@@ -45,7 +45,7 @@
    $.ajax({
 			 url:"../private/neutral_ajax.php",
 			 type: "POST",
-			 data: {request_type: "scroll",stream_type:streamType},
+			 data: {request_type: "scroll",stream_type:streamType,flag :flagValue},
 			 datatype: "html"
 		 }).done(function(response){
 			console.log(response);
@@ -217,7 +217,7 @@ else if($.trim($("#ps-activitystream")) != "" && $("#ps-activitystream") != null
   }
 
 
-  static getCommunityStream(streamType = ""){
+  static getCommunityStream(streamType = "",flagValue = null){
 
   	
 
@@ -245,7 +245,7 @@ else if($.trim($("#ps-activitystream")) != "" && $("#ps-activitystream") != null
    $.ajax({
 			 url:"../private/neutral_ajax.php",
 			 type: "POST",
-			 data: {request_type: "scroll",stream_type:streamType},
+			 data: {request_type: "scroll",stream_type:streamType,flag : flagValue },
 			 datatype: "html"
 		 }).done(function(response){
 			console.log(response);
@@ -409,7 +409,7 @@ if(response["false"] != undefined && response["false"] == "login"){
  */
 
 
-  static getCallMethod(streamType = ""){
+  static getCallMethod(streamType = "",flag = null){
   	  if($.trim(streamType) == ""){
   	  	return;
   	  }
@@ -420,7 +420,7 @@ if(response["false"] != undefined && response["false"] == "login"){
   	  switch(streamType){
   	  	case "mainstream":
 
-  	  	stream.getMainStream(streamType);
+  	  	stream.getMainStream(streamType,flag);
   	  	break;
   	  	case "self":
   	  	stream.getSelfStream(streamType);
@@ -429,7 +429,7 @@ if(response["false"] != undefined && response["false"] == "login"){
   	  	stream.getProfileStream(streamType);
   	  	break;
   	  	case "community":
-  	  	stream.getCommunityStream(streamType);
+  	  	stream.getCommunityStream(streamType,flag);
   	  	break;
   	  	default: ;
   	  }
@@ -459,13 +459,12 @@ $(window).scroll(function() {
 
 $(document).ready(function(){
       let streamType = $("#stream_type").val();
-      console.log(streamType);
+    
 	    if(streamType.split("_")[0] === "community"){
-	    	console.log("entered here");
-         stream.getCommunityStream(streamType);
-          return;
+	      stream.getCommunityStream(streamType);
+        return;
      }
-
-	stream.getCallMethod($("#stream_type").val());
+   
+	stream.getCallMethod($("#stream_type").val(),"latest");
 });
 

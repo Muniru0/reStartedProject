@@ -128,9 +128,10 @@ require_once(PRIVATE_DIR."initialize.php");
 	$_SESSION[ConnectUsers::$session_string]  = [];
 	$_SESSION[PostImage::$uploader_id] = [];
 	$_SESSION[PostImage::$alias_of_id] = [];
-	$_SESSION['last_login']  = $_SESSION[Notifications::$last_notification_check_time]  = time();
-	$_SESSION['mainstream']  = 0;
-	$_SESSION['community']   = 0;
+	$_SESSION[PostImage::$are_there_latest_posts] = true;
+	$_SESSION[user::$last_login]  = $_SESSION[Notifications::$last_notification_check_time]  = time();
+	$_SESSION[STREAM_HOME]  = 0;
+	$_SESSION[STREAM_COMMUNITY]   = 0;
 	$_SESSION["post_ids"]    = [];
 	$_SESSION["comment_ids"] = [];
 	$_SESSION["reply_ids"]   = [];
@@ -143,6 +144,23 @@ require_once(PRIVATE_DIR."initialize.php");
 	
 }
 
+
+// record the last login time to be used to fetch
+// new post when the user re-log's in
+public static function record_last_logout_time (){
+
+	
+	global $db;
+
+	$query = "UPDATE ".user::$table_name." SET ".user::$last_logout_time." = ".time()." WHERE ".user::$id."=".$_SESSION[user::$id];
+	$db->query($query);
+
+
+
+
+}//record_last_login_time();
+
+
 // Actions to preform after every successful logout
  public static function after_successful_logout() {
 	
@@ -151,7 +169,7 @@ require_once(PRIVATE_DIR."initialize.php");
 			return;
 		}  */
 		$_SESSION['logged_in'] = false;
-		
+		  self::record_last_logout_time();
         self::end_session();
 	}
 

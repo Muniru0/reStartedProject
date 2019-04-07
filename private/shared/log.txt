@@ -1,3 +1,4 @@
-[ 5/Apr/2019 05:56:41 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id,reactions.user_id AS reactions_table_user_id,reactions.reaction_type FROM post_table
-JOIN users ON 
-post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id  LEFT JOIN  reactions ON reactions.post_id =  post_table.id ORDER BY upload_time DESC LIMIT 355,50
+[ 7/Apr/2019 12:22:39 PM] : [Pagination] | 0
+[ 7/Apr/2019 05:09:46 PM] : [Pagination] | 50
+[ 7/Apr/2019 05:10:14 PM] : [Pagination] | 100
+[ 7/Apr/2019 05:10:27 PM] : [Pagination] | 150

@@ -659,31 +659,29 @@ elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_t
 	
 }
 // reactions 
-elseif(isset($_POST["reaction_param"]) && !empty($_POST["reaction_param"])){
+elseif(isset($_POST["request_type"]) && !empty($_POST["request_type"]) === "add_reaction"){
 	   
-	   
-	/*    echo "reaction type: ".$_POST["reaction_param"]." post_id: ".$_POST["post_id"];
-	   return; */
+	 
 	   
 	if(!isset( $_POST["reaction_param"]) || !isset( $_POST["post_id"])){
 	    print j(["false"=>"Please try again, if problem persists refresh the page"]);
 		return;
    }
-   $_POST["reaction_param"] = (int) $_POST["reaction_param"];
-   $_POST["post_id"]        = (int) $_POST["post_id"];
+   $reaction_param = (int) $_POST["reaction_param"];
+   $post_id        = (int) $_POST["post_id"];
   
    
-   if(!is_int($_POST["reaction_param"]) || !is_int($_POST["post_id"])|| $_POST["reaction_param"] < 1 || $_POST["post_id"] < 1  ){
+   if(!is_int($reaction_param) || !is_int($post_id)|| $reaction_param < 1 || $post_id < 1  ){
 	   print j(["false"=>"Please try again, if problem persists refresh the page"]);
 		return; 
    }
    
 //record reaction for a post
-Reaction::record_reaction($_POST["post_id"],$_POST["reaction_param"]);
+Reaction::record_reaction($post_id,$reaction_param);
  
 
 }elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "get_latest_notifications"){
-	
+	 
 	
 	  Notifications::get_latest_nofications();
 }
@@ -706,7 +704,7 @@ print_r(Views::add_view($_POST["reaction_view"]));
 
 
 else{
-  log_action(__CLASS__,$_POST["request_type"]);
+ 
 	print j(["false" => "Something Unexpectedly went wrong, please refresh the page and try again"]);
 }
 

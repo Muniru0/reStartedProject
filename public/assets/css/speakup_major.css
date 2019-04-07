@@ -1,11 +1,24 @@
 /*template-rounded*/
-<!--Personal-editing -->
+/* <!--Personal-editing --> */
 
 .show-label{
 opacity:1;
 
 }
-s
+.ps-media-grid-padding,.ps-media-grid-fitwidth,img{
+   
+   -webkit-transition: transform  0.5s;
+    transition: transform 0.5s ; 
+}
+
+.ps-media-grid-padding:hover,.ps-media-grid-fitwidth:hover,img:hover{
+     transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    
+   
+}
+
+
 .ps-input,.ps-select,input[type="text"].ps-input,input[type="password"].ps-input,.ps-list-info-content-form input[type=text],.ps-list-info-content-form input[type=password],.ps-list-info-content-form input[type=button],.ps-list-info-content-form input[type=submit],.ps-list-info-content-form select,.ps-form--classifieds .ps-form__controls>input,.ps-form--classifieds .ps-form__controls .adverts-multiselect-input,.ps-form--classifieds .ps-form__controls>select,.peepso #coupon_code,.peepso .woocommerce form .form-row input.input-text {
     display: inline-block;
     margin-top: 0px;
@@ -1636,7 +1649,7 @@ one {
     display: inline-block;
     margin-left: 5px;
     margin-right: 5px;
-    content: "•";
+    content: "â€¢";
     color: #7E7E7E
 }
 
@@ -1654,7 +1667,7 @@ one {
 }
 
 .ps-list--dots>*:before {
-    content: "• "
+    content: "â€¢ "
 }
 
 .ps-list--menu>li {

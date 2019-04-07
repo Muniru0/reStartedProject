@@ -93,10 +93,40 @@ div {
  
  </script>
  
+ <!-- /*
+ <style>
+ 
+ .test_div{
+
+  width: 100px;
+	height: 100px;
+	background : skyblue;
+	border-color: skyblue;
+	border-radius: 5px;
+	margin: 0px auto;
+	-webkit-transition: all 0.5s ease-out;
+	transition: all 0.5s ease-out ;
+ }
+
+ .test_div:hover{
+
+ -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+
+
+ }
+ </style> */ -->
+ 
+ <form action="logout.php" method="POST">
+<input type="submit" name="submit" value="Log OUt" />
+ </form>
  
  <?php
-//  $_SESSION[STREAM_HOME] = 1;
 
+$arr = [3,4,5,6,7,8,9,0,5356];
+
+echo array_key_first($arr);
+echo $arr[array_key_last($arr)];
 echo "<pre>";
  Pagination::get_infinite_scroll(STREAM_HOME);
  echo "</pre>";

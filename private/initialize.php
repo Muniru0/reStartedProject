@@ -109,10 +109,10 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 !defined("NEW_OPPOSE")               ?  define("NEW_OPPOSE","new_oppose")   : null;
 
-!defined("ALT_SUPPORT")               ?  define("ALT_SUPPORT","alt_support")   : null;
+!defined("ALT_SUPPORT")               ?  define("ALT_SUPPORT","change_to_support")   : null;
 
 
-!defined("ALT_OPPOSE")               ?  define("ALT_OPPOSE","alt_oppose")   : null;
+!defined("ALT_OPPOSE")               ?  define("ALT_OPPOSE","change_to_oppose")   : null;
 
 !defined("NEW_REPLY_COMMENT")               ?  define("NEW_REPLY_COMMENT","new_reply_comment")   : null;
 

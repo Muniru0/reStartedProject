@@ -1,4 +1,7 @@
 {
     "php.validate.executablePath": "c:/wamp64/bin/php/php7.3.0/php.exe",
-    "php.validate.run": "onType"
+    "php.validate.run": "onType",
+    "phpcs.enable": false,
+    "phpcs.showWarnings": false,
+    "python.autoComplete.addBrackets": true
 }

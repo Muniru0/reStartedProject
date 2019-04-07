@@ -3,54 +3,23 @@
 
 require_once("../private/initialize.php");
 
-Session::before_every_protected_page(); 
+if(!Session::before_every_protected_page()){
+    return;
+}
 //Session::after_successful_logout();
 
 
 $firstname = "";
 $lastname  =  "";
-//  $id        = 0;
- 
 
-
-//  if(!is_get_request() || !request_is_same_domain()){
-	 
-	
-// 	redirect_to("page_not_found.php");
-// 	return;
-// }
-// if(!allowed_get_params([user::$id])){
-	
-// 		redirect_to("page_not_found.php");
-// 		return;
-// 	}  
-	
-//    $id = (int)$_GET[user::$id];
-   
-// 	if(!in_array($id,$_SESSION[PostImage::$uploader_id])){
-		
-// 		redirect_to("page_not_found.php");
-// 	}
-	
-	
-
-//    $result = DatabaseObject::find_one($id,user::$table_name);
-//     if($result){
-// 		if($row = $result->fetch_assoc()){
-// 			$result = $row;
-// 		}
-		
-// 	}else{
-// 	redirect_to("page_not_found.php");
-// 	 return;
-// 	}
     
 if(isset($_SESSION) ){
 
-
-$_SESSION[STREAM_HOME] = 1;
-$_SESSION[STREAM_SELF] = 1;
-
+// when the user refreshes the page set the stream variables 
+// so that the posts can resume from the latest posts
+$_SESSION[STREAM_HOME] = 0;
+$_SESSION[STREAM_SELF] = 0;
+$_SESSION[PostImage::$are_there_latest_posts] = true;
 $firstname = $_SESSION[user::$firstname];
 $lastsname = $_SESSION[user::$firstname];
 }
