@@ -216,7 +216,7 @@ log_action("Throttle User: ", "Execution failed : ( " .$db->errno. " ) ".$db->er
 public static function clear_failed_logins($email = 0){
 
 
-  global $sql;
+
   global $db;
 
   $num_failed_logins = 0;
@@ -224,7 +224,7 @@ public static function clear_failed_logins($email = 0){
 $query  = "UPDATE ".throttle::$table_name." SET num_failed_logins = $num_failed_logins  WHERE email = ?";
     
 // prepare the statement
-$stmt = $sql->query($query);
+$stmt = $db->prepare($query);
 
 if(!$stmt){
 

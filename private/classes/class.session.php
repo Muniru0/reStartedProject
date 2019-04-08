@@ -137,8 +137,7 @@ require_once(PRIVATE_DIR."initialize.php");
 	$_SESSION["reply_ids"]   = [];
 	$_SESSION["offset"]      = 0;
 	$_SESION["scroll_ready_state"] = true;
-		
-		
+	PostImage::get_maximum_post_id();
         
 	
 	

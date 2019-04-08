@@ -56,6 +56,10 @@ if(validate_presence_on(["password","email"]) && is_email($email)){
 	   	 // then clear all the failed logins
       
         throttle::clear_failed_logins();
+        // get all the counts of posts notifications, connections requests,
+        // and set the maximum id from the post table to be able to reference it
+        // in the pagination class.
+        PostImage::get_activities_counts();
 		 print j([true]);
       return;
 } else {
