@@ -55,13 +55,15 @@ class PostImage extends FileUpload {
     public static $session_post_ids = "post_ids";
     public static $are_there_latest_posts = "latest_post";
     public static $post_max_id             = "post_max_id";
-
+    public static $self_post_max_id        = "self_post_max_id";
 
 
     public static function get_activities_counts($stream_type = null){
         global $db;
 
         $query  = "SELECT MAX(".PostImage::$id.") AS ".PostImage::$post_max_id." FROM ".self::$table_name;
+        
+        
         
         if($db->multi_query($query)){
        

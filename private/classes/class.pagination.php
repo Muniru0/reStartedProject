@@ -800,7 +800,7 @@ log_action("class",$query);
 		}
 
 		}elseif(trim($db->error) != ""){
-			log_action(__CLASS__,"db erorr::::::".$db->error);
+		
 			Errors::trigger_error(RETRY);
 			 return false;
 			}
