@@ -18,7 +18,7 @@ if(isset($_SESSION) ){
 // when the user refreshes the page set the stream variables 
 // so that the posts can resume from the latest posts
 //$_SESSION[STREAM_HOME] = 0;
-PostImage::get_activities_counts(STREAM_HOME);
+$activities_counts = PostImage::get_activities_counts(STREAM_HOME);
 $_SESSION[STREAM_SELF] = 0;
 $_SESSION[PostImage::$are_there_latest_posts] = true;
 $firstname = $_SESSION[user::$firstname];
@@ -28,7 +28,7 @@ $lastsname = $_SESSION[user::$firstname];
 
 $content = "";
  
-$content  .= main_header(home_header($firstname,$lastname),$request_type);
+$content  .= main_header(home_header($firstname,$lastname),$request_type,$activities_counts);
  echo $content  .= main_footer(); 
 
 
