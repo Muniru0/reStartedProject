@@ -1,28 +1,55 @@
-[ 8/Apr/2019 06:56:08 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
-JOIN users ON 
-post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -276 && post_table.id >= -286 ORDER BY upload_time DESC LIMIT 50
-[ 8/Apr/2019 06:56:08 AM] : [Pagination] | -276
-[ 8/Apr/2019 06:56:08 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
-JOIN users ON 
-post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -276 && post_table.id >= -286 ORDER BY upload_time DESC LIMIT 50this is the post max id on line: 776
-[ 8/Apr/2019 06:56:43 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
-JOIN users ON 
-post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -286 && post_table.id >= -296 ORDER BY upload_time DESC LIMIT 50
-[ 8/Apr/2019 06:56:43 AM] : [Pagination] | -286
-[ 8/Apr/2019 06:56:43 AM] : [Pagination] | SELECT MAX(id) AS post_max_idFROM post_table WHERE id < -286this is the post max id on line: 777
-[ 8/Apr/2019 06:57:58 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
-JOIN users ON 
-post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -286 && post_table.id >= -296 ORDER BY upload_time DESC LIMIT 50
-[ 8/Apr/2019 06:57:58 AM] : [Pagination] | -286
-[ 8/Apr/2019 06:58:51 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
-JOIN users ON 
-post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -286 && post_table.id >= -296 ORDER BY upload_time DESC LIMIT 50
-[ 8/Apr/2019 06:58:51 AM] : [Pagination] | -286
-[ 8/Apr/2019 06:58:51 AM] : [Pagination] | db erorr::::::You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'post_table WHERE id < -286' at line 1
-[ 8/Apr/2019 06:59:25 AM] : [class] | SELECT MAX(id) AS post_max_idFROM post_table WHERE id < -286
-[ 8/Apr/2019 06:59:25 AM] : [Pagination] | db erorr::::::You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'post_table WHERE id < -286' at line 1
-[ 8/Apr/2019 07:00:44 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < -286
-[ 8/Apr/2019 07:01:11 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < -296
-[ 8/Apr/2019 07:01:16 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < -306
-[ 8/Apr/2019 07:01:16 AM] : [Pagination] | 
-[ 8/Apr/2019 07:01:56 AM] : [] | 
+[ 8/Apr/2019 07:25:26 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 494
+[ 8/Apr/2019 07:25:26 AM] : [Pagination] | 475
+[ 8/Apr/2019 07:25:26 AM] : [Pagination] | 475
+[ 8/Apr/2019 07:27:07 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 245
+[ 8/Apr/2019 07:27:07 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:01 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 235
+[ 8/Apr/2019 07:28:01 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:02 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 225
+[ 8/Apr/2019 07:28:02 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:02 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 215
+[ 8/Apr/2019 07:28:02 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:03 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 205
+[ 8/Apr/2019 07:28:03 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:03 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 195
+[ 8/Apr/2019 07:28:03 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:03 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 185
+[ 8/Apr/2019 07:28:03 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:04 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 175
+[ 8/Apr/2019 07:28:04 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:04 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 165
+[ 8/Apr/2019 07:28:04 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:04 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 155
+[ 8/Apr/2019 07:28:04 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:05 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 145
+[ 8/Apr/2019 07:28:05 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:05 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 135
+[ 8/Apr/2019 07:28:05 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:06 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 125
+[ 8/Apr/2019 07:28:06 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:06 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 115
+[ 8/Apr/2019 07:28:06 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:07 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 105
+[ 8/Apr/2019 07:28:07 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:07 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 95
+[ 8/Apr/2019 07:28:07 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:07 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 85
+[ 8/Apr/2019 07:28:07 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:08 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 75
+[ 8/Apr/2019 07:28:08 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:08 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 65
+[ 8/Apr/2019 07:28:08 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:08 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 55
+[ 8/Apr/2019 07:28:08 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:09 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 45
+[ 8/Apr/2019 07:28:09 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:09 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 35
+[ 8/Apr/2019 07:28:09 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:09 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 25
+[ 8/Apr/2019 07:28:09 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:10 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 15
+[ 8/Apr/2019 07:28:10 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:10 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 5
+[ 8/Apr/2019 07:28:10 AM] : [Pagination] | 
+[ 8/Apr/2019 07:28:11 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 0
+[ 8/Apr/2019 07:28:11 AM] : [Pagination] | 
