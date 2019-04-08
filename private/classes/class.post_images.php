@@ -54,11 +54,11 @@ class PostImage extends FileUpload {
     // utility properties
     public static $session_post_ids = "post_ids";
     public static $are_there_latest_posts = "latest_post";
-    public static $max_post_id             = "post_max_id";
+    public static $post_max_id             = "post_max_id";
 
 
 
-    public static function get_activities_counts(){
+    public static function get_activities_counts($stream_type = null){
         global $db;
 
         $query  = "SELECT MAX(".PostImage::$id.") AS ".PostImage::$post_max_id." FROM ".self::$table_name;
@@ -70,7 +70,13 @@ class PostImage extends FileUpload {
 
                 if($result = $db->store_result()){
                     if($row = $result->fetch_assoc()){
-                       $_SESSION[PostImage::$post_max_id] = $row[PostImage::$post_max_id];  
+                        if($row[PostImage::$post_max_id] == NULL || $row[PostImage::$post_max_id] < 1){
+                            $_SESSION[$stream_type] = -1;
+
+                        }else{
+                            $_SESSION[$stream_type] = $row[PostImage::$post_max_id];
+                        }
+                        
                     }
 
                 }

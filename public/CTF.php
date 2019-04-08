@@ -122,11 +122,42 @@ div {
  </form>
  
  <?php
+	$query  = "SELECT MAX(".PostImage::$id.") AS ".PostImage::$post_max_id." FROM ".PostImage::$table_name." WHERE ".PostImage::$id." < ".$_SESSION[STREAM_HOME];
+	$db->query($query);
 
-$arr = [3,4,5,6,7,8,9,0,5356];
 
-echo array_key_first($arr);
-echo $arr[array_key_last($arr)];
+	  if($result = $db->query($query)){
+	if($row = $result->fetch_assoc()){
+	 
+     if($row[PostImage::$post_max_id] >= 1){
+		echo "by the side";
+			 // if there are still posts then get the immediate
+			 // highest post id in the database following the highest post id 
+			 // in the session.
+      $_SESSION[STREAM_HOME] = $row[PostImage::$post_max_id];
+		 }elseif($_SESSION[STREAM_HOME] == 0 && $row[PostImage::$post_max_id] == NULL){
+				 echo "here n";
+				print j(["true" =>"no_posts"]);
+				return false;
+			 
+			}elseif( $row[PostImage::$post_max_id] == NULL){
+				  
+				 print j(["true" => "no_more_posts"]);
+				 return false;
+			}
+			
+	}elseif(trim($db->error) != ""){
+
+		Errors::trigger_error(RETRY);
+		 return false;
+		}
+
+		}elseif(trim($db->error) != ""){
+			log_action(__CLASS__,"db erorr::::::".$db->error);
+			Errors::trigger_error(RETRY);
+			 return false;
+			}
+die();
 echo "<pre>";
  Pagination::get_infinite_scroll(STREAM_HOME);
  echo "</pre>";

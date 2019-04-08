@@ -1,4 +1,28 @@
-[ 7/Apr/2019 12:22:39 PM] : [Pagination] | 0
-[ 7/Apr/2019 05:09:46 PM] : [Pagination] | 50
-[ 7/Apr/2019 05:10:14 PM] : [Pagination] | 100
-[ 7/Apr/2019 05:10:27 PM] : [Pagination] | 150
+[ 8/Apr/2019 06:56:08 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
+JOIN users ON 
+post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -276 && post_table.id >= -286 ORDER BY upload_time DESC LIMIT 50
+[ 8/Apr/2019 06:56:08 AM] : [Pagination] | -276
+[ 8/Apr/2019 06:56:08 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
+JOIN users ON 
+post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -276 && post_table.id >= -286 ORDER BY upload_time DESC LIMIT 50this is the post max id on line: 776
+[ 8/Apr/2019 06:56:43 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
+JOIN users ON 
+post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -286 && post_table.id >= -296 ORDER BY upload_time DESC LIMIT 50
+[ 8/Apr/2019 06:56:43 AM] : [Pagination] | -286
+[ 8/Apr/2019 06:56:43 AM] : [Pagination] | SELECT MAX(id) AS post_max_idFROM post_table WHERE id < -286this is the post max id on line: 777
+[ 8/Apr/2019 06:57:58 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
+JOIN users ON 
+post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -286 && post_table.id >= -296 ORDER BY upload_time DESC LIMIT 50
+[ 8/Apr/2019 06:57:58 AM] : [Pagination] | -286
+[ 8/Apr/2019 06:58:51 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
+JOIN users ON 
+post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= -286 && post_table.id >= -296 ORDER BY upload_time DESC LIMIT 50
+[ 8/Apr/2019 06:58:51 AM] : [Pagination] | -286
+[ 8/Apr/2019 06:58:51 AM] : [Pagination] | db erorr::::::You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'post_table WHERE id < -286' at line 1
+[ 8/Apr/2019 06:59:25 AM] : [class] | SELECT MAX(id) AS post_max_idFROM post_table WHERE id < -286
+[ 8/Apr/2019 06:59:25 AM] : [Pagination] | db erorr::::::You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'post_table WHERE id < -286' at line 1
+[ 8/Apr/2019 07:00:44 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < -286
+[ 8/Apr/2019 07:01:11 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < -296
+[ 8/Apr/2019 07:01:16 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < -306
+[ 8/Apr/2019 07:01:16 AM] : [Pagination] | 
+[ 8/Apr/2019 07:01:56 AM] : [] | 

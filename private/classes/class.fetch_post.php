@@ -1121,7 +1121,7 @@ foreach ($returned_array as $posts_info => $images_or_info){
 			  
         return true; 
 		 }else{
-		print j(["true"=>"no_more_posts"]);
+		  print j(["true" =>"no_more_posts"]);
 		
 		$_SESSION["scroll_ready_state"] = true;
         return true; 
