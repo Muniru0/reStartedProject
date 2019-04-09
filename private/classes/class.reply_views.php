@@ -55,8 +55,6 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	$time = time();
 	
 	
-	
-	
 	  if( !isset($_SESSION) || $_SESSION["id"] < 0 || !isset($_SESSION[user::$firstname]) || !isset($_SESSION[user::$lastname]) || empty(trim($_SESSION[user::$firstname])) || empty(trim($_SESSION["lastname"]))){
 		  
 			Errors::trigger_error(INVALID_SESSION);
@@ -79,7 +77,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	}
 	
 	// return a new_comment_id  in case the id is to be used to delete the comment
-	$view_id = $stmt ->insert_id;
+	$reply_id = $stmt ->insert_id;
 	  
 	  if($result = $stmt->get_result()){
 		    if($row = $result->fetch_assoc()){
@@ -100,11 +98,11 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 			"comment_id" => $comment_id,
 			"reply" => $reply,
 			"reply_time" =>$formatted_reply_time,
-			"fullname" => $_SESSION[user::$firstname]." ".$_SESSION[user::$firstname],
+			"fullname" => $_SESSION[user::$firstname]." ".$_SESSION[user::$lastname],
 			"reply_date" => $post_date]);
 
-			Notifications::send_notification($post_id,$comment_id,$row["new_reply_id"],$_SESSION[user::$firstname],NEW_REPLY_COMMENT,$time);
- }elseif(Isset($row["invalid_request"])){
+
+ }elseif(isset($row["invalid_request"])){
 	 Errors::trigger_error(RETRY);
 	
 	 return false;
@@ -114,8 +112,12 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	return false;
  }   
 			}
-	  }
+		}
+		$stmt->close();
 	
+
+// trigger a notification
+Notifications::send_notification($post_id,$comment_id,$reply_id,NEW_REPLY_COMMENT);
  
 }
 
@@ -343,7 +345,7 @@ return $record;
 		   if($row = $result->fetch_assoc()){
          if($db->affected_rows == 1){
 				print j(["reply_delete"=>"success"]);
-				Notifications::send_notification("NULL",$comment_id,$reply_id,$user_id,DELETE_REPLYVIEW,time());
+				Notifications::send_notification("NULL",$comment_id,$reply_id,DELETE_REPLYVIEW);
 				return;
 				 }
 			 }

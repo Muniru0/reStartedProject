@@ -57,6 +57,7 @@
         // set the like comment or reply query		
 		 $query = "CALL like_comment_replys({$post_id},{$comment_id},{$reply_id},{$_SESSION["id"]},'{$_SESSION["firstname"]}','{$_SESSION["lastname"]}',{$time},{$flag})";
 
+		  $notification_type = "";
 		// perform the query	
 		if($db->multi_query($query)){
 			
@@ -71,16 +72,16 @@
 			  		
 			  $likes = (int)$row["likes"];
 			   if(is_int($likes)){
-				   		 
+				  
 					 print j(["likes" => $likes]);
-					 if($row["result"] == "like_comment"){
-            Notifications::send_notification($post_id,$comment_id,NULL,$user_id,LIKED_COMMENT,$time);
-					 }elseif($row["result"] == "like_reply"){
-						Notifications::send_notification($post_id,$comment_id,$reply_id,$user_id,LIKED_REPLY,$time);
-					 }
+				
+					
 			   }
-			  return;
-		  }
+			  
+			}
+			
+			$notification_type = $row["result"];
+		
 			 }
 			 
 			 $result->free();
@@ -98,9 +99,23 @@
 	
 }else{
 	
-	print j(["false"=>"Please try again later"]);	
+ Errors::trigger_error(RETRY);
+ return false;
 	
 }
+
+if(trim($notification_type) == LIKE_COMMENT){
+	Notifications::send_notification($post_id,$comment_id,"NULL",LIKE_COMMENT);
+ }elseif(trim($notification_type) == UNLIKE_COMMENT){
+	Notifications::send_notification($post_id,$comment_id,"NULL",UNLIKE_COMMENT);
+ }elseif(trim($notification_type) == LIKE_REPLY){
+	Notifications::send_notification($post_id,$comment_id,$reply_id,LIKE_REPLY);
+ }elseif(trim($notification_type) == UNLIKE_REPLY){
+	Notifications::send_notification($post_id,$comment_id,$reply_id,UNLIKE_REPLY);
+ }
+
+
+
 	}// like();
 	
 	

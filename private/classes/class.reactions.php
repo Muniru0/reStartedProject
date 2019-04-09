@@ -86,16 +86,16 @@ if($db->multi_query($query)){
  
 switch ($notification_type) {
   case NEW_SUPPORT:
-  Notifications::send_notification($post_id,"NULL","NULL",$user_id,NEW_SUPPORT);
+  Notifications::send_notification($post_id,"NULL","NULL",NEW_SUPPORT);
     break;
     case NEW_OPPOSE:
-Notifications::send_notification($post_id,"NULL","NULL",$user_id,NEW_OPPOSE);
+Notifications::send_notification($post_id,"NULL","NULL",NEW_OPPOSE);
     break;
      case ALT_SUPPORT:
-Notifications::send_notification($post_id,"NULL","NULL",$user_id,ALT_SUPPORT);
+Notifications::send_notification($post_id,"NULL","NULL",ALT_SUPPORT);
     break;
      case ALT_OPPOSE:
-Notifications::send_notification($post_id,"NULL","NULL",$user_id,ALT_OPPOSE);
+Notifications::send_notification($post_id,"NULL","NULL",ALT_OPPOSE);
     break;
   default:
   

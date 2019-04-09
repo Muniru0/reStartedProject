@@ -174,8 +174,6 @@ class comment {
       }).done(function (response) {
 
 
-        console.log(response);
-
 
         if ($.trim(response["false"]) != "" && response["false"] == undefined) {
           utility.showErrorDialogBox(response["false"]);
@@ -272,7 +270,7 @@ class comment {
       if ($(comment_template).find(".actaction-edit")[0]) {
         actionsLink = $(comment_template).find(".actaction-edit")[0];
         // change the onclick attribute of the link 
-        $(actionsLink).attr("onclick", "comment.prepare_edit_comment(" + response["comment_info"]["incident_id"] + "," + response["comment_info"]["incident_id"] + ",this,'comment'); return false;");
+        $(actionsLink).attr("onclick", "comment.prepare_edit_comment(" + response["comment_info"]["incident_id"] + "," + response["comment_info"]["comment_id"] + ",this,'comment'); return false;");
       }
 
 
@@ -333,12 +331,20 @@ class comment {
       let commentsTextAreaWrapper = document.querySelector("#comment_area_wrapper_" + response["comment_info"]["incident_id"]);
 
 
-      let commentsContainer = $(commentsTextAreaWrapper).siblings(".ps-comment-container");
+      let commentsContainer = $(commentsTextAreaWrapper).siblings(".ps-comment-container")[0];
       // append the comment to the comments_container 
       $(commentsContainer).append(comment_template);
       $(commentsContainer).append(reply_template);
 
       $(comment_template).fadeIn(690);
+      // after you show the comment, scroll the comments container
+      // just the case the new comment is invisible
+      if(commentsContainer.scrollHeight != undefined){
+         commentsContainer.scrollTop = commentsContainer.scrollHeight;
+      }
+     
+    
+
 
        
   }
@@ -652,7 +658,7 @@ class comment {
 
 
 
- try {
+ 
       // check and initialize the text area variable for both the reply and comments 
       // find the text area associated with the comments  or replys
       switch (option) {
@@ -714,6 +720,8 @@ class comment {
         newComment = $(textArea).val();
       }
 
+   
+
       // check and initialize the grandParent of the post button
       if ($(textArea) && $(textArea).parents()[2]) {
         grandParent = $(textArea).parents()[2];
@@ -739,7 +747,7 @@ class comment {
 
       }
 
-
+try { 
       $.ajax({
         url: "../private/neutral_ajax.php",
         type: "POST",
@@ -747,7 +755,7 @@ class comment {
         datatype: "html"
       }).done(function(response) {
 
-
+           
         response = JSON.parse($.trim(response));
         if (response["true"] && $.trim(response["true"] != "")) {
 
@@ -845,6 +853,7 @@ class comment {
       return false;
     }
 
+ 
 
     let commentDiv = "";
     let commentPargh;
@@ -928,7 +937,13 @@ class comment {
     if ($(commentArea) && $.trim(commentArea) != "" && $.trim(oldComment) != "") {
       // replace the line breaks in the string with empty string
       // oldComment = utility.replaceString("<br>","", oldComment);
-      // populate the text area with the old comment      
+      // populate the text area with the old comment  
+       if($(element).attr("data-edit-id") != undefined && $(element).attr("data-edit-id") != "edited"){
+    oldComment = oldComment.split("<br>").join("<br />");
+      $(element).attr("data-edit-id","true");
+  }   
+   
+  //oldComment = oldComment.split("<br>").join("<br />");
       $(commentArea).val(oldComment);
       $(commentArea).trigger("paste");
 

@@ -27,15 +27,21 @@ class Notifications extends DatabaseObject {
 
 
 
-  public  static function send_notification($post_id =  "NULL",$comment_id = "NULL",$reply_id = "NULL",$user_id = 0,$type = ''){
+  public  static function send_notification($post_id =  "NULL",$comment_id = "NULL",$reply_id = "NULL",$type = ''){
 	
 		global $db;
 
+		  if(!isset($_SESSION[user::$id]) || !isset($_SESSION[user::$firstname]) || !isset($_SESSION[user::$lastname])){
+			
+				 Errors::trigger_error(INVALID_SESSION);
+				return false;
+			}
 
-	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},{$user_id},'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."','".$type."',".time().") ON DUPLICATE KEY UPDATE ".self::$id." = ".self::$id." + 1";
-	 
+	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},".$_SESSION[user::$id].",'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."','".$type."',".time().") ON DUPLICATE KEY UPDATE ".self::$id." = ".self::$id." + 1";
+	
 	$result = $db->query($query);
 	if(!$result){
+		log_action(__CLASS__,$db->error);
  log_action(__CLASS__,"FAILED NOTIFICATION: post_id:{$post_id}, commment_id: {$comment_id}, reply_id: {$reply_id}, user_id: ".$_SESSION[user::$id]." type: {$type} ");
 		return false;
 	}else{

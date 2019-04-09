@@ -312,7 +312,7 @@ class Views extends DatabaseObject{
     $view_info["c_time"] = FetchPost::time_converter($view_info["comment_time"]);
 	print j(["comment_div_id" => "new_comment_{$view_id}","comment_info" => $view_info,"fullname" => $firstname." ".$lastname,"comment_date" => $post_date]);
 
-	  Notifications::send_notification($post_id,$view_info["comment_id"],"NULL",$user_id,NEW_COMMENT);
+	  Notifications::send_notification($post_id,$view_info["comment_id"],"NULL",NEW_COMMENT);
 
 		
  }else{
@@ -396,7 +396,7 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
 		 return;
 	 }
 	 
-	
+	$notification_type = "";
 	 
   $result = $db->multi_query($query);
    do{
@@ -405,14 +405,12 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
 				// send the response to the client
 				if(isset($row["comment"]) && trim($row["comment"]) != ""){
 					print j(["true" => $row["comment"]]);
-					// send an appropriate notification to the appropriate 
-					Notifications::send_notification($postCommentID,$commentReplyID,$user_id,EDITTED_COMMENT,$time);
-					return;
+					// set the notification type variable
+					$notification_type = $row[EDIT_COMMENT] ?? EDIT_COMMENT;
 				}elseif(isset($row["reply"]) && trim($row["reply"]) != ""){
 					print j(["true" => $row["reply"]]);
-					// send an appropriate notification to the appropriate 
-					Notifications::send_notification(NULL,$postCommentID,$commentReplyID,$user_id,EDITTED_REPLY,$time);
-					return;
+					// set the notification type variable
+					$notification_type = $row[EDIT_REPLY] ?? EDIT_REPLY;
 				}else{
 					Errors::trigger_error(RETRY);
 					return;
@@ -433,6 +431,14 @@ public static function edit_view($postCommentID = 0,$commentReplyID = 0,$comment
   
 
 
+// trigger the edit of comment notification
+	 if($notification_type == EDIT_COMMENT){
+		Notifications::send_notification($postCommentID,$commentReplyID,"NULL",EDIT_COMMENT);
+	 }elseif($notification_type == EDIT_REPLY){
+		Notifications::send_notification("NULL",$postCommentID,$commentReplyID,EDIT_REPLY);
+	 }
+
+	 
 }// edit_view();
 
 
@@ -508,7 +514,7 @@ public static function delete_view ($post_id = 0 ,$comment_id = 0){
 	if($result = $db->query($query)){
     if($db->affected_rows == 1 && $db->error == ""){
 				print j(["comment_delete"=>"success"]);
-				Notifications::send_notification($post_id,$comment_id,"NULL",$user_id,$_SESSION[user::$firstname],$_SESSION[user::$lastname],DELETE_VIEW);
+				Notifications::send_notification($post_id,$comment_id,"NULL",DELETE_VIEW);
 				return;
 			}
 		

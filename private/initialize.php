@@ -120,10 +120,15 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 !defined("DELETE_REPLYVIEW")               ?  define("DELETE_REPLYVIEW","delete_reply_view")   : null;
 
-!defined("LIKED_COMMENT")               ?  define("LIKED_COMMENT","liked_comment")   : null;
+!defined("LIKE_COMMENT")               ?  define("LIKE_COMMENT","like_comment")   : null;
 
 
-!defined("LIKED_REPLY")               ?  define("LIKED_REPLY","liked_reply")   : null;
+!defined("LIKE_REPLY")               ?  define("LIKE_REPLY","like_reply")   : null;
+
+!defined("UNLIKE_COMMENT")               ?  define("UNLIKE_COMMENT","unlike_comment")   : null;
+
+
+!defined("UNLIKE_REPLY")               ?  define("UNLIKE_REPLY","unlike_reply")   : null;
 
 !defined("ALT_SUPPORT")               ?  define("ALT_SUPPORT","alt_support")   : null;
 
@@ -133,9 +138,8 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 !defined("NEW_REPLY_COMMENT")               ?  define("NEW_REPLY_COMMENT","new_reply_comment")   : null;
 
 
-!defined("EDITTED_COMMENT")               ?  define("EDITTED_COMMENT","editted_comment")   : null;
-
-!defined("EDITTED_REPLY")               ?  define("EDITTED_REPLY","editted_comment")   : null;
+!defined("EDIT_COMMENT")             ?  define("EDIT_COMMENT","edit_comment")   : null;
+!defined("EDIT_REPLY")               ?  define("EDIT_REPLY","edit_comment")   : null;
 
 
 !defined("DELETE_VIEW")               ?  define("DELETE_VIEW","delete_view")   : null;

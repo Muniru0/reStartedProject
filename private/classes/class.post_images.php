@@ -360,7 +360,7 @@ if(self::normalize_post($post_id,$filenames))
 {    
     // the post has being uploaded successful trigger a notification
 
-Notifications::send_notification($post_id,"NULL","NULL",$uploader_id,NEW_POST);
+Notifications::send_notification($post_id,"NULL","NULL",NEW_POST);
 	
 
 
@@ -459,7 +459,7 @@ Notifications::send_notification($post_id,"NULL","NULL",$uploader_id,NEW_POST);
     }
 
      
-    Notifications::send_notification($post_id,"NULL","NULL",$user_id,EDIT_POST);
+    Notifications::send_notification($post_id,"NULL","NULL",EDIT_POST);
      
  }// edit_post();    
 
@@ -535,12 +535,12 @@ if($db->multi_query($query)){
 if(isset($row["result"]) && $row["result"] == "confirmed"){
 					  
                     print j(["confirmation" => "success"]);
-                    Notifications::send_notification($post_id,NULL,NULL,$id,CONFIRMED_POST,time());
+                    Notifications::send_notification($post_id,"NULL","NULL",CONFIRMED_POST);
 					return;
 				}  elseif(isset($row["result"]) && $row["result"] == "reverse_confirmation"){
 					$_SESSION[user::$invalid_confirmations] = $_SESSION[user::$invalid_confirmations]++;
                     print j(["reverse_confirmation"=>"success"]);
-                    Notifications::send_notification($post_id,NULL,NULL,$id,REVERSE_CONFIRMATION,time());
+                    Notifications::send_notification($post_id,"NULL","NULL",REVERSE_CONFIRMATION);
 					return;
 				}
     elseif(isset($row["result"]) && $row["result"] == "duplicate_confirmation"){
@@ -594,7 +594,7 @@ if(isset($row["result"]) && $row["result"] == "confirmed"){
         Errors::trigger_error(SERVER_PROBLEM);
 		return;
 	}elseif($db->affected_rows == 1){
-        Notifications::send_notification($post_id,"NULL","NULL",$user_id,DELETE_POST);
+        Notifications::send_notification($post_id,"NULL","NULL",DELETE_POST);
 		print j(["delete_post" => "success"]);
 	}
 	

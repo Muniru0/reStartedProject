@@ -314,14 +314,14 @@ elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "reply_commen
 	global $db;
 	$post_id    = (int)$db->real_escape_string($_POST["post_id"]);
 	$comment_id = (int)$db->real_escape_string($_POST["comment_id"]);
-	 log_action(__CLASS__,"here".__LINE__);
+	
 	  
 	  
 	  $_POST["reply"] = nl2br($_POST["reply"]);
 		
       // check if the comment is empty or set	  
 	  if(!isset($_POST["reply"]) || empty(trim($_POST["reply"]))){
-		  print j(["false" => "Please reply can't be empty"]);
+		  print j(["false" => "Please the reply can't be empty"]);
 		
 		  return false;
 	  }   
@@ -339,7 +339,7 @@ elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "reply_commen
 	  if(!isset($post_id)    || $post_id < 1    || !is_int($post_id) ||
 		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
 			 
-		  print j(["false" => "Please try again... if the problem persist refresh the page"]); 
+			Errors::trigger_error(RE_INITIATE_OPERATION);
 		  return false;
 	  }   
 	
@@ -347,15 +347,12 @@ elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "reply_commen
 		 if(!in_array($post_id,$_SESSION["post_ids"]) || 
 		    !in_array($comment_id,$_SESSION["comment_ids"]))
 		 {
-		    print j(["false" => "Please try again... if the problem persist refresh the page "]); 
+		  Errors::trigger_error(RE_INITIATE_OPERATION);
 			
-			  print_r($_SESSION["comment_ids"]);
-	 log_action(__CLASS__,"post id is an integer: {$post_id}, comment id is an integer: {$comment_id}");
-	    
 			return false;
 		 }
 		 
-		 log_action(__CLASS__,"here".__LINE__);
+		 
 		
 		  ReplyViews::reply_views($post_id,$comment_id,$_POST["reply"]);	
 	  
