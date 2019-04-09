@@ -67,6 +67,9 @@ class PostImage extends FileUpload {
     public static $transport                = "transport";
     public static $other                    = "other";
    
+
+    //get the counts for the number of notifications,pending connections,
+    // number of each of the various communities latest posts
     public static function get_activities_counts($stream_type = null){
         global $db;
 

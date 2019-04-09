@@ -10,8 +10,6 @@ class Pagination extends DatabaseObject {
 	
 	
 	
-	
-	
 	// get infinite scroll	
 public static function get_infinite_scroll($stream_type = "",$stream_type_id = null){
     

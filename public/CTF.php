@@ -122,70 +122,69 @@ div {
  </form>
  
  <?php
-	$query  = "SELECT MAX(".PostImage::$id.") AS ".PostImage::$post_max_id." FROM ".PostImage::$table_name." WHERE ".PostImage::$id." < ".$_SESSION[STREAM_HOME];
-	$db->query($query);
+ 
+// 	$query  = "SELECT MAX(".PostImage::$id.") AS ".PostImage::$post_max_id." FROM ".PostImage::$table_name." WHERE ".PostImage::$id." < ".$_SESSION[STREAM_HOME];
+// 	$db->query($query);
 
 
-	  if($result = $db->query($query)){
-	if($row = $result->fetch_assoc()){
+// 	  if($result = $db->query($query)){
+// 	if($row = $result->fetch_assoc()){
 	 
-     if($row[PostImage::$post_max_id] >= 1){
-		echo "by the side";
-			 // if there are still posts then get the immediate
-			 // highest post id in the database following the highest post id 
-			 // in the session.
-      $_SESSION[STREAM_HOME] = $row[PostImage::$post_max_id];
-		 }elseif($_SESSION[STREAM_HOME] == 0 && $row[PostImage::$post_max_id] == NULL){
-				 echo "here n";
-				print j(["true" =>"no_posts"]);
-				return false;
+//      if($row[PostImage::$post_max_id] >= 1){
+// 		echo "by the side";
+// 			 // if there are still posts then get the immediate
+// 			 // highest post id in the database following the highest post id 
+// 			 // in the session.
+//       $_SESSION[STREAM_HOME] = $row[PostImage::$post_max_id];
+// 		 }elseif($_SESSION[STREAM_HOME] == 0 && $row[PostImage::$post_max_id] == NULL){
+// 				 echo "here n";
+// 				print j(["true" =>"no_posts"]);
+// 				return false;
 			 
-			}elseif( $row[PostImage::$post_max_id] == NULL){
+// 			}elseif( $row[PostImage::$post_max_id] == NULL){
 				  
-				 print j(["true" => "no_more_posts"]);
-				 return false;
-			}
+// 				 print j(["true" => "no_more_posts"]);
+// 				 return false;
+// 			}
 			
-	}elseif(trim($db->error) != ""){
+// 	}elseif(trim($db->error) != ""){
 
-		Errors::trigger_error(RETRY);
-		 return false;
-		}
+// 		Errors::trigger_error(RETRY);
+// 		 return false;
+// 		}
 
-		}elseif(trim($db->error) != ""){
-			log_action(__CLASS__,"db erorr::::::".$db->error);
-			Errors::trigger_error(RETRY);
-			 return false;
-			}
-die();
-echo "<pre>";
- Pagination::get_infinite_scroll(STREAM_HOME);
- echo "</pre>";
+// 		}elseif(trim($db->error) != ""){
+// 			log_action(__CLASS__,"db erorr::::::".$db->error);
+// 			Errors::trigger_error(RETRY);
+// 			 return false;
+// 			}
+// die();
+// echo "<pre>";
+//  Pagination::get_infinite_scroll(STREAM_HOME);
+//  echo "</pre>";
 
-//Notifications::get_latest_notifications();
+// //Notifications::get_latest_notifications();
 
  function test_function($id = null){global $db;
 	
-	 $result = $db->query("SELECT notifications.*,views.commentor_id AS views_commentor_id, reply_views.user_id AS reply_views_user_id, post_table.uploader_id AS post_table_uploader_id FROM notifications JOIN follow_posts ON follow_posts_follower_id = notifications_user_id LEFT JOIN connect_users ON notifications_user_id = connect_users_followed_id LEFT JOIN post_table ON notifications_post_id = post_table.id LEFT JOIN views ON views.id = notifications_comment_id LEFT JOIN reply_views ON reply_views.id = notifications_reply_id WHERE (follow_posts_follower_id = ".$_SESSION[user::$id]." || connect_users_followed_id = ".$_SESSION[user::$id].") && notifications_user_id != ".$_SESSION[user::$id]."  ORDER BY notifications_time DESC");
+	 $result = $db->query(" SELECT * FROM notifications JOIN follow_posts ON follow_posts_post_id = notifications_post_id LEFT JOIN connect_users ON connect_users_follower_id = 1");
 	 
 	 if($result->num_rows > 0){
 		 $array = [];
 	 while($row = $result->fetch_assoc()){
-     if(!array_key_exists($row["notifications_id"],$array)){
-
-			 $array[$row["notifications_id"]] = $row;
-		 }
+		echo "<pre>";
+		print_r($row);
+		echo "</pre>";
 	 }
 
-	 echo "<pre>";
-	 print_r($array);
-	 echo "</pre>";
+	
 	 }else{echo $db->error;}
  }
  
  
+
+ test_function();
  die();
- test_calling_functions();
   $a = explode("?","hello");
   if(count($a) > 1){
 	echo "how to make things move";  

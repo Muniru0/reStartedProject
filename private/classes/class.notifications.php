@@ -33,11 +33,10 @@ class Notifications extends DatabaseObject {
 
 
 	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},{$user_id},'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."','".$type."',".time().") ON DUPLICATE KEY UPDATE ".self::$id." = ".self::$id." + 1";
-	 log_action(__CLASS__,$query);
+	 
 	$result = $db->query($query);
 	if(!$result){
-     
-	 Errors::trigger_error(RETRY);
+ log_action(__CLASS__,"FAILED NOTIFICATION: post_id:{$post_id}, commment_id: {$comment_id}, reply_id: {$reply_id}, user_id: ".$_SESSION[user::$id]." type: {$type} ");
 		return false;
 	}else{
 
@@ -49,6 +48,7 @@ class Notifications extends DatabaseObject {
 	return false;
 	
 }// send_notification();	 
+
 
 
 

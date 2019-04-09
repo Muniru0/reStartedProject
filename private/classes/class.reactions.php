@@ -53,48 +53,55 @@ if( !isset($_SESSION[user::$id]) && !isset($_SESSION[user::$id])){
 $user_id = $_SESSION[user::$id];
 
 
-$query = "CALL  add_reactions($post_id,$user_id,$reactionType,".time().")";
+$query = "CALL  add_reaction($post_id,$user_id,$reactionType,".time().")";
   
-
+$notification_type = "";
+ 
 if($db->multi_query($query)){
 
   do{
+    
     if($result = $db->store_result()){
+     
       if($row = $result->fetch_assoc()){
         if((isset($row["support"]) && isset($row["oppose"]) && isset($row["id"])) && $row["id"] > 0 ){
         
    print j(["support" => "{$row["support"]}",
    "oppose"=>"{$row["oppose"]}","post_id"=>"{$row["id"]}"]);
   
-   switch ($row["notification_reaction_type"]) {
-     case NEW_SUPPORT:
-     Notifications::send_notification($post_id,"NULL","NULL",$user_id,NEW_SUPPORT);
-       break;
-       case NEW_OPPOSE:
-  Notifications::send_notification($post_id,"NULL","NULL",$user_id,NEW_OPPOSE);
-       break;
-        case ALT_SUPPORT:
-  Notifications::send_notification($post_id,"NULL","NULL",$user_id,ALT_SUPPORT);
-       break;
-        case ALT_OPPOSE:
-  Notifications::send_notification($post_id,"NULL","NULL",$user_id,ALT_OPPOSE);
-       break;
-     default:
-     Errors::trigger_error(RETRY);
-       break;
-   }
-  
-  
-   
+      $notification_type = $row["notification_reaction_type"];
+      }else{
+        log_action(__CLASS__,$db->error.__LINE__);
       }
      }
     
 
+    }else{
+      log_action(__CLASS__,$db->error.__LINE__);
     }
   }while($db->more_results() && $db->next_result());
+}else{
+  log_action(__CLASS__,$db->error.__LINE__);
 }
  
-
+switch ($notification_type) {
+  case NEW_SUPPORT:
+  Notifications::send_notification($post_id,"NULL","NULL",$user_id,NEW_SUPPORT);
+    break;
+    case NEW_OPPOSE:
+Notifications::send_notification($post_id,"NULL","NULL",$user_id,NEW_OPPOSE);
+    break;
+     case ALT_SUPPORT:
+Notifications::send_notification($post_id,"NULL","NULL",$user_id,ALT_SUPPORT);
+    break;
+     case ALT_OPPOSE:
+Notifications::send_notification($post_id,"NULL","NULL",$user_id,ALT_OPPOSE);
+    break;
+  default:
+  
+ // Errors::trigger_error(RETRY);
+    break;
+}
 		 
 	 
  

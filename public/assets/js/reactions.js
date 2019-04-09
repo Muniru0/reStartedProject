@@ -11,8 +11,8 @@ class reaction {
  // add a reaction
  static addReaction(postID = 0,reactionValue = null,targetElement){
 	 
-		let opposeLabel = "";
-		let supportLabel = "";
+	let opposeLabel = "";
+	let supportLabel = "";
 	let supportCount = "";
 	let opposeCount = "";
 	let parent   = $(targetElement).parent();
@@ -135,7 +135,7 @@ class reaction {
 		 $.ajax({
 			 url: "../private/neutral_ajax.php",
 			 type: "POST",
-			 data: {reaction_param:reactionValue,post_id: postID},
+			 data: {reaction_param:reactionValue,post_id: postID,request_type: "add_reaction"},
 			 dataType:"html"
 		 }).done(function(response){
 								

@@ -659,11 +659,11 @@ elseif(isset($_POST) && isset($_POST["request_type"]) && (trim($_POST["request_t
 	
 }
 // reactions 
-elseif(isset($_POST["request_type"]) && !empty($_POST["request_type"]) === "add_reaction"){
+elseif(isset($_POST["request_type"]) && !empty($_POST["request_type"])  && trim($_POST["request_type"]) === "add_reaction"){
 	   
 	 
 	   
-	if(!isset( $_POST["reaction_param"]) || !isset( $_POST["post_id"])){
+	if(!isset( $_POST["reaction_param"]) || !isset( $_POST["post_id"]) ){
 	    print j(["false"=>"Please try again, if problem persists refresh the page"]);
 		return;
    }
