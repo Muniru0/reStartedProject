@@ -173,8 +173,7 @@ class FetchPost extends DatabaseObject{
 
 	// get the post options template
 	public static function get_post_options($user_id = 0,$post_id = 0,$firstname = "",$lastname = "",$confirmation = 0,$confirmer = 0){
-		
-		log_action(__CLASS__,"Confirmer: {$confirmer} ".$confirmation." post_Id: {$post_id}, :LINE: ".__LINE__);
+ 
 		
 		if($_SESSION["id"] < 1){
 			 
@@ -251,11 +250,14 @@ class FetchPost extends DatabaseObject{
 		
 		  $confirmation_option_string = "<a href='javascript:' onclick='post_options(0,{$post_id},this)' data-post-id='930' title='You can confirm that this incident really took place' class='confirm_post'><i class='fal fa-check-circle' style='color:inherit;'></i><span  style='color:inherit; margin-left:0.4em'>Confirm  this post</span>
 </a>";
-
+// user being able to reverse the confirmation of their own posts
 	}elseif(isset($confirmer) && ($confirmer == $_SESSION[user::$id]) && $confirmation == 1){
 		
 	    $confirmation_option_string = "<a href='javascript:' onclick='post_options(0,{$post_id},this,'reverse_confirmation')' data-post-id='930' title='You can reverse the the confirmation of this post' class='reverse_confirmation'><i class='fal fa-undo-alt' style='color:inherit !important'></i><span style='color:inherit; margin-left:0.4em'>Reverse Confirmation</span>
 </a>";
+// if some else confirm the post don't be able to reverse it
+   }elseif(isset($confirmer) && ($confirmer != $_SESSION[user::$id]) && $confirmation == 1){
+	$confirmation_option_string = "";
    }
 
 }	
