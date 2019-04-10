@@ -172,13 +172,17 @@ class FetchPost extends DatabaseObject{
     }
 
 	// get the post options template
-	public static function get_post_options($user_id = 0,$post_id = 0,$firstname = "",$lastname = "",$links_array = [],$following_array = [],$confirmation_eligibility = 0 ,$confirmation = 0,$confirmer = 0){
+	public static function get_post_options($user_id = 0,$post_id = 0,$firstname = "",$lastname = "",$confirmation = 0,$confirmer = 0){
 		
-		 if($_SESSION["id"] < 1){
+		log_action(__CLASS__,"Confirmer: {$confirmer} ".$confirmation." post_Id: {$post_id}, :LINE: ".__LINE__);
+		
+		if($_SESSION["id"] < 1){
 			 
 			print j(["false" => "Routine Security checks, please refresh the page and try again."]);
 			 return;
 		 }
+
+		
 		 
 		 // initialize the necessary variables
 		 // link user variables
@@ -205,7 +209,7 @@ class FetchPost extends DatabaseObject{
 			 $toggle_connect_title  = "You are connected to {$firstname} {$lastname}";
 		  }
 		 
-		
+		 
 		 // adjust the link user variables if the two 
 		 //users are linked
 		 if(in_array($post_id,$_SESSION[FollowPost::$session_string])){
@@ -220,19 +224,23 @@ class FetchPost extends DatabaseObject{
 		 // edit post html link 
 		$edit_post_string =  $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_edit({$_SESSION["id"]}, {$post_id},this); return false' ><i class='ps-icon-edit'></i><span>Edit Post</span>
 </a>";
+
         // delete post html link 
 		$delete_post_string = $_SESSION["id"] != $user_id ? "" : "<a href='javascript:' onclick='post_option_delete({$_SESSION["id"]}, {$post_id},this);' ><i class='ps-icon-trash'></i><span>Delete Post</span>
 </a> ";
 		
+
 		 // follow post html link 
 		$follow_post_string =  $_SESSION[user::$id] == $user_id ? "" : "<a href='javascript:' title='{$toggle_connect_title}' class='{$toggle_follow_post_class}' onclick='post_options(0,{$post_id},this,\"".$follow_post_string."\");' >
 		<i class='{$toggle_follow_post_icon}'></i><span>{$toggle_follow_post_html_string}</span>
 </a>";
-      
+	  
+
 		 // link user html link 
 	    $connect_user_string =  $_SESSION[user::$id] == $user_id ? "" :"<a href='javascript:' title='{$toggle_connect_title}' class='{$toggle_connect_class}' onclick='post_options({$user_id},{$post_id},this,\"".$connect_user_string."\");return false' ><i class='{$toggle_connect_icon}'></i><span>{$toggle_connect_string}  {$firstname} {$lastname}</span>
 </a>
 ";
+
 
   // declare and initialize the confirmation option string
   $confirmation_option_string = "";
@@ -244,7 +252,8 @@ class FetchPost extends DatabaseObject{
 		  $confirmation_option_string = "<a href='javascript:' onclick='post_options(0,{$post_id},this)' data-post-id='930' title='You can confirm that this incident really took place' class='confirm_post'><i class='fal fa-check-circle' style='color:inherit;'></i><span  style='color:inherit; margin-left:0.4em'>Confirm  this post</span>
 </a>";
 
-	}elseif(isset($confirmer) && $confirmer == $_SESSION["id"] && $confirmation == 1){
+	}elseif(isset($confirmer) && ($confirmer == $_SESSION[user::$id]) && $confirmation == 1){
+		
 	    $confirmation_option_string = "<a href='javascript:' onclick='post_options(0,{$post_id},this,'reverse_confirmation')' data-post-id='930' title='You can reverse the the confirmation of this post' class='reverse_confirmation'><i class='fal fa-undo-alt' style='color:inherit !important'></i><span style='color:inherit; margin-left:0.4em'>Reverse Confirmation</span>
 </a>";
    }
@@ -1084,9 +1093,9 @@ foreach ($returned_array as $posts_info => $images_or_info){
             $full_header   .= self::get_location_template($post_info[PostImage::$log],$post_info[PostImage::$lat]);
             // gets the time the post was uploaded
             $full_header   .= self::get_time_template($post_info[PostImage::$alias_of_id],$post_info[PostImage::$upload_time]);
-			
+			 
 			// add the manipulation options to the post header
-			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[user::$user_category],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);
+			$full_header    .= self::get_post_options($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$post_info[user::$firstname],$post_info[user::$lastname],$post_info[PostImage::$confirmation],$post_info[PostImage::$confirmer]);
 				
 			// get the images and their arrangements
 			$full_body     = self::images_layout_template($post_info[PostImage::$uploader_id],$post_info[PostImage::$alias_of_id],$images,$post_info[PostImage::$alias_of_files_count],$post_info[PostImage::$support],$post_info[PostImage::$oppose],$reaction_user_ids,$post_info[PostImage::$location],$post_info[PostImage::$title],$post_info[PostImage::$caption]);

@@ -13,7 +13,7 @@ $firstname = "";
 $lastname  =  "";
 
     
-if(isset($_SESSION) ){
+if(isset($_SESSION)){
 
 // when the user refreshes the page set the stream variables 
 // so that the posts can resume from the latest posts

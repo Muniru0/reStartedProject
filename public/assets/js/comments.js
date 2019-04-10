@@ -392,8 +392,8 @@ class comment {
   static delete_comment(postCommentID = 0, commentReplyID = 0, option = "comment") {
 
 
-
-    $("#delete-dialog").dialog({
+    option = $.trim(option);
+    $("#" + option + "-delete-dialog").dialog({
 
       classes: {
         "ui-dialog": "center-delete-text",
@@ -424,10 +424,7 @@ class comment {
           text: "Delete",
           click: function () {
             $(this).dialog("close");
-           let deleteButton =   $(this).delegateTarget;
-               $(deleteButton).addClass("ui_dialog_delete_button");
-
-            //validate the comment id
+           //validate the comment id
             if (commentReplyID == null ||
               commentReplyID == 0 ||
               commentReplyID == undefined ||
@@ -521,14 +518,14 @@ class comment {
               }
             }
 
-console.log("comment or reply_id faulty");
+
             $.ajax({
               url: "../private/neutral_ajax.php",
               type: "POST",
               data: { post_id: postCommentID, comment_id: commentReplyID, request_type: requestValue },
               datatype: "html"
             }).done(function (response) {
-      console.log(response);
+      
               // parse the json response  
               try {
                 response = JSON.parse($.trim(response));
@@ -573,9 +570,9 @@ console.log("comment or reply_id faulty");
       ]// buttons of ui-dialog
     });// dialog instantiation
 
-    $('.ui-dialog-titlebar').addClass("error-titlebar");
-    $(".ui-dialog-title").addClass("error-title");
-    $("#error-dialog").show();
+    // $('.ui-dialog-titlebar').addClass("error-titlebar");
+    // $(".ui-dialog-title").addClass("error-title");
+    
 
 
   }

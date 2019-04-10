@@ -524,7 +524,7 @@ Notifications::send_notification($post_id,"NULL","NULL",NEW_POST);
   // if check that the post hasn't already being confirmed   
 $query = "CALL confirm_post({$post_id},{$id})";    
 
-
+$notification_type = "";
 // perform the query on the database
 if($db->multi_query($query)){
 	 do{
@@ -532,23 +532,22 @@ if($db->multi_query($query)){
 		// store the result set
        	if($result = $db->store_result()){
 			if($row = $result->fetch_assoc()){
-if(isset($row["result"]) && $row["result"] == "confirmed"){
+if(isset($row["response"]) && $row["response"] == CONFIRM_POST){
 					  
-                    print j(["confirmation" => "success"]);
-                    Notifications::send_notification($post_id,"NULL","NULL",CONFIRMED_POST);
-					return;
-				}  elseif(isset($row["result"]) && $row["result"] == "reverse_confirmation"){
-					$_SESSION[user::$invalid_confirmations] = $_SESSION[user::$invalid_confirmations]++;
-                    print j(["reverse_confirmation"=>"success"]);
-                    Notifications::send_notification($post_id,"NULL","NULL",REVERSE_CONFIRMATION);
-					return;
-				}
-    elseif(isset($row["result"]) && $row["result"] == "duplicate_confirmation"){
+                    print j([CONFIRM_POST => "success"]);
+                    $notification_type = CONFIRM_POST;
+                   
+                }elseif(isset($row["response"]) && $row["response"] == REVERSE_CONFIRMED_POST){
+					
+                    print j([CONFIRM_POST => "failed"]);
+                    $notification_type = REVERSE_CONFIRMED_POST;
+                  }
+    elseif(isset($row["response"]) && $row["response"] == "duplicate_confirmation"){
 					print j(["false" =>"Please this post has already being confirmed by someone else"]);
                     return;
-	}elseif(isset($row["result"]) && $row["result"] == "invalid_confirmation"){
+	}elseif(isset($row["response"]) && $row["response"] == "invalid_confirmation"){
 					print j(["false" =>"Please you not eligible to confirm a post"]);
-
+                    $_SESSION[user::$invalid_confirmations] = $_SESSION[user::$invalid_confirmations]++;
 					return;
 				}
                
@@ -560,12 +559,16 @@ if(isset($row["result"]) && $row["result"] == "confirmed"){
 				}
                 
                
-			}
+            }
+            
+            $result->free();
 		}
 	 }while($db->more_results() && $db->next_result());
 	
 
 }
+
+Notifications::send_notification($post_id,"NULL","NULL",$notification_type);
    
    }//confirm_post();
 

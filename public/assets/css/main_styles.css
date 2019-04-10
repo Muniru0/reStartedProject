@@ -6,6 +6,12 @@
     min-width: 150px !important;
 }
 }
+
+
+    div.header{
+        z-index: 100000;
+    }
+
 	   .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon{
           border-style:none;
     }
@@ -20,6 +26,8 @@
         background: linear-gradient(to bottom,#ff8a00,#da1b60);
         font-weight: normal;
         font-family: 'Rubik',sans-serif !important;
+        text-align: center;
+        color: #fff;
         border: 0px;
     }
 
@@ -35,8 +43,8 @@
         font-family: 'Rubik',sans-serif !important;
     }
 
-    .ui-dialog-buttonset:nth-last-child{
-        background: linear-gradient(to bottom,#ff8a00,#da1b60);
+    .ui-button:last-child{
+    background: linear-gradient(to bottom,#ff8a00,#da1b60);
     color: #d7d4d4 !important;
     outline: none;
     border: 0px !important;
@@ -103,6 +111,13 @@
         /*color: #2b2b2b;*/
     /*}*/
 
+
+   
+    #pslocation{
+        z-index: 2000;
+    }
+
+    
     #dialog{
         color: #525e6f;
     }
@@ -179,7 +194,11 @@
            margin-right: 10px !important;
      }
 
-	
+    
+     .confirm_tag{
+         background: #3cbdac;
+     }
+
 	
  .reactions {
 	position: relative;

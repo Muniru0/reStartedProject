@@ -1559,6 +1559,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 		</div>
 	</a>
 </div>
+
 <div class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--150' data-id='150' data-unread='1'>
 	<a class='ps-notification__inside' href=' ://demo.peepso.com/activity/?status/2-2-1502693781/#comment.457.933.933'>
 		<div class='ps-notification__header'>
@@ -1956,7 +1957,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 <span class='ps-dropdown ps-dropdown--stream-filter ps-js-dropdown ps-js-activitystream-filter' data-id='peepso_stream_filter_show_my_posts'>
 	<button class='ps-btn ps-btn--small ps-js-dropdown-toggle' aria-haspopup='true' onclick='stream.getSelfStream(\"self\",this);'>
 		<span>Show my posts</span>
-		<img class='buttons_loader' src='assets/images/ajax-loader.gif' alt='' />
+		<img class='buttons_loader' src='assets/images/ajax-loader.gif' alt='' style='display:none;'/>
 	</button>
 	<div role='menu' class='ps-dropdown__menu ps-js-dropdown-menu'>
 				<a role='menuitem' class='ps-dropdown__group' data-option-value='1'>
@@ -2117,7 +2118,9 @@ window.onclick = function(event) {
 
 
 </div>
-<div id='delete-dialog' title='Delete Comment'>Please are you sure you want to delete this.</div>
+<div id='comment-delete-dialog' title='Delete Comment' style='display:none;'>Please are you sure you want to delete this comment.</div>
+<div id='reply-delete-dialog' title='Delete Reply' style='display:none;'>Please are you sure you want to delete this comment.</div>
+
 <div id='ps-activitystream-loading' style=''>
                             <div class='ps-stream ps-stream--placeholder'>
     <div class='ps-animated-background'>

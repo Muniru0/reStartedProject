@@ -35,7 +35,7 @@ class PendingConnections extends DatabaseObject{
       return;
         }
 
-  
+   $notification_type = ""; 
 
         if(isset($_SESSION) && isset($_SESSION[user::$id]) && $_SESSION[user::$id] > 0 ){
 
@@ -46,22 +46,27 @@ class PendingConnections extends DatabaseObject{
                 do{
                     if($result =  $db->store_result()){
                    if($row = $result->fetch_assoc()){
+                      
                     if(isset($row["result"]) && $row["result"] > 0 
-                     && isset( $row["response"]) && $row["response"] == "connected"){
-                     print j(["user_connection"=>"success"]);
-                     return;
-                    }elseif(isset($row["result"]) && $row["result"] == "disconnected"){
-                        print j(["user_disconnection"=>"success"]);
-                        return;
-                    }elseif(isset($row["result"]) && $row["result"] == "invalid_connectionn"){
+                     && isset( $row["response"]) && $row["response"] == CONNECTION_REQUEST_SENT){
+                     print j([CONNECTION_REQUEST_SENT => "success"]);
+                     $notification_type = CONNECTION_REQUEST_SENT;
+                    log_action(__CLASS__,$row["response"].__LINE__);
+                    }elseif(isset($row["response"]) && $row["response"] == CONNECTION_REQUEST_REVOKED){
+                        print j([CONNECTION_REQUEST_REVOKED => "success"]);
+                        $notification_type = CONNECTION_REQUEST_REVOKED;
+                       
+                    }elseif(isset($row["respnose"]) && $row["response"] == "invalid_connectionn"){
                         print j(["invalid_connection"=>"success"]);
-                        return;
+                       
                     }elseif(isset($db->error) && trim($db->error) != "" ){
                         Errors::trigger_error(RETRY);
-                        return;
+                       return;
                     }
                    }
+                   $result->free();
                     }
+                    
 
                 }while($db->more_results() && $db->next_result());
 
@@ -76,10 +81,7 @@ class PendingConnections extends DatabaseObject{
         }
 
 
-
-
-
-
+  Notifications::send_notification("NULL","NULL","NULL",$notification_type);
     }//request_connection();
 
 

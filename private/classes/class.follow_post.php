@@ -37,6 +37,7 @@ class FollowPost Extends DatabaseObject{
 	   $query = "CALL follow_posts({$post_id},".$_SESSION[user::$id].",'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."',".time().")";
       
 
+   $notification_type = "";
 
 	   if($db->multi_query($query)){
           
@@ -47,37 +48,36 @@ class FollowPost Extends DatabaseObject{
 				
 				 if($result->num_rows > 0){
 			  if($row = $result->fetch_assoc()){
-				  if(isset($row) && $row["result"] == "following"){
-					  print j(["follow_post" =>"success"]);
-					  return;
-				  }elseif(isset($row) && $row["result"] == "unfollowed"){
+				  if(isset($row) && $row["result"] == FOLLOW_POST){
+					  print j([FOLLOW_POST =>"success"]);
+					  $notification_type  = FOLLOW_POST;
 					  
-					  print j(["unfollow_post" => "success"]);
-					  return;
-				  }elseif(isset($row) && $row["result"] == "invalid_request"){
+				  }elseif(isset($row) && $row["result"] === UNFOLLOW_POST){
+					  
+					  print j([UNFOLLOW_POST => "success"]);
+					  $notification_type  = UNFOLLOW_POST;
+					  
+				  }elseif(isset($row) && $row["result"] == "invalid_request" || trim($db->error) != ""){
 					  
 					print j(["invalid_request" => "success"]);
+					
 					return;
-				}elseif(trim($db->error) != ""){
-				 
-					Errors::trigger_error(RETRY);
-					  return;
-				  }
+				}
 			  }	
 			
 			}
-				 }else{
-					 
-					Errors::trigger_error(RETRY);
-					 return;
 				 }
 			}while($db->more_results() && $db->next_result());
 				  
   }else{
-	
+	 
+	  Errors::trigger_error(RETRY);
+	  return;
   }
-   
-   }// link_user();
+  
+
+  Notifications::send_notification($post_id,"NULL","NULL",$notification_type);
+   }// follow_posts();
 	
 
 }

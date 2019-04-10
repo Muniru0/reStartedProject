@@ -1,4 +1,22 @@
-[ 9/Apr/2019 03:04:46 PM] : [Notifications] | MySQL server has gone away
-[ 9/Apr/2019 03:04:46 PM] : [Notifications] | FAILED NOTIFICATION: post_id:617, commment_id: 553, reply_id: 0, user_id: 1 type: new_reply_comment 
-[ 9/Apr/2019 03:05:50 PM] : [Notifications] | MySQL server has gone away
-[ 9/Apr/2019 03:05:50 PM] : [Notifications] | FAILED NOTIFICATION: post_id:617, commment_id: 553, reply_id: 0, user_id: 1 type: new_reply_comment 
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 624, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 623, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 622, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 621, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 620, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 619, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 618, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 617, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 616, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 615, :LINE: 177
+[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 614, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 624, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 623, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 622, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 621, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 620, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 619, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 618, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 617, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 616, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 615, :LINE: 177
+[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 4 1 post_Id: 614, :LINE: 177

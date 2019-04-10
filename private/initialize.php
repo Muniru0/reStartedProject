@@ -97,9 +97,15 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 !defined("NEW_POST")                    ?  define("NEW_POST","new_post")   : null;
 !defined("EDIT_POST")               ?  define("EDIT_POST","edit_post")   : null;
 !defined("DELETE_POST")               ?  define("DELETE_POST","delete_post")   : null;
-!defined("CONFIRMED_POST")               ?  define("CONFIRMED_POST","confirm_post")   : null;
+!defined("CONFIRM_POST")               ?  define("CONFIRM_POST","confirm_post")   : null;
+!defined("REVERSE_CONFIRMED_POST")               ?  define("REVERSE_CONFIRMED_POST","reverse_confirmed_post")   : null;
 
-!defined("REVERSE_CONFIRMATION")               ?  define("REVERSE_CONFIRMATION","reverse_confirmation")   : null;
+!defined("FOLLOW_POST")               ?  define("FOLLOW_POST","follow_post")   : null;
+!defined("UNFOLLOW_POST")               ?  define("UNFOLLOW_POST","unfollow_post")   : null;
+
+!defined("CONNECTION_REQUEST_SENT")               ?  define("CONNECTION_REQUEST_SENT","connection_request_sent")   : null;
+
+!defined("CONNECTION_REQUEST_REVOKED")               ?  define("CONNECTION_REQUEST_REVOKED","connection_request_revoked")   : null;
 
 
 

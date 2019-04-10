@@ -71,116 +71,7 @@ function post_options_dropdown(element){
         
     }
     
-    function post_options(userID = 0,postID = 0 , element = "",option = null){
-     
-        if(!utility.validate_presence(postID) || !utility.validate_presence(element)){
-            return;
-        }
-      
-       let mainParent = $(element).parentsUntil(".ps-stream");
-       let requestTypeValue        = "confirm_post";
-       let title                   = "";
-       let confirmationText        = "";
-       let addElementClass         = "";
-       let removeElementClass      = "";
-       let addIconClass            = "";
-       let removeIconClass         = "";
-      
-     
-     
-    
-       requestTypeValue = (option == null || $.trim(option) == "") ? "comfirm_post" : option;
-        
-     
-        $.ajax({
-            url: "../private/neutral_ajax.php",
-            type: "POST",
-            data: {user_id: userID,request_type: requestTypeValue,post_id: postID},
-            dataType: "html"
-        }).done(function(response){
-           console.log(response);
-        
-    try{
-          response = JSON.parse(response);
-          let confirmationTextSpan = $(element).find("span")[0]; 
-          let confirmationIcon = $(element).find("i")[0];
-         
-          if(response["true"] == "success" || response["unlink"] == "success" || response["unfollow"]){
-               if(option == "confirm_post" || option == null){
-                    
-                     title              = ($(element).hasClass("confirm_post")) ? "Confirm that this incident really took place" : "Reverse the confirmation of this incident";
-                     confirmationText   = ($(element).hasClass("confirm_post")) ? "Confirm this post" : "Reverse Confirmation";
-                     addElementClass    = ($(element).hasClass("confirm_post")) ? "confirm_post" : "reverse_post_action";
-                     removeElementClass = ($(element).hasClass("confirm_post")) ? "reverse_post_action" : "confirm_post";
-                     addIconClass       = ($(element).hasClass("confirm_post")) ?  "fal fa-check-circle" : "fal fa-undo-alt";
-                     removeIconClass    = ($(element).hasClass("confirm_post")) ?  "fal fa-undo-alt" : "fal fa-check-circle";
-                         
-                }else if(option == "link_user" ){
-         
-                      title                  =  ($(element).hasClass("reverse_post_action")) ?  "linking with a user will get you notified of all future incidents posted by that user." : "You will be notified of incidents posted by this person.";
-                      let user               =   $(mainParent).find(".ps-stream-user");
-                      $(user).parent().toggleClass("breathing_space");
-                       $(user).toggleClass("link_user",1000,"easeOutBounce");
-                       $(user).find("small").toggle();
-                      let userFullname       =  $(user).html();
-                      userFullname           = userFullname.split("<small")[0];
-                      console.log(userFullname);
-                      confirmationText       =  ($(element).hasClass("reverse_post_action"))  ?  "link with " + userFullname : "unlink with " + userFullname;
-                      addElementClass        =  ($(element).hasClass("reverse_post_action"))    ?  "" : "reverse_post_action";
-                      removeElementClass     =  ($(element).hasClass("reverse_post_action")) ? "reverse_post_action" : "";
-                      addIconClass           =  ($(element).hasClass("reverse_post_action"))  ? "fal fa-link" :  "fal fa-unlink";
-                      removeIconClass        =  ($(element).hasClass("reverse_post_action"))  ? "fal fa-unlink" :  "fal fa-link";
-                           
-                    }else if(option == "follow_post"){
-                     title                  =  ($(element).hasClass("reverse_post_action"))   ?  "if you follow this incident you will be notified about every development of it." : "Get notified about every development of this incident.";
-                     confirmationText       =  $(mainParent).find(".ps-stream-user").html();
-                     $(mainParent).find(".following_span").toggle("slide");
-                     confirmationText       =  ($(element).hasClass("reverse_post_action"))    ?  "follow this incident" : "unfollow this incident";
-                     addElementClass        =  ($(element).hasClass("reverse_post_action"))    ?  "follow_post" : "reverse_post_action";
-                     removeElementClass     =  ($(element).hasClass("reverse_post_action"))    ?  "reverse_post_action" : "follow_post";
-                     addIconClass            =  ($(element).hasClass("reverse_post_action"))    ?  "far fa-eye" : "far fa-eye-slash";
-                     removeIconClass         =  ($(element).hasClass("reverse_post_action"))    ?  "far fa-eye-slash" : "far fa-eye";
-                     let uiFollowing         = $(mainParent).find("ps-stream-meta").find("ps-stream-time").toggle("fade",400);
-               }
-    
-               console.log(title);
-               console.log(confirmationText);
-               console.log(addElementClass);
-               console.log(removeElementClass);
-               console.log(removeIconClass);
-               console.log(addIconClass);
-    
-                     $(element).attr("title",title);
-                     $(element).removeClass(removeElementClass).addClass(addElementClass);
-                     $(confirmationIcon).removeClass(removeIconClass);
-                     $(confirmationIcon).addClass(addIconClass);
-                     $(confirmationTextSpan).html(confirmationText);
-                     
-                   
-                     
-            }
-    
-              else if($.trim(response["false"]) != ""){
-             utility.showErrorDialogBox(response["false"]);
-          }
-     }
-          
-        catch(e){
-             console.log(e);
-        utility.showErrorDialogBox(response["false"]);
-                            
-        }
-        });
-    
-    
-    
-    
-    
-    
-    }
-    
-    
-       
+  
     (function ($) {
     
     
@@ -1326,26 +1217,26 @@ function post_options_dropdown(element){
          
           if(!response["false"]){
                if(option == "confirm_post" || option == null){
-                 console.log(element);
+                 
                     let confirmTagElement =   $(element).parentsUntil(".ps-stream");
                    confirmTagElement      =   $(confirmTagElement).siblings(".ps-stream__post-pin");
-                   console.log(confirmTagElement);
-                    let confirmTag       =   $(confirmTagElement).find("span");
-                    $(confirmTagElement).toggleClass("confirm_tag");
-                    let confirmText      = $(confirmTag).html();
-    
                     
-                     if(confirmText.toLowerCase == "unconfirmed"){
-                        $(confirmTag).html("confirmed");
-                     }else if(confirmText.toLowerCase == "confirmed"){
-                        $(confirmTag).html("Unconfirmed");
+                    let confirmTag       =   $(confirmTagElement).find("span")[0];
+                    $(confirmTag).toggleClass("confirm_tag");
+                    
+                    let confirmText      = $(confirmTag).html();
+                    if($.trim(confirmText.toLowerCase()) == "unconfirmed"){
+                        $(confirmTag).html("Confirmed");
+                     }else if($.trim(confirmText.toLowerCase()) == "confirmed"){
+                        $(confirmTag).html("UnConfirmed");
                      }
-                     title              = (response["confirmation"] == "success") ? "Confirm that this incident really took place" : "Reverse the confirmation of this incident";
-                     confirmationText   = (response["confirmation"] == "success") ? "Confirm this post" : "Reverse Confirmation";
-                     addElementClass    = (response["confirmation"] == "success") ? "confirm_post" : "reverse_post_action";
-                     removeElementClass = (response["confirmation"] == "success") ? "reverse_post_action" : "confirm_post";
-                     addIconClass       = (response["confirmation"] == "success") ?  "fal fa-check-circle" : "fal fa-undo-alt";
-                     removeIconClass    = (response["confirmation"] == "success") ?  "fal fa-undo-alt" : "fal fa-check-circle";
+                     
+                     title              = (response["confirm_post"] == "success") ? "Confirm that this incident really took place" : "Reverse the confirmation of this incident";
+                     confirmationText   = (response["confirm_post"] == "success") ? "Confirm this post" : "Reverse Confirmation";
+                     addElementClass    = (response["confirm_post"] == "success") ? "confirm_post" : "reverse_post_action";
+                     removeElementClass = (response["confirm_post"] == "success") ? "reverse_post_action" : "confirm_post";
+                     addIconClass       = (response["confirm_post"] == "success") ?  "fal fa-check-circle" : "fal fa-undo-alt";
+                     removeIconClass    = (response["confirm_post"] == "success") ?  "fal fa-undo-alt" : "fal fa-check-circle";
                          
                 }else if(option == "connect_user" ){
          
@@ -1356,12 +1247,12 @@ function post_options_dropdown(element){
                        $(user).find("small").toggle();
                       let userFullname       =  $(user).html();
                       userFullname           = userFullname.split("<small")[0];
-                      console.log(userFullname);
-                      confirmationText       =  (response["user_connection"] == "success") ?  "disconnect with " + userFullname : "connect with " + userFullname;
-                      addElementClass        =  (response["user_connection"] == "success") ?  "reverse_post_action" : "";
-                      removeElementClass     =  (response["user_connection"] == "success") ?  "" : "reverse_post_action";
-                      addIconClass           =  (response["user_connection"] == "success") ? "fal fa-unlink" :  "fal fa-link";
-                      removeIconClass        =  (response["user_connection"] == "success") ? "fal fa-link" :  "fal fa-unlink";
+                     
+                      confirmationText       =  (response["connection_request_sent"] == "success") ?  "connect with " + userFullname : "disconnect with " + userFullname;
+                      addElementClass        =  (response["connection_request_sent"] == "success") ?  "" : "reverse_post_action";
+                      removeElementClass     =  (response["connection_request_sent"] == "success") ?  "reverse_post_action" : "";
+                      addIconClass           =  (response["connection_request_sent"] == "success") ? "fal fa-link" :  "fal fa-unlink";
+                      removeIconClass        =  (response["connection_request_sent"] == "success") ? "fal fa-unlink" :  "fal fa-link";
                            
                     }else if(option == "follow_post"){
                      title                  =  ($(element).hasClass("reverse_post_action"))   ?  "if you follow this incident you will be notified about every development of it." : "Get notified about every development of this incident.";

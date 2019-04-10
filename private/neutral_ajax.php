@@ -180,7 +180,7 @@ PostImage::delete_post($user_id,$post_id);
 			}
 			log_action(__CLASS__,"here".__LINE__);
 			if(!in_array($user_id,$_SESSION[PostImage::$uploader_id])){
-				log_action(__CLASS__,"here".__LINE__);
+		
 				 Errors::trigger_error(RETRY);
 				return;
 			}
@@ -202,7 +202,7 @@ PostImage::delete_post($user_id,$post_id);
 			}
 		
 			// link with this user
-			FollowPost::follow_post($post_id );
+			FollowPost::follow_post($post_id);
 			
 	 
  }

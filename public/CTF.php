@@ -123,6 +123,9 @@ div {
  
  <?php
  
+ echo "<pre>";
+ print_r(Pagination::home_posts());
+ echo "</pre>";
 // 	$query  = "SELECT MAX(".PostImage::$id.") AS ".PostImage::$post_max_id." FROM ".PostImage::$table_name." WHERE ".PostImage::$id." < ".$_SESSION[STREAM_HOME];
 // 	$db->query($query);
 
