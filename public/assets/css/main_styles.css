@@ -9,6 +9,55 @@
 	   .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon{
           border-style:none;
     }
+
+    .ui-dialog-buttons{
+        z-index: 0 !important;
+        border: 0px;
+    }
+
+    
+    .ui-dialog-titlebar{
+        background: linear-gradient(to bottom,#ff8a00,#da1b60);
+        font-weight: normal;
+        font-family: 'Rubik',sans-serif !important;
+        border: 0px;
+    }
+
+    .ui-dialog-buttonset{
+        font-family: 'Rubik',sans-serif !important;
+
+    }
+
+
+    .ui-dialog-buttonset > button{
+        width: auto;
+        outline: none;
+        font-family: 'Rubik',sans-serif !important;
+    }
+
+    .ui-dialog-buttonset:nth-last-child{
+        background: linear-gradient(to bottom,#ff8a00,#da1b60);
+    color: #d7d4d4 !important;
+    outline: none;
+    border: 0px !important;
+    }
+
+
+
+
+    .ui-dialog-content{
+    width: auto !important;
+    min-height: 0px  !important;
+    max-height: none  !important;
+    height: 67.375px  !important;
+    font-family: 'Rubik',sans-serif !important;
+    text-align: center  !important;
+    line-height: 120%  !important;
+    padding-top: 5%  !important;
+    overflow: hidden  !important;
+    }
+
+
     legend {
     display: block;
     width: 100%;
@@ -39,29 +88,14 @@
     .no-close {
         display:none;
         }
-    .ui-dialog-title {
-        text-align:center;
-        color:#7FC04C;
-    }
+    
 
     #error-dialog > ui.widget-header{
 
         border: 1px solid #d61e1e;
     }
-    .ui-dialog-titlebar {
-        background-color: #a2d9dc;
-    }
-   .ui-dialog > .ui-dialog-buttonpane{
-         margin-top:0px !important;
-         padding: 0px !important;
-        }
-    .ui-dialog > .ui-widget-header{
-        border: 0px;
-    }
+   
 	
-	.center-delete-text {
-		padding : 1.5em 1em;
-	}
     /*.ui-dialog-buttonset > .ui-button:hover, .ui-button:focus {*/
         /*border: 1px solid #cccccc;*/
         /*background-color: #cccccc;*/
@@ -82,22 +116,9 @@
     .ui-dialog-titlebar-close{
         display:none !important;
     }
-    .ui-dialog {
-        padding: 0em;
-    }
-    .ui-dialog-content {
-        font-family:'my font' !important;
-        color:#2b2b2b;
-        background:#f6f6f6;
-    }
-
-    .ui-dialog-buttonset > .ui-button{
-        color: #1a1b1a;
-         background-color: #fff;
-        border: 0.09em solid #a2d9dc;
-        }
-     
-        .error-titlebar {
+   
+   
+ .error-titlebar {
             background-color:#d61e1e
         }
 

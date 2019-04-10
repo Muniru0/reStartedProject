@@ -174,6 +174,8 @@ class comment {
       }).done(function (response) {
 
 
+        console.log(response);
+
 
         if ($.trim(response["false"]) != "" && response["false"] == undefined) {
           utility.showErrorDialogBox(response["false"]);
@@ -270,7 +272,7 @@ class comment {
       if ($(comment_template).find(".actaction-edit")[0]) {
         actionsLink = $(comment_template).find(".actaction-edit")[0];
         // change the onclick attribute of the link 
-        $(actionsLink).attr("onclick", "comment.prepare_edit_comment(" + response["comment_info"]["incident_id"] + "," + response["comment_info"]["comment_id"] + ",this,'comment'); return false;");
+        $(actionsLink).attr("onclick", "comment.prepare_edit_comment(" + response["comment_info"]["incident_id"] + "," + response["comment_info"]["incident_id"] + ",this,'comment'); return false;");
       }
 
 
@@ -331,20 +333,12 @@ class comment {
       let commentsTextAreaWrapper = document.querySelector("#comment_area_wrapper_" + response["comment_info"]["incident_id"]);
 
 
-      let commentsContainer = $(commentsTextAreaWrapper).siblings(".ps-comment-container")[0];
+      let commentsContainer = $(commentsTextAreaWrapper).siblings(".ps-comment-container");
       // append the comment to the comments_container 
       $(commentsContainer).append(comment_template);
       $(commentsContainer).append(reply_template);
 
       $(comment_template).fadeIn(690);
-      // after you show the comment, scroll the comments container
-      // just the case the new comment is invisible
-      if(commentsContainer.scrollHeight != undefined){
-         commentsContainer.scrollTop = commentsContainer.scrollHeight;
-      }
-     
-    
-
 
        
   }
@@ -430,7 +424,8 @@ class comment {
           text: "Delete",
           click: function () {
             $(this).dialog("close");
-
+           let deleteButton =   $(this).delegateTarget;
+               $(deleteButton).addClass("ui_dialog_delete_button");
 
             //validate the comment id
             if (commentReplyID == null ||
@@ -438,6 +433,7 @@ class comment {
               commentReplyID == undefined ||
               commentReplyID == NaN ||
               commentReplyID == false) {
+                
               return false;
             }
 
@@ -466,7 +462,7 @@ class comment {
                 $(hiddenReply).fadeOut(680);
                 requestValue = "delete_comment";
 
-
+ 
 
                 // find and initialize the comment  text area wrapper and empty the text area if there are any text in it 
                 if ($(commentReplyAreaWrapper) && $("#comment_area_wrapper_" + postCommentID)[0] != undefined) {
@@ -525,7 +521,7 @@ class comment {
               }
             }
 
-
+console.log("comment or reply_id faulty");
             $.ajax({
               url: "../private/neutral_ajax.php",
               type: "POST",
@@ -658,7 +654,7 @@ class comment {
 
 
 
- 
+ try {
       // check and initialize the text area variable for both the reply and comments 
       // find the text area associated with the comments  or replys
       switch (option) {
@@ -718,9 +714,8 @@ class comment {
         && $(textArea) != ""
         && $(textArea).val() != "") {
         newComment = $(textArea).val();
+        $(textArea).val("");
       }
-
-   
 
       // check and initialize the grandParent of the post button
       if ($(textArea) && $(textArea).parents()[2]) {
@@ -747,7 +742,7 @@ class comment {
 
       }
 
-try { 
+
       $.ajax({
         url: "../private/neutral_ajax.php",
         type: "POST",
@@ -755,7 +750,7 @@ try {
         datatype: "html"
       }).done(function(response) {
 
-           
+
         response = JSON.parse($.trim(response));
         if (response["true"] && $.trim(response["true"] != "")) {
 
@@ -853,7 +848,6 @@ try {
       return false;
     }
 
- 
 
     let commentDiv = "";
     let commentPargh;
@@ -937,14 +931,10 @@ try {
     if ($(commentArea) && $.trim(commentArea) != "" && $.trim(oldComment) != "") {
       // replace the line breaks in the string with empty string
       // oldComment = utility.replaceString("<br>","", oldComment);
-      // populate the text area with the old comment  
-       if($(element).attr("data-edit-id") != undefined && $(element).attr("data-edit-id") != "edited"){
-    oldComment = oldComment.split("<br>").join("<br />");
-      $(element).attr("data-edit-id","true");
-  }   
-   
-  //oldComment = oldComment.split("<br>").join("<br />");
-      $(commentArea).val(oldComment);
+      // populate the text area with the old comment     
+       
+      $(commentArea).val(oldComment.split("<br>").join("\n"));
+        utility.resizeTextarea(commentArea);
       $(commentArea).trigger("paste");
 
       $(commentArea).trigger("keydown");

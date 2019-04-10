@@ -67,14 +67,14 @@ if($.trim(input) == ""){
  input  = input.split("\n");
  return input.join("<br />");
 
-}// maintainLineBreaks();  	
+}// maintainLineBsireaks();  	
 // auto resize all text areas
 static resizeTextarea(textArea = ""){
  
 
-$(textArea).height(0).height(textArea.scrollHeight );
+$(textArea).height(0).height(textArea.scrollHeight - 17.8);
 
-$(textArea).change();
+ $(textArea).change();
 }
 
 // auto grow a text field
@@ -182,7 +182,7 @@ $.ajax({
 	
 	response = JSON.parse(response);
 	if(Boolean(response[0]) == true){
-		console.log("entered here");
+		
 		utility.resetLoginBox();
 	}else if($.trim(response["false"]) != undefined || $.trim(response["false"]) != ""){
 	

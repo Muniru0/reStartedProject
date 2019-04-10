@@ -2117,7 +2117,7 @@ window.onclick = function(event) {
 
 
 </div>
-
+<div id='delete-dialog' title='Delete Comment'>Please are you sure you want to delete this.</div>
 <div id='ps-activitystream-loading' style=''>
                             <div class='ps-stream ps-stream--placeholder'>
     <div class='ps-animated-background'>
@@ -2237,14 +2237,9 @@ window.onclick = function(event) {
 		</div>
 	</div>
 
-	<div id='default-delete-dialog'>
-		<div id='default-delete-title'>Confirm Delete</div>
-		<div id='default-delete-content'>
-			Are you sure you want to delete this?		</div>
-		<div id='default-delete-actions'>
-			<button type='button' class='ps-btn ps-btn-small ps-button-cancel' onclick='pswindow.hide(); return false;'>Cancel</button>
-			<button type='button' class='ps-btn ps-btn-small ps-button-action' onclick='pswindow.do_delete();'>Delete</button>
-		</div>
+	<div id='default-delete-dialog' title='Delete Comment'>
+		
+		
 	</div>
 
 	<div id='default-acknowledge-dialog'>
