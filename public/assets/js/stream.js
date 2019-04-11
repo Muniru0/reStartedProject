@@ -85,7 +85,7 @@
 			// 	$("#ps-activitystream").append(value);
 			// });	
 			// }
-			$.each(response[0],function(index,value){
+			$.each(response,function(index,value){
 					
 			$("#ps-activitystream").append(value);
 				 });

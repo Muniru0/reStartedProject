@@ -2084,6 +2084,7 @@ global $files_dir_string;
                         <div id='ps-no-posts' class='ps-alert' style='display:none'>No posts found. Be the first one to share something amazing!</div>
                         <div id='ps-no-posts-match' class='ps-alert' style='display:none'>No posts found.</div>
                         <div id='ps-no-more-posts' class='ps-alert' style='display:none'>Nothing more to show.</div>
+                        <div id='posts_display_error' class='ps-alert' style='display:none'>Posts displaying Error, please refresh the page and try again</div>
 
                         <div id='ps-dialogs' style='display:none'>
 	<div id='ajax-loader-gif' style='display:none;'>
