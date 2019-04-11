@@ -2051,69 +2051,9 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 
 
 global $files_dir_string;
-  	return "<div id='modal-wrapper' class='modal' style='display: none;'>
-  
-
-  
-  
-  <div id='registration' class='ps-landing-action'>
-<div class='alert alert-danger' id='login_err' role='alert' style='display:none;'>
- <button type='button' class='close' data-dismiss='alert' id='close' aria-label='Close'>
-    <span aria-hidden='true'>×</span>
-  </button>
-</div>
-<script>
-      $('#close').click(function(){
-        $('#login_err').toggle();    
-      });
-</script>
-            
-  <div class='login-area'>
-<form class='ps-form ps-js-form-login' method='post' name='login' id='form'>
-   <!--<input id='csrf' type='hidden' name='csrf_token' value='15a6b97e16503f7789a1e98b4ae29039'>
-   --><div class='ps-landing-form'> 
-        <div class='ps-form-input ps-form-input-icon'>
-          <span class='ps-icon'><i class='ps-icon-user'></i></span>
-          <input class='ps-input' type='text' id='login_box_email' name='email' placeholder='Email' mouseev='true' autocomplete='off' keyev='true' clickev='true'>
-        </div>
-        <div class='ps-form-input ps-form-input-icon'>
-          <span class='ps-icon'><i class='ps-icon-lock'></i></span>
-          <input class='ps-input' id='login_box_password' type='password' name='password' placeholder='Password' mouseev='true' autocomplete='off' keyev='true' clickev='true'>
-        </div>
-        <div class='ps-form-input ps-form-input--button'>
-          <button type='submit' name='submit' onclick='utility.loginWithLoginBox(this);' class='ps-btn ps-btn-login'>
-            <span>Login</span>
-            <img style='display:none' src='assets/images/ajax-loader.gif'>
-          </button>
-        </div>
-</div>
-<div class='ps-checkbox'>
-        <input type='checkbox' alt='Remember Me' value='yes' id='remember' name='remember'>
-        <label for='remember'>Remember Me</label>
-      </div>
-      <a class='ps-link ps-link--recover' href='signup.php'>Recover Password</a>
-        <a class='ps-link ps-link--recover' href='signup.php'>Register</a>
-            <a class='ps-link ps-link--activation ps-js-register-activation' href='https://demo.peepso.com/register/?resend' style='display: none;'>Resend activation code</a>
-            <!-- Alert -->
-      <div class='errlogin calert clear alert-error' style='display:none'></div>
-          </form>
-     </div>
-</div>
-</div>
-
-<script>
-// If user clicks anywhere outside of the modal, Modal will close
-
-var modal = document.getElementById('modal-wrapper');
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = 'none';
-    }
-}
-</script>
-
+  	return "
                         
-    <!--First Post Display -->
+   
     
 
 

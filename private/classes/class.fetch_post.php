@@ -1123,12 +1123,12 @@ foreach ($returned_array as $posts_info => $images_or_info){
 				continue;				
 			}
 		
-			$headers[$post_info[PostImage::$alias_of_id]] = $full_header.$full_body;
+			$headers[] = $full_header.$full_body;
         }
 		
 		
   if(!empty($headers)){
-			 print j($headers);
+			 print j([$headers]);
 			  
         return true; 
 		 }else{

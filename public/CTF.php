@@ -59,7 +59,7 @@ div {
 }
 
  </style>
-<button id="button">Check if Basams House address is a string</button>
+<button id="button">Click</button>
  
  <script>
   /*  
@@ -74,19 +74,9 @@ div {
   characterDataOldValue: true
 }); */
  $("#button").click(function(e){
-	  
-	$.ajax({
-		url: "../private/neutral_ajax.php",
-		type: "POST",
-		data: {test_ajax: "hello",Basams_id: 10,basams_house_addr: 10 },
-		datatype: "html"
-	}).done(function(response){
-		 console.log(response);
-		 
-	}).fail(function(error){
-		console.log(error);
-	});
-	 
+	    let v = 1;
+		 $("body").append("<p>" + v++ + "</p><h6>New append</h6>");
+		 v = v++;
  });
 	
       
@@ -122,7 +112,7 @@ div {
  </form>
  
  <?php
- 
+ die();
  echo "<pre>";
  print_r(Pagination::home_posts());
  echo "</pre>";
