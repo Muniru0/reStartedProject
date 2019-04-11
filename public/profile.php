@@ -41,12 +41,24 @@ if(!allowed_get_params([user::$id])){
 	redirect_to("page_not_found.php");
 	 return;
 	}
-    
+ $_SESSION[STREAM_PROFILE] = 0;
+ // these variables have to be set at run time 
+ // else they will be undefined
+ $activities_count["label"][PostImage::$transport] ="" ;
+ $activities_count["label"][PostImage::$work] ="" ;
+ $activities_count["label"][PostImage::$health] ="" ;
+ $activities_count["label"][PostImage::$security] ="" ;
+ $activities_count["label"][PostImage::$sanitation] ="" ;
+ $activities_count["label"][PostImage::$other] ="" ;
+ $activities_count["label"][PostImage::$education] ="" ;
+ $activities_count["label"][PostImage::$sol] ="" ;
+ $activities_count["pending_connections"] = "";
+ $activities_count["count_notifications"] = "";
  $request_type = "<input type='hidden' id='stream_type' value='profile_{$id}' />";
-
+ 
 $content = "";
  
-$content  .= main_header(profile_header($result[user::$firstname],$result[user::$lastname],$id),$request_type);
+$content  .= main_header(profile_header($result[user::$firstname],$result[user::$lastname],$id),$request_type,$activities_count);
  echo $content  .= main_footer(); 
 
 

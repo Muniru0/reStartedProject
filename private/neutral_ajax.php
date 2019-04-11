@@ -554,9 +554,9 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
 	$allowed_scroll_parameters = [STREAM_HOME,STREAM_PROFILE,STREAM_COMMUNITY,STREAM_SELF];
         
 	  $stream_type = explode("_",trim($_POST["stream_type"]));
-   
-	  $community_or_id      = 0;
-	   
+     
+	  $community_or_id      = $stream_type[1] ?? 0;
+	    log_action("__CLASS__","stream_type : {$stream_type[0]} community: {$community_or_id}".__LINE__);
 	  switch(trim($stream_type[0])){
 		  case STREAM_HOME:
 		  $stream = STREAM_HOME;
@@ -581,41 +581,35 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
 
   
   // if the result is two
-  if(count($stream_type)== 2 ){
+  if(count($stream_type) === 2 ){
 	  
       $community_or_id = trim($stream_type[1]);
   }
    
     
-  if(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters) && trim($stream) != STREAM_HOME && trim($stream) != STREAM_HOME){
-      // incase you are getting posts for a visited profile
-      // some ones profile that the user visited
-      if($id = is_int($community_or_id)){
-               if($id > 0){
-                    $community_or_id = (int)$id;
-               }else{
-                   Errors::trigger_error(RETRY);
-                   return;
-               }
-          //incase the user wants posts pertaining to a particular
-          // community only
-        }elseif(is_string($community_or_id)){
-        
-           if(trim($community_or_id) == "" || !in_array($community_or_id,COMMUNITIES)){
-                   Errors::trigger_error(RETRY);
-                   return;
-               }
-            
-      }
-      
+  if(is_string($stream) && trim($stream) != "" && in_array(trim($stream),ALLOWED_STREAM_PARAMETERS) && (trim($stream) === STREAM_PROFILE || $stream === STREAM_COMMUNITY) ){
+		// posts from a specific user
+     if($stream === STREAM_PROFILE){
+			 $community_or_id = (int) $community_or_id;
+	if($community_or_id < 1){
+     Errors::trigger_error(RETRY);
+		return ;
+	}
+	// if the person wants posts from a specific community
+		 }elseif($stream == STREAM_COMMUNITY){
+  if(!is_string($stream) || trim($stream) == "" || !in_array($community_or_id,COMMUNITIES)){
+ return;
+	}
+		 }
+     
     // when the stream type is profile
 	Pagination::get_infinite_scroll($stream,$community_or_id);
 	
 
 	 }
-elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),$allowed_scroll_parameters)){
+elseif(is_string($stream) && trim($stream) != "" && in_array(trim($stream),ALLOWED_STREAM_PARAMETERS)){
 			
-	// get the main infinite scroll for the sreaming of post
+	// get the main infinite scroll for the streaming of post
 	Pagination::get_infinite_scroll(trim($stream),null);
 	
 	

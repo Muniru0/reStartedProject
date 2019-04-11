@@ -87,6 +87,8 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 !defined("RESET_POST")               ?  define("RESET_POST","reset_post")                : null;
 !defined("COMMUNITIES")               ?  define("COMMUNITIES",["transport","health","work","sol","security","sanitation","education","oppression","other"])        : null;
+!defined("ALLOWED_STREAM_PARAMETERS")               ?  define("ALLOWED_STREAM_PARAMETERS",[STREAM_HOME,STREAM_PROFILE,STREAM_COMMUNITY,STREAM_SELF])        : null;
+
 !defined("RE_INITIATE_OPERATION")               ?  define("RE_INITIATE_OPERATION","re-initiate-operation")   : null;
 
 // post interaction operations

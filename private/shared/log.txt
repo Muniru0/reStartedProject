@@ -1,22 +1,12 @@
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 624, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 623, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 622, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 621, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 620, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 619, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 618, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 617, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 616, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 615, :LINE: 177
-[10/Apr/2019 05:22:58 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 614, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 624, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 623, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 622, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 621, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 620, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 619, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 618, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 617, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 616, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 0 0 post_Id: 615, :LINE: 177
-[10/Apr/2019 05:27:53 PM] : [FetchPost] | Confirmer: 4 1 post_Id: 614, :LINE: 177
+[11/Apr/2019 02:23:57 PM] : [__CLASS__] | stream_type : profile community: 1559
+[11/Apr/2019 02:23:57 PM] : [Pagination] | 1
+[11/Apr/2019 02:45:51 PM] : [__CLASS__] | stream_type : mainstream community: 0559
+[11/Apr/2019 02:50:22 PM] : [__CLASS__] | stream_type : profile community: 1559
+[11/Apr/2019 02:50:30 PM] : [__CLASS__] | stream_type : profile community: 1559
+[11/Apr/2019 02:57:48 PM] : [__CLASS__] | stream_type : profile community: 1559
+[11/Apr/2019 02:59:57 PM] : [__CLASS__] | stream_type : profile community: 1559
+[11/Apr/2019 03:04:44 PM] : [__CLASS__] | stream_type : profile community: 1559
+[11/Apr/2019 03:05:49 PM] : [__CLASS__] | stream_type : profile community: 1559
+[11/Apr/2019 03:07:10 PM] : [__CLASS__] | stream_type : profile community: 1559
+[11/Apr/2019 03:08:03 PM] : [__CLASS__] | stream_type : profile community: 1559
+[11/Apr/2019 03:10:04 PM] : [__CLASS__] | stream_type : profile community: 1559
