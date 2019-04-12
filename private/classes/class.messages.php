@@ -61,11 +61,14 @@ public static function get_message_sending_template(){
     
     <form action='#' method='POST'>
         ".csrf_token_tag()."
-    <textarea cols='50' rows='3' name='message_textarea' placeholder='write your message' id= 'message_area' oninput='utility.resizeTextarea' style='overflow:hidden;'></textarea>
+    <textarea cols='50' rows='3' name='message_textarea' placeholder='write your message' id= 'message_area' oninput='utility.resizeTextarea' style='overflow:hidden; resize:none;' ></textarea>
     <button type='submit' name='submit' id='send_message_button'>Send</button>
-    </form>  
+    </form> 
+    
     <script src='assets/js/jquery.js'></script>
-    <script src='assets/js/utility.js'></script>";
+    <script src='assets/js/jquery-ui.js'></script>
+    <script src='assets/js/utility.js'></script>
+    <script>$('textarea').resizable();</script> ";
     
 }
 

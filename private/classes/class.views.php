@@ -49,7 +49,7 @@ class Views extends DatabaseObject{
      	 
 	 $views_and_viewsbox_template_string = "<div class='ps-comment comment-sidebar cstream-respond wall-cocs' id='wall-cmt-{$post_id}' >
 		<div class='ps-comment-container comment-container ps-js-comment-container' style='max-height: 29em;
-    overflow-y: scroll; '> ";
+    overflow: auto; '> ";
 	
    if(isset($views_with_replys) && !empty($views_with_replys) && is_array($views_with_replys) &&  (int)$post_id > 0 ){
 	   
