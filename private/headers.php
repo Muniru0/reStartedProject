@@ -53,7 +53,7 @@ function community_header($community){
           </div>
     <div id='userbar' class='header__account' style='
    margin: 0px auto;
-'><div class='widget_text widget header__widget'><div class='textwidget custom-html-widget'><div class='ultimate__box-actions' style='margin-left: 30px;'><a class='btn btn--sm' style='display:block;' href='#'>Label \ <strong>{$community}</strong></a></div></div></div></div>
+'><div class='widget_text widget header__widget'><div class='textwidget custom-html-widget'><div class='ultimate__box-actions' style='margin-left: 30px;'><a class='btn btn--sm' style='display:block;' href='#'>Community \ <strong>{$community}</strong></a></div></div></div></div>
          
 </div>
 
@@ -1055,7 +1055,12 @@ $firstname = "";
 	  $lastname = "Unknown User";
 	  }
 	  $profile_string =  $_SESSION[user::$id] == $user_id ? "My Profile" : "Profile";
-      $message_user_string = $_SESSION[user::$id] != $user_id ? "<li  class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href=''><i class='fal fa-envelope'></i>Message</a></li>" : "";
+	//   if($_SESSION[user::$id] == $user_id){
+    // $profile_string = "My Profile"; 
+	//   }elseif($_){
+
+	//   }
+      $message_user_string = $_SESSION[user::$id] != $user_id ? "<li  class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href='message.php?id=".u($user_id)."'><i class='fal fa-envelope'></i>Message</a></li>" : "";
 
 
 	return "<div class='header__wrapper header__wrapper--medium'>

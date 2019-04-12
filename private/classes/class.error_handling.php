@@ -35,6 +35,9 @@ return;
 		  case OPERATION_FAILED:
 		  print j(["false" => "Operation failed, Please try again later."]);
   		break;  
+		  case RE_SEND_MESSAGE:
+		  print j(["false" => "Error sending your message please try again."]);
+  		break;  
   	
   	default:
   		# code...

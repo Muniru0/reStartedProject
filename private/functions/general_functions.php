@@ -16,9 +16,9 @@ function allowed_get_params($acceptable_params = []){
 	  return false;
   }	
   
- $count = (int)count($acceptable_params);
+ $count = (int) count($acceptable_params);
   
-$get_params_count = (int)count($_GET);
+$get_params_count = (int) count($_GET);
   if($count !== $get_params_count){
 	
 	  return false;

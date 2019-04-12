@@ -138,7 +138,7 @@ class FetchPost extends DatabaseObject{
 
         $photos_string = (int)$count === 1 ? "a photo" : "{$count} photos";
 		
-        return "<span class=\"ps-stream-action-title\"> uploaded {$photos_string} about a  <a href=\"https://demo.peepso.com/profile/demo/photos/album/37\" title='This incident is about {$label}. (See more {$label} based incidents)'>".h($label)."  issue</a></span>";
+        return "<span class=\"ps-stream-action-title\"> uploaded {$photos_string} about a  <a href=\"".u("communities.php")."?community={$label}\" title='This incident is about {$label}. (See more {$label} based incidents)'>".h($label)."  issue</a></span>";
     }
 	
 	

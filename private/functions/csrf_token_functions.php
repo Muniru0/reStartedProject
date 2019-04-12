@@ -44,7 +44,6 @@ function csrf_token_is_valid() {
 	}
 }
 
-
 // You can simply check the token validity and
 // handle the failure yourself, or you can use
 // this "stop-everything-on-failure" function.
