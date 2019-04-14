@@ -38,6 +38,9 @@ return;
 		  case RE_SEND_MESSAGE:
 		  print j(["false" => "Error sending your message please try again."]);
   		break;  
+		  case INVALID_REQUEST:
+		  print j(["false" => "Please your request is invalid."]);
+  		break;  
   	
   	default:
   		# code...

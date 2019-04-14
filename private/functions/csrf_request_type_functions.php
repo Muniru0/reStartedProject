@@ -2,7 +2,7 @@
 // GET requests should not make changes
 // Only POST requests should make changes
 
-function request_is_get() {
+function is_request_get() {
 	return $_SERVER['REQUEST_METHOD'] === 'GET';
 }
 

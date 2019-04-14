@@ -1,0 +1,38 @@
+
+@font-face {
+    font-family: 'peepso-social';
+    src: url("../../assets/fonts/peepso-social.eot");
+    src: url("../../assets/fonts/peepso-social.eot") format("embedded-opentype"),url("../../assets/fonts/peepso-social.woff2") format("woff2"),url("../../assets/fonts/peepso-social.woff") format("woff"),url("../../assets/fonts/peepso-social.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal
+}
+
+@font-face {
+	font-family: 'Rubik';
+	src: url("../fonts/rubik-regular-webfont.woff2") format("woff2");
+	font-weight:normal;
+	font-style: normal;
+}
+
+
+body{
+
+width: 100%;
+height: 100%;
+padding: 0px;
+border: 0px;
+margin: 0px;
+background: #f6f6f6;
+font-family: "Rubik",sans-serif;
+
+}
+
+
+textarea{
+	border-radius: 0.5%;
+	background: #fff000;
+	width: 2%;
+	height:  5%;
+	min-height: 5%;
+	max-height: 10%;
+}

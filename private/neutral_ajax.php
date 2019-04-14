@@ -556,7 +556,7 @@ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "scroll
 	  $stream_type = explode("_",trim($_POST["stream_type"]));
      
 	  $community_or_id      = $stream_type[1] ?? 0;
-	    log_action("__CLASS__","stream_type : {$stream_type[0]} community: {$community_or_id}".__LINE__);
+	   
 	  switch(trim($stream_type[0])){
 		  case STREAM_HOME:
 		  $stream = STREAM_HOME;

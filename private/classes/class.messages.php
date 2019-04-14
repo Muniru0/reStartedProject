@@ -53,21 +53,25 @@ return false;
 
 
 // get the message box template
-public static function get_message_sending_template(){
+public static function get_message_sending_template($receiver_id = 0){
 
 
     echo "<div id='receiver_box'></div>
     <div id='sender_box'></div>
     
+	<footer>
     <form action='#' method='POST'>
         ".csrf_token_tag()."
-    <textarea cols='50' rows='3' name='message_textarea' placeholder='write your message' id= 'message_area' oninput='utility.resizeTextarea' style='overflow:hidden; resize:none;' ></textarea>
-    <button type='submit' name='submit' id='send_message_button'>Send</button>
+    <input type='hidden' name='user_id' value='{$receiver_id}' />    
+    <textarea cols='50' rows='3' name='message_textarea' placeholder='write your message' id= 'message_area' oninput='utility.resizeTextarea(this);'
+oninput='enable_post_button();'	style='overflow:hidden; resize:none;'  ></textarea>
+    <button type='submit' name='submit' id='send_message_button' disabled>Send <img src='assets/images/ajax-loader.gif' style='display:none;' /></button>
     </form> 
-    
+    </footer>
     <script src='assets/js/jquery.js'></script>
-    <script src='assets/js/jquery-ui.js'></script>
+    <script src='assets/js/jquery-ui.min.js'></script>
     <script src='assets/js/utility.js'></script>
+    <script src='assets/js/send_message.js'></script>
     <script>$('textarea').resizable();</script> ";
     
 }

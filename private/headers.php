@@ -1060,7 +1060,7 @@ $firstname = "";
 	//   }elseif($_){
 
 	//   }
-      $message_user_string = $_SESSION[user::$id] != $user_id ? "<li  class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href='message.php?id=".u($user_id)."'><i class='fal fa-envelope'></i>Message</a></li>" : "";
+      $message_user_string = $_SESSION[user::$id] != $user_id ? "<li  class='menu-item menu-item-type-custom menu-item-object-custom menu-item-150'><a target='_blank' href='message.php?id=".u($user_id)."' title='Send a private message to {$firstname} {$lastname}'><i class='fal fa-envelope'></i>Message</a></li>" : "";
 
 
 	return "<div class='header__wrapper header__wrapper--medium'>
@@ -1080,7 +1080,7 @@ $firstname = "";
 '>
 {$message_user_string}
 
- <li  class='menu-item menu-item-type-custom menu-item-object-custom '><a target='_blank' href=''><i class='fal fa-user'></i>{$profile_string}</a></li>
+ <li  class='menu-item menu-item-type-custom menu-item-object-custom '><a target='_blank' href='' title='View the profile of {$firstname} {$lastname}'><i class='fal fa-user'></i>{$profile_string}</a></li>
 </ul>
 </div>
 
