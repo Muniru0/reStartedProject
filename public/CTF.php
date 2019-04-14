@@ -59,7 +59,7 @@ div {
 }
 
  </style>
-<button id="button">Click</button>
+<button id="button" style="display:none;">Click</button>
  
  <script>
   /*  
@@ -106,11 +106,35 @@ div {
 
  }
  </style> */ -->
- 
+<style>
+
+body{
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	background: #f7f7f7;
+}
+.outer_wrapper{
+width: 100%;
+}
+
+</style>
+ <div class="outer_wrapper">
+  <div class="inner_wrapper"></div>  
+
+
+
+
+ </div>
+
+
+
+<!--  
  <form action="logout.php" method="POST">
 <input type="submit" name="submit" value="Log OUt" />
- </form>
+ </form> -->
  
+
  <?php
  die();
  echo "<pre>";
