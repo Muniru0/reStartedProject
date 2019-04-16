@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+   <link href="../public/assets/css/bootstrap.min.css"  rel="stylesheet" />
+    <link href="../public/assets/css/registration_and_signin.css" rel="stylesheet" />
     <title>Sign Up</title>
+    
+     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <style>
     body{
         margin: 0px;
         border: 0px;
         padding: 0px;
-        
+        overflow: auto;
         
         
     }
     .outer_wrapper{
         width: 100%;
-        height: 100%;
-        margin-bottom: 10%;
         padding-top: 40%;
         background-image:url("../public/assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg") ;
         background-color:black;
@@ -32,7 +35,14 @@
     }
     .inner_wrapper{
         padding-left: 5%;
+        height: 100%;
+        box-shadow: 2px 2px 2px black;
+        height: 24em;
+        padding-top: 5%;
+        text-align: left;
     }
+
+    
     
 </style>    
     
@@ -43,30 +53,37 @@
     <div class="outer_wrapper">
       </div>
     <span class="dr_txt">Sign UP</span>
-    <div class="inner_wrapper">
-    <div class="field">
-        <span>Firstname</span>
-        <input type="text" name="firstname" placeholder="" required />
-        </div><div class="field">
-        <span>Lastname</span>
-        <input type="text" name="lastname" required />
-        </div><div class="field">
-        <span>E-mail</span>
-        <input type="email" name="firstname" required />
-        </div><div class="field">
-        <span>Password</span>
-        <input type="password" name="firstname" required />
-        </div><div class="field">
-        <span>Confirm Password</span>
-        <input type="password" name="firstname" required />
-        </div><div class="field">
-        <span>Telephone</span>
-        <input type="Firstname" name="firstname" required />
-        </div><div class="field">
-        <span>username</span>
-        <input type="Firstname" name="firstname" required />
-        </div>
-    </div>
+    
+       <div class='enregistrer '>
+            <div class='contact-form'>
+              <label>Username</label>
+              <input placeholder='' type='text'>
+              
+              <label>E-mail</label>
+              <input placeholder='' type='text'>	
+              
+              <label>Password</label>
+              <input placeholder='' type='text'>
+              
+              <label>Confirm Password</label>
+              <input placeholder='' type='text'>
+              
+              <div class='check'>
+                <label>				
+                  <input id='check' type='checkbox' class='checkbox'>
+                    <svg xmlns='http://www.w3.org/2000/svg' width='26px' height='23px'>
+                      <path class='path-back'  d='M1.5,6.021V2.451C1.5,2.009,1.646,1.5,2.3,1.5h18.4c0.442,0,0.8,0.358,0.8,0.801v18.398c0,0.442-0.357,0.801-0.8,0.801H2.3c-0.442,0-0.8-0.358-0.8-0.801V6'/>
+                      <path class='path-moving' d='M24.192,3.813L11.818,16.188L1.5,6.021V2.451C1.5,2.009,1.646,1.5,2.3,1.5h18.4c0.442,0,0.8,0.358,0.8,0.801v18.398c0,0.442-0.357,0.801-0.8,0.801H2.3c-0.442,0-0.8-0.358-0.8-0.801V6'/>
+                    </svg>
+                </label>
+                <h3>I agree</h3>
+              </div>
+              
+              <input class='submit' value='SIGN UP' type='submit' />	
+                
+            </div>
+          </div>
+   
     
 </body>
 
