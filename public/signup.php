@@ -29,7 +29,7 @@ if(is_request_post() && request_is_same_domain()) {
  if(!csrf_token_is_valid() || !csrf_token_is_recent()) {
 
   
-   Errors::trigger_error(RETRY);
+   Errors::trigger_error(INVALID_CSRF_TOKEN);
      return;
 
  } else {
@@ -104,12 +104,6 @@ img.emoji {
 }
 
 
-@media only screen and (min-width: 992px){
-  .ps-landing-action .ps-form-input {
-   display: inline-block !important; 
-   
-}
-}
 
 
 /* Style all input fields */
@@ -381,6 +375,34 @@ input[type=submit] {
 	background-image: linear-gradient(109.6deg, #fdc78d 11.3%, #f98ffd 100.2%) !important;
 }
 
+.mismatch_password{
+  position: absolute;
+    left: 12.5em;
+    bottom: 8.5em;
+    height: 105px;
+    width: 100px;
+    transform: rotate(90deg);
+    background-image: url(assets/images/mismatch.svg);
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+    opacity: 1;
+    transition: opacity .2s ease-out;
+
+}
+
+ .password_mismatch_text{
+  color: rgb(210, 73, 66);
+    margin-top: .1em;
+}
+
+@media only screen and (min-width: 992px){
+  .ps-landing-action .ps-form-input {
+   display: inline-block ; 
+   
+}
+}
+
   	</style>
    </head>
  <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 plg-peepso" id="top">
@@ -478,25 +500,32 @@ input[type=submit] {
   <?php echo csrf_token_tag(); ?><div class="ps-landing-form">
        <div class="ps-form-input ps-form-input-icon">
          <span class="ps-icon"><i class="ps-icon-user"></i></span>
-         <input class="ps-input" type="text" id="firstname" name="firstname" placeholder="Firstname" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+         <input class="ps-input" type="text" id="firstname" name="firstname" placeholder="Firstname" mouseev="true" autocomplete="off" keyev="true" clickev="true" required>
        </div>
        <div class="ps-form-input ps-form-input-icon">
          <span class="ps-icon"><i class="ps-icon-user"></i></span>
-         <input class="ps-input" type="text" id="lastname" name="lastname" placeholder="Lastname" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+         <input class="ps-input" type="text" id="lastname" name="lastname" placeholder="Lastname" mouseev="true" autocomplete="off" keyev="true" clickev="true" required>
        </div>
        <div class="ps-form-input ps-form-input-icon">
          <span class="ps-icon"><i class="ps-icon-user"></i></span>
-         <input class="ps-input" type="text" id="email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+         <input class="ps-input" type="text" id="email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true" required>
        </div>
+       <div class="mismatch_password"></div>
        <div class="ps-form-input ps-form-input-icon">
          <span class="ps-icon"><i class="ps-icon-lock"></i></span>
-         <input class="ps-input password" id="password" type="password" name="password" placeholder="Password" ondblclick="myFunction(this)" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+         <input class="ps-input password" id="password" type="password" name="password" placeholder="Password" ondblclick="myFunction(this)" mouseev="true" autocomplete="off" keyev="true" clickev="true" required>
        </div>
        <div class="ps-form-input ps-form-input-icon">
           <span class="ps-icon"><i class="ps-icon-lock"></i></span>
-          <input class="ps-input password" id="confirm_password" type="password" name="confirm_password" placeholder="Confirm Password" mouseev="true" ondblclick="myFunction(this)" autocomplete="off" keyev="true" clickev="true" />
+          <input class="ps-input password" id="confirm_password" type="password" name="confirm_password" placeholder="Confirm Password" mouseev="true" ondblclick="myFunction(this)" autocomplete="off" keyev="true" clickev="true" required />
+          <div class="password_mismatch_text">Passwords mismatch</div>
+          <div id="message" style="transition: display .5s ease; transition: display 0.5s ease 0s;
+    box-shadow: #f1f1f1 2px 2px 2px 2px;
+  
+    border-radius: 2em;
 
-          <div id="message">
+    position: relative;
+    right: 10em;">
   <h3>Password must contain the following:</h3>
   <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
   <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
@@ -506,25 +535,35 @@ input[type=submit] {
     </div>
     <div class='reactions'>
 
-<input type='radio' name='signup_type' id='gov'  value="government" style="margin-bottom: 0.5em"/>
+<input type='radio'  name='signup_type' id='gov'  value="government" style="margin-bottom: 0.5em" oninput="showReporterIdField(this)"/>
 <label for='gov'  title='Check this if you work with the government' ></label>
 <span class='support_span'>Government</span>
 
 <span class='oppose_span'>Reporter</span>
-<input type='radio' name='signup_type' id='reporter' value="reporter" />
+<input type='radio'  name='signup_type' id='reporter' value="reporter" oninput="showReporterIdField(this)" />
 <label for='reporter' class='oppose_deselected' title='Check this if you are a reporter' style='margin-left: 11em;'></label>
 </div>
         <div class="ps-form-input ps-form-input-icon" style='display:none !important;'>
           <span class="ps-icon"><i class="ps-icon-lock"></i></span>
-          <input class="ps-input" id="reporters_id" type="password" name="reporters_id" placeholder="GJA ID" mouseev="true" autocomplete="off" keyev="true" clickev="true">
+          <input class="ps-input" id="reporter_id" type="password" name="reporters_id" placeholder="GJA ID" mouseev="true" autocomplete="off" keyev="true" clickev="true"  >
         </div>
-       <div class="ps-form-input ps-form-input--button" style="margin-right: 7.3em;
+       
+       <div class="ps-form-input ps-form-input--button" style="margin-right: 4.3em;
 float: right;
     margin-bottom: 0px;
     max-height: 0.5em;">
          <button type="submit" id="button_login" name="submit" class="ps-btn ps-btn-login">
            <span>Sign Up</span>
            <img style="display:none" src="assets/images/ajax-loader.gif">
+         </button>
+       </div>
+       <div class="ps-form-input ps-form-input--button" style="margin-right: 0.3em;
+float: right;
+    margin-bottom: 0px;
+    max-height: 0.5em;">
+         <button type="reset" id="reset" onclick="showReporterIdField('reset');"  class="ps-btn ps-btn-login signup_type">
+           <span>Reset</span>
+           
          </button>
        </div>
 </div>
@@ -556,63 +595,6 @@ function myFunction(targetElement = "") {
 }
 
 
-var myInput = document.getElementById("password");
-var letter = document.getElementById("letter");
-var capital = document.getElementById("capital");
-var number = document.getElementById("number");
-var length = document.getElementById("length");
-
-// When the user clicks on the password field, show the message box
-myInput.onfocus = function() {
-  document.getElementById("message").style.display = "block";
-}
-
-// When the user clicks outside of the password field, hide the message box
-myInput.onblur = function() {
-  document.getElementById("message").style.display = "none";
-}
-
-// When the user starts to type something inside the password field
-myInput.onkeyup = function() {
-  // Validate lowercase letters
-  var lowerCaseLetters = /[a-z]/g;
-  if(myInput.value.match(lowerCaseLetters)) { 
-    letter.classList.remove("invalid");
-    letter.classList.add("valid");
-  } else {
-    letter.classList.remove("valid");
-    letter.classList.add("invalid");
-}
-
-  // Validate capital letters
-  var upperCaseLetters = /[A-Z]/g;
-  if(myInput.value.match(upperCaseLetters)) { 
-    capital.classList.remove("invalid");
-    capital.classList.add("valid");
-  } else {
-    capital.classList.remove("valid");
-    capital.classList.add("invalid");
-  }
-
-  // Validate numbers
-  var numbers = /[0-9]/g;
-  if(myInput.value.match(numbers)) { 
-    number.classList.remove("invalid");
-    number.classList.add("valid");
-  } else {
-    number.classList.remove("valid");
-    number.classList.add("invalid");
-  }
-
-  // Validate length
-  if(myInput.value.length >= 8) {
-    length.classList.remove("invalid");
-    length.classList.add("valid");
-  } else {
-    length.classList.remove("valid");
-    length.classList.add("invalid");
-  }
-}
 </script>
 
 <script type="text/javascript" src="assets/js/utility.js" defer=""></script>

@@ -119,14 +119,7 @@ width: 100%;
 }
 
 </style>
- <div class="outer_wrapper">
-  <div class="inner_wrapper"></div>  
-
-
-
-
- </div>
-
+ 
 
 
 <!--  
@@ -136,6 +129,10 @@ width: 100%;
  
 
  <?php
+		 echo md5(uniqid(true));
+		 
+//echo password_hash(bin2hex(uniqid(random_bytes(100))),CRYPT_SHA256);
+
  die();
  echo "<pre>";
  print_r(Pagination::home_posts());

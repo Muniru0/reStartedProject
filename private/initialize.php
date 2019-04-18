@@ -79,6 +79,12 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 !defined("STREAM_HOME")               ?  define("STREAM_HOME","mainstream")                : null;
 
 
+
+//
+!defined("GOVERNMENT_SIGNUP_TYPE")               ?  define("GOVERNMENT_SIGNUP_TYPE","government")                : null;
+!defined("REPORTERS_SIGNUP_TYPE")               ?  define("REPORTERS_SIGNUP_TYPE","reporter")                : null;
+
+
 !defined("RETRY")               ?  define("RETRY","re_try")                : null;
 
 !defined("INVALID_STREAM_OPTION")               ?  define("INVALID_STREAM_OPTION","invalid")                : null;

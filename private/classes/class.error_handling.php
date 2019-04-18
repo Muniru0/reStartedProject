@@ -41,6 +41,9 @@ return;
 		  case INVALID_REQUEST:
 		  print j(["false" => "Please your request is invalid."]);
   		break;  
+		  case INVALID_CSRF_TOKEN:
+		  print j(["false" => "Invalid request, please refresh the page and try again."]);
+  		break;  
   	
   	default:
   		# code...

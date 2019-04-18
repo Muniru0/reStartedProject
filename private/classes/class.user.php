@@ -319,6 +319,75 @@ public static function S_has_attribute($attribute){
 }//has_attribute();
 
 
+
+
+
+// sign up a user
+public static function signup_user($firstname = "",$lastname = "",$email = "", $password = "", $location = "",$profession = "", $signup_type = NULL,$reporter_id = NULL){
+  global $db;
+
+
+  $firstname = $db->real_escape_string($firstname);
+  $lastname = $db->real_escape_string($lastname);
+  $email = $db->real_escape_string($email);
+  $password = $db->real_escape_string($password);
+  $location = $db->real_escape_string($location);
+  $profession = $db->real_escape_string($profession);
+  $signup_type = $db->real_escape_string($signup_type);
+  $reporter_id = $db->real_escape_string($reporter_id);
+
+   $user_category = 0;
+   
+  if(trim($signup_type) === GOVERNMENT_SIGNUP_TYPE ){
+    
+    $user_category = 3;
+  
+  }elseif( trim($signup_type) === REPORTER_SIGNUP_TYPE){
+ $user_category = 2;
+
+
+  }elseif(trim($signup_type) === NULL){
+      $user_category = 1;
+  }
+
+
+  $query = "INSERT INTO ".user::$table_name." VALuES(?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ".user::$id." =".user::$id." + 1 LIMIT 1";
+
+  $stmt = $db->prepare($query);
+
+  if(!$stmt){
+    log_action(__CLASS__,$db->error." LINE:".__LINE__);
+   Errors::trigger_error(RETRY);
+    return false;
+  }
+$id = NULL;
+  $invalid_confirmations = 0;
+  $user_last_logout_time = 0;
+  $signup_time    = time();
+
+  if(!$stmt->bind_param("ssssssssiii",$id,$firstname,$lastname,$email,$password,$profession,$location,$signup_time,$user_category,$invalid_confirmations,$user_last_logout_time)){
+  Errors::trigger_error(RETRY);
+  log_action(__CLASS__,$stmt->error." db error:".$db->error." LINE:".__LINE__);
+    return false;
+  }
+
+  if(!$stmt->execute()){
+    log_action(__CLASS__,$stmt->error." db error:".$db->error." LINE:".__LINE__);
+  Errors::trigger_error(RETRY);
+    return false;
+  }
+
+  if($stmt->affected_rows === 1){
+
+    return $stmt->insert_id;
+  }
+  log_action(__CLASS__,$stmt->error." db error:".$db->error." LINE:".__LINE__);
+return false;
+
+
+
+}//singup_user();
+
   /**
    *Use to check whether the user has the right 
    *credentials to log into the account
