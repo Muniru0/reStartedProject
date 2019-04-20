@@ -80,6 +80,10 @@ if($stmt->fetch()){
 }
 
 
+/**
+ * 
+ */
+
 public static function throttle_user(){
 
   $throttle_delay = 10;
