@@ -129,8 +129,13 @@ width: 100%;
  
 
  <?php
-		 echo md5(uniqid(true));
-		 
+ $password = password_hash("Azizfahad1",PASSWORD_ARGON2ID,
+	['memory_cost' => 30,'time_cost' => 50, 'threads' => 3]);
+
+	if(password_verify("Azizfahad1","\$argon2id\$v=19\$m=30,t=50,p=3\$R2s2SFBqdmliMUM2SDF6Vw\$hDYX+A2ixWirzUe96i3n4jreC2CLkG2TgwWASTVqi8Q")){
+echo "equal";
+	}else{echo "not equal";}
+	
 //echo password_hash(bin2hex(uniqid(random_bytes(100))),CRYPT_SHA256);
 
  die();

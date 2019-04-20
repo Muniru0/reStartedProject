@@ -25,10 +25,12 @@ class user extends DatabaseObject{
     public static $email             = "email" ;
     public static $last_logout_time  = "users_last_logout_time";
     public static $last_login         = "last_login";
+    public static $password          = "password" ;
+    public static $date              = "date" ;
+    public static $user_category     	 = "user_category";
+    public static $invalid_confirmations = "invalid_confirmations";
+    public static $user_last_logout_time          = "user_last_logout_time" ;
     public static $gov               = "" ;
-    public static $password          = "" ;
-    public static $date              = "" ;
-    public static $interest          = "" ;
     public static $business_logo     = "" ;
     public static $business_name     = "" ;
     public static $profile_image     = "" ;
@@ -39,8 +41,7 @@ class user extends DatabaseObject{
     public static $logo_time         	 = "" ;
     public static $location          	 = "" ;
     public static $description       	 = "" ;
-	public static $user_category     	 = "user_category";
-	public static $invalid_confirmations = "invalid_confirmations";
+	 
 
     public static $follow_query_type = "query_type";
 
@@ -320,24 +321,57 @@ public static function S_has_attribute($attribute){
 
 
 
+//verify the reporter id
+public static function verify_reporter($reporter_id = ""){
+  global $db;
+
+  if(trim($reporter_id) == ""){
+    Errors::trigger_error(GJA_ID);
+    return;
+  }
+
+
+  $cursor = $db->query("SELECT id FROM reporter_ids WHERE reporter_id =".$db->real_escape_string($reporter_id)." LIMIT 1");
+
+  if($row = $cursor->fetch_assoc()){
+    if($db->affected_rows !== 1){
+    Errors::trigger_error(GJA_ID);
+    return; 
+    }
+
+    if($row["id"] > 1 && $row["id"] != NULL && $cursor->row_count > 0){
+    return true;
+    }
+  }
+
+  return false;
+}// verify_reporter();
 
 
 // sign up a user
-public static function signup_user($firstname = "",$lastname = "",$email = "", $password = "", $location = "",$profession = "", $signup_type = NULL,$reporter_id = NULL){
+public static function signup_user($firstname = "",$lastname = "",$email = "", $password = "", $signup_type = NULL,$reporter_id = NULL){
   global $db;
 
 
   $firstname = $db->real_escape_string($firstname);
   $lastname = $db->real_escape_string($lastname);
   $email = $db->real_escape_string($email);
-  $password = $db->real_escape_string($password);
-  $location = $db->real_escape_string($location);
-  $profession = $db->real_escape_string($profession);
+  $password = password_hash($db->real_escape_string($password),PASSWORD_ARGON2I,
+  ['memory_cost' => 30,'time_cost' => 50, 'threads' => 3]);
+  
   $signup_type = $db->real_escape_string($signup_type);
   $reporter_id = $db->real_escape_string($reporter_id);
 
    $user_category = 0;
    
+ $query = "SELECT ".user::$id." FROM ".user::$table_name." WHERE BINARY email='{$email}' LIMIT 1";
+     $cursor = $db->query($query);
+
+     if($cursor->num_rows > 0){
+    Errors::trigger_error(ALREADY_A_MEMBER);
+    $_SESSION["message"] = "We already have this email please login";
+    return;
+   }
   if(trim($signup_type) === GOVERNMENT_SIGNUP_TYPE ){
     
     $user_category = 3;
@@ -350,8 +384,9 @@ public static function signup_user($firstname = "",$lastname = "",$email = "", $
       $user_category = 1;
   }
 
+  $cursor->free();
 
-  $query = "INSERT INTO ".user::$table_name." VALuES(?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ".user::$id." =".user::$id." + 1 LIMIT 1";
+  $query = "INSERT INTO ".user::$table_name." VALUES(?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ".user::$id." =".user::$id." + 1";
 
   $stmt = $db->prepare($query);
 
@@ -361,6 +396,8 @@ public static function signup_user($firstname = "",$lastname = "",$email = "", $
     return false;
   }
 $id = NULL;
+  $profession  = "";
+  $location = "";
   $invalid_confirmations = 0;
   $user_last_logout_time = 0;
   $signup_time    = time();
@@ -378,8 +415,19 @@ $id = NULL;
   }
 
   if($stmt->affected_rows === 1){
+   $id = $stmt->insert_id;
+    
+ $_SESSION[user::$id]                    = $id;
+ $_SESSION[user::$date]                  = $signup_time;
+ $_SESSION[user::$user_category]         = $user_category;
+ $_SESSION[user::$invalid_confirmations] = $invalid_confirmations;
+ $_SESSION[user::$firstname]             = $firstname;
+ $_SESSION[user::$lastname]              = $lastname;
+ $_SESSION[user::$profession]             = $profession;
+ $_SESSION[user::$location]              = $location;
+ $_SESSION[user::$email]                 = $email;
 
-    return $stmt->insert_id;
+ return $id;
   }
   log_action(__CLASS__,$stmt->error." db error:".$db->error." LINE:".__LINE__);
 return false;
@@ -392,10 +440,18 @@ return false;
    *Use to check whether the user has the right 
    *credentials to log into the account
    */
-public static function found_user(){
+public static function found_user($email = "", $password = ""){
 
           global $db;
             
+          if(trim($password) == "" || trim($email) == ""){
+            Errors::trigger_error(RETRY);
+            return false;
+          }
+
+    $email    = $db->real_escape_string($email);
+    $password = $db->real_escape_string($password);
+  
          // Query to get password for the submitted username 
          // from the database 
          // NOTE: we are getting back the password to make it generic
@@ -405,21 +461,19 @@ public static function found_user(){
 
        // prepare the statement
       $stmt = $db->prepare($query);
+     
        if(!$stmt){
-        
+     
            Errors::trigger_error(RETRY);
            return;
        }
 
-       // assign the bind parameter
-       $email    =  user::$email;
-      
        // bind the parameter
         $bind_result = $stmt->bind_param("s",$email);
         
-
+  
         if(!$bind_result){
-           
+       
         Errors::trigger_error(RETRY);
             return;
        
@@ -427,20 +481,19 @@ public static function found_user(){
            
          // then execute the query
           $result = $stmt->execute();
-
-          
-          if(!$result){
-            
+      
+     if(!$result){
+     
      Errors::trigger_error(RETRY);
             return;
            
           }
-              
+         
        $verification = false;
        $result = $stmt->get_result();
   if($row = $result->fetch_array(MYSQLI_ASSOC)){
-     
-  $verification = password_verify(user::$password,$row["password"]);
+    
+  $verification = password_verify(trim($password),trim($row[user::$password]));
  
    
   }     
@@ -448,27 +501,25 @@ public static function found_user(){
        // the results
         $stmt->free_result();
 
-        // close the statement
+      // close the statement
         $stmt->close();
 
 		if(!empty($row) && $verification === true){
-
+     
 // prevents a second database trip
  foreach ($row as $attribute => $value){
-      
+          if(trim($attribute) === trim(user::$password)){
+continue;
+          }
           $_SESSION[trim($attribute)] = $value;  
      }
-  
+    
    
   return $verification;
   
-  }
-    else{
-	
-  Errors::trigger_error(RETRY);
-            
-            return;
-    return $verification;
+  }else{
+     
+  return $verification;
   }      
         
 

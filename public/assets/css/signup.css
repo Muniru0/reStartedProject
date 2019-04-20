@@ -1,0 +1,287 @@
+
+
+/* Style all input fields */
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+  }
+  
+  /* Style the submit button */
+  input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  /* Style the container for inputs */
+  .container {
+    background-color: #f1f1f1;
+    padding: 20px;
+  }
+  
+  /* The message box is shown when the user clicks on the password field */
+  #message {
+    display:none;
+    background: #f1f1f1;
+    color: #000;
+    position: relative;
+    padding: 20px;
+    margin-top: 10px;
+  }
+  
+  #message p {
+    padding: 10px 35px;
+    font-size: 18px;
+  }
+  
+  /* Add a green text color and a checkmark when the requirements are right */
+  .valid {
+    color: green;
+  }
+  
+  .valid:before {
+    position: relative;
+    left: -35px;
+    content: "&#10004;";
+  }
+  
+  /* Add a red text color and an "x" icon when the requirements are wrong */
+  .invalid {
+    color: red;
+  }
+  
+  .invalid:before {
+    position: relative;
+    left: -35px;
+    content: "&#10006;";
+  }
+  
+  
+    
+  
+  /* Style all input fields */
+  input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+  }
+  
+  /* Style the submit button */
+  input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  /* Style the container for inputs */
+  .container {
+    background-color: #f1f1f1;
+    padding: 20px;
+  }
+  
+  /* The message box is shown when the user clicks on the password field */
+  #message {
+    display:none;
+    background: #f1f1f1;
+    color: #000;
+    position: relative;
+    padding: 20px;
+    margin-top: 10px;
+  }
+  
+  #message p {
+    padding: 10px 35px;
+    font-size: 18px;
+  }
+  
+  /* Add a green text color and a checkmark when the requirements are right */
+  .valid {
+    color: green;
+  }
+  
+  .valid:before {
+    position: relative;
+    left: -35px;
+    content: "&#10004;";
+  }
+  
+  /* Add a red text color and an "x" icon when the requirements are wrong */
+  .invalid {
+    color: red;
+  }
+  
+  .invalid:before {
+    position: relative;
+    left: -35px;
+    content: "&#10006;";
+  }
+    
+        
+   .reactions {
+      position: relative;
+    display: inline-block;
+    max-height: 0.2em;
+  
+    
+  }
+  
+   
+  .reactions label {
+      width: 55px;
+      height: 23px;
+      position: absolute;
+      background-color: #999;
+      top: 0;
+      left: 0.3em;
+      border-radius: 50px;
+      }
+      
+      
+      
+  .reactions input[type="radio"]{
+      visibility: hidden;
+  }
+  
+  .reactions label:after {
+      content: "";
+      width: 21px;
+      height: 21px;
+      border-radius: 50px;
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      transition: all 0.5s;
+      background-color: white;
+  }
+  
+  
+  
+  .reactions input[type="radio"]:checked + label:after {
+      left: 33px;
+  }
+  
+  .reactions input[type="radio"]:checked  + label{
+      background-color:#3cbdac;
+      
+  }
+  
+  
+   .oppose_selected {
+       
+      background: #d83f3f;
+      border-radius: 3px;
+      padding: 4px;
+      color: #fff;
+      vertical-align: middle;
+      line-height: normal;
+   }
+   
+   
+  .oppose_span {
+      font-weight: bold;
+      position: relative;
+      top: 3px;
+      color: black;
+      left: 5.5em;
+  }
+  
+  
+  .support_span {
+      
+      font-weight: bold;
+    
+      color:black
+      
+  }
+  
+  .reactions_count:hover{
+      opacity: 0;
+  }
+  
+  .deselected_reactions_count {
+      color: #999999;
+      font-size: 0.9em !important;
+  }
+  
+  .selected_reactions_count {
+      color: #333;
+      font-weight: 600;
+  }
+  
+  .selected_support_span {
+      color: rgb(59, 205, 172);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      transition: all 0.5s;
+  }
+  
+  .deselected_support_span {
+      color: rgb(153, 153, 153);
+      font-weight: normal;
+      letter-spacing: 0px;
+  }
+  
+  .selected_oppose_span {
+      color: rgb(220, 117, 111);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      transition: all 0.5s;
+  }
+  
+  .deselected_oppose_span {
+      color: rgb(153, 153, 153);
+      font-weight: normal;
+      letter-spacing: 0px;
+  }
+  
+  
+  
+  .reply-sidebar{
+      border-radius: 0.6em !important;
+      background: #e1dcd9 !important;
+      padding-left: 0.1em !important;
+      background-image: linear-gradient(109.6deg, #fdc78d 11.3%, #f98ffd 100.2%) !important;
+  }
+  
+  .comment-sidebar{
+      border-radius: 0.6em;	
+      background: #e1dcd9 !important;
+      padding-left: 0.3em !important;
+      background-image: linear-gradient(109.6deg, #fdc78d 11.3%, #f98ffd 100.2%) !important;
+  }
+  
+  .mismatch_password_div{
+    position: absolute;
+      left: 12.5em;
+      bottom: 8.5em;
+      height: 105px;
+      width: 100px;
+      transform: rotate(90deg);
+      background-image: url(../images/mismatch.svg);
+      background-size: contain;
+      background-position: right;
+      background-repeat: no-repeat;
+      opacity: 1;
+      transition: opacity .2s ease-out;
+  
+  }
+  
+   .password_mismatch_text{
+    color: rgb(210, 73, 66);
+      margin-top: .1em;
+  }
+  
+  @media only screen and (min-width: 992px){
+    .ps-landing-action .ps-form-input {
+     display: inline-block ; 
+     
+  }
+  }
+  

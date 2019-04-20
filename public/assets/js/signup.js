@@ -3,29 +3,51 @@
 
 
 function verifyPasswordsMatch(){
-  
+ 
+  //get the confirm password
  let confirm_password = $.trim($("#confirm_password").val());
+ // get the password itself
  let password         =  $.trim($("#password").val());
+ 
+ // compare the two passwords 
   if(confirm_password !== password){
+    // show the password mismatch text if the two passwords do not match
     if($.trim($(".password_mismatch_text").css("display")) !== "block"){
       $(".password_mismatch_text").show();
     }
+    // show the password mismatch image if the two passwords do not match
+    if($.trim($(".mismatch_password_div").css("display")) !== "block"){
+      $(".mismatch_password_div").show();
+    }
+  
+     // give a red background to the confirm  password if the two passwords do not match
       if($("#confirm_password").css("background") !== "#eecdc6"){
         $("#confirm_password").css("background","#eecdc6");
        
       
       }
+      //return false;
       return false;
+  // compare the two passwords 
   }else if(confirm_password === password){
+    
+     // hide the password mismatch text if the two passwords do not match
     if($.trim($(".password_mismatch_text").css("display")) !== "none"){
       $(".password_mismatch_text").hide()
     }
-      if($("#confirm_password").css("background") === "#eecdc6"){
+
+     // show the password mismatch image if the two passwords do not match
+     if($.trim($(".mismatch_password_div").css("display")) !== "none"){
+      $(".mismatch_password_div").hide();
+    }
+      // remove the red background to the confirm  password if the two passwords do not match
+      if($.trim($("#confirm_password").css("background")) !== "#fff"){
         $("#confirm_password").css("background","#fff");
        
       
       }
   }
+  // return true 
   return true;
 }
 
@@ -60,10 +82,6 @@ function verifyPasswordsMatch(){
 
 
 
-// validating if the password and confirm password are the same
-$("#confim_password").on("keyup focus",function(){
-verifyPasswordsMatch();
-});
 
 // validating input before send to server
 var myInput = document.getElementById("password");
@@ -140,7 +158,7 @@ $("#button_login").on("click",function(e){
     $("#form").submit(function(e){
 
         $.ajax({
-            url:"logout.php",
+            url:"signup.php",
             type:"POST",
             data:$("#form").serialize(),
             dataType:"html"
@@ -169,8 +187,7 @@ if(status  === "success"){
       $(".errors").remove();
     }
      $("#login_err").append("<ul class=\"errors\">" + errors + "</ul>");  
-     $(element).removeAttr("disabled");
-     $(bucket).css("display","none");     
+   
       
 }
            
@@ -179,6 +196,9 @@ if(status  === "success"){
     }catch(e){
       
         utility.showErrorDialogBox("Sorry Invalid request please refresh the page and try again.");
+    }finally{
+        $(element).removeAttr("disabled");
+     $(bucket).css("display","none");     
     }
 
        

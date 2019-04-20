@@ -34,6 +34,20 @@ if(is_request_post() && request_is_same_domain()) {
 
  } else {
     
+  if(isset($_POST["signup_type"]) || isset($_POST["reporter_id"])){
+    if(trim($_POST["reporter_id"]) != "" || !isset($_POST["signup_type"]) || !isset($_POST["reporter_id"])){
+      Errors::trigger_error(GJA_ID);
+  return;
+    }
+    if(!user::$verify_reporter($_POST["reporter_id"])){
+      
+      return;
+    }
+
+  }else{
+    $_POST["signup_type"] = "";
+    $_POST["reporter_id"]  = "";
+   }
   
 
 if(trim($_POST["confirm_password"]) !== trim($_POST[user::$password])){
@@ -46,21 +60,15 @@ if(!has_length([$_POST[user::$password],"min"=>8])){
  return;
 }
 // validate the presence of the required fields  
-if(!validate_presence_on([user::$password,user::$firstname,user::$lastname,user::$email,user::$profession,user::$location]) && is_email($email)){
+if(!validate_presence_on([user::$password,user::$firstname,user::$lastname,user::$email]) && is_email($email)){
 
 return; 
 }
    
- if(user::create_user()) {
+ if(user::signup_user($_POST[user::$firstname],$_POST[user::$lastname],$_POST[user::$email],$_POST[user::$password],$_POST["signup_type"],$_POST["reporter_id"])) {
    
    // CSRF tests passed--form was created by us recently.
   // retrieve the values submitted via the form
-$firstname    =  $_SESSION[user::$firstname]   = $_POST[user::$firstname];
-$lastname     =  $_SESSION[user::$lastname]    = $_POST[user::$lastname];
-$email        =  $_SESSION[user::$email]       = $_POST[user::$email];
-$profession   =  $_SESSION[user::$profession]  = $_POST[user::$profession];
-$location     =  $_SESSION[user::$location]    = $_POST[user::$location];
-$password     =  $_SESSION[user::$password] = $_POST[user::$password];
 
 
    Session::after_successful_login();
@@ -80,6 +88,9 @@ $password     =  $_SESSION[user::$password] = $_POST[user::$password];
  }
      
    }
+
+  $message = $_SESSION["message"];
+   
 ?>
 
 
@@ -89,321 +100,20 @@ $password     =  $_SESSION[user::$password] = $_POST[user::$password];
 <html lang="en-US" class="no-js fontawesome-i2svg-active fontawesome-i2svg-complete"><head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width">
- <style type="text/css">
-img.wp-smiley,
-img.emoji {
- display: inline !important;
- border: none !important;
- box-shadow: none !important;
- height: 1em !important;
- width: 1em !important;
- margin: 0 .07em !important;
- vertical-align: -0.1em !important;
- background: none !important;
- padding: 0 !important;
-}
-
-
-
-
-/* Style all input fields */
-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-top: 6px;
-  margin-bottom: 16px;
-}
-
-/* Style the submit button */
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-}
-
-/* Style the container for inputs */
-.container {
-  background-color: #f1f1f1;
-  padding: 20px;
-}
-
-/* The message box is shown when the user clicks on the password field */
-#message {
-  display:none;
-  background: #f1f1f1;
-  color: #000;
-  position: relative;
-  padding: 20px;
-  margin-top: 10px;
-}
-
-#message p {
-  padding: 10px 35px;
-  font-size: 18px;
-}
-
-/* Add a green text color and a checkmark when the requirements are right */
-.valid {
-  color: green;
-}
-
-.valid:before {
-  position: relative;
-  left: -35px;
-  content: "&#10004;";
-}
-
-/* Add a red text color and an "x" icon when the requirements are wrong */
-.invalid {
-  color: red;
-}
-
-.invalid:before {
-  position: relative;
-  left: -35px;
-  content: "&#10006;";
-}
-</style>
-
-<!--Personal Styles -->
-<link rel="stylesheet" href="assets/css/bootstrap.min.css">      
-<link rel="stylesheet" href="assets/css/speakup_minor.css">
-<link rel="stylesheet" href="assets/css/speakup_major.css">
-
+ 
+  <!--Personal Styles -->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">      
+  <link rel="stylesheet" href="assets/css/speakup_minor.css">
+  <link rel="stylesheet" href="assets/css/speakup_major.css">
+  <link rel="stylesheet" href="assets/css/signup.css">
   
-
-<script type="text/javascript" src="assets/js/fontawesome-all.min.js" defer=""></script>
+    
+  
+       
+  <script type="text/javascript" src="assets/js/jquery.js"></script>
+  
      
-<script type="text/javascript" src="assets/js/jquery.js"></script>
-
-   <style>
-  
-
-/* Style all input fields */
-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-top: 6px;
-  margin-bottom: 16px;
-}
-
-/* Style the submit button */
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-}
-
-/* Style the container for inputs */
-.container {
-  background-color: #f1f1f1;
-  padding: 20px;
-}
-
-/* The message box is shown when the user clicks on the password field */
-#message {
-  display:none;
-  background: #f1f1f1;
-  color: #000;
-  position: relative;
-  padding: 20px;
-  margin-top: 10px;
-}
-
-#message p {
-  padding: 10px 35px;
-  font-size: 18px;
-}
-
-/* Add a green text color and a checkmark when the requirements are right */
-.valid {
-  color: green;
-}
-
-.valid:before {
-  position: relative;
-  left: -35px;
-  content: "&#10004;";
-}
-
-/* Add a red text color and an "x" icon when the requirements are wrong */
-.invalid {
-  color: red;
-}
-
-.invalid:before {
-  position: relative;
-  left: -35px;
-  content: "&#10006;";
-}
-  
-  	
- .reactions {
-	position: relative;
-  display: inline-block;
-  max-height: 0.2em;
-
-  
-}
-
- 
-.reactions label {
-	width: 55px;
-	height: 23px;
-	position: absolute;
-	background-color: #999;
-	top: 0;
-	left: 0.3em;
-	border-radius: 50px;
-	}
-	
-	
-	
-.reactions input[type="radio"]{
-	visibility: hidden;
-}
-
-.reactions label:after {
-	content: "";
-	width: 21px;
-	height: 21px;
-	border-radius: 50px;
-	position: absolute;
-	top: 1px;
-	left: 1px;
-	transition: all 0.5s;
-	background-color: white;
-}
-
-
-
-.reactions input[type="radio"]:checked + label:after {
-	left: 33px;
-}
-
-.reactions input[type="radio"]:checked  + label{
-	background-color:#3cbdac;
-	
-}
-
-
- .oppose_selected {
-	 
-	background: #d83f3f;
-    border-radius: 3px;
-    padding: 4px;
-    color: #fff;
-    vertical-align: middle;
-    line-height: normal;
- }
- 
- 
-.oppose_span {
-    font-weight: bold;
-    position: relative;
-    top: 3px;
-    color: black;
-    left: 5.5em;
-}
-
-
-.support_span {
-    
-    font-weight: bold;
-  
-    color:black
-    
-}
-
-.reactions_count:hover{
-	opacity: 0;
-}
-
-.deselected_reactions_count {
-	color: #999999;
-    font-size: 0.9em !important;
-}
-
-.selected_reactions_count {
-	color: #333;
-    font-weight: 600;
-}
-
-.selected_support_span {
-	color: rgb(59, 205, 172);
-    font-weight: 700;
-    letter-spacing: 0.05em;
-	transition: all 0.5s;
-}
-
-.deselected_support_span {
-	color: rgb(153, 153, 153);
-    font-weight: normal;
-    letter-spacing: 0px;
-}
-
-.selected_oppose_span {
-	color: rgb(220, 117, 111);
-    font-weight: 700;
-    letter-spacing: 0.05em;
-	transition: all 0.5s;
-}
-
-.deselected_oppose_span {
-	color: rgb(153, 153, 153);
-    font-weight: normal;
-    letter-spacing: 0px;
-}
-
-
-
-.reply-sidebar{
-	border-radius: 0.6em !important;
-    background: #e1dcd9 !important;
-    padding-left: 0.1em !important;
-	background-image: linear-gradient(109.6deg, #fdc78d 11.3%, #f98ffd 100.2%) !important;
-}
-
-.comment-sidebar{
-	border-radius: 0.6em;	
-	background: #e1dcd9 !important;
-    padding-left: 0.3em !important;
-	background-image: linear-gradient(109.6deg, #fdc78d 11.3%, #f98ffd 100.2%) !important;
-}
-
-.mismatch_password{
-  position: absolute;
-    left: 12.5em;
-    bottom: 8.5em;
-    height: 105px;
-    width: 100px;
-    transform: rotate(90deg);
-    background-image: url(assets/images/mismatch.svg);
-    background-size: contain;
-    background-position: right;
-    background-repeat: no-repeat;
-    opacity: 1;
-    transition: opacity .2s ease-out;
-
-}
-
- .password_mismatch_text{
-  color: rgb(210, 73, 66);
-    margin-top: .1em;
-}
-
-@media only screen and (min-width: 992px){
-  .ps-landing-action .ps-form-input {
-   display: inline-block ; 
    
-}
-}
-
-  	</style>
    </head>
  <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 plg-peepso" id="top">
   <div class="top__button">
@@ -510,15 +220,15 @@ input[type=submit] {
          <span class="ps-icon"><i class="ps-icon-user"></i></span>
          <input class="ps-input" type="text" id="email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true" required>
        </div>
-       <div class="mismatch_password"></div>
+       <div class="mismatch_password_div" style="display:none"></div>
        <div class="ps-form-input ps-form-input-icon">
          <span class="ps-icon"><i class="ps-icon-lock"></i></span>
          <input class="ps-input password" id="password" type="password" name="password" placeholder="Password" ondblclick="myFunction(this)" mouseev="true" autocomplete="off" keyev="true" clickev="true" required>
        </div>
        <div class="ps-form-input ps-form-input-icon">
           <span class="ps-icon"><i class="ps-icon-lock"></i></span>
-          <input class="ps-input password" id="confirm_password" type="password" name="confirm_password" placeholder="Confirm Password" mouseev="true" ondblclick="myFunction(this)" autocomplete="off" keyev="true" clickev="true" required />
-          <div class="password_mismatch_text">Passwords mismatch</div>
+          <input class="ps-input password" id="confirm_password" onkeyup="verifyPasswordsMatch()" type="password" name="confirm_password" placeholder="Confirm Password" mouseev="true" ondblclick="myFunction(this)" autocomplete="off" keyev="true" clickev="true" required />
+          <div class="password_mismatch_text" style="display:none;">Passwords mismatch</div>
           <div id="message" style="transition: display .5s ease; transition: display 0.5s ease 0s;
     box-shadow: #f1f1f1 2px 2px 2px 2px;
   
@@ -573,6 +283,8 @@ float: right;
          
            <!-- Alert -->
      <div class="errlogin calert clear alert-error" style="display:none"></div>
+     <div id="session_message" class="errlogin calert clear alert-error" ><?php echo $message; ?></div>
+     
          </form>
     </div>
 </div>

@@ -41,7 +41,7 @@ $("#button_login").on("click",function(e){
             dataType:"html"
   }).
   done(function(response,status){
-	
+	console.log(response);
 	try{
     response = JSON.parse(response);
 	
@@ -64,8 +64,7 @@ if(status  === "success"){
       $(".errors").remove();
     }
      $("#login_err").append("<ul class=\"errors\">" + errors + "</ul>");  
-     $(element).removeAttr("disabled");
-     $(bucket).css("display","none");     
+      
       
 }
            
@@ -73,6 +72,9 @@ if(status  === "success"){
 }
 	}catch(e){
 		utility.showErrorDialogBox("Sorry Invalid request please refresh the page and try again.");
+	}finally{
+		 $(element).removeAttr("disabled");
+     $(bucket).css("display","none");   
 	}
 
        

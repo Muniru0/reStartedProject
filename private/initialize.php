@@ -80,16 +80,18 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 
 
-//
+//signup types
 !defined("GOVERNMENT_SIGNUP_TYPE")               ?  define("GOVERNMENT_SIGNUP_TYPE","government")                : null;
-!defined("REPORTERS_SIGNUP_TYPE")               ?  define("REPORTERS_SIGNUP_TYPE","reporter")                : null;
+!defined("REPORTER_SIGNUP_TYPE")               ?  define("REPORTER_SIGNUP_TYPE","reporter")                : null;
 
 
 !defined("RETRY")               ?  define("RETRY","re_try")                : null;
-
 !defined("INVALID_STREAM_OPTION")               ?  define("INVALID_STREAM_OPTION","invalid")                : null;
 !defined("INVALID_SESSION")               ?  define("INVALID_SESSION","invalid_session")                : null;
 !defined("UNEXPECTED_RETRY")               ?  define("UNEXPECTED_RETRY","unexpected_retry")                : null;
+!defined("RE_SEND_MESSAGE")               ?  define("RE_SEND_MESSAGE","re_send_message")                : null;
+!defined("INVALID_REQUEST")               ?  define("INVALID_REQUEST","invalid_request")                : null;
+
 
 !defined("RESET_POST")               ?  define("RESET_POST","reset_post")                : null;
 !defined("COMMUNITIES")               ?  define("COMMUNITIES",["transport","health","work","sol","security","sanitation","education","oppression","other"])        : null;

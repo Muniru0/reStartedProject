@@ -23,38 +23,45 @@
 
 public static function failed_logins_info($email = "" , $password = "") {
 
-global $sql;
+
 global $db;
 
 $query = " SELECT num_failed_logins,time_failed FROM ".Throttle::$table_name." WHERE email = ? LIMIT 1";
 
     // this function prepares the statement and returns it from the Mysql class
     // Use this for simpler straight-forward queries(from the sql class)
-    $stmt = $sql->query($query);
+    $stmt = $db->prepare($query);
 
+   if(!$stmt){
 
+    return;
+   }
      // bind the parameters
     $bind = $stmt->bind_param("s",$email);
     if(!$bind){
-    log_action("Throttle User (): ", "Binding failed : ( " .$db->errno. " ) ".$db->error);
+    
+      return;
+
+
       }
 
     //execute the statemet
     $execute = $stmt->execute();
     if(!$execute){
-    log_action("Throttle User() : ", "Execution failed : ( " .$db->errno. " ) ".$db->error);
+
+    return;
+
     }
 
     // bind the result
 
-$result = $stmt->bind_result($failed_logins,$time_failed);
+$stmt->bind_result($failed_logins,$time_failed);
 
 if($stmt->fetch()){
 
-  return [$failed_logins,$time_failed];
+  return ["failed_logins" => $failed_logins,"time_failed" => $time_failed];
 }else{
 
-  log_action("num_of_failed_logins(): ", "Couldn't fetch the result: ( ".$db->errno." ) ".$db->error);
 // return -1 to differentiate between having no rows {which will return 0} and
 //  having an error in fetch the result
    return -1;
@@ -63,16 +70,16 @@ if($stmt->fetch()){
 }
 
 
-public static function throttle_user($num_failed_logins = 0){
-
+public static function throttle_user(){
+log_action(__CLASS__,'logging');
   $throttle_delay = 10;
   $throttle_time  = 60 * $throttle_delay;
 
-  //
+ 
   $throttle_info = throttle::failed_logins_info();
   
-  $failed_logins      = throttle::$failed_logins     = $throttle_info[0];
-  $last_attempt_time  = throttle::$last_attempt_time = $throttle_info[1];
+  $failed_logins      = throttle::$failed_logins     = $throttle_info["failed_logins"];
+  $last_attempt_time  = throttle::$last_attempt_time = $throttle_info["time_failed"];
   // if the num of failed attempts is greater than 
   // or equal to 20
   if($failed_logins >= 20){
@@ -99,7 +106,7 @@ return true;
   }
    
    
-	     }
+	     }// throttle_user();
   
  
 
@@ -112,10 +119,10 @@ return true;
 
 
 public  static function record_failed_logins($email = ""){
-    global $sql;
+   
 	global $db;
 
-$db = new mysqli(DB_SERVER,DB_USER,DB_PASS,DB_NAME);
+
   $ip = $_SERVER["REMOTE_ADDR"];
   $ip = "$ip";
   $max_failed_attempts = 20;
@@ -131,24 +138,21 @@ $db = new mysqli(DB_SERVER,DB_USER,DB_PASS,DB_NAME);
 
  if(!$stmt){
 
-die("the statement failed to query: ".$db->errno);
+  return false;
  }
 
 $failed_logins = 1;
 $time = time();
 
 // bind param
- $bind = $stmt->bind_param("siss",$email,$failed_logins,$ip,$time);
-if(!$bind){
 
-log_action("Throttle User: ", "Insert Binding failed : ( " .$db->errno. " ) ".$db->error);
-
+if(!$stmt->bind_param("siss",$email,$failed_logins,$ip,$time)){
+return false;
 }
 
 // execute the statement
 if(!$stmt->execute()){
 
-log_action("Throttle User: ", "Execution failed : ( " .$db->errno. " ) ".$db->error);
 return true;
 
   }
@@ -174,35 +178,36 @@ return true;
 
 public static function increase_failed_logins($failed_logins = 0){
 
-	global $sql;
+
 	global $db;
  $failed_logins =+ 1;
 $query  = "UPDATE ".Throttle::$table_name." SET num_failed_logins = ? WHERE email = ? ";
     
 // prepare the statement
-$stmt = $sql->query($query);
+$stmt = $db->prepare($query);
 
 
 // bind the parameter
   if(!$stmt){
 
-log_action("increase_failed_logins () : ".$db->error); 
+return false;
  
   }
 
 
-$bind = $stmt->bind_param("is",$failed_logins,user::$email);
 
- if(!$bind){
 
- log_action("increase_failed_logins () : ".$db->error); 
+ if(!$stmt->bind_param("is",$failed_logins,user::$email)){
+
+return false;
+
  }
-//execute the statement
-$execute = $stmt->execute();
-  
-if(!$execute){
 
-log_action("Throttle User: ", "Execution failed : ( " .$db->errno. " ) ".$db->error);
+//execute the statement
+
+if(!$stmt->execute()){
+
+return false;
 }
 
 
@@ -215,8 +220,6 @@ log_action("Throttle User: ", "Execution failed : ( " .$db->errno. " ) ".$db->er
 
 public static function clear_failed_logins($email = 0){
 
-
-
   global $db;
 
   $num_failed_logins = 0;
@@ -228,19 +231,24 @@ $stmt = $db->prepare($query);
 
 if(!$stmt){
 
-die("Preparation failed: (".$db->errno." ) ". $db->error);
+
+ log_action(__CLASS__,$db->error." LINE: ".__LINE__);
+return ;
 }
 // bind the parameter
-$bind = $stmt->bind_param("s",$email);
+if(!$stmt->bind_param("s",$email)){
+  log_action(__CLASS__,$db->error." LINE: ".__LINE__);
+return ;
+
+}
 
 //execute the statement
 $execute = $stmt->execute();
   
 if(!$execute){
 
-log_action("Throttle User: ", "Execution failed : ( " .$db->errno. " ) ".$db->error);
- 
- return false; 
+  log_action(__CLASS__,$db->error." LINE: ".__LINE__);
+return ;
    }
      
  

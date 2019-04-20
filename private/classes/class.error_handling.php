@@ -39,14 +39,20 @@ return;
 		  print j(["false" => "Error sending your message please try again."]);
   		break;  
 		  case INVALID_REQUEST:
-		  print j(["false" => "Please your request is invalid."]);
+		  print j(["false" => "Invalid request, refresh the page and try again."]);
   		break;  
 		  case INVALID_CSRF_TOKEN:
 		  print j(["false" => "Invalid request, please refresh the page and try again."]);
   		break;  
+		  case GJA_ID:
+		  print j(["false" => "Please only click the reporter toggle button if you are a registered member of GJA in real life. And provide Your valid GJA id."]);
+  		break;  
+		  case ALREADY_A_MEMBER:
+		  print j(["false" => "Please only click the reporter toggle button if you are a registered member of GJA in real life. And provide Your valid GJA id."]);
+  		break;  
   	
   	default:
-  		# code...
+  	      print j(["false" => "Error, request interrupted please refresh the page and try again."]);
   		break;
   }
 

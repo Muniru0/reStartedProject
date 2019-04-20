@@ -12,24 +12,13 @@ $message  = "";
 $email    = "";
 $password = "";
 
-// if this is a redirect then set the message 
-// to the found_user message from the redirect
 
-//if(isset($_POST["submit"])){
-//    die("it is dry");
-//}
- 
-
- $_SESSION["found_user"] ?? $_SESSION["found_user"] = "";
- // unset the found_user to prevent the 
- // persistence of the displayed message 
-$_SESSION["found_user"] = null;
   $cover_image = "assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg";
-     
+    
   // if the request is a post and at the same time
   // from us
 if(is_request_post() && request_is_same_domain()) {
-	
+ 
   // is the csrf token valid and recent
   if(!csrf_token_is_valid() || !csrf_token_is_recent()) {
 
@@ -38,19 +27,19 @@ if(is_request_post() && request_is_same_domain()) {
       return;
 
   } else {
-     
+   
     // CSRF tests passed--form was created by us recently.
-   // retrieve the values submitted via the form
-$email    =  user::$email    = $_POST['email'];
-$password =  user::$password = $_POST['password'];
+  
+
 // validate the presence of the required fields  
-if(validate_presence_on(["password","email"]) && is_email($email)){
+if(validate_presence_on(["password","email"]) && is_email($_POST[user::$email])){
 // check that they are not being throttled before 
-  //  
+
   if(throttle::throttle_user()){
     
-  if(user::found_user()) {
-      
+    
+  if(user::found_user($_POST[user::$email],$_POST[user::$password])){
+  
     Session::after_successful_login();
           // if they are authenticated successfully
 	   	 // then clear all the failed logins
@@ -63,7 +52,7 @@ if(validate_presence_on(["password","email"]) && is_email($email)){
 		 print j([true]);
       return;
 } else {
-throttle::record_failed_logins($email);
+throttle::record_failed_login($email);
 		      // if the person is throttled or not give
 			  // the same information out
       
@@ -77,14 +66,13 @@ throttle::record_failed_logins($email);
 		}
 			}
     else{
-//    // put a return here to stop processing the rest 
-//    // of the page
-//    echo "nooo either the email or presence is broken!!!";
+
  return;
 }
   }
 			
-		}
+}
+    
 ?>
 
 

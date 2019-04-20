@@ -106,7 +106,7 @@ $errors = [];
      
    
   return true; 
- }
+ }// validate_presence_on();
 
 // * validate value has presence
 // use trim() so empty spaces don't count

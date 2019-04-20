@@ -138,6 +138,7 @@ require_once(PRIVATE_DIR."initialize.php");
 	$_SESSION[PostImage::$sanitation] = "";
 	$_SESSION[PostImage::$education]  = "";
 	$_SESSION[PostImage::$other]      = "";
+	$_SESSION["message"]              = "";
 	$_SESSION[STREAM_COMMUNITY]   = 0;
 	$_SESSION["post_ids"]    = [];
 	$_SESSION["comment_ids"] = [];
