@@ -30,11 +30,12 @@ public static function failed_logins_info($email = "" ) {
 
 global $db;
 
-$query = " SELECT failed_logins, failure_time FROM ".Throttle::$table_name." WHERE email = ? LIMIT 1";
+$query = " SELECT ".self::$failed_logins.", ".self::$failure_time." FROM ".self::$table_name." WHERE ".self::$email." = ? LIMIT 1";
 
     // this function prepares the statement and returns it from the Mysql class
     // Use this for simpler straight-forward queries(from the sql class)
     $stmt = $db->prepare($query);
+
      if(!$stmt){
       log_action(__CLASS__,$db->error." LINE: ".__LINE__);
       return false;
@@ -56,35 +57,21 @@ $query = " SELECT failed_logins, failure_time FROM ".Throttle::$table_name." WHE
 	$result = $stmt->get_result();
 	
 	if($row = $result->fetch_assoc()){
-		
-		return [$row["failed_logins"],$row["failure_time"]];
+		 
+		return [self::$failed_logins => $row[self::$failed_logins],self::$failure_time => $row[self::$failure_time]];
 	}else{
     log_action(__CLASS__,$db->error." LINE: ".__LINE__);
 	return;
 	}
 
-    // bind the result
-     $stmt->bind_result($failed_logins,$failure_time);
-    
-if($stmt->fetch()){
-
-  return [$failed_logins,$failure_time];
-}else{
-  log_action(__CLASS__,$db->error." LINE: ".__LINE__);
-  // Errors::trigger_error(RETRY);
-// return -1 to differentiate between having no rows {which will return 0} and
-//  having an error in fetch the result
-   return false;
-  }
-
-}
+}// failed_logins_info();
 
 
 /**
  * 
  */
 
-public static function throttle_user(){
+public static function check_user_throttling_state(){
 
   $throttle_delay = 10;
   $throttle_time  = 60 * $throttle_delay;
@@ -92,33 +79,27 @@ public static function throttle_user(){
   //
   $throttle_info = throttle::failed_logins_info(user::$email);
   
-  $failed_logins      = throttle::$failed_logins     = $throttle_info[0];
-  $last_attempt_time  = throttle::$last_attempt_time = $throttle_info[1];
-  // if the num of failed attempts is greater than 
-  // or equal to 20
+  if(is_array($throttle_info) && !empty($throttle_info)){
+    Errors::trigger_error(SERVER_PROBLEM);
+return false;
+  }
+  
+  $failed_logins      = throttle::$failed_logins     = $throttle_info[self::$failed_logins];
+  $last_attempt_time  = throttle::$last_attempt_time = $throttle_info[self::$failure_time];
+ 
+  // check to see if the user is throttled
   if($failed_logins >= 20){
-   
-    // throttle them but check to see if the throttle time 
-    // for has already elapsed
-   //check to see if the time for the throttle
-    // if any hasn't elapsed
+  
+    // check to see if the throttle period has ended
   if(($last_attempt_time + $throttle_time) > time()){
     
     
 // that means that they are still being throttled
-  return false;
+  return $failed_logins;
   }
- 
- // now the throttle delay period is over    
-return true;
-
-  } else{
-
-    // returning true here will enable the srcipt authenticate
-    // the submitted data
-  	return true;
-  }
-   
+    
+  } 
+  return true;
    
 	     }// throttle_user();
   
@@ -132,17 +113,17 @@ return true;
  */
 
 
-public  static function record_failed_logins($email = ""){
+public  static function record_failed_login($failed_logins = 0,$email = ""){
     
 	global $db;
 
 
   $ip = $_SERVER["REMOTE_ADDR"];
   $ip = "$ip";
-  $max_failed_attempts = 20;
+  
   
   // if the number of failed logins is zero then record this as 1
- if(throttle::$failed_logins == 0){
+ if($failed_logins == 0){
   
   $query = "INSERT INTO ".Throttle::$table_name." (email,failed_logins,ip,failure_time) VALUES (?,?,?,?)";
  
@@ -179,7 +160,7 @@ if(!$stmt->execute()){
 }else{
      
      
-    throttle::increase_failed_logins();
+    throttle::increase_failed_logins($email);
     return false;
 
     }
@@ -195,10 +176,15 @@ if(!$stmt->execute()){
  * user tried to login but failed
  */
 
-public static function increase_failed_logins(){
+public static function increase_failed_logins($email = ""){
    global $db;
+
+   if(trim($email) == "" || !is_email($email)){
+
+    return false;
+   }
     
- $failed_logins =+ 1;
+ 
 $query  = "UPDATE ".self::$table_name." SET ".self::$failed_logins." =  ".self::$failed_logins." + 1 WHERE ".self::$email." = ? ";
     
 // prepare the statement
@@ -213,7 +199,7 @@ $stmt = $db->prepare($query);
   }
 
 // bind the params 
- if(!$stmt->bind_param("s",user::$email)){
+ if(!$stmt->bind_param("s",$email)){
   log_action(__CLASS__,$db->error." LINE: ".__LINE__);
   Errors::trigger_error(RETRY);
   return false;

@@ -33,34 +33,40 @@ if(is_request_post() && request_is_same_domain()) {
 
 // validate the presence of the required fields  
 if(validate_presence_on(["password","email"]) && is_email($_POST[user::$email])){
-// check that they are not being throttled before 
 
-  if(throttle::throttle_user()){
-    
-    
-  if(user::found_user($_POST[user::$email],$_POST[user::$password])){
   
+  // check if the user is being throttled or not
+  $number_of_failed_logins = throttle::check_user_throttling_state();
+
+log_action(__CLASS__,$number_of_failed_logins);
+
+//if the user is not being throttled 
+
+  if($number_of_failed_logins === true){
+    
+// then verify to see if the user attempt
+// to login will be successfull
+
+  if(user::found_user($_POST[user::$email],$_POST[user::$password])){
+  // if successful, perform hte after_successful_login actions
     Session::after_successful_login();
           // if they are authenticated successfully
 	   	 // then clear all the failed logins
-      
-        throttle::clear_failed_logins();
-        // get all the counts of posts notifications, connections requests,
-        // and set the maximum id from the post table to be able to reference it
-        // in the pagination class.
-      
-		 print j([true]);
+       throttle::clear_failed_logins();
+       
+    // print send the login response to the client
+		 print j(["response" => "success"]);
       return;
 } else {
-throttle::record_failed_login($email);
-		      // if the person is throttled or not give
-			  // the same information out
-      
-       $_POST = null;
+  // if the login was not successful record a failed login
+throttle::record_failed_login($number_of_failed_logins,$email);
+// unset the post super global to prevent re-submission og the 
+// data
+		    unset($_POST);
         return ;
 		    }
 		}else{
-// don't tell the person that he is being throttled
+  // give the user the hint to wait for 10 minutes even after
           print j(["false" =>"Throttled! Try again after 10mins"]);
           return;
 		}
