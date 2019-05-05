@@ -1,0 +1,1 @@
+change the acceptable length of the ip address in class.blacklist.php on line 36 back to 6;

@@ -76,16 +76,27 @@ class PostImage extends FileUpload {
         $query  = "SELECT MAX(".PostImage::$id.") AS ".PostImage::$post_max_id." FROM ".self::$table_name.";";
         $query .= "SELECT COUNT(*) AS count_pending_connections FROM ".PendingConnections::$table_name." WHERE ".PendingConnections::$receiver_id." = ".$_SESSION[user::$id].";";
         $query .= "SELECT COUNT(*)  AS count_notifications     FROM ".Notifications::$table_name." JOIN ".FollowPost::$table_name." ON ".FollowPost::$post_id." = ".Notifications::$post_id.";";
-        $query .= "SELECT ".PostImage::$label.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." GROUP BY ".PostImage::$label."  WHERE ".PostImage::$upload_time." > ".time();
+        $query .= "SELECT ".PostImage::$label.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5184000) GROUP BY ".PostImage::$label;
        
        
-        
-       
+        $activities_count_array = [];
+        $activities_count_array["pending_connections"] = "";
+        $activities_count_array["count_notifications"] = "";
+        $activities_count_array["label"][PostImage::$education] = "";
+        $activities_count_array["label"][PostImage::$other] = "";
+        $activities_count_array["label"][PostImage::$education] = "";
+        $activities_count_array["label"][PostImage::$security]  = "";
+        $activities_count_array["label"][PostImage::$sanitation] = "";
+        $activities_count_array["label"][PostImage::$sol] = "";
+        $activities_count_array["label"][PostImage::$work] = "";
+        $activities_count_array["label"][PostImage::$health] = "";
+        $activities_count_array["label"][PostImage::$transport] = "";
+
         if($db->multi_query($query)){
        do{
 
                 if($result = $db->store_result()){
-                    $activities_count_array = [];
+                   
                     while($row = $result->fetch_assoc()){
                         
                 if(isset($row[PostImage::$post_max_id])){
@@ -99,7 +110,7 @@ class PostImage extends FileUpload {
                      $activities_count_array["pending_connections"] = $row["count_pending_connections"];
                     }elseif(isset($row["count_notifications"])){
                         $activities_count_array["count_notifications"] = $row["count_notifications"]; 
-                    }elseif($row[PostImage::$label]){
+                    }elseif(isset($row[PostImage::$label])){
                     $activities_count_array["label"][$row[PostImage::$label]] =
                     $row["count_labeled_posts"];
                     }
@@ -107,7 +118,7 @@ class PostImage extends FileUpload {
                 }
             }while($db->more_results() && $db->next_result());
         }
-
+return  $activities_count_array;
         
     }//get_activities_count();
 

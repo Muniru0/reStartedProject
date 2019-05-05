@@ -27,7 +27,7 @@ function destroy_csrf_token() {
 // for use in a form.
 // Usage: echo csrf_token_tag();
 function csrf_token_tag() {
-	$token = create_csrf_token();
+	$token = $_SESSION["csrf_token"] ?? create_csrf_token();
 	return "<input id=\"csrf\" type=\"hidden\" name=\"csrf_token\" value=\"".$token."\"/>";
 }
 

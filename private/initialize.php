@@ -86,11 +86,14 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 
 !defined("RETRY")               ?  define("RETRY","re_try")                : null;
+!defined("BLOCKED_REQUEST")               ?  define("BLOCKED_REQUEST","blocked_request")                : null;
 !defined("INVALID_STREAM_OPTION")               ?  define("INVALID_STREAM_OPTION","invalid")                : null;
 !defined("INVALID_SESSION")               ?  define("INVALID_SESSION","invalid_session")                : null;
 !defined("UNEXPECTED_RETRY")               ?  define("UNEXPECTED_RETRY","unexpected_retry")                : null;
 !defined("RE_SEND_MESSAGE")               ?  define("RE_SEND_MESSAGE","re_send_message")                : null;
 !defined("INVALID_REQUEST")               ?  define("INVALID_REQUEST","invalid_request")                : null;
+!defined("INVALID_CSRF_TOKEN")               ?  define("INVALID_CSRF_TOKEN","invalid_csrf_token")                : null;
+!defined("UNIDENTIFIED_ERROR")               ?  define("UNIDENTIFIED_ERROR","unidentified error")                : null;
 
 
 !defined("RESET_POST")               ?  define("RESET_POST","reset_post")                : null;
@@ -112,67 +115,29 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 !defined("FOLLOW_POST")               ?  define("FOLLOW_POST","follow_post")   : null;
 !defined("UNFOLLOW_POST")               ?  define("UNFOLLOW_POST","unfollow_post")   : null;
-
 !defined("CONNECTION_REQUEST_SENT")               ?  define("CONNECTION_REQUEST_SENT","connection_request_sent")   : null;
-
 !defined("CONNECTION_REQUEST_REVOKED")               ?  define("CONNECTION_REQUEST_REVOKED","connection_request_revoked")   : null;
-
-
-
-
 !defined("NEW_SUPPORT")               ?  define("NEW_SUPPORT","new_support")   : null;
-
-
 !defined("NEW_OPPOSE")               ?  define("NEW_OPPOSE","new_oppose")   : null;
-
 !defined("ALT_SUPPORT")               ?  define("ALT_SUPPORT","change_to_support")   : null;
-
-
 !defined("ALT_OPPOSE")               ?  define("ALT_OPPOSE","change_to_oppose")   : null;
-
 !defined("NEW_REPLY_COMMENT")               ?  define("NEW_REPLY_COMMENT","new_reply_comment")   : null;
-
-
-
 !defined("DELETE_REPLYVIEW")               ?  define("DELETE_REPLYVIEW","delete_reply_view")   : null;
-
 !defined("LIKE_COMMENT")               ?  define("LIKE_COMMENT","like_comment")   : null;
-
-
 !defined("LIKE_REPLY")               ?  define("LIKE_REPLY","like_reply")   : null;
-
 !defined("UNLIKE_COMMENT")               ?  define("UNLIKE_COMMENT","unlike_comment")   : null;
-
-
 !defined("UNLIKE_REPLY")               ?  define("UNLIKE_REPLY","unlike_reply")   : null;
-
 !defined("ALT_SUPPORT")               ?  define("ALT_SUPPORT","alt_support")   : null;
-
-
 !defined("NEW_COMMENT")               ?  define("NEW_COMMENT","new_comment")   : null;
-
 !defined("NEW_REPLY_COMMENT")               ?  define("NEW_REPLY_COMMENT","new_reply_comment")   : null;
-
-
 !defined("EDIT_COMMENT")             ?  define("EDIT_COMMENT","edit_comment")   : null;
 !defined("EDIT_REPLY")               ?  define("EDIT_REPLY","edit_comment")   : null;
-
-
 !defined("DELETE_VIEW")               ?  define("DELETE_VIEW","delete_view")   : null;
-
-
-
-
 !defined("DELETE_VIEW")               ?  define("DELETE_VIEW","delete_view")   : null;
-
-
-
-
 !defined("SERVER_PROBLEM")               ?  define("SERVER_PROBLEM","server_problem")   : null;
-
-
-
 !defined("OPERATION_FAILED")               ?  define("OPERATION_FAILED","operation_failed")   : null;
+!defined("GJA_ID")               ?  define("GJA_ID","gja_id")   : null;
+!defined("ALREADY_A_MEMBER")               ?  define("ALREADY_A_MEMBER","aleady_a_member")   : null;
 
 
 
@@ -193,7 +158,6 @@ require_once(PRIVATE_DIR. "classes/class.database_object.php");
 
 //require the functions
 require_once(PRIVATE_DIR . "functions/general_functions.php");
-require_once(PRIVATE_DIR . "functions/blacklist_functions.php");
 require_once(PRIVATE_DIR . "functions/csrf_request_type_functions.php");
 require_once(PRIVATE_DIR . "functions/csrf_token_functions.php");
 require_once(PRIVATE_DIR . "functions/request_forgery_functions.php");
@@ -201,6 +165,7 @@ require_once(PRIVATE_DIR . "functions/reset_token_functions.php");
 // require_once(PRIVATE_DIR . "functions/session_hijacking_functions.php");
 
 //require the classes
+require_once(PRIVATE_DIR . "classes/class.blacklist.php");
 require_once(PRIVATE_DIR . "classes/class.session.php");
 require_once(PRIVATE_DIR . "classes/class.user.php");
 require_once(PRIVATE_DIR . "classes/class.throttle.php");
@@ -223,7 +188,6 @@ require_once(PRIVATE_DIR . "classes/class.messages.php");
 // foreach (glob("../private/classes/class.*") AS $filename) {
 //     require_once(PRIVATE_DIR.substr($filename,strpos($filename,"c")));
 // }
-
-block_blacklisted_ips();
+BlackListedIps::block_blacklisted_ips();
 
 ?>

@@ -6,12 +6,14 @@
  
  
  
+
+ 
 // initialize variables to default values
 
 $message  = "";
 $email    = "";
 $password = "";
-
+ 
 
   $cover_image = "assets/images/203-rain-computer-background-photos-downloads-backgrounds-wallpapers_2.jpg";
     
@@ -23,7 +25,7 @@ if(is_request_post() && request_is_same_domain()) {
   if(!csrf_token_is_valid() || !csrf_token_is_recent()) {
 
    
-  	Errors::trigger_error(RETRY);
+  	Errors::trigger_error(INVALID_CSRF_TOKEN);
       return;
 
   } else {
@@ -36,13 +38,12 @@ if(validate_presence_on(["password","email"]) && is_email($_POST[user::$email]))
 
   
   // check if the user is being throttled or not
-  $number_of_failed_logins = throttle::check_user_throttling_state();
+  $check_result = throttle::check_user_throttling_state($_POST[user::$email]);
 
-log_action(__CLASS__,$number_of_failed_logins);
 
 //if the user is not being throttled 
 
-  if($number_of_failed_logins === true){
+  if(is_int($check_result) && $check_result <= 20){
     
 // then verify to see if the user attempt
 // to login will be successfull
@@ -58,14 +59,22 @@ log_action(__CLASS__,$number_of_failed_logins);
 		 print j(["response" => "success"]);
       return;
 } else {
-  // if the login was not successful record a failed login
-throttle::record_failed_login($number_of_failed_logins,$email);
+    print j(["false"=>"Email and password mismatch."]);
+     if($check_result === 0){
+throttle::record_failed_login($_POST[user::$email]);
+     }elseif($check_result > 0){
+      
+      throttle::increase_failed_logins($_POST[user::$email]);
+     }else{
+      Errors::trigger_error(UNIDENTIFIED_ERROR);
+     }
+ 
 // unset the post super global to prevent re-submission og the 
 // data
 		    unset($_POST);
         return ;
 		    }
-		}else{
+		}elseif($check_result >= 20){
   // give the user the hint to wait for 10 minutes even after
           print j(["false" =>"Throttled! Try again after 10mins"]);
           return;
@@ -76,7 +85,8 @@ throttle::record_failed_login($number_of_failed_logins,$email);
  return;
 }
   }
-			
+
+  return;
 }
     
 ?>
@@ -118,54 +128,15 @@ img.emoji {
 	padding: 0 !important;
 }
 </style>
-<!--
-<link rel="stylesheet" id="peepso-css" href="https://demo.peepso.com/wp-content/plugins/peepso-core/templates/css/speakup_major.css?ver=1.10.3" type="text/css" media="all">
-<link rel="stylesheet" id="widgetopts-styles-css" href="https://demo.peepso.com/wp-content/plugins/widget-options/assets1/css/widget-options.css" type="text/css" media="all">
-<link rel="stylesheet" id="peepso-theme-css-css" href="https://demo.peepso.com/wp-content/themes/new/style.css?ver=4.9.6" type="text/css" media="all">
-<link rel="stylesheet" id="peepso-site-font-css" href="https://fonts.googleapis.com/css?family=Roboto+Condensed%3A300%2C400%2C700&amp;ver=4.9.6" type="text/css" media="all">
-<link rel="stylesheet" id="peepso-site-css-04-06-css" href="https://demo.peepso.com/wp-content/themes/new/assets1/css/speakup_minor.css?ver=1.0" type="text/css" media="all">
-<link rel="stylesheet" id="peepso-moods-css" href="https://demo.peepso.com/wp-content/plugins/peepso-core/assets1/css/moods.css?ver=1.10.3" type="text/css" media="all">
-<link rel="stylesheet" id="peepso-giphy-css" href="https://demo.peepso.com/wp-content/plugins/peepso-extras-giphy-integration/assets1/css/giphy.css?ver=1.10.3" type="text/css" media="all">
-<link rel="stylesheet" id="peepsoreactions-dynamic-css" href="https://demo.peepso.com/wp-content/peepso/plugins/reactions/reactions-1530194434.css?ver=1.10.3" type="text/css" media="all">
-<link rel="stylesheet" id="peepso-vip-admin-css" href="https://demo.peepso.com/wp-content/plugins/peepso-extras-vip/assets1/css/frontend.css?ver=4.9.6" type="text/css" media="all">
-<link rel="stylesheet" id="peepso-markdown-highlight-css" href="https://demo.peepso.com/wp-content/plugins/peepso-integrations-markdown/assets1/css/highlight.min.css?ver=1.10.3" type="text/css" media="all">
-<link rel="stylesheet" id="peepso-markdown-css" href="https://demo.peepso.com/wp-content/plugins/peepso-integrations-markdown/assets1/css/markdown.css?ver=1.10.3" type="text/css" media="all">
-   
---> 
+
 <!--Personal Styles -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">      
 <link rel="stylesheet" href="assets/css/speakup_minor.css">
 <link rel="stylesheet" href="assets/css/speakup_major.css">
 
-          
-<!--
-<link rel="stylesheet" href="assets/tmp_folder_for_login_page/bootstrap.min.css">      
-<link rel="stylesheet" href="assets/tmp_folder_for_login_page/speakup_minor.css">
-<link rel="stylesheet" href="assets/tmp_folder_for_login_page/speakup_major.css">
-
-
-<link rel="stylesheet" href="assets1/css/style.css" />-->
-  
-
-<!--<script type="text/javascript" src="assets1/js/jquery-migrate.min.js" defer></script>-->
-
-<!--<script type="text/javascript" src="assets1/js/index.js" defer></script>  -->
-
-<!--<script type="text/javascript" src="assets1/js/bootstrap.bundle.min.js"></script>  -->
-        
-
-<script type="text/javascript" src="assets/js/fontawesome-all.min.js" defer=""></script>
-<!--  DO NOT DEFER jquery or else the script will not find it ---->        
+ <!--  DO NOT DEFER jquery or else the script will not find it ---->        
 <script type="text/javascript" src="assets/js/jquery.js"></script>
 
-		<style type="text/css" id="wp-custom-css">
-			.mce-ico {
-    font-family: 'tinymce', Arial  !important;
-}
-
-i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright, i.mce-i-backcolor, i.mce-i-blockquote, i.mce-i-bold, i.mce-i-bullist, i.mce-i-charmap, i.mce-i-dashicon, i.mce-i-dfw, i.mce-i-forecolor, i.mce-i-fullscreen, i.mce-i-help, i.mce-i-hr, i.mce-i-indent, i.mce-i-italic, i.mce-i-link, i.mce-i-ltr, i.mce-i-numlist, i.mce-i-outdent, i.mce-i-pastetext, i.mce-i-pasteword, i.mce-i-redo, i.mce-i-remove, i.mce-i-removeformat, i.mce-i-spellchecker, i.mce-i-strikethrough, i.mce-i-underline, i.mce-i-undo, i.mce-i-unlink, i.mce-i-wp-media-library, i.mce-i-wp_adv, i.mce-i-wp_code, i.mce-i-wp_fullscreen, i.mce-i-wp_help, i.mce-i-wp_more, i.mce-i-wp_page {
-    font: 400 20px/1 dashicons !important;
-}		</style>
 	  </head>
   <body class="home page-template page-template-page-tpl-community page-template-page-tpl-community-php page page-id-5 plg-peepso" id="top">
    <div class="top__button">
@@ -175,11 +146,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
       <div class="header__wrapper header__wrapper--medium">
         <div class="header">
         <div id="userbar" class="header__account"><div class="widget_text widget header__widget"><div class="textwidget custom-html-widget"><div class="ultimate__box-actions" style="margin-left: 30px;"><a class="btn btn--sm" style="display:block;" href="http://peep.so/bundle"><strong>NatNet</strong></a></div></div></div></div>
-          <!-- <div class="header__logo">
-            <a href="https://demo.peepso.com/">
-              <img src="https://demo.peepso.com/wp-content/themes/new/assets1/images/logo.svg" alt="PeepSo"><img src="https://demo.peepso.com/wp-content/themes/new/assets1/images/logo-white.svg" alt="PeepSo">
-            </a>
-          </div> -->
+      
           <ul class="header__menu">
             <li id="menu-item-149" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-149"><a href="https://demo.peepso.com/">Community</a></li>
 <li id="menu-item-148" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a href="https://demo.peepso.com/profile/">Profile</a></li>
@@ -265,7 +232,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
             
   <div class="login-area">
 <form class="ps-form ps-js-form-login" method="post" name="login" id="form">
-   <?php echo csrf_token_tag(); ?><div class="ps-landing-form">
+   <?php echo  csrf_token_tag(); ?><div class="ps-landing-form">
         <div class="ps-form-input ps-form-input-icon">
           <span class="ps-icon"><i class="ps-icon-user"></i></span>
           <input class="ps-input" type="text" id="email" name="email" placeholder="Email" mouseev="true" autocomplete="off" keyev="true" clickev="true">

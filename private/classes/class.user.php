@@ -386,7 +386,7 @@ public static function signup_user($firstname = "",$lastname = "",$email = "", $
 
   $cursor->free();
 
-  $query = "INSERT INTO ".user::$table_name." VALUES(?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ".user::$id." =".user::$id." + 1";
+  $query = "INSERT INTO ".user::$table_name." VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ".user::$id." =".user::$id." + 1";
 
   $stmt = $db->prepare($query);
 
@@ -401,6 +401,7 @@ $id = NULL;
   $invalid_confirmations = 0;
   $user_last_logout_time = 0;
   $signup_time    = time();
+ 
 
   if(!$stmt->bind_param("ssssssssiii",$id,$firstname,$lastname,$email,$password,$profession,$location,$signup_time,$user_category,$invalid_confirmations,$user_last_logout_time)){
   Errors::trigger_error(RETRY);
@@ -514,13 +515,11 @@ continue;
           $_SESSION[trim($attribute)] = $value;  
      }
     
-   
-  return $verification;
+
   
-  }else{
-     
+  }
   return $verification;
-  }      
+       
         
 
     }//found_user();

@@ -176,12 +176,17 @@ return true;
  * increase(updates) the number of failed logins
  */
 
-public static function increase_failed_logins($failed_logins = 0){
+public static function increase_failed_logins($email = ""){
 
 
 	global $db;
- $failed_logins =+ 1;
-$query  = "UPDATE ".Throttle::$table_name." SET num_failed_logins = ? WHERE email = ? ";
+ if(trim($email) == ""){
+   return false;
+ }
+
+ $email = trim($email);
+
+$query  = "UPDATE ".Throttle::$table_name." SET ".self::$failed_logins." = ".self::$failed_logins." + 1 WHERE email = ? ";
     
 // prepare the statement
 $stmt = $db->prepare($query);
@@ -189,7 +194,7 @@ $stmt = $db->prepare($query);
 
 // bind the parameter
   if(!$stmt){
-
+log_action(__CLASS__,"$db->error LINE: ".__LINE__ );
 return false;
  
   }
@@ -197,7 +202,7 @@ return false;
 
 
 
- if(!$stmt->bind_param("is",$failed_logins,user::$email)){
+ if(!$stmt->bind_param("s",$email)){
 
 return false;
 

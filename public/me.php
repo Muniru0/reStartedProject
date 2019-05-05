@@ -4,6 +4,7 @@
 require_once("../private/initialize.php");
 
 if(!Session::before_every_protected_page()){
+    redirect_to("login.php");
     return;
 }
 //Session::after_successful_logout();

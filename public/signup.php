@@ -89,7 +89,7 @@ return;
      
    }
 
-  $message = $_SESSION["message"];
+  $message = $_SESSION["message"]?? "";
    
 ?>
 

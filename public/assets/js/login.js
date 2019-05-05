@@ -1,7 +1,6 @@
 
-(function($){
-  "use strict";
-})();
+
+
 $("#button_login").on("click",function(e){
  
    var element = e.target;
@@ -20,7 +19,7 @@ $("#button_login").on("click",function(e){
             dataType:"html"
   }).
   done(function(response){
-	console.log(response);
+	
 	try{
     response = JSON.parse(response);
 	
@@ -28,29 +27,25 @@ $("#button_login").on("click",function(e){
 	
 	$.each(response,function(index,value){
 		
-		 if(value == "success")
+		 if($.trim(index) == "response" && $.trim(value) == "success")
 		 {
 		  location.href="me.php";
 		  return;
 		 }else
-    if(index == "false"){
-	var errors = "";
-     $.each(response,function(index,value){
-   errors += "<li>"+value+"</li>";
-   });  
-    $("#login_err").show();
-    if($(".errors") != "null"  ){
-      $(".errors").remove();
-    }
-     $("#login_err").append("<ul class=\"errors\">" + errors + "</ul>");  
-      
-      
-}
+    if($.trim(index) == "false" && $.trim(value) != "blocked_request"){
+     
+      showLoginErrors(value);
+  }else
+    if($.trim(index) == "false" && $.trim(value) == "blocked_request"){
+     
+      location.href="blocked_request_page.php";
+  }
            
 });
 
 	}catch(e){
-		utility.showErrorDialogBox("Sorry Invalid request please refresh the page and try again.");
+		
+	  showLoginErrors("Sorry Invalid request please refresh the page and try again.");
 	}finally{
 		 $(element).removeAttr("disabled");
      $(bucket).css("display","none");   
@@ -58,7 +53,7 @@ $("#button_login").on("click",function(e){
 
        
 }).fail(function(){
-  utility.showErrorDialogBox("Sorry Invalid request please refresh the page and try again.");
+  showLoginErrors("Sorry Invalid request please refresh the page and try again.");
 });
 
 
@@ -71,4 +66,20 @@ $(element).attr("disabled","disabled");
  
 });
 
+
+function showLoginErrors(value = "") {
+     
+  if($.trim(value) == ""){
+return ;
+  }
+	var errors = "";
+   
+  errors += "<li>"+value+"</li>";
+  
+   $("#login_err").show();
+   if($(".errors") != "null"  ){
+     $(".errors").remove();
+   }
+    $("#login_err").append("<ul class=\"errors\">" + errors + "</ul>");  
+}
 

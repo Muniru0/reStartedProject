@@ -1285,8 +1285,10 @@ $firstname = "";
 
 // main header
   function main_header($page_header = "",$request_type = "",$activities_counts = []){
-
-  	return "
+	 $pending_connections = $activities_counts["pending_connections"] > 0 ? $activities_counts["pending_connections"] : "" ;
+	 $count_notifications = $activities_counts["count_notifications"] > 0 ? $activities_counts["count_notifications"] : "";
+  
+	 return "
      <!DOCTYPE html>
   	<html lang='en-US' class='no-js fontawesome-i2svg-active fontawesome-i2svg-complete gr__localhost'><head><style type='text/css'>.gm-err-container{height:100%;width:100%;display:table;background-color:#e0e0e0;position:relative;left:0;top:0}.gm-err-content{border-radius:1px;padding-top:0;padding-left:10%;padding-right:10%;position:static;vertical-align:middle;display:table-cell}.gm-err-content a{color:#4285f4}.gm-err-icon{text-align:center}.gm-err-title{margin:5px;margin-bottom:20px;color:#616161;font-family:Roboto,Arial,sans-serif;text-align:center;font-size:24px}.gm-err-message{margin:5px;color:#757575;font-family:Roboto,Arial,sans-serif;text-align:center;font-size:12px}.gm-err-autocomplete{padding-left:20px;background-repeat:no-repeat;background-size:15px 15px}
 </style><style type='text/css'>.gm-style-pbc{transition:opacity ease-in-out;background-color:rgba(0,0,0,0.45);text-align:center}.gm-style-pbt{font-size:22px;color:white;font-family:Roboto,Arial,sans-serif;position:relative;margin:0;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%)}
@@ -1358,7 +1360,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
     <div class='community__side community__side--left'>
               <div class='widget community__widget'>
 			  <div class='user_link_div'>
-    <a href='' style='font-size: 150%;'>".$_SESSION["firstname"]." ".$_SESSION["lastname"]."</a>
+    <a href='' style='font-size: 150%;'>".$_SESSION[user::$firstname]." ".$_SESSION[user::$lastname]."</a>
     
     </div>
 	<div class='ps-widget--profile__wrapper ps-widget--external'>
@@ -1381,7 +1383,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 					<a href='#' id='logout_link' tabindex='0' role='button' style='border-radius:3px;'><span class='ps-icon-off' style='color:#d2578b;'></span> Log Out <img src='assets/images/ajax-loader.gif' alt='ajax loader' style='position: relative;top: 0.2em;left: 1.3em; display:none;'></a>	
 
    <form id='logout_form' method='POST' style='display:none;'>
-   <input id='csrf' type='hidden' name='csrf_token' value='63f35ba387a5fbb49440b5afdb242d62'>   <button type='submit' id='logout_button' name='submit'></button>
+  <button type='submit' id='logout_button' name='submit'></button>
    
    </form>
 					</div>
@@ -1542,7 +1544,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				<i class='ps-icon-menu'></i>
 			</a>
 		</span>
-				<span class=''> <a href=' ://demo.peepso.com/activity/' title='Activity'> <div class='ps-bubble__wrapper'> <i class='ps-icon-home'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> </span> </div> </a> </span> <span class='ps-js-friends-notification friends-notification psnotification-toggle'> <a href='#' title='Connection Request'> <div class='ps-bubble__wrapper'> <i class='ps-icon-users'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> ".$activities_counts["pending_connections"]." </span> </div> </a> <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=''>View All</a></div></div></span> <span class='dropdown-notification ps-js-notifications'> <a href=' ://demo.peepso.com/profile/?notifications' title='Pending Notifications'> <div class='ps-bubble__wrapper'> <i class='ps-icon-globe'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'>".$activities_counts["count_notifications"]." </span> </div> </a> <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications' style='max-height: 40vh; overflow: auto;'>
+				<span class=''> <a href=' ://demo.peepso.com/activity/' title='Activity'> <div class='ps-bubble__wrapper'> <i class='ps-icon-home'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> </span> </div> </a> </span> <span class='ps-js-friends-notification friends-notification psnotification-toggle'> <a href='#' title='Connection Request'> <div class='ps-bubble__wrapper'> <i class='ps-icon-users'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> ".$pending_connections." </span> </div> </a> <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=''>View All</a></div></div></span> <span class='dropdown-notification ps-js-notifications'> <a href=' ://demo.peepso.com/profile/?notifications' title='Pending Notifications'> <div class='ps-bubble__wrapper'> <i class='ps-icon-globe'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'>".$count_notifications." </span> </div> </a> <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications' style='max-height: 40vh; overflow: auto;'>
 					<div id='notification_template' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
 	<a class='ps-notification__inside' href=''>
 		

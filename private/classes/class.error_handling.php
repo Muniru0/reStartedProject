@@ -26,6 +26,9 @@ return;
 		case UNEXPECTED_RETRY:
   		print j(["false"=>"Sorry, Something unexpectedly happened,please refresh the page and try again."]);
 		  break;
+		case UNIDENTIFIED_ERROR:
+  		print j(["false"=>"Sorry, unidentified error please refresh the page and try again."]);
+		  break;
 		  case RE_INITIATE_OPERATION:
   		print j(["false"=>"Please refresh the page and try again, if the action wasn't successful "]);
   		break;  
@@ -49,6 +52,9 @@ return;
   		break;  
 		  case ALREADY_A_MEMBER:
 		  print j(["false" => "Please only click the reporter toggle button if you are a registered member of GJA in real life. And provide Your valid GJA id."]);
+  		break;  
+		  case BLOCKED_REQUEST:
+		  print j(["false" => BLOCKED_REQUEST]);
   		break;  
   	
   	default:

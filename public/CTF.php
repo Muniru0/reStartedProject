@@ -129,6 +129,9 @@ width: 100%;
  
 
  <?php
+ echo "<pre>";
+ print_r(Throttle::failed_logins_info("yussifmunirium@gmail.com"));
+ echo "</pre>";
  
 //echo password_hash(bin2hex(uniqid(random_bytes(100))),CRYPT_SHA256);
 
