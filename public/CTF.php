@@ -129,10 +129,21 @@ width: 100%;
  
 
  <?php
- echo "<pre>";
- print_r(Throttle::failed_logins_info("yussifmunirium@gmail.com"));
- echo "</pre>";
  
+
+ $result = $db->query("SELECt * FROM notifications  JOIN follow_posts ON follow_posts_post_id = notifications_post_id WHERE follow_posts_follower_id = 4 && notifications_user_id != 4");
+
+ while($row = $result->fetch_assoc()){
+
+	
+	echo $row["notifications_firstname"]." ".$row["notifications_lastname"]."<br />";
+	echo $row["notifications_type"]."<br />";
+	echo FetchPost::time_converter($row["notifications_time"])."<br /><br /><br />";
+
+
+ }
+ 
+ $result->free();
 //echo password_hash(bin2hex(uniqid(random_bytes(100))),CRYPT_SHA256);
 
  die();
@@ -141,6 +152,7 @@ width: 100%;
  echo "</pre>";
 // 	$query  = "SELECT MAX(".PostImage::$id.") AS ".PostImage::$post_max_id." FROM ".PostImage::$table_name." WHERE ".PostImage::$id." < ".$_SESSION[STREAM_HOME];
 // 	$db->query($query);
+
 
 
 // 	  if($result = $db->query($query)){

@@ -69,12 +69,7 @@ public static function get_latest_notifications(){
 		}
 	
 
-
-	$query = "
-	SELECT " .self::$table_name.".* FROM ".self::$table_name." WHERE ".self::$user_id." IN (SELECT ".ConnectUsers::$followed_id." FROM ".ConnectUsers::$table_name.") || ".self::$post_id." IN (SELECT ".FollowPost::$post_id." FROM ".FollowPost::$table_name." WHERE ".FollowPost::$follower_id." = ".$_SESSION[user::$id].")";
-
-
-	$query  = "SELECT notifications.*,views.commentor_id AS views_commentor_id, reply_views.user_id AS reply_views_user_id, post_table.uploader_id AS post_table_uploader_id FROM notifications JOIN follow_posts ON follow_posts_follower_id = notifications_user_id LEFT JOIN connect_users ON notifications_user_id = connect_users_followed_id LEFT JOIN post_table ON notifications_post_id = post_table.id LEFT JOIN views ON views.id = notifications_comment_id LEFT JOIN reply_views ON reply_views.id = notifications_reply_id WHERE (follow_posts_follower_id = ".$_SESSION[user::$id]." || connect_users_followed_id = ".$_SESSION[user::$id].")   ORDER BY notifications_time DESC ";
+	$query  = "SELECt * FROM ".self::$table_name."  JOIN ".FollowPost::$table_name." ON ".FollowPost::$post_id." = ".self::$table_name." WHERE ".FollowPost::$user_id." = ".$_SESSION[user::$id]." && ".self::$user_id." != ".$_SESSION[user::$id];
 
   if($result = $db->query($query)){
 
@@ -107,6 +102,7 @@ public static function get_latest_notifications(){
 			$restructured_notifications_row["reply_id"] = $row[self::$reply_id];
         
 		}
+		
 		if(isset($row[self::$user_id]) && $row[self::$user_id] != null){
 			
 			$restructured_notifications_row["user_id"] = $row[self::$user_id];
