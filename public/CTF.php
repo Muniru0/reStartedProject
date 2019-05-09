@@ -130,20 +130,62 @@ width: 100%;
 
  <?php
  
-
- $result = $db->query("SELECt * FROM notifications  JOIN follow_posts ON follow_posts_post_id = notifications_post_id WHERE follow_posts_follower_id = 4 && notifications_user_id != 4");
-
- while($row = $result->fetch_assoc()){
-
+  // $result = $db->query("SELECT notifications.* FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id 	LEFT JOIN connect_users ON connect_users_followed_id = notifications_user_id  WHERE follow_posts_follower_id = 4 && connect_users_follower_id = 4 && notifications_user_id != 4"); 
 	
-	echo $row["notifications_firstname"]." ".$row["notifications_lastname"]."<br />";
-	echo $row["notifications_type"]."<br />";
-	echo FetchPost::time_converter($row["notifications_time"])."<br /><br /><br />";
+ $query = "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id   WHERE follow_posts_follower_id = 4 &&  notifications_user_id != 4;"; 
 
 
- }
+ $query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
+	 
+ $query .= "SELECT * FROM notifications JOIN views ON (views.id = notifications_comment_id || views.post_id = notifications_post_id) WHERE views.commentor_id = 4;";
+	 
+ $query .= "SELECT * FROM notifications JOIN reply_views ON (reply_views.id = notifications_reply_views_id || reply_views_post_id = notifications_post_id || reply_views_comment_id = notifications_comment_id)  WHERE reply_views.user_id = 4";
+
+
+ $array = [];
+ if($db->multi_query($query)){
+  do{
+		 if($result = $db->store_result()){
+			    while($row = $result->fetch_assoc()){
+			 if(!in_array($row["notifications_id"],$array)){
+
+				$array[] =  $row["notifications_id"];
+			
+	 echo $row["notifications_id"]."<br />";
+	 echo $row["notifications_firstname"]." ".$row["notifications_lastname"]."<br />";
+	 echo $row["notifications_type"]."<br />";
+	 echo FetchPost::time_converter($row["notifications_time"])."<br /><br /><br />";
  
- $result->free();
+ 
+			 }
+		
+       
+		 }
+		
+		 echo "Num rows :".$result->num_rows;
+		 $result->free();
+		}
+
+	}while($db->more_results() && $db->next_result());
+echo "<pre>";
+print_r($array);
+echo "</pre>";
+ }
+
+
+
+
+//  while($row = $result->fetch_assoc()){
+
+// 	 echo $row["notifications_id"]."<br />";
+// 	echo $row["notifications_firstname"]." ".$row["notifications_lastname"]."<br />";
+// 	echo $row["notifications_type"]."<br />";
+// 	echo FetchPost::time_converter($row["notifications_time"])."<br /><br /><br />";
+
+
+//  }
+//    echo $result->num_rows;
+//  $result->free();
 //echo password_hash(bin2hex(uniqid(random_bytes(100))),CRYPT_SHA256);
 
  die();

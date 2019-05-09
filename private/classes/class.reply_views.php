@@ -15,11 +15,11 @@ class ReplyViews  extends Views {
       public static $comment_id    =    "comment_id";
       public static $user_id       =    "user_id";
       public static $reply         =    "reply";
-	  public static $reply_time    = 	"reply_time";
-	  public static $firstname     =    "firstname";
-	  public static $lastname      =    "lastname";
+			public static $reply_time    = 	"reply_time";
+			public static $firstname     =    "firstname";
+			public static $lastname      =    "lastname";
 	 
-	  public static $likes         = "likes";
+	 	  public static $likes         = "likes";
 
 
 	  // aliases of database columns
@@ -28,9 +28,9 @@ class ReplyViews  extends Views {
       public static $alias_of_comment_id    =    "reply_views_comment_id";
       public static $alias_of_user_id       =    "reply_views_user_id";
       public static $alias_of_reply_text    =    "reply_views_reply";
-	  public static $alias_of_reply_time    = 	 "reply_views_reply_time";
-	  public static $alias_of_firstname     =    "reply_views_firstname";
-	  public static $alias_of_lastname      =    "reply_views_lastname";
+			public static $alias_of_reply_time    = 	 "reply_views_reply_time";
+			public static $alias_of_firstname     =    "reply_views_firstname";
+			public static $alias_of_lastname      =    "reply_views_lastname";
 	 
       public static $alias_of_likes         = "likes";
 	  
@@ -40,14 +40,16 @@ class ReplyViews  extends Views {
 public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	
 	 global $db;
+	 
 	
-  
+ 
 	 
 	// the insert query for the new comment	
 	$query = "CALL reply_comment(?)";
 
 	// prepare the new comment statement
 	if(!($stmt= $db->prepare($query))){
+		log_action(__CLASS__,$db->error);
 	  Errors::trigger_error(RE_INTIATE_OPERATION);
 		return false;
 	} 

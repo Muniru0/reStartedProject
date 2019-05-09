@@ -318,14 +318,14 @@ class comment {
       if ($(reply_template).find(".ps-button-action")[0]) {
         actionsLink = $(reply_template).find(".ps-button-action")[0];
         // change the onclick attribute of the link 
-        $(actionsLink).attr("onclick", "comment.reply_comment(" + response["comment_info"]["comment_id"] + "," + response["comment_info"]["comment_id"] + ",this); return false;");
+        $(actionsLink).attr("onclick", "comment.reply_comment(" + response["comment_info"]["incident_id"] + "," + response["comment_info"]["comment_id"] + ",this); return false;");
       }
 
       // edit the cancel reply  link
       if ($(reply_template).find(".ps-button-cancel")[0]) {
         actionsLink = $(reply_template).find(".ps-button-cancel")[0];
         // change the onclick attribute of the link 
-        $(actionsLink).attr("onclick", "comment.reply_cancel(" + response["comment_info"]["comment_id"] + "," + response["comment_info"]["comment_id"] + ",this); return false;");
+        $(actionsLink).attr("onclick", "comment.reply_cancel(" + response["comment_info"]["incident_id"] + "," + response["comment_info"]["comment_id"] + ",this); return false;");
       }
       // give the reply text area an id
       $(textAreaDiv).attr("id", "reply_area_wrapper_" + response["comment_info"]["comment_id"]);
@@ -1064,7 +1064,15 @@ class comment {
       console.log(response);
       try {
         response = JSON.parse(response);
-
+         
+         if($.trim(response) != "" && response == undefined 
+         && $.trim(response["false"]) != "" && response["false"] ==undefined){
+        utility.showErrorDialogBox(response);
+        return;
+         }else if($.trim(response) == "" || response == undefined){
+              utility.showErrorDialogBox(response);
+        return;
+         }
         let comment_template = document.querySelector("#reply-items-template");
         comment_template = comment_template.cloneNode(true);
 

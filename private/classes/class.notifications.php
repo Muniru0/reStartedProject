@@ -68,85 +68,46 @@ public static function get_latest_notifications(){
 		return;
 		}
 	
-
-	$query  = "SELECt * FROM ".self::$table_name."  JOIN ".FollowPost::$table_name." ON ".FollowPost::$post_id." = ".self::$table_name." WHERE ".FollowPost::$user_id." = ".$_SESSION[user::$id]." && ".self::$user_id." != ".$_SESSION[user::$id];
-
-  if($result = $db->query($query)){
-
-  
-  if($result->num_rows > 0 && trim($db->error) == ""){
-	  $array = [];
-    while($row = $result->fetch_assoc()){
-		  if(array_key_exists($row[self::$id],$array)){
-   					continue;
-			}
-		$restructured_notifications_row = [];
-
-		if(isset($row[self::$id]) && $row[self::$id] != null){
-			
-			$restructured_notifications_row["id"] = $row[self::$id];   
-        
-		}
-		if(isset($row[self::$post_id]) && $row[self::$post_id] != null){
-			
-	     	$restructured_notifications_row["incident_id"] = $row[self::$post_id];	   
-        
-		}
-		if(isset($row[self::$comment_id]) && $row[self::$comment_id] != null){
-			
-			$restructured_notifications_row["comment_id"] = $row[self::$comment_id];	   	   
-        
-		}
-		if(isset($row[self::$reply_id]) && $row[self::$reply_id] != null){
-			
-			$restructured_notifications_row["reply_id"] = $row[self::$reply_id];
-        
-		}
-		
-		if(isset($row[self::$user_id]) && $row[self::$user_id] != null){
-			
-			$restructured_notifications_row["user_id"] = $row[self::$user_id];
-        
-		}
-		
-		if($row[self::$firstname] != null
-		 && $row[self::$lastname] != null){
-			
-			$restructured_notifications_row["fullname"] = $row[self::$firstname] ." ".$row[self::$lastname];
-        
-		}
-		
-		if(isset($row[self::$type]) && $row[self::$type] != null){
-			
-			$restructured_notifications_row["notification_string"] = self::get_notification_type_string($row[self::$type],$row["post_table_uploader_id"],$row["views_commentor_id"],$row["reply_views_user_id"]);
-            
-		}
-		if(isset($row[self::$time]) && $row[self::$time] != null){
-			
-			$restructured_notifications_row["time"] = $row[self::$time];
-			   
-        
-		}
+		$query = "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id   WHERE follow_posts_follower_id = 4 &&  notifications_user_id != 4;"; 
 
 
-
-
-		$array[$row[self::$id]] = $restructured_notifications_row;
-	}
+		$query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
+			
+		$query .= "SELECT * FROM notifications JOIN views ON (views.id = notifications_comment_id || views.post_id = notifications_post_id) WHERE views.commentor_id = 4;";
+			
+		$query .= "SELECT * FROM notifications JOIN reply_views ON (reply_views.id = notifications_reply_views_id || reply_views_post_id = notifications_post_id || reply_views_comment_id = notifications_comment_id)  WHERE reply_views.user_id = 4";
 	 
-	echo "<pre>";
-	print_r($array);
-	echo  "</pre>";
-  }
-
-
-   unset($array);
-   $result->free();
-
-}else{
-	echo $db->error." ".__LINE__;
-	Errors::trigger_error(RE_INITIATE_OPERATION);
-}
+	 
+		$array = [];
+		if($db->multi_query($query)){
+		 do{
+				if($result = $db->store_result()){
+						 while($row = $result->fetch_assoc()){
+					if(!in_array($row["notifications_id"],$array)){
+	 
+					 $array[] =  $row["notifications_id"];
+				 
+			echo $row["notifications_id"]."<br />";
+			echo $row["notifications_firstname"]." ".$row["notifications_lastname"]."<br />";
+			echo $row["notifications_type"]."<br />";
+			echo FetchPost::time_converter($row["notifications_time"])."<br /><br /><br />";
+		
+		
+					}
+			 
+					
+				}
+			 
+				echo "Num rows :".$result->num_rows;
+				$result->free();
+			 }
+	 
+		 }while($db->more_results() && $db->next_result());
+	 echo "<pre>";
+	 print_r($array);
+	 echo "</pre>";
+		}
+	 
 
 }//get_notifications();
 

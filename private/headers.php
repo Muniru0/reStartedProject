@@ -2498,7 +2498,7 @@ global $files_dir_string;
 <div id='comment-item-1121' class='ps-comment-item cstream-comment stream-comment' data-comment-id='1121' style='display: none;'>
 	<div class='ps-avatar-comment'>
 		<a class='cstream-avatar cstream-author' href=''>
-			<img data-author='2' src='' alt='Patricia Currie avatar'>
+			<img data-author='2' src='' alt='".$_SESSION[user::$firstname]." ".$_SESSION[user::$lastname]."'>
 		</a>
 	</div>
 
@@ -2545,7 +2545,7 @@ global $files_dir_string;
 			</div>
 			<div class='ps-comment-actions' style='display: none;'>
 				<button onclick='return activity.comment_cancel(506);' class='ps-btn ps-button-cancel'>Clear</button>
-				<button onclick='return activity.comment_save(506, this);' class='ps-btn ps-btn-primary ps-button-action' disabled='disabled'>Post</button>
+				<button onclick='return activity.comment_save(506, this);' class='ps-btn ps-btn-primary ps-button-action' >Post</button>
 			</div>
 		</div>
 	</div>

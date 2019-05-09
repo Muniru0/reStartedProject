@@ -316,7 +316,7 @@ elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "reply_commen
 	$comment_id = (int)$db->real_escape_string($_POST["comment_id"]);
 	
 	  
-	  
+	
 	  $_POST["reply"] = nl2br($_POST["reply"]);
 		
       // check if the comment is empty or set	  
@@ -338,7 +338,7 @@ elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "reply_commen
 	 // check if the comment is empty or set	  
 	  if(!isset($post_id)    || $post_id < 1    || !is_int($post_id) ||
 		 !isset($comment_id) || $comment_id < 1 || !is_int($comment_id)){
-			 
+			
 			Errors::trigger_error(RE_INITIATE_OPERATION);
 		  return false;
 	  }   
@@ -347,6 +347,7 @@ elseif(isset($_POST["request_type"]) && $_POST["request_type"] === "reply_commen
 		 if(!in_array($post_id,$_SESSION["post_ids"]) || 
 		    !in_array($comment_id,$_SESSION["comment_ids"]))
 		 {
+		 log_action("nu",$post_id." ".$comment_id);
 		  Errors::trigger_error(RE_INITIATE_OPERATION);
 			
 			return false;
