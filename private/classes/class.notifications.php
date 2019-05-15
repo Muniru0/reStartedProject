@@ -67,15 +67,15 @@ public static function get_latest_notifications(){
         Errors::trigger_error(INVALID_SESSION);
 		return;
 		}
-	
+		
 		$query = "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id   WHERE follow_posts_follower_id = 4 &&  notifications_user_id != 4;"; 
 
 
-		$query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
+		$query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4;";
 			
-		$query .= "SELECT * FROM notifications JOIN views ON (views.id = notifications_comment_id || views.post_id = notifications_post_id) WHERE views.commentor_id = 4;";
+		$query .= "SELECT * FROM notifications JOIN views ON (views.id = notifications_comment_id || views.post_id = notifications_post_id) WHERE notifications_user_id != 4;";
 			
-		$query .= "SELECT * FROM notifications JOIN reply_views ON (reply_views.id = notifications_reply_views_id || reply_views_post_id = notifications_post_id || reply_views_comment_id = notifications_comment_id)  WHERE reply_views.user_id = 4";
+		$query .= "SELECT * FROM notifications JOIN reply_views ON (reply_views.id = notifications_reply_id || reply_views.post_id = notifications_post_id || reply_views.comment_id = notifications_comment_id)  WHERE notifications_user_id != 4";
 	 
 	 
 		$array = [];
@@ -98,15 +98,13 @@ public static function get_latest_notifications(){
 					
 				}
 			 
-				echo "Num rows :".$result->num_rows;
 				$result->free();
 			 }
 	 
 		 }while($db->more_results() && $db->next_result());
-	 echo "<pre>";
-	 print_r($array);
-	 echo "</pre>";
+	
 		}
+	 
 	 
 
 }//get_notifications();

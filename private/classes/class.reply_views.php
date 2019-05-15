@@ -78,9 +78,6 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 		return false;
 	}
 	
-	// return a new_comment_id  in case the id is to be used to delete the comment
-	$reply_id = $stmt ->insert_id;
-	  
 	  if($result = $stmt->get_result()){
 		    if($row = $result->fetch_assoc()){
 			if(isset($row["new_reply_id"])  && $row["new_reply_id"] > 0 && $row["result"] == "successful"){
@@ -92,7 +89,7 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 	 
 	 
 		// add the reply id to the array of reply_ids
-		 $_SESSION["reply_ids"][] = (int)$row["new_reply_id"];
+		 $_SESSION["reply_ids"][] =	$reply_id = (int)$row["new_reply_id"];
 		// convert the time stamp from UNIX based timestamp to something more readable
        $formatted_reply_time = FetchPost::time_converter($time);
 			print j(["new_reply_id" => "new_reply_{$row["new_reply_id"]}",
@@ -117,7 +114,6 @@ public static function reply_views($post_id = 0, $comment_id = 0, $reply = ""){
 		}
 		$stmt->close();
 	
-
 // trigger a notification
 Notifications::send_notification($post_id,$comment_id,$reply_id,NEW_REPLY_COMMENT);
  

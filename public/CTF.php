@@ -129,7 +129,7 @@ width: 100%;
  
 
  <?php
- 
+ echo password_hash("azizfahad1",PASSWORD_ARGON2ID);
   // $result = $db->query("SELECT notifications.* FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id 	LEFT JOIN connect_users ON connect_users_followed_id = notifications_user_id  WHERE follow_posts_follower_id = 4 && connect_users_follower_id = 4 && notifications_user_id != 4"); 
 	
  $query = "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id   WHERE follow_posts_follower_id = 4 &&  notifications_user_id != 4;"; 
@@ -137,9 +137,9 @@ width: 100%;
 
  $query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
 	 
- $query .= "SELECT * FROM notifications JOIN views ON (views.id = notifications_comment_id || views.post_id = notifications_post_id) WHERE views.commentor_id = 4;";
+ $query .= "SELECT * FROM notifications JOIN views ON (views.id = notifications_comment_id || views.post_id = notifications_post_id) WHERE notifications_user_id != 4;";
 	 
- $query .= "SELECT * FROM notifications JOIN reply_views ON (reply_views.id = notifications_reply_views_id || reply_views_post_id = notifications_post_id || reply_views_comment_id = notifications_comment_id)  WHERE reply_views.user_id = 4";
+ $query .= "SELECT * FROM notifications JOIN reply_views ON (reply_views.id = notifications_reply_id || reply_views.post_id = notifications_post_id || reply_views.comment_id = notifications_comment_id)  WHERE notifications_user_id != 4";
 
 
  $array = [];
@@ -168,6 +168,7 @@ width: 100%;
 
 	}while($db->more_results() && $db->next_result());
 echo "<pre>";
+echo count($array);
 print_r($array);
 echo "</pre>";
  }
