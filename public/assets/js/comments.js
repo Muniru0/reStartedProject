@@ -272,7 +272,7 @@ class comment {
       if ($(comment_template).find(".actaction-edit")[0]) {
         actionsLink = $(comment_template).find(".actaction-edit")[0];
         // change the onclick attribute of the link 
-        $(actionsLink).attr("onclick", "comment.prepare_edit_comment(" + response["comment_info"]["incident_id"] + "," + response["comment_info"]["incident_id"] + ",this,'comment'); return false;");
+        $(actionsLink).attr("onclick", "comment.prepare_edit_comment(" + response["comment_info"]["incident_id"] + "," + response["comment_info"]["comment_id"] + ",this,'comment'); return false;");
       }
 
 

@@ -48,7 +48,7 @@
 				 data: {request_type: "scroll",stream_type:streamType},
 				 datatype: "html"
 			 }).done(function(response){
-				
+				console.log(response);
 			try{
 				response = JSON.parse(response);
 	
