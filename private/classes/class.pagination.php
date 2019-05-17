@@ -723,28 +723,12 @@ $row_count = $results->num_rows;
 	 	global $db;
 		
 	
-// 		if(isset($_SESSION[PostImage::$are_there_latest_posts])){
-// 			//  if there are latest posts run the latest post query
-// 			$query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".PostImage::$table_name.".".PostImage::$files_count." AS ".PostImage::$alias_of_files_count.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id." FROM ".PostImage::$table_name."
-// JOIN ".user::$table_name." ON 
-// ".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  WHERE ".PostImage::$upload_time." >= ".$_SESSION[user::$last_logout_time]."  ORDER BY ".PostImage::$upload_time."   DESC LIMIT ".self::$limit_posts_number;
-
-// 		}else{
-// 			$a_week_before =  $_SESSION[user::$last_logout_time] - ( 60 * 60 * 24  * 5);
-// 			// if there are no more latest posts run the normal query
-// 			$query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".PostImage::$table_name.".".PostImage::$files_count." AS ".PostImage::$alias_of_files_count.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id." FROM ".PostImage::$table_name."
-// JOIN ".user::$table_name." ON 
-// ".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id." WHERE ".PostImage::$upload_time." <= ".$a_week_before."  ORDER BY ".PostImage::$upload_time." DESC LIMIT ".$_SESSION[STREAM_HOME].",".self::$limit_posts_number;
-// //	 $_SESSION[user::$last_logout_time] =  $a_week_before;
-// 	 //log_action(__CLASS__,$query);
-	 
-// 		}
-
  
  $query = " SELECT  ".user::$firstname.",".user::$lastname.",".user::$table_name.".".user::$user_category.",".PostImage::$table_name.".*,".FetchPost::$table_name.".*,".PostImage::$table_name.".".PostImage::$id." AS ".PostImage::$alias_of_id.",".PostImage::$table_name.".".PostImage::$files_count." AS ".PostImage::$alias_of_files_count.",".FetchPost::$table_name.".".FetchPost::$id." AS ".FetchPost::$alias_of_id." FROM ".PostImage::$table_name."
 JOIN ".user::$table_name." ON 
 ".PostImage::$table_name.".".PostImage::$uploader_id." = ".user::$table_name.".id LEFT JOIN  ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id." WHERE  ".PostImage::$table_name.".".PostImage::$id." <= ".$_SESSION[STREAM_HOME]." && ".PostImage::$table_name.".".PostImage::$id." >= ".($_SESSION[STREAM_HOME] - 10)." ORDER BY ".PostImage::$upload_time." DESC LIMIT ".self::$limit_posts_number;
 	
+
 
   $returned_array = [];
 	$post_ids_array = [];

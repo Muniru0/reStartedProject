@@ -86,7 +86,7 @@ class PostImage extends FileUpload {
 			
 		$query .= "SELECT * FROM notifications JOIN reply_views ON (reply_views.id = notifications_reply_id || reply_views.post_id = notifications_post_id || reply_views.comment_id = notifications_comment_id)  WHERE notifications_user_id != 4";
 	 
-	 
+	    // count of the different type of posts that 
         $query .= "SELECT ".PostImage::$label.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5184000) GROUP BY ".PostImage::$label;
        
        
