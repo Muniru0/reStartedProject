@@ -25,7 +25,157 @@ class Notifications extends DatabaseObject {
 	 public static $last_notification_check_time = "last_notifcation_check_time";
 
 
+	 //get the counts for the number of notifications,pending connections,
+    // number of each of the various communities latest posts
+    public static function get_activities_counts($stream_type = null){
+			global $db;
 
+			// number of pending connections(friend requests)
+			$query = "SELECT COUNT(*) AS count_pending_connections FROM ".PendingConnections::$table_name." WHERE ".PendingConnections::$receiver_id." = ".$_SESSION[user::$id].";";
+		 
+			//this query is only for the notifications which you are following the post
+			$query .= "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id   WHERE follow_posts_follower_id = ".$_SESSION[user::$id]." &&  notifications_user_id != ".$_SESSION[user::$id].";"; 
+
+
+//this query is only for the notifications which you are following a user
+			$query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
+ 
+		// count of the different type of posts that 
+			$query .= "SELECT ".PostImage::$label.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5284000) GROUP BY ".PostImage::$label;
+		 
+		 
+			$activities_count_array = [];
+			$activities_count_array["pending_connections"] = "";
+			$activities_count_array["notifications_info"] = "";
+			$activities_count_array["label"][PostImage::$education] = "";
+			$activities_count_array["label"][PostImage::$other] = "";
+			$activities_count_array["label"][PostImage::$education] = "";
+			$activities_count_array["label"][PostImage::$security]  = "";
+			$activities_count_array["label"][PostImage::$sanitation] = "";
+			$activities_count_array["label"][PostImage::$sol] = "";
+			$activities_count_array["label"][PostImage::$work] = "";
+			$activities_count_array["label"][PostImage::$health] = "";
+			$activities_count_array["label"][PostImage::$transport] = "";
+			$notifications_ids_array = [];
+			if($db->multi_query($query)){
+		 do{
+
+							if($result = $db->store_result()){
+							
+									while($row = $result->fetch_assoc()){
+					 if(isset($row["count_pending_connections"])){
+									 $activities_count_array["pending_connections"] = $row["count_pending_connections"];
+									}elseif(isset($row[Notifications::$id]) && $row[Notifications::$type] != DELETE_COMMENT && $row[Notifications::$type] != UNLIKE_COMMENT && $row[Notifications::$type] != UNLIKE_REPLYVIEW && $row[Notifications::$type] != UNFOLLOW_POST   && $row[Notifications::$type] !=   DELETE_VIEW ){
+										 
+											$notifications = [];
+											if(!in_array($row[Notifications::$id],$notifications_ids_array)){
+										 
+													$notifications_ids_array[] =  $row[Notifications::$id];
+													$notifications[] ="<div id='notification_template' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
+													<a class='ps-notification__inside' href=''>
+														
+														
+												
+														<div class='ps-notification__body'>
+															<div class='ps-notification__desc'>
+																<strong>".$row[self::$firstname]." ".$row[self::$lastname]."</strong>".self::get_notification_type_string($row[self::$notifications_type])."
+																		</div>
+												
+															<div class='ps-notification__meta'>
+																<small class='activity-post-age' data-timestamp='2018-06-25 10:01:52'><span title='2018-06-25 10:01:52'>System time</span></small>
+												
+																				<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
+																	<i class='ps-icon-eye'></i>
+																	<span>Mark as read</span>
+																</span>
+																			</div>
+														</div>
+													</a>
+												</div>";
+													
+											
+						}
+					
+				 $activities_count_array["notifications_info"] = ["count" =>count($notifications_ids_array), "notifications" => $notifications]; 
+									}elseif(isset($row[PostImage::$label])){
+									$activities_count_array["label"][$row[PostImage::$label]] =
+									$row["count_labeled_posts"];
+									}
+							}
+							}
+					}while($db->more_results() && $db->next_result());
+			}
+
+return  $activities_count_array;
+			
+	}//get_activities_count();
+
+
+  public static function get_notification_type_string($notification_type = ""){
+		global $db;
+
+		if(trim($notification_type) == ""){
+   return IGNORE_NOTIFICATION ;
+		}
+
+		switch($notification_type){
+
+			case NEW_COMMENT :
+			return " added a new commented on post ";
+			break;
+			case INCIDENT_POST :
+			return " posted an new incident ";
+			break;
+			case NEW_POST :
+			return " posted an new incident ";
+			break;
+			case EDIT_POST :
+			return " edited a post ";
+			break;
+			case DELETE_POST :
+			return " deleted a  post ";
+			break;
+			case CONFIRM_POST :
+			return " confirmed a post ";
+			break;
+			case REVERSE_CONFIRMED_POST :
+			return " reversed the confirmation of a  post ";
+			break;
+			case FOLLOW_POST :
+			return " followed a post ";
+			break;
+			case NEW_SUPPORT :
+			return " supported a post ";
+			break;
+			case NEW_OPPOSE :
+			return " oppose a post post ";
+			break;
+			case ALT_SUPPORT :
+			return " now supports a post ";
+			break;
+			case ALT_OPPOSE :
+			return " now opposes a post ";
+			break;
+			case NEW_REPLY_COMMENT :
+			return " reply to a comment on a post ";
+			break;
+			case LIKE_COMMENT :
+			return " liked a comment on a post ";
+			break;
+			case LIKE_REPLY :
+			return " likeda reply to a comment ";
+			break;
+		 case EDIT_COMMENT :
+			return " edited a comment on a post ";
+			break;
+            
+		   default : return IGNORE_NOTIFICATION;              
+			             
+			   
+		}
+
+
+	}
 
   public  static function send_notification($post_id =  "NULL",$comment_id = "NULL",$reply_id = "NULL",$type = ''){
 	
@@ -109,36 +259,6 @@ public static function get_latest_notifications(){
 
 }//get_notifications();
 
-
-
-	// get the notification type string
-public static function get_notification_type_string($type = "",$uploader_id = NULL, $commentor_id = NULL, $replier_id = NULL){
- 		if(trim($type) == "" || ($uploader_id  == NULL && $commentor_id == NULL && $replier_id == NULL)){
-       return "Please Ignore This Notification.";
-  }
-
-
-   switch($type){
-
-	case NEW_COMMENT: 
-    if($commentor_id == $_SESSION[user::$id]){
-  return " commented on your post ";
-	}else{
-	return	" commented on a post";
-	}
- break;
-	case EDITTED_COMMENT: 
-		return " edited a comment ";
-		break;
-
-	 default: return "Please Ignore This Notification.";
-	 
-
-   }
-
-
-
-}
 
 
 

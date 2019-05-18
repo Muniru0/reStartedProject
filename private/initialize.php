@@ -104,15 +104,12 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 // post interaction operations
 !defined("NEW_COMMENT")               ?  define("NEW_COMMENT","new_comment")   : null;
-
 !defined("INCIDENT_POST")               ?  define("INCIDENT_POST","incident_post")   : null;
-
 !defined("NEW_POST")                    ?  define("NEW_POST","new_post")   : null;
 !defined("EDIT_POST")               ?  define("EDIT_POST","edit_post")   : null;
 !defined("DELETE_POST")               ?  define("DELETE_POST","delete_post")   : null;
 !defined("CONFIRM_POST")               ?  define("CONFIRM_POST","confirm_post")   : null;
 !defined("REVERSE_CONFIRMED_POST")               ?  define("REVERSE_CONFIRMED_POST","reverse_confirmed_post")   : null;
-
 !defined("FOLLOW_POST")               ?  define("FOLLOW_POST","follow_post")   : null;
 !defined("UNFOLLOW_POST")               ?  define("UNFOLLOW_POST","unfollow_post")   : null;
 !defined("CONNECTION_REQUEST_SENT")               ?  define("CONNECTION_REQUEST_SENT","connection_request_sent")   : null;
@@ -133,11 +130,11 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 !defined("EDIT_COMMENT")             ?  define("EDIT_COMMENT","edit_comment")   : null;
 !defined("EDIT_REPLY")               ?  define("EDIT_REPLY","edit_comment")   : null;
 !defined("DELETE_VIEW")               ?  define("DELETE_VIEW","delete_view")   : null;
-!defined("DELETE_VIEW")               ?  define("DELETE_VIEW","delete_view")   : null;
 !defined("SERVER_PROBLEM")               ?  define("SERVER_PROBLEM","server_problem")   : null;
 !defined("OPERATION_FAILED")               ?  define("OPERATION_FAILED","operation_failed")   : null;
 !defined("GJA_ID")               ?  define("GJA_ID","gja_id")   : null;
 !defined("ALREADY_A_MEMBER")               ?  define("ALREADY_A_MEMBER","aleady_a_member")   : null;
+!defined("IGNORE_NOTIFICATION")               ?  define("IGNORE_NOTIFICATION","Please ignore this notification")   : null;
 
 
 

@@ -68,72 +68,7 @@ class PostImage extends FileUpload {
     public static $other                    = "other";
    
 
-    //get the counts for the number of notifications,pending connections,
-    // number of each of the various communities latest posts
-    public static function get_activities_counts($stream_type = null){
-        global $db;
-
-        $query  = "SELECT MAX(".PostImage::$id.") AS ".PostImage::$post_max_id." FROM ".self::$table_name.";";
-        $query .= "SELECT COUNT(*) AS count_pending_connections FROM ".PendingConnections::$table_name." WHERE ".PendingConnections::$receiver_id." = ".$_SESSION[user::$id].";";
-        log_action(__CLASS__,$query);
-        //this query is only for the notifications
-        $query = "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id   WHERE follow_posts_follower_id = ".$_SESSION[user::$id]." &&  notifications_user_id != ".$_SESSION[user::$id].";"; 
-
-
-		$query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4;";
-			
-		
-			
-		$query .= "SELECT * FROM notifications JOIN reply_views ON (reply_views.id = notifications_reply_id || reply_views.post_id = notifications_post_id || reply_views.comment_id = notifications_comment_id)  WHERE notifications_user_id != 4";
-	 
-	    // count of the different type of posts that 
-        $query .= "SELECT ".PostImage::$label.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5184000) GROUP BY ".PostImage::$label;
-       
-       
-        $activities_count_array = [];
-        $activities_count_array["pending_connections"] = "";
-        $activities_count_array["count_notifications"] = "";
-        $activities_count_array["label"][PostImage::$education] = "";
-        $activities_count_array["label"][PostImage::$other] = "";
-        $activities_count_array["label"][PostImage::$education] = "";
-        $activities_count_array["label"][PostImage::$security]  = "";
-        $activities_count_array["label"][PostImage::$sanitation] = "";
-        $activities_count_array["label"][PostImage::$sol] = "";
-        $activities_count_array["label"][PostImage::$work] = "";
-        $activities_count_array["label"][PostImage::$health] = "";
-        $activities_count_array["label"][PostImage::$transport] = "";
-
-        if($db->multi_query($query)){
-       do{
-
-                if($result = $db->store_result()){
-                   
-                    while($row = $result->fetch_assoc()){
-                        
-                if(isset($row[PostImage::$post_max_id])){
-                        if($row[PostImage::$post_max_id] == NULL || $row[PostImage::$post_max_id] < 1){
-                            $_SESSION[$stream_type] = -1;
-
-                        }else{
-                            $_SESSION[$stream_type] = $row[PostImage::$post_max_id];
-                        }
-                    }elseif(isset($row["count_pending_connections"])){
-                     $activities_count_array["pending_connections"] = $row["count_pending_connections"];
-                    }elseif(isset($row["count_notifications"])){
-                        $activities_count_array["count_notifications"] = $row["count_notifications"]; 
-                    }elseif(isset($row[PostImage::$label])){
-                    $activities_count_array["label"][$row[PostImage::$label]] =
-                    $row["count_labeled_posts"];
-                    }
-                }
-                }
-            }while($db->more_results() && $db->next_result());
-        }
-
-return  $activities_count_array;
-        
-    }//get_activities_count();
-
+    
 
 
 

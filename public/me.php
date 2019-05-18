@@ -25,6 +25,7 @@ $firstname = $_SESSION[user::$firstname];
 $lastsname = $_SESSION[user::$firstname];
 
 
+
  $request_type = "<input type='hidden' id='stream_type' value= ".STREAM_HOME." />";
 
 $content = "";

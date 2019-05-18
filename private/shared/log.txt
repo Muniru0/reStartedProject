@@ -1,30 +1,21 @@
-[17/May/2019 09:47:19 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
-JOIN users ON 
-post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id WHERE  post_table.id <= 0 && post_table.id >= -10 ORDER BY upload_time DESC LIMIT 50 LINE: 749
-[17/May/2019 09:47:19 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 0
-[17/May/2019 09:47:19 AM] : [Pagination] | 
-[17/May/2019 09:47:24 AM] : [class] | SELECT MAX(id) AS post_max_id FROM post_table WHERE id < 0
-[17/May/2019 09:47:24 AM] : [Pagination] | 
-[17/May/2019 09:50:59 AM] : [Throttle] |  LINE: 282
-[17/May/2019 10:10:28 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id FROM post_table
-JOIN users ON 
-post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id ORDER BY upload_time DESC LIMIT 0,30 LINE: 731
-[17/May/2019 10:26:20 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id,reactions.user_id AS reactions_table_user_id,reactions.reaction_type FROM post_table
-  JOIN users ON 
- post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id  LEFT JOIN  reactions ON reactions.post_id =  post_table.id WHERE post_table.uploader_id=1 ORDER BY upload_time DESC LIMIT 30,30  LINE: 414
-[17/May/2019 10:32:27 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id,reactions.user_id AS reactions_table_user_id,reactions.reaction_type FROM post_table
-  JOIN users ON 
- post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id  LEFT JOIN  reactions ON reactions.post_id =  post_table.id WHERE post_table.uploader_id=1 ORDER BY upload_time DESC LIMIT 30,30  LINE: 414
-[17/May/2019 10:40:59 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id,reactions.user_id AS reactions_table_user_id,reactions.reaction_type FROM post_table
-  JOIN users ON 
- post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id  LEFT JOIN  reactions ON reactions.post_id =  post_table.id WHERE post_table.uploader_id=1 ORDER BY upload_time DESC LIMIT 30,30  LINE: 414
-[17/May/2019 10:48:51 AM] : [Pagination] |  SELECT  firstname,lastname,users.user_category,post_table.*,normal_post_table.*,post_table.id AS post_table_id,post_table.files_count AS post_table_files_count,normal_post_table.id AS normal_post_table_id,reactions.user_id AS reactions_table_user_id,reactions.reaction_type FROM post_table
-  JOIN users ON 
- post_table.uploader_id = users.id LEFT JOIN  normal_post_table ON normal_post_table.post_id = post_table.id  LEFT JOIN  reactions ON reactions.post_id =  post_table.id WHERE post_table.uploader_id=1 ORDER BY upload_time DESC LIMIT 30,30  LINE: 414
-[17/May/2019 10:51:25 AM] : [Pagination] | 60
-[17/May/2019 10:53:09 AM] : [Pagination] | 30
-[17/May/2019 10:53:49 AM] : [Throttle] |  LINE: 282
-[17/May/2019 10:59:05 AM] : [Throttle] |  LINE: 282
-[17/May/2019 11:02:34 AM] : [Throttle] |  LINE: 282
-[17/May/2019 01:15:08 PM] : [Throttle] |  LINE: 282
-[17/May/2019 01:50:10 PM] : [PostImage] | SELECT MAX(id) AS post_max_id FROM post_table;SELECT COUNT(*) AS count_pending_connections FROM pending_connections WHERE receiver_id = 1;
+<div id='notification_template' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
+	<a class='ps-notification__inside' href=''>
+		
+		
+
+		<div class='ps-notification__body'>
+			<div class='ps-notification__desc'>
+				<strong>Osman Ganiu</strong> Ignore this notification
+						</div>
+
+			<div class='ps-notification__meta'>
+				<small class='activity-post-age' data-timestamp='2018-06-25 10:01:52'><span title='2018-06-25 10:01:52'>System time</span></small>
+
+								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
+					<i class='ps-icon-eye'></i>
+					<span>Mark as read</span>
+				</span>
+							</div>
+		</div>
+	</a>
+</div>
