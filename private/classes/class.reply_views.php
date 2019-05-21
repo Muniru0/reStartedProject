@@ -343,7 +343,7 @@ return $record;
 		   if($row = $result->fetch_assoc()){
          if($db->affected_rows == 1){
 				print j(["reply_delete"=>"success"]);
-				Notifications::send_notification("NULL",$comment_id,$reply_id,DELETE_REPLYVIEW);
+			
 				return;
 				 }
 			 }

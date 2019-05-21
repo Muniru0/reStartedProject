@@ -55,7 +55,7 @@ class FollowPost Extends DatabaseObject{
 				  }elseif(isset($row) && $row["result"] === UNFOLLOW_POST){
 					  
 					  print j([UNFOLLOW_POST => "success"]);
-					  $notification_type  = UNFOLLOW_POST;
+					 
 					  
 				  }elseif(isset($row) && $row["result"] == "invalid_request" || trim($db->error) != ""){
 					  
@@ -75,8 +75,10 @@ class FollowPost Extends DatabaseObject{
 	  return;
   }
   
-
-  Notifications::send_notification($post_id,"NULL","NULL",$notification_type);
+ if( $notification_type  == FOLLOW_POST){
+	Notifications::send_notification($post_id,"NULL","NULL",$notification_type);
+ }
+ 
    }// follow_posts();
 	
 

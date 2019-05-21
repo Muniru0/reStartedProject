@@ -1287,7 +1287,7 @@ $firstname = "";
   function main_header($page_header = "",$request_type = "",$activities_counts = []){
 	 $pending_connections = $activities_counts["pending_connections"] > 0 ? $activities_counts["pending_connections"] : "" ;
 	 $notifications_count = $activities_counts["notifications_info"]["count"] > 0 ? $activities_counts["notifications_info"]["count"] : "";
-    
+     $notifications = $activities_counts["notifications_info"]["count"] > 1 ?$activities_counts["notifications_info"]["notifications"] : "" ;
 	 return "
      <!DOCTYPE html>
   	<html lang='en-US' class='no-js fontawesome-i2svg-active fontawesome-i2svg-complete gr__localhost'><head><style type='text/css'>.gm-err-container{height:100%;width:100%;display:table;background-color:#e0e0e0;position:relative;left:0;top:0}.gm-err-content{border-radius:1px;padding-top:0;padding-left:10%;padding-right:10%;position:static;vertical-align:middle;display:table-cell}.gm-err-content a{color:#4285f4}.gm-err-icon{text-align:center}.gm-err-title{margin:5px;margin-bottom:20px;color:#616161;font-family:Roboto,Arial,sans-serif;text-align:center;font-size:24px}.gm-err-message{margin:5px;color:#757575;font-family:Roboto,Arial,sans-serif;text-align:center;font-size:12px}.gm-err-autocomplete{padding-left:20px;background-repeat:no-repeat;background-size:15px 15px}
@@ -1537,12 +1537,12 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				<i class='ps-icon-menu'></i>
 			</a>
 		</span>
-				<span class=''> <a href=' ://demo.peepso.com/activity/' title='Activity'> <div class='ps-bubble__wrapper'> <i class='ps-icon-home'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> </span> </div> </a> </span> <span class='ps-js-friends-notification friends-notification psnotification-toggle'> <a href='#' title='Connection Request'> <div class='ps-bubble__wrapper'> <i class='ps-icon-users'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> ".$pending_connections." </span> </div> </a> <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=''>View All</a></div></div></span> <span class='dropdown-notification ps-js-notifications'> <a href=' ://demo.peepso.com/profile/?notifications' title='Pending Notifications'> <div class='ps-bubble__wrapper'> <i class='ps-icon-globe'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'>".$notifications_count." </span> </div> </a> <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications' style='max-height: 40vh; overflow: auto;'>
-
+				<span class=''> <a href=' ://demo.peepso.com/activity/' title='Activity'> <div class='ps-bubble__wrapper'> <i class='ps-icon-home'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> </span> </div> </a> </span> <span class='ps-js-friends-notification friends-notification psnotification-toggle'> <a href='#' title='Connection Request'> <div class='ps-bubble__wrapper'> <i class='ps-icon-users'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> ".$pending_connections." </span> </div> </a> <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=''>View All</a></div></div></span> <span class='dropdown-notification ps-js-notifications'> <a href=' ://demo.peepso.com/profile/?notifications' title='Pending Notifications'> <div class='ps-bubble__wrapper'> <i class='ps-icon-globe'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'>".$notifications_count." </span> </div> </a> <div class='ps-popover app-box' style='display: block;'><div class='ps-notifications' style='max-height: 40vh; overflow: auto;'>
+                 {$notifications}
 					<div id='notification_template' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
 	<a class='ps-notification__inside' href=''>
 		
-		
+		  
 
 		<div class='ps-notification__body'>
 			<div class='ps-notification__desc'>

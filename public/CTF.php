@@ -133,21 +133,32 @@ width: 100%;
 //  echo password_hash("azizfahad1",PASSWORD_ARGON2ID);
   // $result = $db->query("SELECT notifications.* FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id 	LEFT JOIN connect_users ON connect_users_followed_id = notifications_user_id  WHERE follow_posts_follower_id = 4 && connect_users_follower_id = 4 && notifications_user_id != 4"); 
 	
- $query = "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id   WHERE follow_posts_follower_id = 4 &&  notifications_user_id != 4;"; 
+//  $query = "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id   WHERE follow_posts_follower_id = 4 &&  notifications_user_id != 4;"; 
 
 
- $query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
+//  $query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
 	 
 //  $query .= "SELECT * FROM notifications JOIN views ON (views.id = notifications_comment_id || views.post_id = notifications_post_id) WHERE notifications_user_id != 4;";
 	 
 //  $query .= "SELECT * FROM notifications JOIN reply_views ON (reply_views.id = notifications_reply_id || reply_views.post_id = notifications_post_id || reply_views.comment_id = notifications_comment_id)  WHERE notifications_user_id != 4";
 
+	//this query is only for the notifications which you are following the post
+	$query = "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id  JOIN ".PostImage::$table_name."  ON  ".PostImage::$table_name.".".PostImage::$uploader_id." = ".$_SESSION[user::$id]."   WHERE follow_posts_follower_id = ".$_SESSION[user::$id]." &&  notifications_user_id != ".$_SESSION[user::$id].";"; 
 
+
+	//this query is only for the notifications which you are following a user
+				$query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
+
+// count of the different type of posts that 
+$query .= "SELECT ".PostImage::$label.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5284000) GROUP BY ".PostImage::$label;
  $array = [];
  if($db->multi_query($query)){
   do{
 		 if($result = $db->store_result()){
 			    while($row = $result->fetch_assoc()){
+						echo "<pre>";
+						print_r($row);
+						echo "</pre>";
 			 if(!in_array($row["notifications_id"],$array)){
 
 				$array[] =  $row["notifications_id"];

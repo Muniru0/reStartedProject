@@ -306,7 +306,7 @@ class Views extends DatabaseObject{
 	if($view_id == true){
 		 
 		$view_info = self::get_view($view_id,$post_id);
-	    $post_date  = strftime("%B, %e    %G  %I:%M %p",$view_info["comment_time"]);
+	    $post_date  = FetchPost::fulldate($view_info);
 		    
         $_SESSION["comment_ids"][] = (int)$view_info["comment_id"];
     $view_info["c_time"] = FetchPost::time_converter($view_info["comment_time"]);
@@ -514,7 +514,7 @@ public static function delete_view ($post_id = 0 ,$comment_id = 0){
 	if($result = $db->query($query)){
     if($db->affected_rows == 1 && $db->error == ""){
 				print j(["comment_delete"=>"success"]);
-				Notifications::send_notification($post_id,$comment_id,"NULL",DELETE_VIEW);
+			
 				return;
 			}
 		

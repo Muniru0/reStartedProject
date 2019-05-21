@@ -34,7 +34,7 @@ class Notifications extends DatabaseObject {
 			$query = "SELECT COUNT(*) AS count_pending_connections FROM ".PendingConnections::$table_name." WHERE ".PendingConnections::$receiver_id." = ".$_SESSION[user::$id].";";
 		 
 			//this query is only for the notifications which you are following the post
-			$query .= "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id   WHERE follow_posts_follower_id = ".$_SESSION[user::$id]." &&  notifications_user_id != ".$_SESSION[user::$id].";"; 
+			$query .= "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id  JOIN ".PostImage::$table_name."  ON  ".PostImage::$table_name.".".PostImage::$uploader_id." = ".$_SESSION[user::$id]."   WHERE follow_posts_follower_id = ".$_SESSION[user::$id]." &&  notifications_user_id != ".$_SESSION[user::$id].";"; 
 
 
 //this query is only for the notifications which you are following a user
@@ -42,7 +42,7 @@ class Notifications extends DatabaseObject {
  
 		// count of the different type of posts that 
 			$query .= "SELECT ".PostImage::$label.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5284000) GROUP BY ".PostImage::$label;
-		 
+		   
 		 
 			$activities_count_array = [];
 			$activities_count_array["pending_connections"] = "";
@@ -57,32 +57,34 @@ class Notifications extends DatabaseObject {
 			$activities_count_array["label"][PostImage::$health] = "";
 			$activities_count_array["label"][PostImage::$transport] = "";
 			$notifications_ids_array = [];
+			$notifications = "";
 			if($db->multi_query($query)){
 		 do{
 
 							if($result = $db->store_result()){
 							
 									while($row = $result->fetch_assoc()){
+									
 					 if(isset($row["count_pending_connections"])){
 									 $activities_count_array["pending_connections"] = $row["count_pending_connections"];
-									}elseif(isset($row[Notifications::$id]) && $row[Notifications::$type] != DELETE_COMMENT && $row[Notifications::$type] != UNLIKE_COMMENT && $row[Notifications::$type] != UNLIKE_REPLYVIEW && $row[Notifications::$type] != UNFOLLOW_POST   && $row[Notifications::$type] !=   DELETE_VIEW ){
+						}elseif(isset($row[Notifications::$id])){
 										 
-											$notifications = [];
+									
 											if(!in_array($row[Notifications::$id],$notifications_ids_array)){
-										 
+
+											 $fullname = ($row[self::$type] != CONFIRM_POST || $row[self::$type] != REVERSE_CONFIRMED_POST ) ? $row[self::$firstname]." ".$row[self::$lastname] : "";
+											 
 													$notifications_ids_array[] =  $row[Notifications::$id];
-													$notifications[] ="<div id='notification_template' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
+													$notifications .="<div id='' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
 													<a class='ps-notification__inside' href=''>
 														
-														
-												
 														<div class='ps-notification__body'>
 															<div class='ps-notification__desc'>
-																<strong>".$row[self::$firstname]." ".$row[self::$lastname]."</strong>".self::get_notification_type_string($row[self::$notifications_type])."
+																<strong>{$fullname}</strong>".self::get_notification_type_string($row[self::$type])."
 																		</div>
 												
 															<div class='ps-notification__meta'>
-																<small class='activity-post-age' data-timestamp='2018-06-25 10:01:52'><span title='2018-06-25 10:01:52'>System time</span></small>
+																<small class='activity-post-age' data-timestamp='". FetchPost::fulldate($row[self::$time])."'><span title='". FetchPost::fulldate($row[self::$time])."'>".FetchPost::time_converter($row[self::$time])."</span></small>
 												
 																				<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
 																	<i class='ps-icon-eye'></i>
@@ -114,6 +116,14 @@ return  $activities_count_array;
   public static function get_notification_type_string($notification_type = ""){
 		global $db;
 
+     if($notification_type == CONFIRM_POST ){
+			  return "A Post has being Confirmed";
+		 }
+
+     if( $notification_type == REVERSE_CONFIRMED_POST){
+			   return "A post confirmation ahs bein reversed";
+		 }
+
 		if(trim($notification_type) == ""){
    return IGNORE_NOTIFICATION ;
 		}
@@ -131,9 +141,6 @@ return  $activities_count_array;
 			break;
 			case EDIT_POST :
 			return " edited a post ";
-			break;
-			case DELETE_POST :
-			return " deleted a  post ";
 			break;
 			case CONFIRM_POST :
 			return " confirmed a post ";

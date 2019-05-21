@@ -1,3 +1,6 @@
+[21/May/2019 08:52:54 AM] : [Notifications] | SELECT COUNT(*) AS count_pending_connections FROM pending_connections WHERE receiver_id = 4;SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id  JOIN post_table  ON  post_table.uploader_id = 4   WHERE follow_posts_follower_id = 4 &&  notifications_user_id != 4;SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; SELECT label,COUNT(*) AS count_labeled_posts FROM post_table WHERE upload_time > (1558428777 - 5284000) GROUP BY label
+
+
 <div id='notification_template' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
 	<a class='ps-notification__inside' href=''>
 		
@@ -18,4 +21,4 @@
 							</div>
 		</div>
 	</a>
-</div>
+</div>[18/May/2019 10:34:54 AM] : [Throttle] |  LINE: 282

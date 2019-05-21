@@ -865,6 +865,36 @@ $images_string .= "</div></div></div></div>
             </div>";
     } // get_post_confirmation();
 
+
+	/**
+ * Checks if a string is a valid timestamp.
+ *
+ * @param  string $timestamp Timestamp to validate.
+ * 
+ * @return bool
+ */
+public static function is_timestamp($timestamp = 0)
+{
+	$check = (is_int($timestamp) OR is_float($timestamp))
+		? $timestamp
+		: (string) (int) $timestamp;
+	return  ($check === $timestamp)
+        	AND ( (int) $timestamp <=  PHP_INT_MAX)
+        	AND ( (int) $timestamp >= ~PHP_INT_MAX);
+}
+
+
+  public static function fulldate($time = 0){
+
+   
+	if(!self::is_timestamp($time)){
+    return "Date not avialable now";
+	}
+
+	return strftime("%B, %e    %G  %I:%M %p",$time);
+
+  }
+
     // get time converter string
     public static function time_converter($upload_time){
 
