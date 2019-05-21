@@ -67,12 +67,12 @@ class Notifications extends DatabaseObject {
 									
 					 if(isset($row["count_pending_connections"])){
 									 $activities_count_array["pending_connections"] = $row["count_pending_connections"];
-						}elseif(isset($row[Notifications::$id])){
+						}elseif(isset($row[self::$id]) && trim($row[self::$type]) != ""){
 										 
 									
 											if(!in_array($row[Notifications::$id],$notifications_ids_array)){
 
-											 $fullname = ($row[self::$type] != CONFIRM_POST || $row[self::$type] != REVERSE_CONFIRMED_POST ) ? $row[self::$firstname]." ".$row[self::$lastname] : "";
+											 $fullname = ($row[self::$type] != CONFIRM_POST || $row[self::$type] != REVERSE_CONFIRMED_POST ) ? $row[self::$firstname]." ".$row[self::$lastname]."  " : "";
 											 
 													$notifications_ids_array[] =  $row[Notifications::$id];
 													$notifications .="<div id='' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
@@ -115,7 +115,7 @@ return  $activities_count_array;
 
   public static function get_notification_type_string($notification_type = ""){
 		global $db;
-
+	
      if($notification_type == CONFIRM_POST ){
 			  return "A Post has being Confirmed";
 		 }
@@ -125,6 +125,7 @@ return  $activities_count_array;
 		 }
 
 		if(trim($notification_type) == ""){
+		
    return IGNORE_NOTIFICATION ;
 		}
 
@@ -175,8 +176,8 @@ return  $activities_count_array;
 		 case EDIT_COMMENT :
 			return " edited a comment on a post ";
 			break;
-            
-		   default : return IGNORE_NOTIFICATION;              
+		 
+		   default : return IGNORE_NOTIFICATION;             
 			             
 			   
 		}
