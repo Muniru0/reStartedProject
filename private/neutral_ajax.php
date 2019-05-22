@@ -56,10 +56,16 @@ function is_ajax(){
 }
 if(is_ajax()){
 
-	
+	if(isset($_POST["request_type"]) && $_POST["request_type"] == "specificnotifications" ){
+   
+  
+		if(trim($_POST["request_type"]) == "" || !in_array(trim($_POST["request_type"]),ALLOWED_STREAM_PARAMETERS)){
+print j(["empty" => "no_post"]);
+			 return;
+		}
 
-// add the view 
-if(isset($_POST["request_type"]) && $_POST["request_type"] == "add_comment" ){
+		Notifications::get_label_specific_notifications($_POST["request_type"]);
+	}elseif(isset($_POST["request_type"]) && $_POST["request_type"] == "add_comment" ){
 	    
 	$_POST["comment"] = h($_POST["comment"]);
 		

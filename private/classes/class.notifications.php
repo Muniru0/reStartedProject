@@ -41,19 +41,19 @@ class Notifications extends DatabaseObject {
 			$query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
  
 		// count of the different type of posts that 
-			$query .= "SELECT ".PostImage::$label.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5284000) GROUP BY ".PostImage::$label;
+			$query .= "SELECT ".PostImage::$label.",".PostImage::$title.",".PostImage::$upload_time.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5284000) GROUP BY ".PostImage::$label;
 		   
-		 
+	
 			$activities_count_array = [];
 			$activities_count_array["pending_connections"] = "";
 			$activities_count_array["notifications_info"] = "";
 			$activities_count_array["label"][PostImage::$education] = "";
-			$activities_count_array["label"][PostImage::$other] = "";
-			$activities_count_array["label"][PostImage::$education] = "";
+			$activities_count_array["label"][PostImage::$other] ="";
+			$activities_count_array["label"][PostImage::$education] ="";
 			$activities_count_array["label"][PostImage::$security]  = "";
 			$activities_count_array["label"][PostImage::$sanitation] = "";
-			$activities_count_array["label"][PostImage::$sol] = "";
-			$activities_count_array["label"][PostImage::$work] = "";
+			$activities_count_array["label"][PostImage::$sol] ="";
+			$activities_count_array["label"][PostImage::$work] ="";
 			$activities_count_array["label"][PostImage::$health] = "";
 			$activities_count_array["label"][PostImage::$transport] = "";
 			$notifications_ids_array = [];
@@ -318,9 +318,49 @@ print j(["true" => "Operation successful."]);
 
 
 
+public static function get_label_specific_notifications($label = ""){
 
+	
+	if(trim($label) == "" || !in_array(trim($label),ALLOWED_STREAM_PARAMETERS)){
+		print j(["empty" => "no_post"]);
+					 return;
+				}
+
+
+				global $db;
+		// count of the different type of posts that 
+		$query = "SELECT ".PostImage::$label.",".PostImage::$title.",".PostImage::$upload_time.",".PostIMage::$title.",".PostImage::$upload_time." FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5284000)  ".PostImage::$label." = {$label}";
+
+
+		if($result = $db->query($query)){
+
+			if($result->num_rows < 1){
+				print j(["empty" => "no_post"]);
+				return;
+			}
+  $notifications = [];
+			while($row = $result->fetch_assoc()){
+				
+				if(trim($row) != "" && is_array($row)){
+
+					$notifications[] = $row;
+				}
+				 
+			}
+		}elseif(trim($db->error) != ""){
+
+	Errors::trigger_error(SERVER_PROBLEM);
+		return;
+	}
+
+
+	print j(["notifications" => $notifications]);
 
 }
+
+
+
+}// get_label_specific_notifications();
 	
 
 
