@@ -59,12 +59,13 @@ if(is_ajax()){
 	if(isset($_POST["request_type"]) && $_POST["request_type"] == "specificnotifications" ){
    
   
-		if(trim($_POST["request_type"]) == "" || !in_array(trim($_POST["request_type"]),ALLOWED_STREAM_PARAMETERS)){
+		if(trim($_POST["request_type"]) == "" || !in_array(trim($_POST["label_param"]),COMMUNITIES)){
+	
 print j(["empty" => "no_post"]);
 			 return;
 		}
 
-		Notifications::get_label_specific_notifications($_POST["request_type"]);
+		Notifications::get_label_specific_notifications($_POST["label_param"]);
 	}elseif(isset($_POST["request_type"]) && $_POST["request_type"] == "add_comment" ){
 	    
 	$_POST["comment"] = h($_POST["comment"]);

@@ -320,8 +320,9 @@ print j(["true" => "Operation successful."]);
 
 public static function get_label_specific_notifications($label = ""){
 
+
 	
-	if(trim($label) == "" || !in_array(trim($label),ALLOWED_STREAM_PARAMETERS)){
+	if(trim($label) == "" || !in_array(trim($label),COMMUNITIES)){
 		print j(["empty" => "no_post"]);
 					 return;
 				}
@@ -329,7 +330,8 @@ public static function get_label_specific_notifications($label = ""){
 
 				global $db;
 		// count of the different type of posts that 
-		$query = "SELECT ".PostImage::$label.",".PostImage::$title.",".PostImage::$upload_time.",".PostIMage::$title.",".PostImage::$upload_time." FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5284000)  ".PostImage::$label." = {$label}";
+		$query = "SELECT ".PostImage::$label.",".user::$firstname.",".user::$lastname.",".PostImage::$title.",".PostImage::$upload_time.",".PostIMage::$title.",".PostImage::$upload_time.",".FetchPost::$filename." FROM ".PostImage::$table_name." JOIN ".user::$table_name." ON ".user::$table_name.".".user::$id." = ".PostImage::$table_name.".".PostImage::$uploader_id." JOIN ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  WHERE ".PostImage::$upload_time." > (".time()." - 5284000) && ".PostImage::$label." = '{$label}' GROUP BY ".PostImage::$table_name.".".PostImage::$id." ORDER BY  ".PostImage::$upload_time." DESC ";
+
 
 
 		if($result = $db->query($query)){
@@ -341,8 +343,9 @@ public static function get_label_specific_notifications($label = ""){
   $notifications = [];
 			while($row = $result->fetch_assoc()){
 				
-				if(trim($row) != "" && is_array($row)){
-
+				if( is_array($row) && !empty($row)){
+						 $row[FetchPost::$filename] = "<img src='../private/".UPLOADS_DIR.IMGS_THUMBS_DIR.$row[FetchPost::$filename]."' title='".$row[FetchPost::$filename]."' alt='' style='margin: 0 auto; border-radius:.7em;'";
+						 $row[PostImage::$upload_time] = FetchPost::time_converter($row[PostImage::$upload_time]);
 					$notifications[] = $row;
 				}
 				 

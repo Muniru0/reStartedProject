@@ -1,2 +1,19 @@
-[21/May/2019 09:47:22 AM] : [Throttle] |  LINE: 282
-[22/May/2019 02:05:06 PM] : [Notifications] | SELECT COUNT(*) AS count_pending_connections FROM pending_connections WHERE receiver_id = 1;SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id  JOIN post_table  ON  post_table.uploader_id = 1   WHERE follow_posts_follower_id = 1 &&  notifications_user_id != 1;SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; SELECT label,COUNT(*) AS count_labeled_posts,title FROM post_table WHERE upload_time > (1558534561 - 5284000) GROUP BY label
+<div id='' class='ps-notification ps-notification--unread' >
+<a class='ps-notification__inside' href=''>
+<div class='ps-notification__body'>
+<div class='ps-notification__desc' style='text-align: center;'>
+<strong style='font-size: 20px;'>Yussif Muniru  </strong>
+     <img src=' ../public/assets/images/problem_4.jpg' title='9a45d90e5bcaa0265b925bf1f14cb6c3.jpg' alt='' style='margin: 0 auto;border-radius: .7em;'><span style='margin-top: 1.2em;'>People keep on talking about things that just don't change the affairs of themselves not of talking about others yes... Lets go for it....</span></div><div class='ps-notification__meta' style='
+    float: right;'>
+<small class='activity-post-age' data-timestamp='April,  9    2019  04:46 PM'><span title='April,  9    2019  04:46 PM'>a month and 2 weeks  ago</span></small>
+			<span class='ps-notification__status ps-tooltip ps-tooltip--notification '  style='cursor:pointer;'>
+<span class='ps-notification__status ps-tooltip ps-tooltip--notification'  style='cursor:pointer;'>
+<i class='ps-icon-eye'></i>
+<span>Mark as read</span>
+</span>
+</div>
+</div>
+</a>
+</div>[25/May/2019 01:12:17 AM] : [Notifications] | SELECT label,firstname,lastname,title,upload_time,title,upload_time,filename FROM post_table JOIN users ON users.id = post_table.uploader_id JOIN normal_post_table ON normal_post_table.post_id = post_table = id WHERE upload_time > (1558747514 - 5284000) && label = 'health' GROUP BY post_table.id ORDER BY  upload_time DESC   LINE:  334
+[25/May/2019 01:25:15 AM] : [Notifications] | SELECT label,firstname,lastname,title,upload_time,title,upload_time,filename FROM post_table JOIN users ON users.id = post_table.uploader_id JOIN normal_post_table ON normal_post_table.post_id = post_table.id  WHERE upload_time > (1558747670 - 5284000) && label = 'health' GROUP BY post_table.id ORDER BY  upload_time DESC   LINE:  334
+[25/May/2019 01:27:50 AM] : [Throttle] |  LINE: 282

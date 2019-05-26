@@ -1402,8 +1402,31 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 </div>
 </noscript>
 <div class='ps-toolbar ps-toolbar--desktop js-toolbar'>
+
+<div id='empty_notifications' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1' style='
+    display: none;
+'><a class='ps-notification__inside' style='cursor: none;'>
+<div class='ps-notification__body'>
+<div class='ps-notification__desc' style='margin-left: 40px;
+'>
+	<i class='fa fa-box-open'></i>  no notifications at the moment</div>
+	</div>
+													</a>
+												</div>
+	<div id='no_more_notifications' class='ps-notification ps-notification--unread ps-js-notification '  style='display: none;'><a class='ps-notification__inside' style='cursor: none;'>
+<div class='ps-notification__body'>
+<div class='ps-notification__desc' style='margin-left: 40px;
+'>
+    <i class='fa fa-box-open'></i>  no more notifications at the moment</div>
+													
+												
+															
+														</div>
+													</a>
+												</div>
+							
   <div class='ps-toolbar__menu' title='communities(You will get more post from this community if you are part of it)'>
-			 <span class=''> <a href='#' onclick = 'notifications.getSpecificLabelNotifications(\"".PostImage::$transport."\");' title='transport community'> <div class='ps-bubble__wrapper'>".ucwords(PostImage::$transport)."<span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'>".$activities_counts["label"][PostImage::$transport]."  </span> </div> </a> <div  id='transport_notifications_box' class='ps-popover app-box notifications_box' style='display: block;'><div style=' width: 10%; margin: 0px auto; display: none;'><img src='../public/assets/images/ajax-loader.gif' ></div><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=' ://demo.peepso.com/profile/demo/friends/requests'>View All</a></div></div></span>
+			 <span class=''> <a href='#' onclick = 'notifications.getSpecificLabelNotifications(\"".PostImage::$transport."\");' title='transport community'> <div class='ps-bubble__wrapper'>".ucwords(PostImage::$transport)."<span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'>".$activities_counts["label"][PostImage::$transport]."  </span> </div> </a> <div  id='transport_notifications_box' class='ps-popover app-box notifications_box' style='display: none;'><div style=' width: 10%; margin: 0px auto; display: none;'><img src='../public/assets/images/ajax-loader.gif' ></div><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=' ://demo.peepso.com/profile/demo/friends/requests'>View All</a></div></div></span>
 
 				<!-- End of transport community -->
 				<!-- Begining of health community -->
@@ -1579,7 +1602,7 @@ i.mce-i-aligncenter, i.mce-i-alignjustify, i.mce-i-alignleft, i.mce-i-alignright
 				<i class='ps-icon-menu'></i>
 			</a>
 		</span>
-				<span class=''> <a href=' ://demo.peepso.com/activity/' title='Activity'> <div class='ps-bubble__wrapper'> <i class='ps-icon-home'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> </span> </div> </a> </span> <span class='ps-js-friends-notification friends-notification psnotification-toggle'> <a href='#' title='Connection Request'> <div class='ps-bubble__wrapper'> <i class='ps-icon-users'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> ".$pending_connections." </span> </div> </a> <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=''>View All</a></div></div></span> <span  class='dropdown-notification ps-js-notifications'> <a href='#' onclick='notifications.openNotificationsBox();' title='Pending Notifications'> <div class='ps-bubble__wrapper'> <i class='ps-icon-globe'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'>".$notifications_count." </span> </div> </a> <div id='notifications_box' class='ps-popover app-box' style='display: block;'><div class='ps-notifications' style='max-height: 40vh; overflow: auto;'>
+				<span class=''> <a href=' ://demo.peepso.com/activity/' title='Activity'> <div class='ps-bubble__wrapper'> <i class='ps-icon-home'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> </span> </div> </a> </span> <span class='ps-js-friends-notification friends-notification psnotification-toggle'> <a href='#' title='Connection Request'> <div class='ps-bubble__wrapper'> <i class='ps-icon-users'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'> ".$pending_connections." </span> </div> </a> <div class='ps-popover app-box' style='display: none;'><div class='ps-notifications ps-notifications--empty' style='max-height: 40vh; overflow: auto;'></div><div class='ps-popover-footer app-box-footer ps-clearfix'><a href=''>View All</a></div></div></span> <span  class='dropdown-notification ps-js-notifications'> <a href='#' onclick='notifications.openNotificationsBox();' title='Pending Notifications'> <div class='ps-bubble__wrapper'> <i class='ps-icon-globe'></i> <span class='js-counter ps-bubble ps-bubble--toolbar ps-js-counter'>".$notifications_count." </span> </div> </a> <div id='notifications_box' class='ps-popover app-box' style='display: none;'><div class='ps-notifications' style='max-height: 40vh; overflow: auto;'>
                  {$notifications}
 					<div id='notification_template' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
 	<a class='ps-notification__inside' href=''>
