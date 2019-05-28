@@ -17,3 +17,4 @@
 </div>[25/May/2019 01:12:17 AM] : [Notifications] | SELECT label,firstname,lastname,title,upload_time,title,upload_time,filename FROM post_table JOIN users ON users.id = post_table.uploader_id JOIN normal_post_table ON normal_post_table.post_id = post_table = id WHERE upload_time > (1558747514 - 5284000) && label = 'health' GROUP BY post_table.id ORDER BY  upload_time DESC   LINE:  334
 [25/May/2019 01:25:15 AM] : [Notifications] | SELECT label,firstname,lastname,title,upload_time,title,upload_time,filename FROM post_table JOIN users ON users.id = post_table.uploader_id JOIN normal_post_table ON normal_post_table.post_id = post_table.id  WHERE upload_time > (1558747670 - 5284000) && label = 'health' GROUP BY post_table.id ORDER BY  upload_time DESC   LINE:  334
 [25/May/2019 01:27:50 AM] : [Throttle] |  LINE: 282
+[26/May/2019 03:36:32 AM] : [Throttle] |  LINE: 282

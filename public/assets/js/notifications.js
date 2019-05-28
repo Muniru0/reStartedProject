@@ -61,8 +61,8 @@ return;
        }
 
        var notificationBox =  $("#" + label + "_notifications_box");
-       var notificationLoadingif = $(notificationBox).find("img");
-        console.log(notificationBox[0]);
+       var notificationLoadingif = $(notificationBox).find(".notifications_loader")[0];
+        console.log(notificationLoadingif);
        // hide all the notifications boxes
       $(".notifications_box").hide();
 
@@ -82,11 +82,11 @@ return;
      }).done(function(response){
 
       console.log(response);
-    return;
+   
       response = JSON.parse(response);
       response = response["notifications"];
       var fullNotificationsString = "";
-      return;
+     
       $.each(response,function(index,value){
 
         $.each(value,function(inner_index, inner_value){
@@ -103,7 +103,7 @@ return;
 
         if(notificationBox != undefined){
            
-        $(notificationLoadingif).before(fullNotificationsString);
+       $(notificationLoadingif).prepend(fullNotificationsString);
         }
       }catch(error){
         console.log(error);
