@@ -355,9 +355,7 @@ public static function get_label_specific_notifications($label = ""){
 	Errors::trigger_error(SERVER_PROBLEM);
 		return;
 	}
-
-
-	print j(["notifications" => $notifications]);
+	print j($notifications);
 
 }
 

@@ -60,11 +60,11 @@ return;
 
        }
 
-       var notificationBox =  $("#" + label + "_notifications_box");
+       var notificationBox =  $("#" + label + "community_notifications_box");
        var notificationLoadingif = $(notificationBox).find(".notifications_loader")[0];
-        console.log(notificationLoadingif);
+        
        // hide all the notifications boxes
-      $(".notifications_box").hide();
+      $(".main_notifications_box").hide();
 
       // show that particular notification box
       $(notificationBox).show();
@@ -84,17 +84,14 @@ return;
       console.log(response);
    
       response = JSON.parse(response);
-      response = response["notifications"];
-      var fullNotificationsString = "";
-     
+      let fullNotificationsString = "";
+    
       $.each(response,function(index,value){
 
-        $.each(value,function(inner_index, inner_value){
-          
-          fullNotificationsString += "<div id=\'\' class=\'ps-notification ps-notification--unread\' ><a class=\'ps-notification__inside\' href=\'\'><div class=\'ps-notification__body\'><div class=\'ps-notification__desc\' style=\'text-align: center;\'><strong style=\'font-size: 20px;\'>" + value["firstname"] + " " + value["lastname"] + " </strong>" + value["filename"]+ "<span style=\'margin-top: 1.2em;\'> " +value["title"] + " </span></div><div class=\'ps-notification__meta\' style=\'float: right;\'><small class=\'activity-post-age\' data-timestamp=\'April,  9    2019  04:46 PM\'><span title=\'April,  9    2019  04:46 PM\'>" + value["upload_time"]+ "</span></small><span class=\'ps-notification__status ps-tooltip ps-tooltip--notification \'  style=\'cursor:pointer;\'><span class=\'ps-notification__status ps-tooltip ps-tooltip--notification\'  style=\'cursor:pointer;\'<i class=\'ps-icon-eye\'></i><span>Mark as read</span></span></div</div></a></div>";
-        });
+          fullNotificationsString += "<div id=\'\' class=\'ps-notification ps-notification--unread\' ><a class=\'ps-notification__inside\' href=\'\'><div class=\'ps-notification__body\'><div class=\'ps-notification__desc\' style=\'text-align: center;\'><strong style=\'font-size: 20px;\'>" + value["firstname"] + " " + value["lastname"] + " </strong>" + value["filename"]+ "<span style=\'margin-top: 1.2em;\'> " +value["title"] + " </span></div><div class=\'ps-notification__meta\' style=\'float: right;\'><small class=\'activity-post-age\' data-timestamp=\'April,  9    2019  04:46 PM\'><span title=\'April,  9    2019  04:46 PM\'>" + value["upload_time"]+ "</span></small><span class=\'ps-notification__status ps-tooltip ps-tooltip--notification \'  style=\'cursor:pointer;\'><span class=\'ps-notification__status ps-tooltip ps-tooltip--notification\'  style=\'cursor:pointer;\'><i class=\'ps-icon-eye\'></i><span>Mark as read</span></span></div></div></a></div>";
+      
       });
-     console.log(fullNotificationsString);
+   //  console.log(fullNotificationsString);
    
 
      
@@ -103,10 +100,10 @@ return;
 
         if(notificationBox != undefined){
            
-       $(notificationLoadingif).prepend(fullNotificationsString);
+       $(".ps-notifications--empty").html(fullNotificationsString);
         }
       }catch(error){
-        console.log(error);
+       
         utility.showErrorDialogBox("Please try again if the operation was not successufl");
       }finally{
     // show that particular notification box

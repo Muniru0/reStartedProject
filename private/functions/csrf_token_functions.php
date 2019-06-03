@@ -1,4 +1,5 @@
 <?php
+require_once("../private/initialize.php");
 // Must call session_start() before this loads
 
 // Generate a token for use with CSRF protection.
@@ -58,6 +59,7 @@ function csrf_token_is_recent() {
 	$max_elapsed = 60 * 60 * 24; // 1 day
 	if(isset($_SESSION['csrf_token_time'])) {
 		$stored_time = $_SESSION['csrf_token_time'];
+	
 		return ($stored_time + $max_elapsed) >= time();
 	} else {
 		// Remove expired token
