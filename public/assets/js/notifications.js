@@ -7,7 +7,27 @@ class notifications {
 
 
 
+static mark_as_read(element = "", notificationID = 0){
 
+if(notificationID == 0 || notificationID == undefined){
+  return;
+}
+
+$(element).hide();
+$(element).parentsUntil(".ps-notifications").css({
+  "background": "white",
+    "opacity": "0.9"
+});
+
+$.ajax({
+  url: "../private/neutral_ajax.php",
+  type: "POST",
+  data: {request_type : "mark_notification_as_read",notification_id : notificationID}
+}).done(function(response){
+  console.log(response);
+}).fail(function(error){console.log(error)});
+
+}
 
   static getLatestNotification(){
 
@@ -60,11 +80,16 @@ return;
 
        }
 
-       var notificationBox =  $("#" + label + "community_notifications_box");
+       var notificationBox =  $("#" + label + "_notifications_box");
+       if($(notificationBox).css("display") != "none"){
+         $(notificationBox).hide();
+         return;
+       }
        var notificationLoadingif = $(notificationBox).find(".notifications_loader")[0];
-        
+        console.log(notificationBox);
        // hide all the notifications boxes
-      $(".main_notifications_box").hide();
+      $(".community_notifications_box").hide();
+      $("#main_notifications_box").hide();
 
       // show that particular notification box
       $(notificationBox).show();
@@ -117,14 +142,39 @@ return;
   }
 
 
-  static openNotificationsBox(){
-    
-    if($("#notifications_box") != "" || $("#notifications_box") != undefined){
+  
+  static toggleNotificationsBox(element = ""){
 
-        $("#notifications_box").toggle();
-    }
+          if(element == undefined ){
+return;
+          }
+          if($.trim($(element).find(".js-counter").css("display")) != "none"){
+            $(element).find(".js-counter").hide();
+          }
+        
+      if($("#main_notifications_box") != "" || $("#main_notifications_box") != undefined){
+
+        $("#main_notifications_box").toggle();
+        $(".community_notifications_box").hide();
+      }
+       
+        
+      
+ 
   }
 
+
+  static toggleFollowingsBox(){
+
+  if($("#following_notifications_box") != "" || $("#followings_notifications_box") != undefined){
+
+        $("#followings_notifications_box").toggle();
+        $(".community_notifications_box").hide();
+    }
+
+         
+ 
+  }
 
 
 

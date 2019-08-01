@@ -175,7 +175,7 @@ PostImage::delete_post($user_id,$post_id);
 	
 }// delete the post
 
- elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) == "connect_user" && isset($_POST["post_id"]) && $_POST["post_id"] > 0 && isset($_POST["user_id"]) > 0){
+ elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) == "follow_user" && isset($_POST["post_id"]) && $_POST["post_id"] > 0 && isset($_POST["user_id"]) > 0){
 			
 			$post_id = (int)$_POST["post_id"];
 			$user_id = (int)$_POST["user_id"];
@@ -185,7 +185,7 @@ PostImage::delete_post($user_id,$post_id);
 			  Errors::trigger_error(RETRY);
 				return;
 			}
-			log_action(__CLASS__,"here".__LINE__);
+			
 			if(!in_array($user_id,$_SESSION[PostImage::$uploader_id])){
 		
 				 Errors::trigger_error(RETRY);
@@ -679,7 +679,22 @@ elseif(isset($_POST["request_type"]) && !empty($_POST["request_type"])  && trim(
 Reaction::record_reaction($post_id,$reaction_param);
  
 
-}elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "get_latest_notifications"){
+}elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "mark_notification_as_read"){
+
+ $notification_id = $_POST["notification_id"] ?? "";
+  
+  if(trim($notification_id) == ""){
+	 print("");
+	 return;
+  }
+
+
+  Notifications::mark_as_read($notification_id);
+
+}
+
+
+elseif(isset($_POST["request_type"]) && trim($_POST["request_type"]) === "get_latest_notifications"){
 	 
 	
 	  Notifications::get_latest_nofications();

@@ -15,10 +15,10 @@ class Notifications extends DatabaseObject {
 	 public static $comment_id   = 'notifications_comment_id';
 	 public static $reply_id     = 'notifications_post_id';
 	 public static $user_id      = 'notifications_user_id';
-   public static $firstname    = 'notifications_firstname';
-   public static $lastname     = 'notifications_lastname';
-   public static $type         = 'notifications_type';
-   public static $time         = 'notifications_time';
+	 public static $firstname    = 'notifications_firstname';
+	 public static $lastname     = 'notifications_lastname';
+	 public static $type         = 'notifications_type';
+	 public static $time         = 'notifications_time';
 	
 
 	 //healper properties
@@ -29,24 +29,20 @@ class Notifications extends DatabaseObject {
     // number of each of the various communities latest posts
     public static function get_activities_counts($stream_type = null){
 			global $db;
-
-			// number of pending connections(friend requests)
-			$query = "SELECT COUNT(*) AS count_pending_connections FROM ".PendingConnections::$table_name." WHERE ".PendingConnections::$receiver_id." = ".$_SESSION[user::$id].";";
+			
+			
 		 
 			//this query is only for the notifications which you are following the post
-			$query .= "SELECT * FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id  JOIN ".PostImage::$table_name."  ON  ".PostImage::$table_name.".".PostImage::$uploader_id." = ".$_SESSION[user::$id]."   WHERE follow_posts_follower_id = ".$_SESSION[user::$id]." &&  notifications_user_id != ".$_SESSION[user::$id].";"; 
-
-
-//this query is only for the notifications which you are following a user
-			$query .= "SELECT * FROM notifications  JOIN connect_users ON connect_users_followed_id = notifications_user_id WHERE connect_users_follower_id = 4 && notifications_user_id != 4; ";
- 
+			$query = "SELECT ".self::$table_name.".*,".user::$firstname.",".user::$lastname.",".PendingConnections::$request_time.",COUNT(*) AS count_pending_connections FROM ".PendingConnections::$table_name." JOIN ".user::$table_name." ON ".user::$table_name.".".user::$id." = ".PendingConnections::$sender_id." ".self::$table_name." LEFT JOIN ".FollowPost::$table_name." ON ".FollowPost::$post_id." = ".self::$post_id."  JOIN ".PostImage::$table_name."  ON  ".PostImage::$table_name.".".PostImage::$uploader_id." = ".$_SESSION[user::$id]." JOIN read_status ON (".self::$id." = read_status_notification_id  WHERE ".FollowPost::$follower_id." = ".$_SESSION[user::$id]." &&  ".self::$user_id." != ".$_SESSION[user::$id]." && read_status_notification_id != ".$_SESSION[user::$id]." && ".PendingConnections::$receiver_id." = ".$_SESSION[user::$id]." ;"; 
+     log_action(__CLASS__,$query." on line: ".__LINE__);
 		// count of the different type of posts that 
-			$query .= "SELECT ".PostImage::$label.",".PostImage::$title.",".PostImage::$upload_time.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5284000) GROUP BY ".PostImage::$label;
+			$query .= "SELECT ".PostImage::$label.",".PostImage::$title.",".PostImage::$upload_time.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5289000) GROUP BY ".PostImage::$label;
 		   
-	
+
 			$activities_count_array = [];
 			$activities_count_array["pending_connections"] = "";
-			$activities_count_array["notifications_info"] = "";
+			$activities_count_array["notifications_info"]["notifications"] = "";
+			$activities_count_array["notifications_info"]["count"] = 0;
 			$activities_count_array["label"][PostImage::$education] = "";
 			$activities_count_array["label"][PostImage::$other] ="";
 			$activities_count_array["label"][PostImage::$education] ="";
@@ -58,25 +54,47 @@ class Notifications extends DatabaseObject {
 			$activities_count_array["label"][PostImage::$transport] = "";
 			$notifications_ids_array = [];
 			$notifications = "";
+			$recent_following = "";
+			
 			if($db->multi_query($query)){
+				
 		 do{
-
+            
 							if($result = $db->store_result()){
 							
 									while($row = $result->fetch_assoc()){
-									
+							$activities_count_array["notifications_info"]["count"] = ($result->num_rows > 0) ? $result->num_rows : 0;
+							
 					 if(isset($row["count_pending_connections"])){
+						
 									 $activities_count_array["pending_connections"] = $row["count_pending_connections"];
+									 $activities_count_array["notifications_info"]["notifications"] .= "
+									 <div id='' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
+	<a class='ps-notification__inside' href=''>
+		
+		  
+
+		<div class='ps-notification__body'>
+			<div class='ps-notification__desc'>
+				<strong>".$row[user::$firstname]." ".$row[user::$lastname]."</strong> followed you
+						</div>
+
+			<div class='ps-notification__meta'>
+				<small class='activity-post-age' data-timestamp='".FetchPost::fulldate($row[PendingConnections::$request_time])."'><span title='".FetchPost::fulldate($row[PendingConnections::$request_time])."'>".FetchPost::time_converter($row[PendingConnections::$request_time])."</span></small><span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'><i class='ps-icon-eye'></i><span>Mark as read</span></span></div></div></a></div>";
+
 						}elseif(isset($row[self::$id]) && trim($row[self::$type]) != ""){
-										 
-									
+						 
+								
 											if(!in_array($row[Notifications::$id],$notifications_ids_array)){
 
 											 $fullname = ($row[self::$type] != CONFIRM_POST || $row[self::$type] != REVERSE_CONFIRMED_POST ) ? $row[self::$firstname]." ".$row[self::$lastname]."  " : "";
-											 
-													$notifications_ids_array[] =  $row[Notifications::$id];
+
+											 // store the notifications ids to be able to count them later.
+													$notifications_ids_array[] = $row[Notifications::$id];
+										$mark_notifiation_as_read = "onclick=notifications.mark_as_read(this,'".$row[Notifications::$id]."')";
+													// store the notifications		
 													$notifications .="<div id='' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
-													<a class='ps-notification__inside' href=''>
+													<a class='ps-notification__inside' href='#'>
 														
 														<div class='ps-notification__body'>
 															<div class='ps-notification__desc'>
@@ -86,7 +104,8 @@ class Notifications extends DatabaseObject {
 															<div class='ps-notification__meta'>
 																<small class='activity-post-age' data-timestamp='". FetchPost::fulldate($row[self::$time])."'><span title='". FetchPost::fulldate($row[self::$time])."'>".FetchPost::time_converter($row[self::$time])."</span></small>
 												
-																				<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
+																				<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'
+{$mark_notifiation_as_read}																				>
 																	<i class='ps-icon-eye'></i>
 																	<span>Mark as read</span>
 																</span>
@@ -96,9 +115,14 @@ class Notifications extends DatabaseObject {
 												</div>";
 													
 											
+											
 						}
-					
-				 $activities_count_array["notifications_info"] = ["count" =>count($notifications_ids_array), "notifications" => $notifications]; 
+				// store the notifications inside the activities array	
+				 $activities_count_array["notifications_info"]["count"] = count($notifications_ids_array);
+				 $activities_count_array["notifications_info"]["notifications"] = $notifications;
+
+				//  ["count" => count($notifications_ids_array), "notifications" => $notifications]; 
+
 									}elseif(isset($row[PostImage::$label])){
 									$activities_count_array["label"][$row[PostImage::$label]] =
 									$row["count_labeled_posts"];
@@ -111,6 +135,7 @@ class Notifications extends DatabaseObject {
 return  $activities_count_array;
 			
 	}//get_activities_count();
+
 
 
   public static function get_notification_type_string($notification_type = ""){
@@ -132,7 +157,7 @@ return  $activities_count_array;
 		switch($notification_type){
 
 			case NEW_COMMENT :
-			return " added a new commented on post ";
+			return " commented on a post ";
 			break;
 			case INCIDENT_POST :
 			return " posted an new incident ";
@@ -185,7 +210,7 @@ return  $activities_count_array;
 
 	}
 
-  public  static function send_notification($post_id =  "NULL",$comment_id = "NULL",$reply_id = "NULL",$type = ''){
+  public  static function send_notification($post_id =  0,$comment_id = 0,$reply_id = 0,$type = ''){
 	
 		global $db;
 
@@ -200,7 +225,7 @@ return  $activities_count_array;
 	$result = $db->query($query);
 	if(!$result){
 		
- log_action(__CLASS__,"FAILED NOTIFICATION: post_id:{$post_id}, commment_id: {$comment_id}, reply_id: {$reply_id}, user_id: ".$_SESSION[user::$id]." type: {$type} ");
+ log_action(__CLASS__,"($query) $db->error");
 		return false;
 	}else{
 
@@ -286,7 +311,7 @@ public static function get_notification_template(){
 			<div class='ps-notification__meta'>
 				<small class='activity-post-age' data-timestamp='2018-06-25 10:01:52'><span title='2018-06-25 10:01:52'>System time</span></small>
 
-								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'>
+								<span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;' onclick='notification.mark_as_read()'>
 					<i class='ps-icon-eye'></i>
 					<span>Mark as read</span>
 				</span>
@@ -360,6 +385,24 @@ public static function get_label_specific_notifications($label = ""){
 }
 
 
+public static function mark_as_read($notification_id = 0){
+	global $db;
+
+
+	if(isset($notification_id) && !empty($notification_id) && $notification_id != 0){
+	    $sql_safe_notification_id = $db->real_escape_string($notification_id);
+	 $query = "INSERT INTO read_status VALUES(NULL,{$sql_safe_notification_id},".$_SESSION[user::$id].")";
+
+	$result = $db->query($query);
+ 
+	if($db->affected_rows > 0){
+	 print j(["response" => "success"]);
+	 return;
+	}
+	}
+	print j(["response" => "failed"]);
+	return ;
+}
 
 }// get_label_specific_notifications();
 	

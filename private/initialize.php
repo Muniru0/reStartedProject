@@ -137,7 +137,6 @@ defined("PROFILE_PAGE") ? null    : define("PROFILE_PAGE","profile.php");
 
 
 
-
 session_start();
 
 require_once(PRIVATE_DIR. "classes/class.error_handling.php");

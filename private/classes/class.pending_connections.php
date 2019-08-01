@@ -51,10 +51,10 @@ class PendingConnections extends DatabaseObject{
                      && isset( $row["response"]) && $row["response"] == CONNECTION_REQUEST_SENT){
                      print j([CONNECTION_REQUEST_SENT => "success"]);
                      $notification_type = CONNECTION_REQUEST_SENT;
-                    log_action(__CLASS__,$row["response"].__LINE__);
+                    
                     }elseif(isset($row["response"]) && $row["response"] == CONNECTION_REQUEST_REVOKED){
                         print j([CONNECTION_REQUEST_REVOKED => "success"]);
-                        $notification_type = CONNECTION_REQUEST_REVOKED;
+                        $notification_type = "";
                        
                     }elseif(isset($row["respnose"]) && $row["response"] == "invalid_connectionn"){
                         print j(["invalid_connection"=>"success"]);
@@ -80,8 +80,11 @@ class PendingConnections extends DatabaseObject{
             return;
         }
 
+        if(trim($notification_type) != "" || !empty($notification_type)){
+            log_action(__CLASS__,$notification_type);
+            Notifications::send_notification(0,0,0,$notification_type);
+        }
 
-  Notifications::send_notification("NULL","NULL","NULL",$notification_type);
     }//request_connection();
 
 

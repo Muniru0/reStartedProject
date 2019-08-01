@@ -124,7 +124,7 @@ class FetchPost extends DatabaseObject{
 		 $connected_user_class = "connect_user";
 		 $toggle_string     = "display:inline;";
 		 $user_parent_breathing_space = "breathing_space";
-		 $connect_title_string = "You are connected to this User.You will be notified of all of his posted incidents.";
+		 $connect_title_string = "You are now following this User.You will be notified of all of his posted incidents.";
 		 
 		}
 		  
@@ -185,11 +185,11 @@ class FetchPost extends DatabaseObject{
 		 
 		 // initialize the necessary variables
 		 // link user variables
-		 $connect_user_string = "connect_user";
+		 $connect_user_string = "follow_user";
 		 $toggle_connect_icon   = "fal fa-link";
 		 $toggle_connect_class  = "";
-		 $toggle_connect_string  = "connect with";
-		 $toggle_connect_title  = "connecting with a user will get you notified of all future incidents posted by that user.";
+		 $toggle_connect_string  = "Follow ";
+		 $toggle_connect_title  = "Following a user will get you notified of all future incidents posted by that user.";
 		 
 		 // follow post variables
 		 $follow_post_string = "follow_post";
@@ -204,8 +204,8 @@ class FetchPost extends DatabaseObject{
 		  if(in_array($user_id,$_SESSION[ConnectUsers::$session_string])){
 			 $toggle_connect_icon = "fal fa-unlink";
 			 $toggle_connect_class = "reverse_post_action";
-			 $toggle_connect_string = "disconnect from ";
-			 $toggle_connect_title  = "You are connected to {$firstname} {$lastname}";
+			 $toggle_connect_string = "unfollow ";
+			 $toggle_connect_title  = "You are {$firstname} {$lastname}";
 		  }
 		 
 		 
@@ -930,7 +930,7 @@ public static function is_timestamp($timestamp = 0)
                         // if it is exactly a minute
                         if(round($upload_time/$min) == 1){
                             return "a minute ago";
-                            //if it is exactly an hour
+                            
                         }else{
                             // if it is between an hour and a minute
                             return round($upload_time/$min)." minutes ago";
@@ -949,14 +949,14 @@ public static function is_timestamp($timestamp = 0)
                         }elseif(floor($upload_time /$hr) >= $mid_night) {
                             return "since yesterday";
                         }else{
-                            return "some time ago";
+                            return "since yesterday";
                         }
                         // greater than or equal to a day and less than or equal to a week
-                    }elseif($upload_time  >= $day && $upload_time <= $wk) {
+                    }elseif($upload_time  >= $day && $upload_time < $wk) {
                         // if it is just a day ago
                         if(ceil($upload_time / $day) == 1){
                             return "since yesterday";
-                        }elseif($upload_time == $wk){
+                        }elseif(round($upload_time/ $wk) == 1){
                             return "a week ago";
                         }else{
                             // within the week
@@ -964,54 +964,40 @@ public static function is_timestamp($timestamp = 0)
                         }
                         // greater than or equal to a week or less than or equal to a month
                     } elseif($upload_time >= $wk && $upload_time < $mon) {
-                        if($upload_time == $wk){
+                        if(round($upload_time / $wk) == 1){
                             return "a week ago";
 
                         }elseif ($upload_time > $wk && $upload_time < $mon) {
                             // return only the weeks
                             return  ceil($upload_time / $wk). " weeks ago";
-                        }elseif($upload_time > $wk && $upload_time == $mon){
-
-                            return "a month ago";
                         }else{
-                            return "some time ago";
+
+                            return "about a month ago";
                         }
-                    }elseif($upload_time >= $mon && $upload_time <= $yr ){
+                    }elseif($upload_time >= $mon && $upload_time < $yr ){
                         // if it is a month and some weeks
 
-                        if(($upload_time > $wk && $upload_time >= $mon) &&
-                            ((int)floor($upload_time / $mon)  === 1) &&
-                            $upload_time < (($mon * 2)-($day * 6))){
+                        if(round($upload_time/ $mon) == 1){
 //
-                            return "a month ".self::sub_time_converter($upload_time,$mon,$wk,"weeks")." ago";
+                           return "about a month ago";
 
-                        }elseif(($upload_time > $wk && $upload_time >= $mon) &&
-                            ((int)floor($upload_time / $mon)  === 1) &&
-                            $upload_time < ($mon * 2)){
+                        }elseif(round($upload_time / $mon) > 1 && round($upload_time / $yr) < 1){
 
-                            return "about ".round($upload_time / $mon)." months ".self::sub_time_converter($upload_time,$mon,$wk,"weeks")." ago";;
+                           return round($upload_time/ $mon)." months ago ";
 
-                        }elseif($upload_time > $mon && $upload_time > $wk && $upload_time == $yr){
-                            return "about a year ago";
-                        }else{
-                            return "some time ago";
                         }
 
-                    }elseif($upload_time >= $yr && $upload_time <= ($yr * 10)){
-                        if($upload_time == $yr){
-                            return "about a year ago";
-                        }elseif($upload_time > $yr && $upload_time < ($yr * 10)){
-
-                            return "10 years ago";
-                        }elseif($upload_time == ($yr * 10)){
-                            return "about 10 years ago";
-                        }elseif($upload_time > ($yr * 10)){
-                            return "more than 10 years ago";
-                        }else{
-                            return "some time ago";
-                        }
+                    }elseif($upload_time >= $yr && $upload_time <= ($yr * 20)){
+                      if($round($upload_time/ $yr) == 1){
+ return "about a yr ago";
+					  }elseif(round($upload_time / $yr) > 1 && round($upload_time / $yr) < 20){
+					
+						return round($upload_time / $yr)." yrs ago";
+					  }else{
+						  return "a long time ago";
+					  }
                     }else{
-                        return "some time ago";
+                        return "a long time ago";
                     }
                 }catch (Exception $e) {
                     return $e;

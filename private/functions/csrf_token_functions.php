@@ -56,7 +56,7 @@ function die_on_csrf_token_failure() {
 
 // Optional check to see if token is also recent
 function csrf_token_is_recent() {
-	$max_elapsed = 60 * 60 * 24; // 1 day
+	$max_elapsed = 20 * 60 * 24; // 1 day
 	if(isset($_SESSION['csrf_token_time'])) {
 		$stored_time = $_SESSION['csrf_token_time'];
 	

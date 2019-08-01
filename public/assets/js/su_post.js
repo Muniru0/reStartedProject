@@ -1238,9 +1238,9 @@ function post_options_dropdown(element){
                      addIconClass       = (response["confirm_post"] == "success") ?  "fal fa-check-circle" : "fal fa-undo-alt";
                      removeIconClass    = (response["confirm_post"] == "success") ?  "fal fa-undo-alt" : "fal fa-check-circle";
                          
-                }else if(option == "connect_user" ){
+                }else if(option == "follow_user" ){
          
-                      title                  =  ($(element).hasClass("reverse_post_action")) ?  "connecting with a user will get you notified of all future incidents posted by that user." : "You will be notified of incidents posted by this person.";
+                      title                  =  ($(element).hasClass("reverse_post_action")) ?  "Following a user will get you notified of all future incidents posted by that user." : "You will be notified of incidents posted by this person.";
                       let user               =   $(mainParent).find(".ps-stream-user");
                       $(user).parent().toggleClass("breathing_space");
                        $(user).toggleClass("connect_user",1000,"easeOutBounce");
@@ -1248,7 +1248,7 @@ function post_options_dropdown(element){
                       let userFullname       =  $(user).html();
                       userFullname           = userFullname.split("<small")[0];
                      
-                      confirmationText       =  (response["connection_request_sent"] == "success") ?  "connect with " + userFullname : "disconnect with " + userFullname;
+                      confirmationText       =  (response["connection_request_sent"] == "success") ?  "Follow " + userFullname : "unfollow  " + userFullname;
                       addElementClass        =  (response["connection_request_sent"] == "success") ?  "" : "reverse_post_action";
                       removeElementClass     =  (response["connection_request_sent"] == "success") ?  "reverse_post_action" : "";
                       addIconClass           =  (response["connection_request_sent"] == "success") ? "fal fa-link" :  "fal fa-unlink";

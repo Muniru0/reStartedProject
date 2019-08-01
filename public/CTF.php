@@ -1,4 +1,16 @@
 <?php require_once("../private/initialize.php"); 
+
+
+$query = "SELECT notifications.*,firstname,lastname,sender_id,receiver_id,request_time FROM notifications  LEFT JOIN  pending_connections ON pending_connections.sender_id = notifications_user_id LEFT JOIN users ON users.id = sender_id LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id LEFT JOIN post_table  ON  post_table.uploader_id = 1 LEFT JOIN read_status ON notifications_id = read_status_notification_id  WHERE follow_posts_follower_id = 1 &&  notifications_user_id != 1 && read_status_notification_id != 1 && receiver_id = 1 ";
+
+$result = $db->query($query);
+
+if($row = $result->fetch_assoc()){
+    echo "<pre>";
+	print_r($row);
+	echo "</pre>";
+}
+
 ?>
 <!DOCTYPE html>
   <html>
@@ -129,17 +141,19 @@ width: 100%;
  
 
  <?php
+		$query = "SELECT ".user::$firstname.",".user::$lastname.",COUNT(*) AS count_pending_connections FROM ".PendingConnections::$table_name." JOIN ".user::$table_name." ON ".user::$table_name.".".user::$id." = ".PendingConnections::$receiver_id." WHERE ".PendingConnections::$receiver_id." = ".$_SESSION[user::$id].";";
+ echo $query;
+	$result =  $db->query($query);
+   echo $result->num_rows;
+   echo $db->error;
+	while($row = $result->fetch_assoc()){
 
-$var = ( 1 + 7 ) >= 3;
- 
-if($var){
+	  echo "<pre>";
+	  print_r($row);
+	  echo "</pre>";
 
-	echo "invalid csrf token recent time" ;
-}
-else{
-echo "still valid";
-}
-die();
+	}
+	return;
 //  echo password_hash("azizfahad1",PASSWORD_ARGON2ID);
   // $result = $db->query("SELECT notifications.* FROM notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id 	LEFT JOIN connect_users ON connect_users_followed_id = notifications_user_id  WHERE follow_posts_follower_id = 4 && connect_users_follower_id = 4 && notifications_user_id != 4"); 
 	

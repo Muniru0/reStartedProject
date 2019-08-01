@@ -29,7 +29,7 @@ $lastsname = $_SESSION[user::$firstname];
  $request_type = "<input type='hidden' id='stream_type' value= ".STREAM_HOME." />";
 
 $content = "";
- 
+
 $content  .= main_header(home_header($firstname,$lastname),$request_type,$activities_counts);
  echo $content  .= main_footer(); 
 
