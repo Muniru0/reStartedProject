@@ -192,6 +192,7 @@ PostImage::delete_post($user_id,$post_id);
 				return;
 			}
 			
+			
 			// link with this user
 			PendingConnections::send_request($user_id);
 			

@@ -1,8 +1,90 @@
-[ 1/Aug/2019 02:57:49 PM] : [PendingConnections] | entered hree
-[ 1/Aug/2019 02:57:49 PM] : [Notifications] | (INSERT INTO notifications VALUES(NULL,0,0,0,4,'Osman','Ganiu','connection_request_sent',1564671475) ON DUPLICATE KEY UPDATE notifications_id = notifications_id + 1) Cannot add or update a child row: a foreign key constraint fails (`speakup`.`notifications`, CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`notifications_post_id`) REFERENCES `post_table` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)
-[ 1/Aug/2019 02:57:55 PM] : [PendingConnections] | entered hree
-
-
-[ 1/Aug/2019 03:03:08 PM] : [Notifications] | SELECT notifications.*,firstname,lastname,request_time,COUNT(*) AS count_pending_connections FROM notifications  LEFT JOIN  pending_connections ON pending_connections.sender_id = notifications_user_id JOIN users ON users.id = sender_id follow_posts ON follow_posts_post_id = notifications_post_id  JOIN post_table  ON  post_table.uploader_id = 4 JOIN read_status ON (notifications_id = read_status_notification_id  WHERE follow_posts_follower_id = 4 &&  notifications_user_id != 4 && read_status_notification_id != 4 && receiver_id = 4 ; on line: 37
-[ 1/Aug/2019 05:27:53 PM] : [Throttle] |  LINE: 282
-[ 1/Aug/2019 05:40:49 PM] : [Notifications] | SELECT notifications.*,firstname,lastname,request_time,COUNT(*) AS count_pending_connections FROM pending_connections JOIN users ON users.id = sender_id notifications LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id  JOIN post_table  ON  post_table.uploader_id = 1 JOIN read_status ON (notifications_id = read_status_notification_id  WHERE follow_posts_follower_id = 1 &&  notifications_user_id != 1 && read_status_notification_id != 1 && receiver_id = 1 ; on line: 37
+#preloader span.loader {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -25px;
+    font-size: 10px;
+    text-indent: -12345px;
+    border-top: 1px solid rgba(0,0,0, 0.08);
+    border-right: 1px solid rgba(0,0,0, 0.08);
+    border-bottom: 1px solid rgba(0,0,0, 0.08);
+    border-left: 1px solid rgba(0,0,0, 0.5);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-animation: spinner 700ms infinite linear;
+    -moz-animation: spinner 700ms infinite linear;
+    -ms-animation: spinner 700ms infinite linear;
+    -o-animation: spinner 700ms infinite linear;
+    animation: spinner 700ms infinite linear;
+    z-index: 100001;
+}
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    color: #666;
+    background-color: #fff;
+    font-family: 'Open Sans',Arial,Helvetica,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+html {
+    font-size: 10px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+user agent stylesheet
+html {
+    color: -internal-root-color;
+}
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+::selection {
+    background: #8ab933;
+}
+::selection {
+    color: #fff;
+    text-shadow: none;
+    background: #333;
+}
+0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+}

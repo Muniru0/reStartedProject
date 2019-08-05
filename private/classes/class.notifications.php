@@ -10,16 +10,16 @@ class Notifications extends DatabaseObject {
      
 	 public static $table_name = 'notifications';
 	 
-	 public static $id           = 'notifications_id';
-	 public static $post_id      = 'notifications_post_id';
-	 public static $comment_id   = 'notifications_comment_id';
-	 public static $reply_id     = 'notifications_post_id';
-	 public static $user_id      = 'notifications_user_id';
-	 public static $firstname    = 'notifications_firstname';
-	 public static $lastname     = 'notifications_lastname';
-	 public static $type         = 'notifications_type';
-	 public static $time         = 'notifications_time';
-	
+	 public static $id          	    = 'notifications_id';
+	 public static $receiver_post_id    = 'notifications_post_id';
+	 public static $comment_id   		= 'notifications_comment_id';
+	 public static $reply_id     		= 'notifications_post_id';
+	 public static $user_id      		= 'notifications_user_id';
+	 public static $firstname    		= 'notifications_firstname';
+	 public static $lastname     		= 'notifications_lastname';
+	 public static $type         		= 'notifications_type';
+	 public static $time         		= 'notifications_time';
+
 
 	 //healper properties
 	 public static $last_notification_check_time = "last_notifcation_check_time";
@@ -30,11 +30,18 @@ class Notifications extends DatabaseObject {
     public static function get_activities_counts($stream_type = null){
 			global $db;
 			
-			
+			// number of pending connections(friend requests)
+			// $query = "SELECT ".PendingConnections::$id.",".user::$firstname.",".user::$lastname.",".PendingConnections::$request_time.",COUNT(*) AS count_pending_connections FROM ".PendingConnections::$table_name." JOIN ".user::$table_name." ON ".user::$table_name.".".user::$id." = ".PendingConnections::$sender_id." WHERE ".PendingConnections::$receiver_id." = ".$_SESSION[user::$id].";";
 		 
 			//this query is only for the notifications which you are following the post
-			$query = "SELECT ".self::$table_name.".*,".user::$firstname.",".user::$lastname.",".PendingConnections::$request_time.",COUNT(*) AS count_pending_connections FROM ".PendingConnections::$table_name." JOIN ".user::$table_name." ON ".user::$table_name.".".user::$id." = ".PendingConnections::$sender_id." ".self::$table_name." LEFT JOIN ".FollowPost::$table_name." ON ".FollowPost::$post_id." = ".self::$post_id."  JOIN ".PostImage::$table_name."  ON  ".PostImage::$table_name.".".PostImage::$uploader_id." = ".$_SESSION[user::$id]." JOIN read_status ON (".self::$id." = read_status_notification_id  WHERE ".FollowPost::$follower_id." = ".$_SESSION[user::$id]." &&  ".self::$user_id." != ".$_SESSION[user::$id]." && read_status_notification_id != ".$_SESSION[user::$id]." && ".PendingConnections::$receiver_id." = ".$_SESSION[user::$id]." ;"; 
-     log_action(__CLASS__,$query." on line: ".__LINE__);
+	// 		$query = "SELECT * FROM ".self::$table_name." LEFT JOIN ".FollowPost::$table_name." ON ".FollowPost::$post_id." = ".self::$receiver_post_id."  JOIN ".PostImage::$table_name."  ON  ".PostImage::$table_name.".".PostImage::$uploader_id." = ".$_SESSION[user::$id]." JOIN read_status ON (".self::$id." = read_status_notification_id  WHERE ".FollowPost::$follower_id." = ".$_SESSION[user::$id]." &&  ".self::$user_id." != ".$_SESSION[user::$id]." && read_status_notification_id != ".$_SESSION[user::$id].";"; 
+	// log_action(__CLASS__,$query);
+	
+		   $query = " SELECT notifications.* FROM notifications JOIN pending_connections ON notifications_post_receiver_id = pending_connections.receiver_id LEFT JOIN read_status ON read_status_notification_id = notifications_id WHERE read_status_user_id != 4;";
+		   
+
+		   $query .= "SELECT notifications.* FROM notifications JOIN follow_posts ON notifications_post_receiver_id = follow_posts_post_id LEFT JOIN reply_views ON reply_views.post_id = follow_posts_post_id LEFT JOIN read_status ON read_status_notification_id = notifications_id WHERE read_status_notification_id;";
+
 		// count of the different type of posts that 
 			$query .= "SELECT ".PostImage::$label.",".PostImage::$title.",".PostImage::$upload_time.",COUNT(*) AS count_labeled_posts FROM ".PostImage::$table_name." WHERE ".PostImage::$upload_time." > (".time()." - 5289000) GROUP BY ".PostImage::$label;
 		   
@@ -59,35 +66,15 @@ class Notifications extends DatabaseObject {
 			if($db->multi_query($query)){
 				
 		 do{
-            
+           
 							if($result = $db->store_result()){
 							
 									while($row = $result->fetch_assoc()){
-							$activities_count_array["notifications_info"]["count"] = ($result->num_rows > 0) ? $result->num_rows : 0;
 							
-					 if(isset($row["count_pending_connections"])){
-						
-									 $activities_count_array["pending_connections"] = $row["count_pending_connections"];
-									 $activities_count_array["notifications_info"]["notifications"] .= "
-									 <div id='' class='ps-notification ps-notification--unread ps-js-notification ps-js-notification--158' data-id='158' data-unread='1'>
-	<a class='ps-notification__inside' href=''>
-		
-		  
-
-		<div class='ps-notification__body'>
-			<div class='ps-notification__desc'>
-				<strong>".$row[user::$firstname]." ".$row[user::$lastname]."</strong> followed you
-						</div>
-
-			<div class='ps-notification__meta'>
-				<small class='activity-post-age' data-timestamp='".FetchPost::fulldate($row[PendingConnections::$request_time])."'><span title='".FetchPost::fulldate($row[PendingConnections::$request_time])."'>".FetchPost::time_converter($row[PendingConnections::$request_time])."</span></small><span class='ps-notification__status ps-tooltip ps-tooltip--notification ps-js-mark-as-read' data-tooltip='Mark as read' style='cursor:pointer;'><i class='ps-icon-eye'></i><span>Mark as read</span></span></div></div></a></div>";
-
-						}elseif(isset($row[self::$id]) && trim($row[self::$type]) != ""){
-						 
-								
-											if(!in_array($row[Notifications::$id],$notifications_ids_array)){
-
-											 $fullname = ($row[self::$type] != CONFIRM_POST || $row[self::$type] != REVERSE_CONFIRMED_POST ) ? $row[self::$firstname]." ".$row[self::$lastname]."  " : "";
+						log_action(__CLASS__, "how");
+					 if(isset($row[self::$id]) && trim($row[self::$type]) != ""){
+						 if(!in_array($row[Notifications::$id],$notifications_ids_array)){
+              		$fullname = ($row[self::$type] != CONFIRM_POST || $row[self::$type] != REVERSE_CONFIRMED_POST ) ? $row[self::$firstname]." ".$row[self::$lastname]."  " : "";
 
 											 // store the notifications ids to be able to count them later.
 													$notifications_ids_array[] = $row[Notifications::$id];
@@ -118,15 +105,16 @@ class Notifications extends DatabaseObject {
 											
 						}
 				// store the notifications inside the activities array	
-				 $activities_count_array["notifications_info"]["count"] = count($notifications_ids_array);
+				
 				 $activities_count_array["notifications_info"]["notifications"] = $notifications;
 
 				//  ["count" => count($notifications_ids_array), "notifications" => $notifications]; 
 
-									}elseif(isset($row[PostImage::$label])){
+					}elseif(isset($row[PostImage::$label])){
 									$activities_count_array["label"][$row[PostImage::$label]] =
 									$row["count_labeled_posts"];
 									}
+		$activities_count_array["notifications_info"]["count"] = count($notifications_ids_array);
 							}
 							}
 					}while($db->more_results() && $db->next_result());
@@ -198,10 +186,13 @@ return  $activities_count_array;
 			case LIKE_REPLY :
 			return " likeda reply to a comment ";
 			break;
-		 case EDIT_COMMENT :
+		    case EDIT_COMMENT :
 			return " edited a comment on a post ";
 			break;
-		 
+		    case CONNECTION_REQUEST_SENT :
+			return " followed you. ";
+			break;
+			
 		   default : return IGNORE_NOTIFICATION;             
 			             
 			   
@@ -210,7 +201,7 @@ return  $activities_count_array;
 
 	}
 
-  public  static function send_notification($post_id =  0,$comment_id = 0,$reply_id = 0,$type = ''){
+  public  static function send_notification($receiver_post_id =  0,$comment_id = 0,$reply_id = 0,$type = ''){
 	
 		global $db;
 
@@ -220,12 +211,12 @@ return  $activities_count_array;
 				return false;
 			}
 
-	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$post_id},{$comment_id},{$reply_id},".$_SESSION[user::$id].",'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."','".$type."',".time().") ON DUPLICATE KEY UPDATE ".self::$id." = ".self::$id." + 1";
+	$query = "INSERT INTO ".self::$table_name." VALUES(NULL,{$receiver_post_id},{$comment_id},{$reply_id},".$_SESSION[user::$id].",'".$_SESSION[user::$firstname]."','".$_SESSION[user::$lastname]."','".$type."',".time().") ON DUPLICATE KEY UPDATE ".self::$id." = ".self::$id." + 1";
 	
 	$result = $db->query($query);
 	if(!$result){
 		
- log_action(__CLASS__,"($query) $db->error");
+ log_action(__CLASS__,"($query)");
 		return false;
 	}else{
 
@@ -355,7 +346,7 @@ public static function get_label_specific_notifications($label = ""){
 
 				global $db;
 		// count of the different type of posts that 
-		$query = "SELECT ".PostImage::$label.",".user::$firstname.",".user::$lastname.",".PostImage::$title.",".PostImage::$upload_time.",".PostIMage::$title.",".PostImage::$upload_time.",".FetchPost::$filename." FROM ".PostImage::$table_name." JOIN ".user::$table_name." ON ".user::$table_name.".".user::$id." = ".PostImage::$table_name.".".PostImage::$uploader_id." JOIN ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$post_id." = ".PostImage::$table_name.".".PostImage::$id."  WHERE ".PostImage::$upload_time." > (".time()." - 5284000) && ".PostImage::$label." = '{$label}' GROUP BY ".PostImage::$table_name.".".PostImage::$id." ORDER BY  ".PostImage::$upload_time." DESC ";
+		$query = "SELECT ".PostImage::$label.",".user::$firstname.",".user::$lastname.",".PostImage::$title.",".PostImage::$upload_time.",".PostIMage::$title.",".PostImage::$upload_time.",".FetchPost::$filename." FROM ".PostImage::$table_name." JOIN ".user::$table_name." ON ".user::$table_name.".".user::$id." = ".PostImage::$table_name.".".PostImage::$uploader_id." JOIN ".FetchPost::$table_name." ON ".FetchPost::$table_name.".".FetchPost::$receiver_post_id." = ".PostImage::$table_name.".".PostImage::$id."  WHERE ".PostImage::$upload_time." > (".time()." - 5284000) && ".PostImage::$label." = '{$label}' GROUP BY ".PostImage::$table_name.".".PostImage::$id." ORDER BY  ".PostImage::$upload_time." DESC ";
 
 
 

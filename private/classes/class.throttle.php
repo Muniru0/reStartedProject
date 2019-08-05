@@ -278,7 +278,7 @@ return false;
 $failed_logins_clear_number = 0;
 
 // bind the parameter
-if($stmt->bind_param("is",$failed_logins_clear_number,$email)){
+if(!$stmt->bind_param("is",$failed_logins_clear_number,$email)){
   log_action(__CLASS__,$db->error." LINE: ".__LINE__);
 }
 

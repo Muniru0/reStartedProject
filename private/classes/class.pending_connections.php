@@ -36,12 +36,12 @@ class PendingConnections extends DatabaseObject{
         }
 
    $notification_type = ""; 
-
+   
         if(isset($_SESSION) && isset($_SESSION[user::$id]) && $_SESSION[user::$id] > 0 ){
 
-              $query = "CALL user_connection_request(".$receiver_id.",".$_SESSION[user::$id].",".time().")";
+              $query = "CALL user_connection_request(".$_SESSION[user::$id].",".$receiver_id.",".time().")";
             if($db->multi_query($query)){
-
+  
 
                 do{
                     if($result =  $db->store_result()){
@@ -81,8 +81,8 @@ class PendingConnections extends DatabaseObject{
         }
 
         if(trim($notification_type) != "" || !empty($notification_type)){
-            log_action(__CLASS__,$notification_type);
-            Notifications::send_notification(0,0,0,$notification_type);
+            
+            Notifications::send_notification($receiver_id,0,0,$notification_type);
         }
 
     }//request_connection();

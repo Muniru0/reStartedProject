@@ -1,15 +1,15 @@
 <?php require_once("../private/initialize.php"); 
 
 
-$query = "SELECT notifications.*,firstname,lastname,sender_id,receiver_id,request_time FROM notifications  LEFT JOIN  pending_connections ON pending_connections.sender_id = notifications_user_id LEFT JOIN users ON users.id = sender_id LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id LEFT JOIN post_table  ON  post_table.uploader_id = 1 LEFT JOIN read_status ON notifications_id = read_status_notification_id  WHERE follow_posts_follower_id = 1 &&  notifications_user_id != 1 && read_status_notification_id != 1 && receiver_id = 1 ";
+// $query = "SELECT notifications.*,firstname,lastname,sender_id,receiver_id,request_time FROM notifications  LEFT JOIN  pending_connections ON pending_connections.sender_id = notifications_user_id LEFT JOIN users ON users.id = sender_id LEFT JOIN follow_posts ON follow_posts_post_id = notifications_post_id LEFT JOIN post_table  ON  post_table.uploader_id = 1 LEFT JOIN read_status ON notifications_id = read_status_notification_id  WHERE follow_posts_follower_id = 1 &&  notifications_user_id != 1 && read_status_notification_id != 1 && receiver_id = 1 ";
 
-$result = $db->query($query);
+// $result = $db->query($query);
 
-if($row = $result->fetch_assoc()){
-    echo "<pre>";
-	print_r($row);
-	echo "</pre>";
-}
+// if($row = $result->fetch_assoc()){
+//     echo "<pre>";
+// 	print_r($row);
+// 	echo "</pre>";
+// }
 
 ?>
 <!DOCTYPE html>
